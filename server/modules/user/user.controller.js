@@ -2,20 +2,19 @@ import httpStatus from 'http-status';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
-const UserModel = require('./user.model');
-const BaseController = require('../base/base.controller');
-const userService = require('./user.service');
-const APIError = require('../../utils/APIError');
-const { ERROR_MESSAGE } = require('../../utils/APIError');
-const check = require('../../utils/validate');
-const { VALIDATION_TYPE } = require('../../../common/enums');
-const { hashFunc, compareFunc } = require('../../utils/bcrypt');
-const {
+import UserModel from './user.model';
+import BaseController from '../base/base.controller';
+import userService from './user.service';
+import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
+import check from '../../utils/validate';
+import { VALIDATION_TYPE } from '../../../common/enums';
+import { hashFunc, compareFunc } from '../../utils/bcrypt';
+import {
   sendUpdateProfileMail,
   sendCreatePasswordMail,
   sendChangePasswordMail,
   sendUserRegisterSuccessMail,
-} = require('../../mail');
+} from '../../mail';
 const EXPIRES_IN = '2y';
 
 class UserController extends BaseController {
@@ -309,60 +308,6 @@ class UserController extends BaseController {
         newPassword,
       );
       sendCreatePasswordMail(user);
-      return res.status(httpStatus.OK).send(newUserProfile);
-    } catch (error) {
-      return super.handleError(res, error);
-    }
-  }
-
-  async addAddress(req, res) {
-    try {
-      const { user } = req;
-      const address = req.body.data;
-      const newUserProfile = await userService.addAddress(user, address);
-      return res.status(httpStatus.OK).send(newUserProfile);
-    } catch (error) {
-      return super.handleError(res, error);
-    }
-  }
-
-  async setDefaultAddress(req, res) {
-    try {
-      const { user } = req;
-      const { locationIndex } = req.body.data;
-      const newUserProfile = await userService.setDefaultAddress(
-        user,
-        locationIndex,
-      );
-      return res.status(httpStatus.OK).send(newUserProfile);
-    } catch (error) {
-      return super.handleError(res, error);
-    }
-  }
-
-  async editAddress(req, res) {
-    try {
-      const { user } = req;
-      const { locationIndex, address } = req.body.data;
-      const newUserProfile = await userService.editAddress(
-        user,
-        locationIndex,
-        address,
-      );
-      return res.status(httpStatus.OK).send(newUserProfile);
-    } catch (error) {
-      return super.handleError(res, error);
-    }
-  }
-
-  async deleteAddress(req, res) {
-    try {
-      const { user } = req;
-      const { index } = req.params;
-      const newUserProfile = await userService.deleteAddress(
-        user,
-        Number(index),
-      );
       return res.status(httpStatus.OK).send(newUserProfile);
     } catch (error) {
       return super.handleError(res, error);

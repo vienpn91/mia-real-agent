@@ -1,6 +1,8 @@
-const nodemailer = require('nodemailer');
-const Mustache = require('mustache');
-const mapValues = require('lodash/mapValues');
+import nodemailer from 'nodemailer';
+import Mustache from 'mustache';
+import mapValues from 'lodash/mapValues';
+import EmailTemplate from './email-templates';
+
 const {
   contactMessagePostedMail,
   userPasswordChangedMail,
@@ -11,7 +13,7 @@ const {
   checkoutSuccessMail,
   orderStatusChangedMail,
   subscriptionNotificationMail,
-} = require('./email-templates');
+} = EmailTemplate;
 
 const {
   MAIL_SERVER_SERVICE,
@@ -55,7 +57,7 @@ const sendEmail = ({ to, template, data }) => {
   );
 };
 
-const sendUpdateProfileMail = (user) => {
+export const sendUpdateProfileMail = (user) => {
   sendEmail({
     to: user.email,
     template: userProfileUpdatedMail,
@@ -63,7 +65,7 @@ const sendUpdateProfileMail = (user) => {
   });
 };
 
-const sendCreatePasswordMail = (user) => {
+export const sendCreatePasswordMail = (user) => {
   sendEmail({
     to: user.email,
     template: userPasswordCreatedMail,
@@ -71,7 +73,7 @@ const sendCreatePasswordMail = (user) => {
   });
 };
 
-const sendChangePasswordMail = (user) => {
+export const sendChangePasswordMail = (user) => {
   sendEmail({
     to: user.email,
     template: userPasswordChangedMail,

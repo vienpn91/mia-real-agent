@@ -5,10 +5,45 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { routerMiddleware } from 'connected-react-router';
 import createSagaMiddleware from 'redux-saga';
-import createReducer from '../reducers';
+import { persistStore, persistReducer, createMigrate } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import immutableTransform from 'redux-persist-transform-immutable';
+import createFilter from 'redux-persist-transform-filter-immutable';
+import createReducer, { REHYDRATE_COMPLETE } from '../reducers';
 import rootSagas from '../sagas';
+import migrations from './migration';
 
 const sagaMiddleware = createSagaMiddleware();
+const authenticationFilter = createFilter('auth');
+
+const autoMerge = (inboundState, originalState, reducedState) => {
+  const newState = reducedState;
+  if (inboundState && typeof inboundState === 'object') {
+    Object.keys(inboundState).forEach((key) => {
+      // ignore _persist data
+      if (key === '_persist') return;
+      // merge inbound state into initial state
+      newState[key] = originalState[key].merge(inboundState[key]);
+    });
+  }
+  return newState;
+};
+
+const persistConfig = {
+  transforms: [
+    authenticationFilter,
+    immutableTransform({
+      whitelist: ['auth'],
+    }),
+  ],
+  stateReconciler: autoMerge,
+  whitelist: ['auth'],
+  key: 'root',
+  storage,
+  version: 0,
+  migrate: createMigrate(migrations, { debug: true }),
+  debug: true,
+};
 
 export default function configureStore(initialState = {}, history) {
   // Create the store with two middlewares
@@ -20,19 +55,20 @@ export default function configureStore(initialState = {}, history) {
 
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
   /* eslint-disable no-underscore-dangle, indent */
-  const composeEnhancers =
-    process.env.NODE_ENV !== 'production' &&
-    typeof window === 'object' &&
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+  const composeEnhancers = process.env.NODE_ENV !== 'production'
+    && typeof window === 'object'
+    && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
       ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
       : compose;
   /* eslint-enable */
 
   const store = createStore(
-    createReducer(),
+    persistReducer(persistConfig, createReducer({})),
     initialState,
     composeEnhancers(...enhancers),
   );
+
+  const persistor = persistStore(store, null, () => store.dispatch({ type: REHYDRATE_COMPLETE }),);
 
   // start sagas
   sagaMiddleware.run(rootSagas);
@@ -50,5 +86,5 @@ export default function configureStore(initialState = {}, history) {
     });
   }
 
-  return store;
+  return { store, persistor };
 }

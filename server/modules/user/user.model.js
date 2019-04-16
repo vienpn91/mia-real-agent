@@ -23,22 +23,8 @@ const userSchema = new Schema(
       gender: String,
     },
     address: {
-      defaultIndex: { type: Number, default: 0 },
-      list: [
-        {
-          firstName: String,
-          lastName: String,
-          phone: String,
-          address: {
-            line1: String,
-            line2: { type: String, required: false },
-            postcode: { type: String, required: false },
-            country: String,
-            province: String,
-            city: String,
-          },
-        },
-      ],
+      type: String,
+      required: false,
     },
     verifiedAt: {
       type: Date,

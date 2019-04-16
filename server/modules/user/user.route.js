@@ -72,30 +72,6 @@ class UserRouter extends BaseRouter {
       passport.authenticate('jwt', { session: false }),
       this.controller.updateUserProfile,
     );
-
-    this.router.post(
-      '/address',
-      passport.authenticate('jwt', { session: false }),
-      userController.addAddress,
-    );
-
-    this.router.put(
-      '/address/set-default',
-      passport.authenticate('jwt', { session: false }),
-      userController.setDefaultAddress,
-    );
-
-    this.router.put(
-      '/address/edit',
-      passport.authenticate('jwt', { session: false }),
-      userController.editAddress,
-    );
-
-    this.router.delete(
-      '/address/:index',
-      passport.authenticate('jwt', { session: false }),
-      userController.deleteAddress,
-    );
   }
 }
 
