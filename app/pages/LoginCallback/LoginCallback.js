@@ -15,13 +15,13 @@ class LoginCallBack extends React.PureComponent {
     const token = _get(this.props, 'match.params.token', null);
     const userId = _get(this.props, 'match.params.userId', null);
     const email = _get(this.props, 'match.params.email', null);
-    const verified = JSON.parse(
-      _get(this.props, 'match.params.verified', 'false'),
+    const verifiedAt = JSON.parse(
+      _get(this.props, 'match.params.verifiedAt', 'false'),
     );
 
     if (token && userId && email) {
       loginSuccess({
-        token, userId, email, verified,
+        token, userId, email, verifiedAt,
       });
       // getUserProfile(userId);
       history.push('/');

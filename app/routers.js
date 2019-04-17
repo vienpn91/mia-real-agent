@@ -17,7 +17,7 @@ export default class App extends React.PureComponent {
         <AuthRoute exact path="/" component={HomePage} />
         <UnauthRoute exact path="/login" component={Login} />
         <Route
-          path="/login/callback/:token/:userId/:email/:verified"
+          path="/login/callback/:token/:userId/:email/:verifiedAt"
           component={LoginCallBackPage}
         />
       </Switch>

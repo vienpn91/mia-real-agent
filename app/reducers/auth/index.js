@@ -208,7 +208,7 @@ export const checkAuthenticatedStatus = createSelector(
   selectAuthenticationReducer,
   (authentication) => {
     const auth = authentication.get('data', initialData).toJS();
-    return !_isEmpty(auth) && auth.verifiedAt;
+    return !_isEmpty(auth) && !!auth.verifiedAt;
   },
 );
 export const getIsRegisterForm = state => selectAuthenticationReducer(state).get('isRegisterForm', false);
