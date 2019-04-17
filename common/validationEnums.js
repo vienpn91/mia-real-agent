@@ -1,4 +1,4 @@
-import Yup from 'yup';
+import * as Yup from 'yup';
 import { VALIDATION_ERROR_MESSAGE } from './enums';
 
 const {
@@ -18,7 +18,8 @@ const password = Yup.string()
   .required(REQUIRED)
   .min(6, TOO_SHORT)
   .max(50, TOO_LONG)
-  .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/, PASSWORD_INVALID);
+  // .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/, PASSWORD_INVALID);
+  .matches(/^.+$/, PASSWORD_INVALID);
 
 const confirmPassword = Yup.string()
   .required(REQUIRED)

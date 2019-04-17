@@ -1,7 +1,7 @@
 import passport from 'passport';
 import BaseRouter from '../base/base.route';
-import userController from './user.controller';
-import ROLES_BY_VALUE from '../../../common/enums';
+import UserController from './user.controller';
+import { ROLES_BY_VALUE } from '../../../common/enums';
 import { allow } from '../../middlewares/verifyMiddlewares';
 
 const {
@@ -10,67 +10,34 @@ const {
 
 class UserRouter extends BaseRouter {
   constructor() {
-    super(userController);
-    this.router.post('/login', userController.login);
-    this.router.post('/register', userController.insertProcess);
-    this.router.post('/', allow(ADMIN_ROLE), userController.createUser);
+    super(UserController);
+    this.router.post('/', allow(ADMIN_ROLE), UserController.createUser);
     this.router.put(
       '/assign-role/:id',
       allow(ADMIN_ROLE),
-      userController.assignRoles,
+      UserController.assignRoles,
     );
+
     this.router.get(
-      '/register/send-verication-email/:email',
-      userController.sendVericationEmail,
+      '/profile/:id',
+      passport.authenticate('jwt', { session: false }),
+      UserController.getUserProfile,
     );
-    this.router.get('/verify/:token', userController.verifyAccount);
+
+    this.router.put(
+      '/profile/:id',
+      passport.authenticate('jwt', { session: false }),
+      UserController.updateUserProfile,
+    );
     this.router.post(
       '/changePassword',
       passport.authenticate('jwt', { session: false }),
-      userController.changePassword,
+      UserController.changePassword,
     );
     this.router.post(
       '/createPassword',
       passport.authenticate('jwt', { session: false }),
-      userController.createPassword,
-    );
-
-    this.router.get(
-      '/login/google',
-      passport.authenticate('google', {
-        scope: ['email'],
-        session: false,
-      }),
-    );
-
-    this.router.get(
-      '/login/google/callback',
-      userController.loginWithGoogleCallback,
-    );
-
-    this.router.get(
-      '/login/facebook',
-      passport.authenticate('facebook', {
-        session: false,
-        scope: ['email'],
-      }),
-    );
-
-    this.router.get(
-      '/login/facebook/callback',
-      userController.loginWithFacebookCallback,
-    );
-
-    this.router.get(
-      '/profile/:id',
-      passport.authenticate('jwt', { session: false }),
-      userController.getUserProfile,
-    );
-
-    this.router.put(
-      '/profile/:id',
-      passport.authenticate('jwt', { session: false }),
-      this.controller.updateUserProfile,
+      UserController.createPassword,
     );
   }
 }

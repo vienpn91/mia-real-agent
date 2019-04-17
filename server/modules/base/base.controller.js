@@ -2,29 +2,22 @@ import httpStatus from 'http-status';
 import mongoose from 'mongoose';
 import _ from 'lodash';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
+import Logger from '../../logger';
 
 const emptyObjString = '{}';
 
 export default class BaseController {
   constructor(service) {
     this.service = service;
-
-    this.insert = this.insert.bind(this);
-    this.update = this.update.bind(this);
-    this.delete = this.delete.bind(this);
-    this.get = this.get.bind(this);
-    this.getAll = this.getAll.bind(this);
-    this.load = this.load.bind(this);
-    this.handleError = this.handleError.bind(this);
   }
 
-  handleError(res, error) {
-    console.error('ERROR', error);
+  handleError = (res, error) => {
+    Logger.error(error.message);
     const status = error.status || httpStatus.INTERNAL_SERVER_ERROR;
     return res.status(status).send(error);
   }
 
-  async load(req, res, next, id) {
+  load = async (req, res, next, id) => {
     try {
       if (!mongoose.Types.ObjectId.isValid(id)) {
         const { CONTENT_NOT_FOUND } = ERROR_MESSAGE;
@@ -44,9 +37,9 @@ export default class BaseController {
     }
   }
 
-  async insert(req, res) {
+  insert = async (req, res) => {
     try {
-      const { data } = req.body;
+      const data = req.body;
       const result = await this.service.insert(data);
       return res.status(httpStatus.OK).send(result);
     } catch (error) {
@@ -54,10 +47,10 @@ export default class BaseController {
     }
   }
 
-  async update(req, res) {
+  update = async (req, res) => {
     try {
       const { model } = req;
-      const newModel = req.body.data;
+      const newModel = req.body;
       _.assign(model, newModel);
 
       const savedModel = await model.save();
@@ -67,7 +60,7 @@ export default class BaseController {
     }
   }
 
-  async get(req, res) {
+  get = async (req, res) => {
     try {
       const { model } = req;
 
@@ -77,7 +70,7 @@ export default class BaseController {
     }
   }
 
-  async getAll(req, res) {
+  getAll = async (req, res) => {
     try {
       const {
         skip, limit, sort, ...params
@@ -95,7 +88,7 @@ export default class BaseController {
     }
   }
 
-  async delete(req, res) {
+  delete = async (req, res) => {
     try {
       const { model } = req;
       model.deleted = true;

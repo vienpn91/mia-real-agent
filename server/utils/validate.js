@@ -1,8 +1,7 @@
-const httpStatus = require('http-status');
-const APIError = require('./APIError');
-const { ERROR_MESSAGE } = require('./APIError');
-const { VALIDATION_TYPE } = require('../../common/enums');
-const { VALIDATION } = require('../../common/validationEnums');
+import httpStatus from 'http-status';
+import APIError, { ERROR_MESSAGE } from './APIError';
+import { VALIDATION_TYPE } from '../../common/enums';
+import { VALIDATION } from '../../common/validationEnums';
 
 const { email, password, string } = VALIDATION;
 const { VALIDATION_MATCH_FAIL } = ERROR_MESSAGE;

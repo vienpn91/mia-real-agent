@@ -1,7 +1,12 @@
 /* eslint-disable no-console */
 
-const chalk = require('chalk');
-const ip = require('ip');
+import chalk from 'chalk';
+import ip from 'ip';
+import moment from 'moment';
+
+const { log } = console;
+const tag = status => `[${status.padEnd(8)} - ${moment().format('DD/MMM/YYYY hh:mm:ss')}]:`;
+
 
 const divider = chalk.gray('\n-----------------------------------');
 
@@ -10,10 +15,22 @@ const divider = chalk.gray('\n-----------------------------------');
  */
 const logger = {
   // Called whenever there's an error on the server we want to print
-  error: (err) => {
-    console.error(chalk.red(err));
+  log,
+  note(...msg) {
+    log(chalk.white(tag('NOTE'), msg));
   },
-
+  info(...msg) {
+    log(chalk.cyan(tag('INFO'), msg));
+  },
+  success(...msg) {
+    log(chalk.green(tag('SUCCESS'), msg));
+  },
+  warning(...msg) {
+    log(chalk.yellow(tag('WARNING'), msg));
+  },
+  error(...msg) {
+    log(chalk.red(tag('ERROR'), msg));
+  },
   // Called when express.js app starts on given port w/o errors
   appStarted: (port, host, tunnelStarted) => {
     console.log(`Server started ! ${chalk.green('✓')}`);

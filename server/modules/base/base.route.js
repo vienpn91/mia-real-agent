@@ -11,4 +11,4 @@ export default class BaseRouter {
     this.router.get('/:id', this.controller.get); // get by Id
     this.router.param('id', this.controller.load);
   }
-};
+}

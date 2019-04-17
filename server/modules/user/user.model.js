@@ -21,10 +21,7 @@ const userSchema = new Schema(
       phone: String,
       dateOfBirth: { type: Date, required: false },
       gender: String,
-    },
-    address: {
-      type: String,
-      required: false,
+      address: { type: String, required: false },
     },
     verifiedAt: {
       type: Date,

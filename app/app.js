@@ -44,7 +44,6 @@ const { store, persistor } = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
 const render = () => {
-  console.log('HAHAHA');
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate loading={<SpinnerLoading />} persistor={persistor}>
