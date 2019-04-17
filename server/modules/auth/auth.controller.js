@@ -176,7 +176,7 @@ class AuthController {
     });
     return res
       .status(200)
-      .redirect(`/login/callback/${token}/${_id}/${email}/${verifiedAt}`);
+      .redirect(`/login/callback/${token}/${_id}/${email}/${Number(verifiedAt)}`);
   }
 
   // this controller is used by google login

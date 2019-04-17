@@ -25,7 +25,7 @@ const AuthenticatedRoute = ({
 
 AuthenticatedRoute.propTypes = {
   authenticated: PropTypes.bool.isRequired,
-  component: PropTypes.func,
+  component: PropTypes.any,
   location: PropTypes.any,
 };
 

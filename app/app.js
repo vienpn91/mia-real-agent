@@ -17,6 +17,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import FontFaceObserver from 'fontfaceobserver';
 import history from './utils/history';
 import SpinnerLoading from './components/PageLoading';
+import GlobalStyle from './global-styles';
 
 // Import root app
 import App from './routers';
@@ -45,13 +46,16 @@ const MOUNT_NODE = document.getElementById('app');
 
 const render = () => {
   ReactDOM.render(
-    <Provider store={store}>
-      <PersistGate loading={<SpinnerLoading />} persistor={persistor}>
-        <ConnectedRouter history={history}>
-          <App history={history} />
-        </ConnectedRouter>
-      </PersistGate>
-    </Provider>,
+    <>
+      <GlobalStyle />
+      <Provider store={store}>
+        <PersistGate loading={<SpinnerLoading />} persistor={persistor}>
+          <ConnectedRouter history={history}>
+            <App history={history} />
+          </ConnectedRouter>
+        </PersistGate>
+      </Provider>
+    </>,
     MOUNT_NODE,
   );
 };

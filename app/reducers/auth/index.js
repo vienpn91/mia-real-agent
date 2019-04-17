@@ -7,9 +7,6 @@ export const AUTH_LOGIN = 'auth/LOGIN';
 export const AUTH_LOGOUT = 'auth/LOGOUT';
 export const AUTH_LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS';
 export const AUTH_LOGIN_FAIL = 'auth/LOGIN_FAIL';
-export const AUTH_GET_USER_DATA = 'auth/GET_USER_DATA';
-export const AUTH_GET_USER_DATA_SUCCESS = 'auth/GET_USER_DATA_SUCCESS';
-export const AUTH_GET_USER_DATA_FAIL = 'auth/GET_USER_DATA_FAIL';
 export const AUTH_REGISTER = 'auth/REGISTER';
 export const AUTH_REGISTER_SUCCESS = 'auth/REGISTER_SUCCESS';
 export const AUTH_REGISTER_FAIL = 'auth/REGISTER_FAIL';
@@ -19,19 +16,17 @@ export const AUTH_CHANGE_PASSWORD_FAIL = 'auth/CHANGE_PASSWORD_FAIL';
 export const AUTH_CREATE_PASSWORD = 'auth/CREATE_PASSWORD';
 export const AUTH_CREATE_PASSWORD_SUCCESS = 'auth/CREATE_PASSWORD_SUCCESS';
 export const AUTH_CREATE_PASSWORD_FAIL = 'auth/CREATE_PASSWORD_FAIL';
-export const AUTH_CLEAR_ERROR_MESSAGE = 'auth/AUTH_CLEAR_ERROR_MESSAGE';
-export const AUTH_TOGGLE_LOGIN_FORM = 'auth/AUTH_TOGGLE_LOGIN_FORM';
-export const AUTH_SET_VERIFYING_EMAIL = 'auth/AUTH_SET_VERIFYING_EMAIL';
-export const AUTH_SEND_VERICATION_EMAIL = 'auth/AUTH_SEND_VERICATION_EMAIL';
-export const AUTH_SEND_VERICATION_EMAIL_SUCCESS = 'auth/AUTH_SEND_VERICATION_EMAIL_SUCCESS';
-export const AUTH_SEND_VERICATION_EMAIL_FAIL = 'auth/AUTH_SEND_VERICATION_EMAIL_FAIL';
+export const AUTH_CLEAR_ERROR_MESSAGE = 'auth/CLEAR_ERROR_MESSAGE';
+export const AUTH_SET_VERIFYING_EMAIL = 'auth/SET_VERIFYING_EMAIL';
+export const AUTH_SEND_VERICATION_EMAIL = 'auth/SEND_VERICATION_EMAIL';
+export const AUTH_SEND_VERICATION_EMAIL_SUCCESS = 'auth/SEND_VERICATION_EMAIL_SUCCESS';
+export const AUTH_SEND_VERICATION_EMAIL_FAIL = 'auth/SEND_VERICATION_EMAIL_FAIL';
 
 // initialState
 const initialState = fromJS({
   isLoading: false,
   data: {},
   message: null,
-  isRegisterForm: false,
   verication: fromJS({
     isSending: false,
     errorMessage: '',
@@ -40,17 +35,22 @@ const initialState = fromJS({
 });
 
 // action creator
-function login(payload) {
+function login(email, password) {
   return {
     type: AUTH_LOGIN,
-    payload,
+    payload: {
+      email,
+      password,
+    },
   };
 }
 
-function loginSuccess(payload) {
+function loginSuccess(authInfo) {
   return {
     type: AUTH_LOGIN_SUCCESS,
-    payload,
+    payload: {
+      authInfo,
+    },
   };
 }
 
@@ -133,12 +133,6 @@ function clearErrorMessage() {
   };
 }
 
-function toggleLoginForm() {
-  return {
-    type: AUTH_TOGGLE_LOGIN_FORM,
-  };
-}
-
 function setVerifyingEmail(email) {
   return {
     type: AUTH_SET_VERIFYING_EMAIL,
@@ -180,7 +174,6 @@ export const actions = {
   createPasswordSuccess,
   createPasswordFail,
   clearErrorMessage,
-  toggleLoginForm,
   setVerifyingEmail,
   sendVericationEmail,
   sendVericationEmailSuccess,
@@ -233,8 +226,10 @@ function authReducer(state = initialState, action) {
   switch (action.type) {
     case AUTH_LOGIN:
       return state.set('isLoading', true).set('message', '');
-    case AUTH_LOGIN_SUCCESS:
-      return state.set('data', fromJS(action.payload)).set('isLoading', false);
+    case AUTH_LOGIN_SUCCESS: {
+      const { authInfo } = action.payload;
+      return state.set('data', fromJS(authInfo)).set('isLoading', false);
+    }
     case AUTH_LOGIN_FAIL:
       return state.set('isLoading', false).set('message', action.message);
     case AUTH_LOGOUT:
@@ -262,8 +257,6 @@ function authReducer(state = initialState, action) {
       return state.set('message', action.message).set('isLoading', false);
     case AUTH_CLEAR_ERROR_MESSAGE:
       return state.set('message', '');
-    case AUTH_TOGGLE_LOGIN_FORM:
-      return state.update('isRegisterForm', v => !v).set('message', '');
     case AUTH_SET_VERIFYING_EMAIL:
       return state.setIn(['verication', 'verifyingEmail'], action.email);
     case AUTH_SEND_VERICATION_EMAIL:

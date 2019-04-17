@@ -63,6 +63,10 @@ app.use(morgan((tokens, req, res) => { // eslint-disable-line
   status = statusColor(status);
   responseTime = `${timecolor(chalk.bold(responseTime))} ms`;
 
+  if (url.match(/(\.js|\.ico|\.png|\.jpg)/)) {
+    return null;
+  }
+
   return [
     remoteAddr,
     remoteUser,

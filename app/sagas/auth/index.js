@@ -1,6 +1,6 @@
 import {
-  takeEvery, call,
-  put, select,
+  call, put, select,
+  takeLatest,
 } from 'redux-saga/effects';
 import _get from 'lodash/get';
 import _pick from 'lodash/pick';
@@ -22,7 +22,8 @@ import {
 } from '../../reducers/auth';
 
 function* login({ payload }) {
-  const authResult = yield call(AuthApi.login, payload);
+  const { email: loginEmail, password } = payload;
+  const authResult = yield call(AuthApi.login, loginEmail, password);
   const response = _get(authResult, 'response', {});
   const error = _get(authResult, 'error');
 
@@ -112,15 +113,15 @@ export function* configAxiosForAuthenticate() {
 }
 
 function* authFlow() {
-  yield takeEvery(AUTH_LOGIN, login);
-  yield takeEvery(
+  yield takeLatest(AUTH_LOGIN, login);
+  yield takeLatest(
     [AUTH_LOGIN_SUCCESS, AUTH_LOGOUT],
     configAxiosForAuthenticate,
   );
-  yield takeEvery(AUTH_REGISTER, register);
-  yield takeEvery(AUTH_CHANGE_PASSWORD, changePassword);
-  yield takeEvery(AUTH_CREATE_PASSWORD, createPassword);
-  yield takeEvery(AUTH_SEND_VERICATION_EMAIL, sendVericationEmail);
+  yield takeLatest(AUTH_REGISTER, register);
+  yield takeLatest(AUTH_CHANGE_PASSWORD, changePassword);
+  yield takeLatest(AUTH_CREATE_PASSWORD, createPassword);
+  yield takeLatest(AUTH_SEND_VERICATION_EMAIL, sendVericationEmail);
 }
 
 export default authFlow;
