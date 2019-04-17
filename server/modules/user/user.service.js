@@ -1,6 +1,7 @@
 import pick from 'lodash/pick';
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
+import moment from 'moment';
 import { hashFunc } from '../../utils/bcrypt';
 import userCollection from './user.model';
 import BaseService from '../base/base.service';
@@ -65,11 +66,11 @@ class UserService extends BaseService {
     const data = jwt.verify(token, SECRET_KEY_JWT, JWT_OPTIONS);
     const { userId } = data;
     const user = await this.collection.findOne({ _id: userId }).exec();
-    const { verified } = user;
-    if (verified) {
+    const { verifiedAt } = user;
+    if (verifiedAt) {
       throw new Error('Account is verified');
     }
-    user.verified = true;
+    user.verifiedAt = moment().utc();
     await user.save();
     sendUserRegisterSuccessMail(user);
   }

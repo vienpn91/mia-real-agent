@@ -39,12 +39,12 @@ function* login({ payload }) {
     'role',
     'token',
     'userId',
-    'verified',
+    'verifiedAt',
   ]);
 
   // unverified account
-  const { verified, email } = authInfo;
-  if (!verified) {
+  const { verifiedAt, email } = authInfo;
+  if (!verifiedAt) {
     yield put(authActions.loginFail());
     return yield put(authActions.setVerifyingEmail(email));
   }

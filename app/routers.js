@@ -1,15 +1,20 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
+import AuthRoute from './containers/Route/AuthenticatedRoute';
+import UnauthRoute from './containers/Route/UnauthenticateRoute';
 import HomePage from './pages/HomePage';
+import Login from './pages/Login';
 
 
 export default class App extends React.PureComponent {
   render() {
+    const { history } = this.props;
+
     return (
       <Switch>
-        <Route exact path="/" component={HomePage} />
+        <AuthRoute exact path="/" component={HomePage} />
+        <UnauthRoute exact path="/login" component={Login} />
       </Switch>
     );
   }

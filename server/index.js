@@ -22,12 +22,6 @@ const app = express();
 // setup asset folder (public folder)
 app.use('/assets', express.static(join(__dirname, './../app/assets/')));
 
-// In production we need to pass these values in instead of relying on webpack
-setup(app, {
-  outputPath: resolve(process.cwd(), 'build'),
-  publicPath: '/',
-});
-
 const getStatusColor = (status) => {
   switch (+status / 100) {
     case 2:
@@ -84,6 +78,13 @@ const middlewares = [authenticateApi];
 app.use('/api', middlewares, router);
 
 
+// In production we need to pass these values in instead of relying on webpack
+setup(app, {
+  outputPath: resolve(process.cwd(), 'build'),
+  publicPath: '/',
+});
+
+
 // get the intended host and port number, use localhost and port 3000 if not provided
 const customHost = argv.host || process.env.HOST;
 const host = customHost || null; // Let http.Server use its default IPv6/4 host
@@ -100,7 +101,8 @@ app.get('*.js', (req, res, next) => {
 const db = mongoose.connection;
 const { MONGO_URL, MONGO_USER, MONGO_PASSWORD } = process.env;
 db.once('open', () => {
-  Logger.info('Established connection to database server');
+  Logger.info('Established connection to database server.');
+  Logger.info('Starting server...');
 
 
   // Start your app.

@@ -2,6 +2,7 @@ import httpStatus from 'http-status';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
+import moment from 'moment';
 import UserModel from '../user/user.model';
 import UserService from '../user/user.service';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
@@ -43,7 +44,7 @@ class AuthController {
 
       if (!user) {
         const newUser = {
-          verified: true,
+          verifiedAt: moment().utc(),
           provider: [provider],
         };
 
@@ -137,7 +138,7 @@ class AuthController {
     }
 
     const {
-      _id, email, role, verified,
+      _id, email, role, verifiedAt,
     } = user;
     const token = jwt.sign({ _id }, process.env.SECRET_KEY_JWT, {
       expiresIn: EXPIRES_IN,
@@ -146,7 +147,7 @@ class AuthController {
     return res
       .status(200)
       .json({
-        token, userId: _id, email, role, verified, userProfile,
+        token, userId: _id, email, role, verifiedAt, userProfile,
       });
   }
 
@@ -169,13 +170,13 @@ class AuthController {
       });
     }
 
-    const { _id, email, verified } = user;
+    const { _id, email, verifiedAt } = user;
     const token = jwt.sign({ _id }, process.env.SECRET_KEY_JWT, {
       expiresIn: EXPIRES_IN,
     });
     return res
       .status(200)
-      .redirect(`/login/callback/${token}/${_id}/${email}/${verified}`);
+      .redirect(`/login/callback/${token}/${_id}/${email}/${verifiedAt}`);
   }
 
   // this controller is used by google login

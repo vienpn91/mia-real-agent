@@ -190,7 +190,7 @@ export const actions = {
 // selector
 const initialData = fromJS({});
 
-export const selectAuthenticationReducer = state => state.authentication;
+export const selectAuthenticationReducer = state => state.auth;
 export const getAuthenticatedData = createSelector(
   selectAuthenticationReducer,
   authState => authState.get('data', initialData).toJS(),
@@ -215,7 +215,7 @@ export const checkAuthenticatedStatus = createSelector(
   selectAuthenticationReducer,
   (authentication) => {
     const auth = authentication.get('data', initialData).toJS();
-    return !_isEmpty(auth) && auth.verified;
+    return !_isEmpty(auth) && auth.verifiedAt;
   },
 );
 export const getIsRegisterForm = state => selectAuthenticationReducer(state).get('isRegisterForm', false);
