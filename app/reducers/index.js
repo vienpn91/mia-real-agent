@@ -5,7 +5,6 @@
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 import auth from './auth';
-
 import history from '../utils/history';
 
 export const REHYDRATE_COMPLETE = 'root/REHYDRATE_COMPLETE';
@@ -16,10 +15,10 @@ export const REHYDRATE_COMPLETE = 'root/REHYDRATE_COMPLETE';
 export default function createReducer(injectedReducers = {}) {
   const rootReducer = combineReducers({
     auth,
+    router: connectRouter(history),
     ...injectedReducers,
   });
 
   // Wrap the root reducer and return a new root reducer with router state
-  const mergeWithRouterState = connectRouter(history);
-  return mergeWithRouterState(rootReducer);
+  return rootReducer;
 }
