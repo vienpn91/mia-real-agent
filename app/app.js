@@ -12,10 +12,12 @@ import '@babel/polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import { ConnectedRouter } from 'connected-react-router';
 import FontFaceObserver from 'fontfaceobserver';
-import history from 'utils/history';
-import 'sanitize.css/sanitize.css';
+import history from './utils/history';
+import SpinnerLoading from './components/PageLoading';
+import GlobalStyle from './global-styles';
 
 // Import root app
 import App from './routers';
@@ -39,17 +41,21 @@ openSansObserver.load().then(() => {
 
 // Create redux store with history
 const initialState = {};
-const store = configureStore(initialState, history);
+const { store, persistor } = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
 const render = () => {
-  console.log('HAHAHA');
   ReactDOM.render(
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <App history={history} />
-      </ConnectedRouter>
-    </Provider>,
+    <>
+      <GlobalStyle />
+      <Provider store={store}>
+        <PersistGate loading={<SpinnerLoading />} persistor={persistor}>
+          <ConnectedRouter history={history}>
+            <App history={history} />
+          </ConnectedRouter>
+        </PersistGate>
+      </Provider>
+    </>,
     MOUNT_NODE,
   );
 };

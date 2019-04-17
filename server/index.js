@@ -1,27 +1,93 @@
+
 /* eslint consistent-return:0 import/order:0 */
-
+import { resolve, join } from 'path';
 import express from 'express';
-const logger = require('./logger');
+import bodyParser from 'body-parser';
+import morgan from 'morgan';
+import helmet from 'helmet';
+import cors from 'cors';
+import chalk from 'chalk';
+import mongoose from 'mongoose';
+import './env';
+import Logger from './logger';
+import argv from './argv';
+import port from './port';
+import passport from './passport';
+import { authenticateApi } from './middlewares/authenticateMiddlewares';
+import setup from './middlewares/frontendMiddleware';
+import registerRouters from './modules/routers';
 
-const argv = require('./argv');
-const port = require('./port');
-const setup = require('./middlewares/frontendMiddleware');
-const isDev = process.env.NODE_ENV !== 'production';
-const ngrok =
-  (isDev && process.env.ENABLE_TUNNEL) || argv.tunnel
-    ? require('ngrok')
-    : false;
-const { resolve } = require('path');
 const app = express();
 
-// If you need a backend, e.g. an API, add your custom backend-specific middleware here
-// app.use('/api', myApi);
+// setup asset folder (public folder)
+app.use('/assets', express.static(join(__dirname, './../app/assets/')));
+
+const getStatusColor = (status) => {
+  switch (+status / 100) {
+    case 2:
+      return chalk.green;
+    case 4:
+      return chalk.yellow;
+    case 5:
+      return chalk.red;
+    default:
+      return chalk.white;
+  }
+};
+
+const getTimeColor = (time) => {
+  if (+time > 5000) return chalk.red;
+  if (+time > 1000) return chalk.yellow;
+  return chalk.white;
+};
+
+app.use(passport.initialize());
+app.use(bodyParser.json());
+app.use(helmet());
+app.use(cors());
+app.use(morgan((tokens, req, res) => { // eslint-disable-line
+  let status = tokens.status(req, res);
+  let responseTime = tokens['response-time'](req, res);
+
+  const statusColor = getStatusColor(status);
+  const timecolor = getTimeColor(responseTime);
+  const method = chalk.cyan(`[${tokens.method(req, res)}]`);
+  const url = chalk.bold(tokens.url(req, res));
+  const contentLength = `${chalk.bold(tokens.res(req, res, 'content-length') || 'Unknown')} bytes`;
+  const remoteAddr = tokens['remote-addr'](req, res);
+  const remoteUser = tokens['remote-user'](req, res) || 'N/A';
+  const httpVersion = `HTTP:/${tokens['http-version'](req, res)}`;
+  const date = `${tokens.date(req, res)}`;
+  const methodUrl = `${method} ${url} ${httpVersion}`;
+
+  status = statusColor(status);
+  responseTime = `${timecolor(chalk.bold(responseTime))} ms`;
+
+  if (url.match(/(\.js|\.ico|\.png|\.jpg)/)) {
+    return null;
+  }
+
+  return [
+    remoteAddr,
+    remoteUser,
+    date,
+    methodUrl,
+    status,
+    responseTime,
+    contentLength,
+  ].join(' | ');
+}));
+const router = registerRouters();
+const middlewares = [authenticateApi];
+app.use('/api', middlewares, router);
+
 
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {
   outputPath: resolve(process.cwd(), 'build'),
   publicPath: '/',
 });
+
 
 // get the intended host and port number, use localhost and port 3000 if not provided
 const customHost = argv.host || process.env.HOST;
@@ -35,22 +101,36 @@ app.get('*.js', (req, res, next) => {
   next();
 });
 
-// Start your app.
-app.listen(port, host, async err => {
-  if (err) {
-    return logger.error(err.message);
-  }
+// SETUP MONGOOSE
+const db = mongoose.connection;
+const { MONGO_URL, MONGO_USER, MONGO_PASSWORD } = process.env;
+db.once('open', () => {
+  Logger.info('Established connection to database server.');
+  Logger.info('Starting server...');
 
-  // Connect to ngrok in dev mode
-  if (ngrok) {
-    let url;
-    try {
-      url = await ngrok.connect(port);
-    } catch (e) {
-      return logger.error(e);
+
+  // Start your app.
+  app.listen(port, host, async (err) => {
+    if (err) {
+      return Logger.error(err.message);
     }
-    logger.appStarted(port, prettyHost, url);
-  } else {
-    logger.appStarted(port, prettyHost);
-  }
+
+    Logger.appStarted(port, prettyHost);
+  });
 });
+
+// prevent server from starting if db is not connected
+db.on('error', (err) => {
+  Logger.error('Unable to connect to database server');
+  Logger.error(`${err.message}`);
+  Logger.error('Server has been stopped!');
+});
+
+Logger.info('Connecting to database');
+mongoose.connect(MONGO_URL, {
+  user: MONGO_USER,
+  pass: MONGO_PASSWORD,
+  connectTimeoutMS: 30000,
+  useNewUrlParser: true,
+});
+// END SETUP MONGOOSE
