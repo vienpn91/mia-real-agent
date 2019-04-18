@@ -23,7 +23,7 @@ class AuthController {
     const condition = { $or: [] };
     let email;
     const provider = {
-      id: _.get(profile, 'id'),
+      id: profile.id,
       name: profile.provider,
     };
     if (_.has(profile, 'emails.0.value')) {

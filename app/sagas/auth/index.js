@@ -21,75 +21,91 @@ import {
   getVerifyingEmail,
 } from '../../reducers/auth';
 
+// login handler
 function* login({ payload }) {
   const { email: loginEmail, password } = payload;
-  const authResult = yield call(AuthApi.login, loginEmail, password);
-  const response = _get(authResult, 'response', {});
-  const error = _get(authResult, 'error');
+  const { response, error } = yield call(AuthApi.login, loginEmail, password);
 
   // login error
   if (error) {
     yield put(authActions.setVerifyingEmail(null));
-    const message = _get(error, 'response.data.message', DEFAULT_ERROR_MESSAGE);
-    return yield put(authActions.loginFail(message));
+    const message = _get(error, 'response.data.message', DEFAULT_ERROR_MESSAGE); // this line of code needs to refactor
+    yield put(authActions.loginFail(message));
+    return;
   }
 
-  const data = _get(response, 'data', {});
-  const authInfo = _pick(data, [
-    'email',
-    'role',
-    'token',
-    'userId',
-    'verifiedAt',
-  ]);
+  const { data = {} } = response;
+  const {
+    email,
+    role,
+    token,
+    userId,
+    verifiedAt,
+  } = data;
 
   // unverified account
-  const { verifiedAt, email } = authInfo;
   if (!verifiedAt) {
     yield put(authActions.loginFail());
-    return yield put(authActions.setVerifyingEmail(email));
+    yield put(authActions.setVerifyingEmail(email));
+    return;
   }
 
-  return yield put(authActions.loginSuccess(authInfo));
+  // dispatch authInfo
+  yield put(
+    authActions.loginSuccess({
+      email,
+      role,
+      token,
+      userId,
+      verifiedAt,
+    })
+  );
 }
 
+// registration handler
 function* register({ payload }) {
-  const { error } = yield call(AuthApi.register, payload);
+  const { email, password } = payload;
+  const { error } = yield call(AuthApi.register, email, password);
 
   if (error) {
-    const message = _get(error, 'response.data.message', DEFAULT_ERROR_MESSAGE);
-
-    return yield put(authActions.registerFail(message));
+    const message = _get(error, 'response.data.message', DEFAULT_ERROR_MESSAGE); // this line of code needs to refactor
+    yield put(authActions.registerFail(message));
+    return;
   }
-  const { email } = payload;
   yield put(authActions.registerSucces());
   yield put(authActions.setVerifyingEmail(email));
-  return yield put(push('/thank-for-registering'));
+  yield put(push('/greeting'));
 }
 
-function* changePassword({ data }) {
-  const { error } = yield call(AuthApi.changePassword, data);
+// change password handler
+function* changePassword({ payload }) {
+  const { oldPassword, newPassword } = payload;
+  const { error } = yield call(AuthApi.changePassword, oldPassword, newPassword);
 
   if (error) {
-    const message = _get(error, 'response.data.message', DEFAULT_ERROR_MESSAGE);
-
-    return yield put(authActions.changePasswordFail(message));
+    const message = _get(error, 'response.data.message', DEFAULT_ERROR_MESSAGE); // this line of code needs to refactor
+    yield put(authActions.changePasswordFail(message));
+    return;
   }
 
   yield put(authActions.changePasswordSuccess());
-  return yield put(authActions.logout());
+  yield put(authActions.logout());
 }
 
-function* createPassword({ data }) {
-  const { error } = yield call(AuthApi.createPassword, data);
+// create new password handler
+// this function will handle when user update his/her password
+function* createPassword({ payload }) {
+  const { newPassword } = payload;
+  const { error } = yield call(AuthApi.createPassword, newPassword);
 
   if (error) {
-    const message = _get(error, 'response.data.message', DEFAULT_ERROR_MESSAGE);
-    return yield put(authActions.createPasswordFail(message));
+    const message = _get(error, 'response.data.message', DEFAULT_ERROR_MESSAGE); // this line of code needs to refactor
+    yield put(authActions.createPasswordFail(message));
+    return;
   }
 
   yield put(authActions.createPasswordSuccess());
-  return yield put(authActions.logout());
+  yield put(authActions.logout());
 }
 
 function* sendVericationEmail() {
@@ -99,11 +115,12 @@ function* sendVericationEmail() {
     verifyingEmail,
   );
   if (error) {
-    const message = _get(error, 'response.data.message', DEFAULT_ERROR_MESSAGE);
-    return yield put(authActions.sendVericationEmailFail(message));
+    const message = _get(error, 'response.data.message', DEFAULT_ERROR_MESSAGE); // this line of code needs to refactor
+    yield put(authActions.sendVericationEmailFail(message));
+    return;
   }
 
-  return yield put(authActions.sendVericationEmailSuccess());
+  yield put(authActions.sendVericationEmailSuccess());
 }
 
 export function* configAxiosForAuthenticate() {

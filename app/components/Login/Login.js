@@ -15,8 +15,8 @@ const Login = () => (
     <LoginCard>
       <LoginTitle>Mia Consult</LoginTitle>
       <LoginInputWrapper>
-        <LoginLabel>Username</LoginLabel>
-        <LoginInput type="text" />
+        <LoginLabel>Email</LoginLabel>
+        <LoginInput type="email" />
       </LoginInputWrapper>
       <LoginInputWrapper>
         <LoginLabel>Password</LoginLabel>
