@@ -5,13 +5,13 @@ import {
   actions,
   getVerifyingEmail,
   getIsSendingEmail,
-  getResendEmailError,
-} from 'reducers/auth';
+  getVerifyEmailError,
+} from '../../reducers/auth';
 
 const mapStateToProps = createStructuredSelector({
   verifyingEmail: getVerifyingEmail,
   isSending: getIsSendingEmail,
-  error: getResendEmailError,
+  error: getVerifyEmailError,
 });
 
 const mapDispatchToProps = {

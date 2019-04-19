@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
-export const LoginWrapper = styled.div`
+export const RegistrationWrapper = styled.div`
   height: 100%;
   width: 100%;
   display: flex;
@@ -8,7 +8,7 @@ export const LoginWrapper = styled.div`
   align-items: center;
 `;
 
-export const LoginCard = styled.div`
+export const RegistrationCard = styled.div`
   width: 360px;
   display: flex;
   flex-direction: column;
@@ -18,20 +18,20 @@ export const LoginCard = styled.div`
   color: #000;
 `;
 
-export const LoginTitle = styled.div`
+export const RegistrationTitle = styled.div`
   text-align: center;
   font-size: 32px;
   font-family: Countryside, sans-serif;
   margin-bottom: 55px;
 `;
 
-export const LoginInputWrapper = styled.div`
+export const RegistrationInputWrapper = styled.div`
   width: 100%;
   text-align: left;
   margin-bottom: 55px;
 `;
 
-export const LoginInput = styled.input`
+export const RegistrationInput = styled.input`
   width: 100%;
   height: 27.5px;
   border: 0;
@@ -42,14 +42,15 @@ export const LoginInput = styled.input`
   -webkit-font-smoothing: antialiased;
 `;
 
-export const LoginLabel = styled.div`
+export const RegistrationLabel = styled.div`
   margin-bottom: 7.5px;
   color: #000;
 `;
 
-export const LoginBtn = styled.button`
+export const RegistrationBtn = styled.button`
   height: 40px;
   border: 1px solid black;
+  border-radius: 5;
   transition: .3s ease;
   background: #fff;
   cursor: pointer;
@@ -57,7 +58,6 @@ export const LoginBtn = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  
 
   &:hover {
     background: #000;
@@ -68,43 +68,16 @@ export const LoginBtn = styled.button`
   }
 `;
 
-export const LoginFBBtn = styled.a`
-  display: block;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  border-radius: 5;
-  transition: .3s ease;
-  background: #3b5998;
-  cursor: pointer;
-  text-decoration: none;
-  position: relative;
-  color: #fff;
 
-  & > i {
-    position: absolute;
-    left: 12px;
-  }
-
-  & > i::before {
-    color: #fff;
-  }
-
-  &:hover {
-    background: #2f477a;
-  }
-`;
-
-export const LoginFooter = styled.div`
+export const RegistrationFooter = styled.div`
   margin-top: 15px;
   text-align: center;
 `;
 
-export const LoginFooterText = styled.span`
+export const RegistrationFooterText = styled.span`
 `;
 
-export const LoginFooterLink = styled.a`
+export const RegistrationFooterLink = styled.a`
   margin-left: 3px;
   text-decoration: none;
   color: black;
@@ -121,7 +94,7 @@ const spin = keyframes`
   }
 `;
 
-export const LoginSpinner = styled.div`
+export const RegistrationSpinner = styled.div`
   border: 2px solid;
   width: 15px;
   height: 15px;
@@ -132,7 +105,7 @@ export const LoginSpinner = styled.div`
   display: inline-block;
 `;
 
-export const LoginErrorMessage = styled.div`
+export const RegistrationErrorMessage = styled.div`
   color: crimson;
   text-align: center;
   margin-bottom: 15px;

@@ -5,7 +5,9 @@ import AuthRoute from './containers/Route/AuthenticatedRoute';
 import UnauthRoute from './containers/Route/UnauthenticateRoute';
 import HomePage from './pages/HomePage';
 import Login from './pages/Login';
+import Registration from './pages/Registration';
 import LoginCallBackPage from './pages/LoginCallback';
+import ThankForRegistering from './pages/ThankForRegistering';
 
 
 export default class App extends React.PureComponent {
@@ -16,6 +18,8 @@ export default class App extends React.PureComponent {
       <Switch>
         <AuthRoute exact path="/" component={HomePage} />
         <UnauthRoute exact path="/login" component={Login} />
+        <UnauthRoute exact path="/register" component={Registration} />
+        <Route exact path="/greeting" component={ThankForRegistering} />
         <Route
           path="/login/callback/:token/:userId/:email/:verifiedAt"
           component={LoginCallBackPage}

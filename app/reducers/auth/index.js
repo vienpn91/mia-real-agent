@@ -25,17 +25,20 @@ export const AUTH_SEND_VERICATION_EMAIL_FAIL = 'auth/SEND_VERICATION_EMAIL_FAIL'
 // initialState
 const initialState = fromJS({
   isLoading: false,
-  data: {},
-  message: null,
-  verication: fromJS({
-    isSending: false,
-    errorMessage: '',
-    verifyingEmail: null,
-  }),
+  email: null,
+  role: null,
+  token: null,
+  userId: null,
+  verifiedAt: null,
+  errorMessage: null,
+  isVerifing: false,
+  verifyError: null,
+  verifyingEmail: null,
 });
 
 // action creator
-function login(email, password) {
+// login/logout action creators
+export function login(email, password) {
   return {
     type: AUTH_LOGIN,
     payload: {
@@ -54,10 +57,10 @@ function loginSuccess(authInfo) {
   };
 }
 
-function loginFail(message) {
+function loginFail(errorMessage) {
   return {
     type: AUTH_LOGIN_FAIL,
-    message,
+    errorMessage,
   };
 }
 
@@ -67,10 +70,14 @@ function logout() {
   };
 }
 
-function register(payload) {
+// register action creators
+export function register(email, password) {
   return {
     type: AUTH_REGISTER,
-    payload,
+    payload: {
+      email,
+      password,
+    },
   };
 }
 
@@ -80,17 +87,21 @@ function registerSucces() {
   };
 }
 
-function registerFail(message) {
+function registerFail(errorMessage) {
   return {
     type: AUTH_REGISTER_FAIL,
-    message,
+    errorMessage,
   };
 }
 
-function changePassword(data) {
+// change password action creators
+function changePassword(oldPassword, newPassword) {
   return {
     type: AUTH_CHANGE_PASSWORD,
-    data,
+    payload: {
+      oldPassword,
+      newPassword,
+    },
   };
 }
 
@@ -100,17 +111,20 @@ function changePasswordSuccess() {
   };
 }
 
-function changePasswordFail(message) {
+function changePasswordFail(errorMessage) {
   return {
     type: AUTH_CHANGE_PASSWORD_FAIL,
-    message,
+    errorMessage,
   };
 }
 
-function createPassword(data) {
+// create password action creators
+function createPassword(newPassword) {
   return {
     type: AUTH_CREATE_PASSWORD,
-    data,
+    payload: {
+      newPassword,
+    },
   };
 }
 
@@ -120,10 +134,10 @@ function createPasswordSuccess() {
   };
 }
 
-function createPasswordFail(message) {
+function createPasswordFail(errorMessage) {
   return {
     type: AUTH_CREATE_PASSWORD_FAIL,
-    message,
+    errorMessage,
   };
 }
 
@@ -133,6 +147,7 @@ function clearErrorMessage() {
   };
 }
 
+// verify email action creators
 function setVerifyingEmail(email) {
   return {
     type: AUTH_SET_VERIFYING_EMAIL,
@@ -181,92 +196,117 @@ export const actions = {
 };
 
 // selector
-const initialData = fromJS({});
-
 export const selectAuthenticationReducer = state => state.auth;
 export const getAuthenticatedData = createSelector(
   selectAuthenticationReducer,
-  authState => authState.get('data', initialData).toJS(),
-);
-export const getUserEmail = createSelector(
-  getAuthenticatedData,
-  data => (data && data.email ? data.email : ''),
-);
-export const getToken = createSelector(
-  getAuthenticatedData,
-  data => (data && data.token ? data.token : ''),
-);
-export const getUserId = createSelector(
-  getAuthenticatedData,
-  data => (data && data.userId ? data.userId : ''),
-);
-export const selectErrorMessage = createSelector(
-  selectAuthenticationReducer,
-  subState => subState.get('message', ''),
-);
-export const checkAuthenticatedStatus = createSelector(
-  selectAuthenticationReducer,
-  (authentication) => {
-    const auth = authentication.get('data', initialData).toJS();
-    return !_isEmpty(auth) && !!auth.verifiedAt;
+  (authState) => {
+    const email = authState.get('email');
+    const role = authState.get('role');
+    const token = authState.get('token');
+    const userId = authState.get('userId');
+    const verifiedAt = authState.get('verifiedAt');
+
+    return {
+      email,
+      role,
+      token,
+      userId,
+      verifiedAt,
+    };
   },
 );
-export const getIsRegisterForm = state => selectAuthenticationReducer(state).get('isRegisterForm', false);
 
-export const getIsLoading = state => selectAuthenticationReducer(state).get('isLoading', false);
-
-export const getVerifyingEmail = state => selectAuthenticationReducer(state).getIn(['verication', 'verifyingEmail']);
-
-export const getIsSendingEmail = state => selectAuthenticationReducer(state).getIn(['verication', 'isSending']);
-
-export const getResendEmailError = state => selectAuthenticationReducer(state).getIn(['verication', 'errorMessage']);
+// remove reselect because we don't use nested object anymore
+// btw, we shouldn't use nested object if we REALLY don't need it
+export const getIsLoading = ({ auth }) => auth.get('isLoading', false);
+export const getUserRole = ({ auth }) => auth.get('role');
+export const getToken = ({ auth }) => auth.get('token');
+export const getUserEmail = ({ auth }) => auth.get('email');
+export const getUserId = ({ auth }) => auth.get('userId');
+export const checkAuthenticatedStatus = ({ auth }) => !!auth.get('verifiedAt');
+export const selectErrorMessage = ({ auth }) => auth.get('errorMessage');
+export const getIsSendingEmail = ({ auth }) => auth.get('isVerifing', false);
+export const getVerifyEmailError = ({ auth }) => auth.get('verifyError');
+export const getVerifyingEmail = ({ auth }) => auth.get('verifyingEmail');
 
 // reducer
 function authReducer(state = initialState, action) {
   switch (action.type) {
+    // login/logout actions
     case AUTH_LOGIN:
-      return state.set('isLoading', true).set('message', '');
+      return state.set('isLoading', true).set('errorMessage', '');
+
     case AUTH_LOGIN_SUCCESS: {
       const { authInfo } = action.payload;
-      return state.set('data', fromJS(authInfo)).set('isLoading', false);
+      return state.set('email', authInfo.email)
+        .set('role', authInfo.role)
+        .set('token', authInfo.token)
+        .set('userId', authInfo.userId)
+        .set('verifiedAt', authInfo.verifiedAt)
+        .set('isLoading', false);
     }
     case AUTH_LOGIN_FAIL:
-      return state.set('isLoading', false).set('message', action.message);
+      return state.set('isLoading', false)
+        .set('errorMessage', action.errorMessage);
+
     case AUTH_LOGOUT:
-      return state.set('data', initialData);
+      return initialState;
+
+    // register actions
     case AUTH_REGISTER:
       return state.set('isLoading', true);
+
     case AUTH_REGISTER_SUCCESS:
       return state
         .set('isLoading', false)
-        .set('message', '')
-        .set('isRegisterForm', false);
+        .set('errorMessage', '');
+
     case AUTH_REGISTER_FAIL:
-      return state.set('isLoading', false).set('message', action.message);
+      return state.set('isLoading', false)
+        .set('errorMessage', action.errorMessage);
+
+    // change password actions
     case AUTH_CHANGE_PASSWORD:
       return state.set('isLoading', true);
+
     case AUTH_CHANGE_PASSWORD_SUCCESS:
-      return state.set('message', '').set('isLoading', false);
+      return state.set('errorMessage', '')
+        .set('isLoading', false);
+
     case AUTH_CHANGE_PASSWORD_FAIL:
-      return state.set('message', action.message).set('isLoading', false);
+      return state.set('errorMessage', action.errorMessage)
+        .set('isLoading', false);
+
+    // create password actions
     case AUTH_CREATE_PASSWORD:
       return state.set('isLoading', true);
+
     case AUTH_CREATE_PASSWORD_SUCCESS:
-      return state.set('message', '').set('isLoading', false);
+      return state.set('errorMessage', '')
+        .set('isLoading', false);
+
     case AUTH_CREATE_PASSWORD_FAIL:
-      return state.set('message', action.message).set('isLoading', false);
+      return state.set('errorMessage', action.errorMessage)
+        .set('isLoading', false);
+
     case AUTH_CLEAR_ERROR_MESSAGE:
-      return state.set('message', '');
+      return state.set('errorMessage', '')
+        .set('verifyError', '');
+
+    // verifying email actions
     case AUTH_SET_VERIFYING_EMAIL:
-      return state.setIn(['verication', 'verifyingEmail'], action.email);
+      return state.set('verifyingEmail', action.email);
+
     case AUTH_SEND_VERICATION_EMAIL:
-      return state.setIn(['verication', 'isSending'], true);
+      return state.set('isVerifing', true);
+
     case AUTH_SEND_VERICATION_EMAIL_SUCCESS:
-      return state.setIn(['verication', 'isSending'], false);
+      return state.set('isVerifing', false);
+
     case AUTH_SEND_VERICATION_EMAIL_FAIL:
-      return state
-        .setIn(['verication', 'isSending'], false)
-        .setIn(['verication', 'errorMessage'], action.errorMessage);
+      return state.set('isVerifing', false)
+        .set('verifyError', action.errorMessage);
+
     default:
       return state;
   }

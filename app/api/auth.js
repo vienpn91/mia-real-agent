@@ -12,8 +12,11 @@ export const login = (email, password) => axios
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
-export const register = data => axios
-  .post('auth/register', { data })
+export const register = (email, password) => axios
+  .post('auth/register', {
+    email,
+    password,
+  })
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
@@ -22,12 +25,17 @@ export const sendVericationEmail = email => axios
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
-export const changePassword = data => axios
-  .post('auth/changePassword', { data })
+export const changePassword = (oldPassword, newPassword) => axios
+  .post('auth/changePassword', {
+    oldPassword,
+    newPassword,
+  })
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
-export const createPassword = data => axios
-  .post('auth/createPassword', { data })
+export const createPassword = newPassword => axios
+  .post('auth/createPassword', {
+    newPassword,
+  })
   .then(response => ({ response }))
   .catch(error => ({ error }));
