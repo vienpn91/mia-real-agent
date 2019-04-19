@@ -39,9 +39,28 @@ class Registration extends Component {
     register(email, password);
   }
 
+  renderRegisterBtn = () => {
+    const { isLoading } = this.props;
+    if (isLoading) {
+      return (
+        <RegistrationBtn>
+          <RegistrationSpinner />
+          Registering
+        </RegistrationBtn>
+      );
+    }
+    return (
+      <RegistrationBtn
+        onClick={this.register}
+      >
+        Register
+      </RegistrationBtn>
+    );
+  }
+
   render() {
     const { email, password } = this.state;
-    const { isLoading, errorMessage } = this.props;
+    const { errorMessage } = this.props;
 
     return (
       <RegistrationWrapper>
@@ -68,23 +87,7 @@ class Registration extends Component {
               {errorMessage}
             </RegistrationErrorMessage>
           ) : null}
-          {
-            !isLoading ? (
-              <RegistrationBtn
-                onClick={this.register}
-              >
-                Register
-              </RegistrationBtn>
-            ) : null
-          }
-          {
-            isLoading ? (
-              <RegistrationBtn>
-                <RegistrationSpinner />
-                Registering
-              </RegistrationBtn>
-            ) : null
-          }
+          {this.renderRegisterBtn()}
           <RegistrationFooter>
             <RegistrationFooterText>Already had an account?</RegistrationFooterText>
             <RegistrationFooterLink href="/login">

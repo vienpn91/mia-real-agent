@@ -45,9 +45,28 @@ class Login extends Component {
     login(email, password);
   }
 
+  renderLoginBtn = () => {
+    const { isLoading } = this.props;
+    if (isLoading) {
+      return (
+        <LoginBtn>
+          <LoginSpinner />
+          Logging in
+        </LoginBtn>
+      );
+    }
+    return (
+      <LoginBtn
+        onClick={this.login}
+      >
+        Login
+      </LoginBtn>
+    );
+  }
+
   render() {
     const { email, password } = this.state;
-    const { isLoading, errorMessage } = this.props;
+    const { errorMessage } = this.props;
 
     return (
       <LoginWrapper>
@@ -74,23 +93,7 @@ class Login extends Component {
               {errorMessage}
             </LoginErrorMessage>
           ) : null}
-          {
-            !isLoading ? (
-              <LoginBtn
-                onClick={this.login}
-              >
-                Login
-              </LoginBtn>
-            ) : null
-          }
-          {
-            isLoading ? (
-              <LoginBtn>
-                <LoginSpinner />
-                Logging in
-              </LoginBtn>
-            ) : null
-          }
+          {this.renderLoginBtn()}
           <LoginFBBtn href="api/auth/login/facebook">
             <i className="icon-facebook" />
             Login with Facebook
