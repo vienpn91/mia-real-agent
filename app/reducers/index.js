@@ -8,6 +8,7 @@ import auth from './auth';
 import history from '../utils/history';
 
 export const REHYDRATE_COMPLETE = 'root/REHYDRATE_COMPLETE';
+export const CLEAR_TRANSACTION = 'root/CLEAR_TRANSACTION';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers

@@ -1,6 +1,5 @@
 import { fromJS } from 'immutable';
 import { createSelector } from 'reselect';
-import _isEmpty from 'lodash/isEmpty';
 
 // import action type
 export const AUTH_LOGIN = 'auth/LOGIN';
@@ -21,6 +20,7 @@ export const AUTH_SET_VERIFYING_EMAIL = 'auth/SET_VERIFYING_EMAIL';
 export const AUTH_SEND_VERICATION_EMAIL = 'auth/SEND_VERICATION_EMAIL';
 export const AUTH_SEND_VERICATION_EMAIL_SUCCESS = 'auth/SEND_VERICATION_EMAIL_SUCCESS';
 export const AUTH_SEND_VERICATION_EMAIL_FAIL = 'auth/SEND_VERICATION_EMAIL_FAIL';
+const CLEAR_TRANSACTION = 'root/CLEAR_TRANSACTION';
 
 // initialState
 const initialState = fromJS({
@@ -29,6 +29,7 @@ const initialState = fromJS({
   role: null,
   token: null,
   userId: null,
+  isLoggedIn: false,
   verifiedAt: null,
   errorMessage: null,
   isVerifing: false,
@@ -223,7 +224,7 @@ export const getUserRole = ({ auth }) => auth.get('role');
 export const getToken = ({ auth }) => auth.get('token');
 export const getUserEmail = ({ auth }) => auth.get('email');
 export const getUserId = ({ auth }) => auth.get('userId');
-export const checkAuthenticatedStatus = ({ auth }) => !!auth.get('verifiedAt');
+export const checkAuthenticatedStatus = ({ auth }) => !!auth.get('isLoggedIn');
 export const selectErrorMessage = ({ auth }) => auth.get('errorMessage');
 export const getIsSendingEmail = ({ auth }) => auth.get('isVerifing', false);
 export const getVerifyEmailError = ({ auth }) => auth.get('verifyError');
@@ -234,7 +235,9 @@ function authReducer(state = initialState, action) {
   switch (action.type) {
     // login/logout actions
     case AUTH_LOGIN:
-      return state.set('isLoading', true).set('errorMessage', '');
+      return state.set('isLoading', true)
+        .set('errorMessage', '')
+        .set('isLoggedIn', false);
 
     case AUTH_LOGIN_SUCCESS: {
       const { authInfo } = action.payload;
@@ -243,7 +246,8 @@ function authReducer(state = initialState, action) {
         .set('token', authInfo.token)
         .set('userId', authInfo.userId)
         .set('verifiedAt', authInfo.verifiedAt)
-        .set('isLoading', false);
+        .set('isLoading', false)
+        .set('isLoggedIn', true);
     }
     case AUTH_LOGIN_FAIL:
       return state.set('isLoading', false)
@@ -306,6 +310,12 @@ function authReducer(state = initialState, action) {
     case AUTH_SEND_VERICATION_EMAIL_FAIL:
       return state.set('isVerifing', false)
         .set('verifyError', action.errorMessage);
+
+    case CLEAR_TRANSACTION:
+      return state.set('isLoading', false)
+        .set('errorMessage', '')
+        .set('isVerifing', false)
+        .set('verifyError', '');
 
     default:
       return state;

@@ -3,7 +3,6 @@ import {
   takeLatest,
 } from 'redux-saga/effects';
 import _get from 'lodash/get';
-import _pick from 'lodash/pick';
 import { push } from 'connected-react-router';
 import { DEFAULT_ERROR_MESSAGE } from 'utils/constants';
 import * as AuthApi from '../../api/auth';
@@ -44,11 +43,11 @@ function* login({ payload }) {
   } = data;
 
   // unverified account
-  if (!verifiedAt) {
-    yield put(authActions.loginFail());
-    yield put(authActions.setVerifyingEmail(email));
-    return;
-  }
+  // if (!verifiedAt) {
+  //   yield put(authActions.loginFail('Please verify your account'));
+  //   yield put(authActions.setVerifyingEmail(email));
+  //   return;
+  // }
 
   // dispatch authInfo
   yield put(
@@ -69,7 +68,6 @@ function* register({ payload }) {
 
   if (error) {
     const message = _get(error, 'response.data.message', DEFAULT_ERROR_MESSAGE); // this line of code needs to refactor
-    console.log(message);
     yield put(authActions.registerFail(message));
     return;
   }

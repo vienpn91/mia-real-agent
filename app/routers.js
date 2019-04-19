@@ -16,7 +16,7 @@ export default class App extends React.PureComponent {
 
     return (
       <Switch>
-        <AuthRoute exact path="/" component={HomePage} />
+        <Route exact path="/" component={HomePage} />
         <UnauthRoute exact path="/login" component={Login} />
         <UnauthRoute exact path="/register" component={Registration} />
         <Route exact path="/greeting" component={ThankForRegistering} />

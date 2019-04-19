@@ -24,7 +24,8 @@ class LoginCallBack extends React.PureComponent {
         token, userId, email, verifiedAt,
       });
       // getUserProfile(userId);
-      history.push('/');
+      // history.push('/');
+      window.location.href = 'https://www.messenger.com/t/1620637394734647';
     } else {
       history.push('/login');
     }
@@ -38,7 +39,7 @@ class LoginCallBack extends React.PureComponent {
 LoginCallBack.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
   loginSuccess: PropTypes.func.isRequired,
-  getUserProfile: PropTypes.func.isRequired,
+  // getUserProfile: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
