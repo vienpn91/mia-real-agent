@@ -8,16 +8,27 @@ import helmet from 'helmet';
 import cors from 'cors';
 import chalk from 'chalk';
 import mongoose from 'mongoose';
+import http from 'http';
 import './env';
 import Logger from './logger';
 import argv from './argv';
 import port from './port';
 import passport from './passport';
-import { authenticateApi } from './middlewares/authenticateMiddlewares';
+import SocketIOServer from './socketio';
+import {
+  authenticateApi,
+  authenticateSocketIO,
+} from './middlewares/authenticateMiddlewares';
 import setup from './middlewares/frontendMiddleware';
 import registerRouters from './modules/routers';
 
 const app = express();
+const server = http.createServer(app);
+
+/* socket IO */
+const socketIOServer = new SocketIOServer(authenticateSocketIO);
+socketIOServer.connect(server);
+global.socketIOServer = socketIOServer;
 
 // setup asset folder (public folder)
 app.use('/assets', express.static(join(__dirname, './../app/assets/')));
@@ -110,7 +121,7 @@ db.once('open', () => {
 
 
   // Start your app.
-  app.listen(port, host, async (err) => {
+  server.listen(port, host, async (err) => {
     if (err) {
       return Logger.error(err.message);
     }
