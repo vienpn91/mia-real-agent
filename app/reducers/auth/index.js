@@ -38,7 +38,7 @@ const initialState = fromJS({
 
 // action creator
 // login/logout action creators
-function login(email, password) {
+export function login(email, password) {
   return {
     type: AUTH_LOGIN,
     payload: {
@@ -71,7 +71,7 @@ function logout() {
 }
 
 // register action creators
-function register(email, password) {
+export function register(email, password) {
   return {
     type: AUTH_REGISTER,
     payload: {

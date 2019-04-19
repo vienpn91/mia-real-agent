@@ -69,6 +69,7 @@ function* register({ payload }) {
 
   if (error) {
     const message = _get(error, 'response.data.message', DEFAULT_ERROR_MESSAGE); // this line of code needs to refactor
+    console.log(message);
     yield put(authActions.registerFail(message));
     return;
   }

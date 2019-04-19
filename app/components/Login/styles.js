@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export const LoginWrapper = styled.div`
   height: 100%;
@@ -50,15 +50,21 @@ export const LoginLabel = styled.div`
 export const LoginBtn = styled.button`
   height: 40px;
   border: 1px solid black;
-  border-radius: 5;
   transition: .3s ease;
   background: #fff;
   cursor: pointer;
   margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
 
   &:hover {
     background: #000;
     color: #fff;
+  }
+  &:hover div {
+    border-color: white white white transparent !important;
   }
 `;
 
@@ -88,4 +94,46 @@ export const LoginFBBtn = styled.a`
   &:hover {
     background: #2f477a;
   }
+`;
+
+export const LoginFooter = styled.div`
+  margin-top: 15px;
+  text-align: center;
+`;
+
+export const LoginFooterText = styled.span`
+`;
+
+export const LoginFooterLink = styled.a`
+  margin-left: 3px;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const spin = keyframes`
+  100% {
+    transform:rotate(360deg);
+  }
+`;
+
+export const LoginSpinner = styled.div`
+  border: 2px solid;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border-color:black black black transparent;
+  animation: ${spin} 2s linear infinite;
+  margin-right: 5px;
+  display: inline-block;
+`;
+
+export const LoginErrorMessage = styled.div`
+  color: crimson;
+  text-align: center;
+  margin-bottom: 15px;
 `;

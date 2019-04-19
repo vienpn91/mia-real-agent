@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export function configAxios() {
-  axios.defaults.baseURL = process.env.BASE_URL;
+  axios.defaults.baseURL = '/api';
   axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 }
 
