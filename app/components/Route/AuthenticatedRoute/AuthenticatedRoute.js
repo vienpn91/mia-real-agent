@@ -10,6 +10,7 @@ const AuthenticatedRoute = ({
   <Route
     {...rest}
     render={(props) => {
+      console.log(authenticated);
       if (authenticated) {
         return <Component {...props} authenticated />;
       }
