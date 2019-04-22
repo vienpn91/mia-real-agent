@@ -8,6 +8,8 @@ import Login from './pages/Login';
 import Registration from './pages/Registration';
 import LoginCallBackPage from './pages/LoginCallback';
 import ThankForRegistering from './pages/ThankForRegistering';
+import BotTraining from './pages/BotTraining';
+import BotPage from './pages/BotPage';
 
 
 export default class App extends React.PureComponent {
@@ -24,6 +26,8 @@ export default class App extends React.PureComponent {
           path="/login/callback/:token/:userId/:email/:verifiedAt"
           component={LoginCallBackPage}
         />
+        <AuthRoute exact path="/bot" component={BotPage} />
+        <AuthRoute exact path="/bot/entities" component={BotTraining} />
       </Switch>
     );
   }
