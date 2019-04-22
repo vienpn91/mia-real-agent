@@ -68,7 +68,7 @@ class TrainingBox extends Component {
     // console.log(selectedText);
   }
 
-  handleEntitySelected = ({ value: entity }) => {
+  handleEntitySelected = (entity) => {
     this.setState({ entity });
   }
 
