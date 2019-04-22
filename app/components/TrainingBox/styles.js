@@ -1,8 +1,7 @@
 import styled, { css } from 'styled-components';
 
 export const TrainWrapper = styled.div`
-  width: 980px;
-  height: 100%;
+  width: 100%;
   background: #fafafa;
   display: flex;
   justify-content: center;
