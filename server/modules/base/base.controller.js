@@ -9,9 +9,10 @@ const emptyObjString = '{}';
 export default class BaseController {
   constructor(service) {
     this.service = service;
+    this.handleError.bind(this);
   }
 
-  handleError = (res, error) => {
+  handleError(res, error) {
     Logger.error(error.message);
     const status = error.status || httpStatus.INTERNAL_SERVER_ERROR;
     return res.status(status).send(error);

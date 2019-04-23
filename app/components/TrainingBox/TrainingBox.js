@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Select from 'react-select';
+import CreatableSelect from 'react-select/lib/Creatable';
 import {
   TrainWrapper,
   TrainTitle,
@@ -108,7 +108,7 @@ class TrainingBox extends Component {
           <TrainAddEntityBtn>
             <i className="icon-add" />
           </TrainAddEntityBtn>
-          <Select
+          <CreatableSelect
             isSearchable
             isClearable
             placeholder="Add a new entity"
