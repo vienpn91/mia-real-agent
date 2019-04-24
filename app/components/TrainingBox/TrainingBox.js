@@ -4,13 +4,17 @@ import {
   TrainWrapper,
   TrainTitle,
   TrainUserInput,
-  TrainAddEntityBtn,
+  TrainBtnGroup,
   TrainValidateBtn,
   TrainEntityWrapper,
   TrainSubTitle,
   TrainMiaResponseInput,
   TrainerUserInputWrapper,
   TrainerUserInputPlaceHolder,
+  TrainResponseWrapper,
+  TrainSelectedEntityWrapper,
+  TrainSelectedEntity,
+  TrainAddResponseBtn,
 } from './styles';
 
 const options = [
@@ -29,7 +33,7 @@ const ReactSelectStyle = {
   control: base => ({
     ...base,
     boxShadow: 'none',
-    border: 'none',
+    border: '1px solid black',
     outline: 'none',
   }),
 };
@@ -46,6 +50,12 @@ class TrainingBox extends Component {
     userSay: '',
     miaResponse: '',
     entity: '',
+    intent: '',
+    entityValue: '',
+    currentSelectedText: '',
+    intentOptions: options,
+    entityOptions: options,
+    valueOptions: options,
   }
 
   handleInput = fieldName => ({ target }) => {
@@ -62,8 +72,21 @@ class TrainingBox extends Component {
   }
 
   handleSelection = () => {
+    const { valueOptions } = this.state;
     const selectionObj = window.getSelection();
     const selectedText = selectionObj.toString();
+    let entityValue = valueOptions.find(eV => eV.value === selectedText);
+
+    if (!entityValue && !!selectedText.trim()) {
+      entityValue = { value: selectedText, label: selectedText };
+      this.setState({
+        valueOptions: [...valueOptions, entityValue],
+      });
+    }
+    this.setState({
+      currentSelectedText: selectedText,
+      entityValue,
+    });
     // console.log(selectionObj);
     // console.log(selectedText);
   }
@@ -72,63 +95,189 @@ class TrainingBox extends Component {
     this.setState({ entity });
   }
 
+  handleIntentSelected = (intent) => {
+    this.setState({ intent });
+  }
+
+  handleValueSelected = (entityValue) => {
+    this.setState({ entityValue });
+  }
+
+  handleEntityCreated = (entity) => {
+    const { entityOptions } = this.state;
+    const newOption = {
+      value: entity,
+      label: entity,
+    };
+    this.setState({
+      entityOptions: [...entityOptions, newOption],
+      intent: newOption,
+    });
+  }
+
+  handleIntentCreated = (intent) => {
+    const { intentOptions } = this.state;
+    const newOption = {
+      value: intent,
+      label: intent,
+    };
+    this.setState({
+      intentOptions: [...intentOptions, newOption],
+      intent: newOption,
+    });
+  }
+
+  handleValueCreated = (entityValue) => {
+    const { valueOptions } = this.state;
+    const newOption = {
+      value: entityValue,
+      label: entityValue,
+    };
+    this.setState({
+      valueOptions: [...valueOptions, newOption],
+      entityValue: newOption,
+    });
+  }
+
   focusToInput = () => {
     this.userSayInp.current.focus();
   }
 
-  render() {
+  renderEntityBox = () => {
     const {
-      userSay, miaResponse, entity,
+      entity, currentSelectedText,
+      entityOptions,
     } = this.state;
-    const enableValidate = userSay && miaResponse && entity;
+    const entityPlaceholderMessage = `Select or add a new entity ${currentSelectedText ? `for ${currentSelectedText}` : ''}`;
 
-    return (
-      <TrainWrapper>
-        <TrainTitle>Mia Training</TrainTitle>
-        <TrainSubTitle>You can train your bot by adding more examples</TrainSubTitle>
-        <TrainerUserInputWrapper>
-          <TrainUserInput
-            contentEditable
-            onInput={this.handleUserSayInp}
-            onSelect={this.handleSelection}
-            ref={this.userSayInp}
-          />
-          {
-            !userSay ? (
-              <TrainerUserInputPlaceHolder
-                onClick={this.focusToInput}
-              >
-                User says
-              </TrainerUserInputPlaceHolder>
-            ) : null
-          }
-
-        </TrainerUserInputWrapper>
+    if (currentSelectedText) {
+      return (
         <TrainEntityWrapper>
-          <TrainAddEntityBtn>
-            <i className="icon-add" />
-          </TrainAddEntityBtn>
           <CreatableSelect
             isSearchable
             isClearable
-            placeholder="Add a new entity"
             value={entity}
-            onChange={this.handleEntitySelected}
-            options={options}
+            options={entityOptions}
+            placeholder={entityPlaceholderMessage}
             styles={ReactSelectStyle}
+            onChange={this.handleEntitySelected}
+            onCreateOption={this.handleEntityCreated}
           />
         </TrainEntityWrapper>
+      );
+    }
+    return null;
+  }
+
+  renderUserSay = () => {
+    const {
+      userSay,
+    } = this.state;
+
+    return (
+      <TrainerUserInputWrapper>
+        <TrainUserInput
+          contentEditable
+          onInput={this.handleUserSayInp}
+          onSelect={this.handleSelection}
+          ref={this.userSayInp}
+        />
+        {
+          !userSay ? (
+            <TrainerUserInputPlaceHolder
+              onClick={this.focusToInput}
+            >
+              User says
+            </TrainerUserInputPlaceHolder>
+          ) : null
+        }
+
+      </TrainerUserInputWrapper>
+    );
+  }
+
+  renderIntentBox = () => {
+    const {
+      intent, intentOptions,
+    } = this.state;
+
+    return (
+      <TrainEntityWrapper>
+        <CreatableSelect
+          isSearchable
+          isClearable
+          value={intent}
+          options={intentOptions}
+          placeholder="Select or add a new intent"
+          styles={ReactSelectStyle}
+          onChange={this.handleIntentSelected}
+          onCreateOption={this.handleIntentCreated}
+        />
+      </TrainEntityWrapper>
+    );
+  }
+
+  renderResponseBox = () => {
+    const {
+      miaResponse, entity,
+      entityValue, valueOptions,
+    } = this.state;
+
+    if (!entity) return null;
+
+    return (
+      <TrainResponseWrapper>
+        <TrainSelectedEntityWrapper>
+          <TrainSelectedEntity>{entity.value || 'DMM'}</TrainSelectedEntity>
+          <CreatableSelect
+            isSearchable
+            isClearable
+            value={entityValue}
+            options={valueOptions}
+            placeholder="Select a value for this entity"
+            styles={ReactSelectStyle}
+            onChange={this.handleValueSelected}
+            onCreateOption={this.handleValueCreated}
+          />
+        </TrainSelectedEntityWrapper>
         <TrainMiaResponseInput
           placeholder="Mia response"
           value={miaResponse}
           onChange={this.handleInput('miaResponse')}
         />
-        <TrainValidateBtn
-          active={enableValidate}
-        >
-          <i className="icon-check" />
-          Validate
-        </TrainValidateBtn>
+      </TrainResponseWrapper>
+    );
+  }
+
+  render() {
+    const {
+      userSay, miaResponse,
+      entity, intent, entityValue,
+    } = this.state;
+    const enableAddRes = entity && miaResponse && entityValue;
+    const enableValidate = enableAddRes && userSay && intent;
+
+    return (
+      <TrainWrapper>
+        <TrainTitle>Mia Training</TrainTitle>
+        <TrainSubTitle>You can train your bot by adding more examples</TrainSubTitle>
+        {this.renderUserSay()}
+        {this.renderIntentBox()}
+        {this.renderEntityBox()}
+        {this.renderResponseBox()}
+        <TrainBtnGroup>
+          <TrainAddResponseBtn
+            active={enableAddRes}
+          >
+            Add Response
+          </TrainAddResponseBtn>
+          <TrainValidateBtn
+            active={enableValidate}
+          >
+            <i className="icon-check" />
+            Validate
+          </TrainValidateBtn>
+        </TrainBtnGroup>
       </TrainWrapper>
     );
   }

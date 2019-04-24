@@ -69,7 +69,7 @@ export const TrainUserInput = styled.div`
   align-items: flex-start;
 `;
 
-export const TrainValidateBtn = styled.button`
+export const TrainBtn = styled.button`
   box-shadow: none;
   outline: none;
   border: none;
@@ -84,6 +84,9 @@ export const TrainValidateBtn = styled.button`
     margin-right: 5px;
     font-weight: bold;
   }
+`;
+
+export const TrainValidateBtn = styled(TrainBtn)`
 
   ${props => props.active ? css`
     background: #90cb66;
@@ -95,10 +98,30 @@ export const TrainValidateBtn = styled.button`
 
   &:hover {
     ${props => props.active ? css`
-      background: #74be40;
-      box-shadow: 0 0 1px 2px #90cb66;
+      /* background: #7ea861; */
+      color: #fff;
   ` : css``}
   }
+`;
+
+export const TrainAddResponseBtn = styled(TrainBtn)`
+  margin-right: 20px;
+  ${props => props.active ? css`
+    background: #9cb1e5;
+  ` : css`
+    background: #eee;
+    color: #ccc;
+  `}
+
+  &:hover {
+    ${props => props.active ? css`
+      color: #fff;
+  ` : css``}
+  }
+`;
+
+export const TrainBtnGroup = styled.div`
+  display: flex;
 `;
 
 export const TrainEntityInput = styled.input`
@@ -138,4 +161,24 @@ export const TrainEntityWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+`;
+
+export const TrainResponseWrapper = styled.div`
+  width: 100%;
+  margin-bottom: 5px;
+`;
+
+export const TrainSelectedEntityWrapper = styled.div`
+  display: flex;
+  margin-bottom: 10px;
+  align-items: center;
+`;
+
+export const TrainSelectedEntity = styled.div`
+  transition: .3s ease;
+  padding: 3px 5px;
+  background-color: ${props => (props.bgColor || 'rgba(215, 208, 251, 0.5)')};
+  border-radius: .25em;
+  font-weight: bold;
+  margin-right: 50px;
 `;
