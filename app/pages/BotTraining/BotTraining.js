@@ -1,5 +1,5 @@
 import React from 'react';
-import TrainingBox from '../../components/TrainingBox';
+import TrainingBox from '../../containers/TrainingBox';
 import EntityList from '../../components/EntityList';
 import { BotTrainningWrapper, Seperator } from './styles';
 
