@@ -40,19 +40,25 @@ const ReactSelectStyle = {
 class TrainingBox extends Component {
   static propTypes = {
     updateField: PropTypes.func.isRequired,
+    addEntity: PropTypes.func.isRequired,
     intent: PropTypes.objectOf(PropTypes.any),
     userSay: PropTypes.string,
-    miaResponse: PropTypes.string,
+    entities: PropTypes.arrayOf(PropTypes.any),
+    response: PropTypes.string,
     entity: PropTypes.objectOf(PropTypes.any),
     value: PropTypes.objectOf(PropTypes.any),
+    start: PropTypes.number,
+    end: PropTypes.number,
   }
 
   static defaultProps = {
     intent: null,
-    miaResponse: '',
+    response: '',
     entity: null,
     value: null,
     userSay: '',
+    start: 0,
+    end: 0,
   }
 
   constructor(props) {
@@ -92,6 +98,10 @@ class TrainingBox extends Component {
     }
 
     const { anchorOffset = 0 } = selectionObj;
+
+    if (!selectedText.trim()) {
+      updateField('entity', null);
+    }
 
     updateField('selectedText', selectedText);
     updateField('start', anchorOffset);
@@ -175,16 +185,17 @@ class TrainingBox extends Component {
   renderButtonGroup = () => {
     const {
       userSay, intent,
-      miaResponse,
+      response,
       entity, value,
     } = this.props;
-    const enableAddRes = entity && miaResponse && value;
+    const enableAddRes = entity && response && value;
     const enableValidate = enableAddRes && userSay && intent;
 
     return (
       <TrainBtnGroup>
         <TrainAddResponseBtn
           active={enableAddRes}
+          onClick={this.addEntity}
         >
           Add Response
         </TrainAddResponseBtn>
@@ -198,14 +209,41 @@ class TrainingBox extends Component {
     );
   }
 
+  addEntity = () => {
+    const {
+      addEntity,
+      response,
+      entity,
+      value,
+      start,
+      end,
+    } = this.props;
+
+    addEntity({
+      response,
+      entity,
+      value,
+      start,
+      end,
+    });
+  }
+
   render() {
     const { entities } = this.props;
+
     return (
       <TrainWrapper>
         <TrainTitle>Mia Training</TrainTitle>
         <TrainSubTitle>You can train your bot by adding more examples</TrainSubTitle>
         {this.renderUserSay()}
         {this.renderIntentBox()}
+        {entities.map((entityItem, index) => (
+          <ResponseBox
+            entityItem={entityItem}
+            isDisabled
+            key={index}
+          />
+        ))}
         <ResponseBox />
         {this.renderButtonGroup()}
       </TrainWrapper>

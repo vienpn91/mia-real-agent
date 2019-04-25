@@ -8,7 +8,12 @@ import {
 const mapStateToProps = state => ({
   userSay: selectFieldValue(state, 'userSay'),
   intent: selectFieldValue(state, 'intent'),
-  entities: selectFieldValue(state, 'entities'),
+  entities: selectFieldValue(state, 'entities').toJS(),
+  response: selectFieldValue(state, 'response'),
+  entity: selectFieldValue(state, 'entity'),
+  value: selectFieldValue(state, 'value'),
+  start: selectFieldValue(state, 'start'),
+  end: selectFieldValue(state, 'end'),
 });
 
 const mapDispatchToProps = {

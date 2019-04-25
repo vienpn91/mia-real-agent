@@ -4,6 +4,7 @@ import { fromJS } from 'immutable';
 // import action type
 export const TRAINING_FORM_UPDATE_FIELD = 'trainingForm/UPDATE_FIELD';
 export const TRAINING_FORM_UPDATE_ENTITY = 'trainingForm/UPDATE_UPDATE_ENTITY';
+export const TRAINING_FORM_REMOVE_ENTITY = 'trainingForm/UPDATE_REMOVE_ENTITY';
 export const TRAINING_FORM_ADD_ENTITY = 'trainingForm/UPDATE_ADD_ENTITY';
 
 // initialState
@@ -14,7 +15,7 @@ const initialState = fromJS({
   start: 0,
   end: 0,
   entity: null,
-  entityValue: null,
+  value: null,
   response: '',
   entities: [
     // {
@@ -68,6 +69,14 @@ function authReducer(state = initialState, action) {
     case TRAINING_FORM_UPDATE_FIELD: {
       const { field, value } = action.payload;
       return state.set(field, value);
+    }
+    case TRAINING_FORM_ADD_ENTITY: {
+      const { entity } = action.payload;
+      return state.set('entities', state.get('entities').push(entity));
+    }
+    case TRAINING_FORM_REMOVE_ENTITY: {
+      const { index } = action.payload;
+      return state.deleteIn(['entities', index]);
     }
     default:
       return state;

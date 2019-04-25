@@ -8,7 +8,7 @@ import {
 const mapStateToProps = state => ({
   response: selectFieldValue(state, 'response'),
   entity: selectFieldValue(state, 'entity'),
-  entityValue: selectFieldValue(state, 'value'),
+  value: selectFieldValue(state, 'value'),
   selectedText: selectFieldValue(state, 'selectedText'),
 });
 

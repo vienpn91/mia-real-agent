@@ -6,6 +6,7 @@ import {
   TrainMiaResponseInput,
   TrainResponseWrapper,
   TrainSelectWrapper,
+  ResponseBoxWrapper,
 } from './styles';
 
 const options = [
@@ -22,10 +23,10 @@ const ReactSelectStyle = {
     border: 'none',
     outline: 'none',
   }),
-  control: base => ({
+  control: (base, { isDisabled }) => ({
     ...base,
     boxShadow: 'none',
-    border: '1px solid black',
+    border: isDisabled ? 'none' : '1px solid black',
     outline: 'none',
   }),
 };
@@ -36,14 +37,17 @@ class ResponseBox extends Component {
     response: PropTypes.string,
     selectedText: PropTypes.string,
     entity: PropTypes.objectOf(PropTypes.any),
-    entityValue: PropTypes.objectOf(PropTypes.any),
+    value: PropTypes.objectOf(PropTypes.any),
+    entityItem: PropTypes.objectOf(PropTypes.any),
+    isDisabled: PropTypes.bool,
   }
 
   static defaultProps = {
     selectedText: '',
     response: '',
     entity: '',
-    entityValue: '',
+    value: '',
+    isDisabled: false,
   }
 
   state = {
@@ -57,12 +61,12 @@ class ResponseBox extends Component {
   }
 
 
-  handleValueCreated = (entityValue) => {
+  handleValueCreated = (value) => {
     const { updateField } = this.props;
     const { valueOptions } = this.state;
     const newOption = {
-      value: entityValue,
-      label: entityValue,
+      value,
+      label: value,
     };
 
     updateField('value', newOption);
@@ -71,15 +75,14 @@ class ResponseBox extends Component {
     });
   }
 
-
   handleEntitySelected = (entity) => {
     const { updateField } = this.props;
     updateField('entity', entity);
   }
 
-  handleValueSelected = (entityValue) => {
+  handleValueSelected = (value) => {
     const { updateField } = this.props;
-    updateField('value', entityValue);
+    updateField('value', value);
   }
 
   handleEntityCreated = (entity) => {
@@ -89,7 +92,7 @@ class ResponseBox extends Component {
       value: entity,
       label: entity,
     };
-    updateField('intent', newOption);
+    updateField('entity', newOption);
     this.setState({
       entityOptions: [...entityOptions, newOption],
     });
@@ -97,7 +100,11 @@ class ResponseBox extends Component {
 
   renderEntityBox = () => {
     const { entityOptions } = this.state;
-    const { entity, selectedText } = this.props;
+    const {
+      selectedText,
+      isDisabled, entityItem,
+    } = this.props;
+    const { entity } = entityItem || this.props;
     const entityPlaceholderMessage = `Select or add a new entity ${selectedText ? `for ${selectedText}` : ''}`;
 
     return (
@@ -105,7 +112,7 @@ class ResponseBox extends Component {
         <CreatableSelect
           isSearchable
           isClearable
-          isDisabled={!selectedText}
+          isDisabled={isDisabled || !selectedText}
           value={entity}
           options={entityOptions}
           placeholder={entityPlaceholderMessage}
@@ -120,15 +127,16 @@ class ResponseBox extends Component {
 
   renderValueBox = () => {
     const { valueOptions } = this.state;
-    const { entityValue, entity } = this.props;
+    const { isDisabled, entityItem } = this.props;
+    const { value, entity } = entityItem || this.props;
 
     return (
       <TrainEntityWrapper>
         <CreatableSelect
           isSearchable
           isClearable
-          isDisabled={!entity}
-          value={entityValue}
+          isDisabled={isDisabled || !entity}
+          value={value}
           options={valueOptions}
           placeholder="Select a value for this entity"
           styles={ReactSelectStyle}
@@ -140,12 +148,13 @@ class ResponseBox extends Component {
   }
 
   renderResponseBox = () => {
-    const { response, entity } = this.props;
+    const { isDisabled, entityItem } = this.props;
+    const { response, entity } = entityItem || this.props;
 
     return (
       <TrainResponseWrapper>
         <TrainMiaResponseInput
-          disabled={!entity}
+          disabled={isDisabled}
           placeholder="Mia response"
           value={response}
           onChange={this.handleMiaResponseInput}
@@ -155,14 +164,18 @@ class ResponseBox extends Component {
   }
 
   render() {
+    const { isDisabled } = this.props;
+
     return (
-      <>
+      <ResponseBoxWrapper
+        isDisabled={!!isDisabled}
+      >
         <TrainSelectWrapper>
           {this.renderEntityBox()}
           {this.renderValueBox()}
         </TrainSelectWrapper>
         {this.renderResponseBox()}
-      </>
+      </ResponseBoxWrapper>
     );
   }
 }

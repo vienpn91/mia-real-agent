@@ -1,23 +1,5 @@
 import styled, { css } from 'styled-components';
 
-export const TrainWrapper = styled.div`
-  width: 100%;
-  background: #fafafa;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-direction: column;
-`;
-
-export const TrainTitle = styled.h3`
-  font-size: 24px;
-  margin-bottom: 5px;
-`;
-
-export const TrainSubTitle = styled.div`
-  margin-bottom: 20px;
-`;
-
 export const TrainMiaResponseInput = styled.input`
   background: rgb(238, 238, 238);
   width: 100%;
@@ -124,36 +106,6 @@ export const TrainBtnGroup = styled.div`
   display: flex;
 `;
 
-export const TrainEntityInput = styled.input`
-  border: none;
-  background: none;
-  height: 30px;
-  padding-left: 5px;
-  font-size: 16px;
-  ::placeholder {
-    color: #aaa;
-    font-style: normal;
-  }
-`;
-
-export const TrainAddEntityBtn = styled.button`
-  background: black;
-  border: none;
-  box-shadow: none;
-  outline: none;
-  width: 15px;
-  height: 15px;
-  border-radius: 100%;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 5px;
-  i:before {
-    color: #fff;
-    font-size: 14px;
-    font-weight: bold;
-  }
-`;
 
 export const TrainEntityWrapper = styled.div`
   margin-bottom: 15px;
@@ -168,12 +120,20 @@ export const TrainEntityWrapper = styled.div`
   }
 `;
 
+export const TrainSelectWrapper = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
 export const TrainResponseWrapper = styled.div`
   width: 100%;
   margin-bottom: 5px;
 `;
 
-export const TrainSelectWrapper = styled.div`
-  display: flex;
+export const ResponseBoxWrapper = styled.div`
   width: 100%;
+  ${props => props.isDisabled && css`
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 15px;
+  `}
 `;
