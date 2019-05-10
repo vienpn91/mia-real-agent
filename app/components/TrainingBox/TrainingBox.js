@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CreatableSelect from 'react-select/lib/Creatable';
@@ -188,7 +189,7 @@ class TrainingBox extends Component {
       response,
       entity, value,
     } = this.props;
-    const enableAddRes = entity && response && value;
+    const enableAddRes = !(!response || (!value && entity));
     const enableValidate = enableAddRes && userSay && intent;
 
     return (
@@ -237,11 +238,11 @@ class TrainingBox extends Component {
         <TrainSubTitle>You can train your bot by adding more examples</TrainSubTitle>
         {this.renderUserSay()}
         {this.renderIntentBox()}
-        {entities.map((entityItem, index) => (
+        {entities.map((entityItem, i) => (
           <ResponseBox
             entityItem={entityItem}
             isDisabled
-            key={index}
+            key={i}
           />
         ))}
         <ResponseBox />

@@ -70,7 +70,7 @@ class UserService extends BaseService {
     if (verifiedAt) {
       throw new Error('Account is verified');
     }
-    user.verifiedAt = moment().utc();
+    user.verifiedAt = moment().utc().format();
     await user.save();
     sendUserRegisterSuccessMail(user);
   }

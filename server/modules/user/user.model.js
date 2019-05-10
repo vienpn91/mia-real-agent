@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
+import moment from 'moment';
 import { ROLES_BY_VALUE } from '../../../common/enums';
+
+const currentDateUtc = () => moment().utc().format();
 
 const {
   USER: { value: USER_ROLE },
@@ -12,7 +15,7 @@ const userSchema = new Schema(
     password: { type: String, required: false },
     provider: [{ id: String, name: String, _id: false }],
     displayName: String,
-    createdAt: { type: Date, default: Date.now },
+    createdAt: { type: Date, default: currentDateUtc },
     role: { type: String, default: USER_ROLE },
     stripeCustomerId: { type: String, require: false },
     profile: {

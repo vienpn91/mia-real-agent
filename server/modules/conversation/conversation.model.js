@@ -1,6 +1,9 @@
 import mongoose from 'mongoose';
+import moment from 'moment';
 
 const { Schema } = mongoose;
+
+const currentDateUtc = () => moment().utc().format();
 
 const conversationSchema = new Schema(
   {
@@ -34,7 +37,7 @@ const conversationSchema = new Schema(
     },
     createdAt: {
       type: Date,
-      default: Date.now,
+      default: currentDateUtc,
     },
   },
   {
