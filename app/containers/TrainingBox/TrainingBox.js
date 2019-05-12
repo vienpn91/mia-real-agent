@@ -4,6 +4,7 @@ import {
   selectFieldValue,
   actions,
 } from '../../reducers/trainingForm';
+import { getIntent } from '../../reducers/entities';
 
 const mapStateToProps = state => ({
   userSay: selectFieldValue(state, 'userSay'),
@@ -14,6 +15,7 @@ const mapStateToProps = state => ({
   value: selectFieldValue(state, 'value'),
   start: selectFieldValue(state, 'start'),
   end: selectFieldValue(state, 'end'),
+  intentList: getIntent(state),
 });
 
 const mapDispatchToProps = {

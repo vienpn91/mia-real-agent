@@ -77,9 +77,16 @@ export const getEntityList = createSelector(
     return entityNameList.map(name => entityList[name]);
   }
 );
+export const getIntent = createSelector(
+  getEntityList,
+  (entities) => {
+    const intent = entities.find(entity => entity.name === 'intent');
+    return intent.values;
+  },
+);
 export const getUserEntity = createSelector(
   getEntityList,
-  entities => entities.filter(entity => !entity.builtin),
+  entities => entities.filter(entity => !entity.builtin && entity.name !== 'intent'),
 );
 
 // reducer

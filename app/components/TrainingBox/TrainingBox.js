@@ -62,6 +62,24 @@ class TrainingBox extends Component {
     end: 0,
   }
 
+  static getDerivedStateFromProps(props, state) {
+    const { intentList } = props;
+    const intentOptions = intentList.map(intent => ({
+      value: intent.value,
+      label: intent.value,
+    }));
+
+    return {
+      ...state,
+      intentOptions,
+    };
+  }
+
+  state = {
+    intentOptions: [],
+    valueOptions: [],
+  }
+
   constructor(props) {
     super(props);
 
@@ -71,11 +89,6 @@ class TrainingBox extends Component {
 
   componentDidMount() {
     this.focusToInput();
-  }
-
-  state = {
-    intentOptions: options,
-    valueOptions: options,
   }
 
   handleUserSayInp = () => {

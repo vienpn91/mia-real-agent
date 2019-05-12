@@ -40,6 +40,7 @@ const EntityList = ({ entityList }) => {
         <tbody>
           {printableEntityList.map(entity => (
             <EntityRow
+              key={entity.name}
               entityName={entity.name}
               // entityTheme={}
               lookupStrategy={entity.lookups}

@@ -45,14 +45,35 @@ class ResponseBox extends Component {
   static defaultProps = {
     selectedText: '',
     response: '',
-    entity: '',
+    entity: {},
     value: '',
     isDisabled: false,
   }
 
+  static getDerivedStateFromProps(props, state) {
+    const { entityList } = props;
+    const selectedEntity = props.entity || {};
+    const entityOptions = entityList.map(entity => ({
+      value: entity.name,
+      label: entity.name,
+    }));
+
+    const currentEntity = entityList
+      .find(entity => entity.name === (selectedEntity).value) || {};
+    const valueOptions = (currentEntity.values || []).map(v => ({
+      value: v.value,
+      label: v.value,
+    }));
+    return {
+      ...state,
+      entityOptions,
+      valueOptions,
+    };
+  }
+
   state = {
-    entityOptions: options,
-    valueOptions: options,
+    entityOptions: [],
+    valueOptions: [],
   }
 
   handleMiaResponseInput = ({ target }) => {
