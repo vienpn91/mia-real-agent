@@ -35,7 +35,7 @@ global.socketIOServer = socketIOServer;
 app.use('/assets', express.static(join(__dirname, './../app/assets/')));
 
 const getStatusColor = (status) => {
-  switch (+status / 100) {
+  switch (Number(status) / 100) {
     case 2:
       return chalk.green;
     case 4:

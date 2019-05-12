@@ -12,6 +12,7 @@ const initialState = fromJS({
   entityNameList: [],
 });
 
+
 // action creator
 export const addNewEntity = ({
   name, values, doc,
@@ -63,11 +64,22 @@ export const actions = {
 };
 
 // selector
-export const selectEntities = state => state.entities;
-export const selectEntityByName = ({ entities }, entityName) => entities.getIn(['entityList', entityName], null).toJS();
-export const selectEntityList = createSelector(
-  selectEntities,
-  entities => entities.get(['entityList']).toJS(),
+export const getEntities = state => state.entities;
+export const getEntityByName = (
+  { entities }, entityName,
+) => entities.getIn(['entityList', entityName], null).toJS();
+export const getEntityNameList = ({ entities }) => entities.get('entityNameList').toJS();
+export const getEntityList = createSelector(
+  getEntities,
+  (entities) => {
+    const entityNameList = entities.get('entityNameList').toJS();
+    const entityList = entities.get('entityList').toJS();
+    return entityNameList.map(name => entityList[name]);
+  }
+);
+export const getUserEntity = createSelector(
+  getEntityList,
+  entities => entities.filter(entity => !entity.builtin),
 );
 
 // reducer

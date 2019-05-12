@@ -1,44 +1,24 @@
 import {
-  all, race,
-  call,
+  all, call,
+  select, put,
 } from 'redux-saga/effects';
-import { getAllSamples } from '../../api/bot';
+import { getAllEntities } from '../../api/bot';
+import { addNewEntity, getEntityNameList } from '../../reducers/entities';
 
 export function* fetchEntitiesList() {
-  const { response } = yield call(getAllSamples);
+  const { response } = yield call(getAllEntities);
   const { data } = response;
-  const entityArr = data.reduce((acc, value) => [...acc, ...value.entities], []);
+  const { result = [], totalRecord = 0 } = data;
+  const entityList = yield select(getEntityNameList);
 
-  const entityList = entityArr.reduce((acc, entity) => {
-    const values = (acc[entity.entity] || {}).values || [];
-    return ({
-      ...acc,
-      [entity.entity]: {
-        name: entity.entity,
-        values: [...values, {
-          value: entity.value,
-          expressions: [entity.value],
-        }],
-      },
-    });
-  }, {});
-  console.log(entityList);
-  const normalizedEntityList = [];
-  const entityKeyList = Object.keys(entityList);
-  for (let i = 0; i < entityKeyList.length; i += 1) {
-    const currEntity = entityList[entityKeyList[i]];
-    const valueSet = {};
-    for (let j = 0; j < currEntity.values.length; j += 1) {
-      const currValue = currEntity.values[j];
-      if (!valueSet[currValue.value]) valueSet[currValue.value] = new Set([currValue.expressions[0]]);
-      else valueSet[currValue.value].add(currValue.expressions[0]);
-    }
-    normalizedEntityList.push({
-      name: currEntity.name,
-      values: Object.keys(valueSet).reduce((a, v) => [...a, valueSet[v]], []),
-    });
+  // if entityList is updated -> ignore
+  // TODO, better algorithm to update entityList
+  // because what if we remove an old entity and add new one?
+  if (entityList.length === totalRecord) return;
+
+  for (let i = 0; i < totalRecord; i += 1) {
+    yield put(addNewEntity(result[i]));
   }
-  console.log(normalizedEntityList);
 }
 
 export default function* entitiesSaga() {

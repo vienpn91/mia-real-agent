@@ -14,3 +14,8 @@ export const getAllSamples = () => axios
   .get('witai/samples')
   .then(response => ({ response }))
   .catch(error => ({ error }));
+
+export const getAllEntities = () => axios
+  .get('witai/entities')
+  .then(response => ({ response }))
+  .catch(error => ({ error }));

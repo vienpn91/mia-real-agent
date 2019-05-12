@@ -51,9 +51,28 @@ const syncSamples = async () => {
 
 // ==============================
 
+const insertEntity = async (entityId) => {
+  try {
+    const entityRes = await axios.get(
+      `${WIT_AI_BASE_URL}/entities/${entityId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.WIT_AI_TOKEN}`,
+        },
+      }
+    );
+    await EntitiesModel.create(entityRes.data);
+  } catch (error) {
+    Logger.error(`[WIT.AI SYNC TASK]: Unable to insert entity ${entityId}.`);
+    Logger.error(`[WIT.AI SYNC TASK]: ERROR ${error}!`);
+  }
+};
+
 const syncEntities = async () => {
   Logger.info('[WIT.AI SYNC TASK]: Syncing Entities DB from Wit.ai');
 
+  const entityCount = await EntitiesModel.count().exec();
   const entitiesRes = await axios.get(
     `${WIT_AI_BASE_URL}/entities`,
     {
@@ -63,42 +82,27 @@ const syncEntities = async () => {
       },
     }
   );
-  const samples = [];
+  const entitiyList = [];
   const { data } = entitiesRes;
-  if (!data.length) {
+  if (!data.length || data.length === entityCount) {
     Logger.info('[WIT.AI SYNC TASK]: Your Entities DB has been already updated to date');
     return;
   }
 
   Logger.info(`[WIT.AI SYNC TASK]: Found new ${data.length} entities`);
   Logger.info(`[WIT.AI SYNC TASK]: Syncing ${data.length} entities`);
-
-  for (let i = 0; i < data.length; i += 1) {
-    const { entities, text } = data[i];
-
-    const intentName = entities.find(entity => entity.entity === 'intent');
-    if (!intentName) continue;
-
-    for (let j = 0; j < entities.length; j += 1) {
-      if (entities[j].entity === 'intent') continue;
-      samples.push({
-        user_input: text,
-        intent_name: intentName.value,
-        entity_name: entities[j].entity,
-        entity_value: entities[j].value,
-        response: 'Sorry I cant undetstand this',
-      });
-    }
+  for (let i = entityCount; i < data.length; i += 1) {
+    entitiyList.push(insertEntity(data[i]));
   }
-  SampleModel.insertMany(samples);
-  Logger.info(`[WIT.AI SYNC TASK]: ${data.length} records have been synced successully to DB Samples!`);
+  await Promise.all(entitiyList);
+  Logger.info(`[WIT.AI SYNC TASK]: ${data.length} records have been synced successully to DB Entities!`);
 };
 
 // =================================
 
-const syncWitAIData = async () => {
-  await syncEntities();
-  await syncSamples();
+const syncWitAIData = () => {
+  syncEntities();
+  syncSamples();
 };
 
 export default syncWitAIData;

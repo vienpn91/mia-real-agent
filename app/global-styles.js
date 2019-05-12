@@ -70,7 +70,6 @@ html, body, div, span, applet, object, iframe,
     background-color: #fafafa;
     min-height: 100%;
     min-width: 100%;
-    height: 100%;
   }
   .Popover {
     z-index: 9;
