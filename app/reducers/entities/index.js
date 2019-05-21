@@ -80,8 +80,8 @@ export const getEntityList = createSelector(
 export const getIntent = createSelector(
   getEntityList,
   (entities) => {
-    const intent = entities.find(entity => entity.name === 'intent');
-    return intent.values;
+    const intent = entities.find(entity => entity.name === 'intent') || {};
+    return intent.values || [];
   },
 );
 export const getUserEntity = createSelector(

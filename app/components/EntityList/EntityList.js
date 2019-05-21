@@ -52,7 +52,7 @@ const EntityList = ({ entityList }) => {
       </EntityTable>
     </EntityListWrapper>
   );
-}
+};
 
 EntityList.propTypes = {
   entityList: PropTypes.arrayOf(PropTypes.any),
