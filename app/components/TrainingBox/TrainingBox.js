@@ -42,6 +42,7 @@ class TrainingBox extends Component {
   static propTypes = {
     updateField: PropTypes.func.isRequired,
     addEntity: PropTypes.func.isRequired,
+    validateResponse: PropTypes.func.isRequired,
     intent: PropTypes.objectOf(PropTypes.any),
     userSay: PropTypes.string,
     entities: PropTypes.arrayOf(PropTypes.any),
@@ -202,6 +203,7 @@ class TrainingBox extends Component {
         </TrainAddResponseBtn>
         <TrainValidateBtn
           active={enableValidate}
+          onClick={this.validateEntity}
         >
           <i className="icon-check" />
           Validate
@@ -210,15 +212,25 @@ class TrainingBox extends Component {
     );
   }
 
+  validateEntity = () => {
+    const {
+      response, entity, value,
+      userSay, intent, validateResponse,
+    } = this.props;
+    const enableAddRes = !(!response || (!value && entity));
+    const enableValidate = enableAddRes && userSay && intent;
+    if (!enableValidate) return;
+    validateResponse();
+  }
+
   addEntity = () => {
     const {
-      addEntity,
-      response,
-      entity,
-      value,
-      start,
-      end,
+      addEntity, response, entity, value,
+      start, end, userSay, intent,
     } = this.props;
+    const enableAddRes = !(!response || (!value && entity));
+    const enableValidate = enableAddRes && userSay && intent;
+    if (!enableValidate) return;
 
     addEntity({
       response,

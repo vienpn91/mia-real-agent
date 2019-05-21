@@ -1,16 +1,17 @@
 import { fromJS } from 'immutable';
-// import { createSelector } from 'reselect';
+import { createSelector } from 'reselect';
 
 // import action type
 export const TRAINING_FORM_UPDATE_FIELD = 'trainingForm/UPDATE_FIELD';
-export const TRAINING_FORM_UPDATE_ENTITY = 'trainingForm/UPDATE_UPDATE_ENTITY';
-export const TRAINING_FORM_REMOVE_ENTITY = 'trainingForm/UPDATE_REMOVE_ENTITY';
-export const TRAINING_FORM_ADD_ENTITY = 'trainingForm/UPDATE_ADD_ENTITY';
+export const TRAINING_FORM_UPDATE_ENTITY = 'trainingForm/UPDATE_ENTITY';
+export const TRAINING_FORM_REMOVE_ENTITY = 'trainingForm/REMOVE_ENTITY';
+export const TRAINING_FORM_ADD_ENTITY = 'trainingForm/ADD_ENTITY';
+export const TRAINING_FORM_VALIDATE_ENTITY = 'trainingForm/VALIDATE_ENTITY';
 
 // initialState
 const initialState = fromJS({
   userSay: '',
-  intentName: null,
+  intent: null,
   selectedText: '',
   start: 0,
   end: 0,
@@ -53,14 +54,23 @@ export const addEntity = entity => ({
   },
 });
 
+export const validateResponse = () => ({
+  type: TRAINING_FORM_VALIDATE_ENTITY,
+});
+
 export const actions = {
   updateField,
   updateEntity,
   addEntity,
+  validateResponse,
 };
 
 // selector
-export const selectFormData = ({ trainingForm }) => trainingForm.toJS();
+const getFormData = state => state.trainingForm;
+export const selectFormData = createSelector(
+  getFormData,
+  trainingForm => trainingForm.toJS(),
+);
 export const selectFieldValue = ({ trainingForm }, fieldName) => trainingForm.get(fieldName);
 
 // reducer

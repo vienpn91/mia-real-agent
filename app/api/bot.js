@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import axios from 'axios';
 
-export const createNewSample = ({ text, intent_name, entities }) => axios
+export const createNewSample = (text, intent_name, entities) => axios
   .post('witai/samples', {
     text,
     intent_name,

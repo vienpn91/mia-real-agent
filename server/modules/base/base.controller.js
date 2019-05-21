@@ -15,7 +15,7 @@ export default class BaseController {
   handleError(res, error) {
     Logger.error(error.message);
     const status = error.status || httpStatus.INTERNAL_SERVER_ERROR;
-    return res.status(status).send(error);
+    return res.status(status).send(error.message);
   }
 
   load = async (req, res, next, id) => {
