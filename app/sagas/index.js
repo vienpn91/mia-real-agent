@@ -4,6 +4,7 @@ import { REHYDRATE_COMPLETE, CLEAR_TRANSACTION } from '../reducers';
 import authSaga from './auth';
 import socketioSaga from './socketio';
 import entitiesSaga from './entities';
+import trainingFormSaga from './trainingForm';
 
 export default function* rootSagas() {
   configAxios();
@@ -15,5 +16,6 @@ export default function* rootSagas() {
     authSaga(),
     socketioSaga(),
     entitiesSaga(),
+    trainingFormSaga(),
   ]);
 }

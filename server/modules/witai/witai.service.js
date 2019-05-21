@@ -4,6 +4,7 @@ import axios from 'axios';
 import moment from 'moment';
 import witAiCollection from './witai.model';
 import BaseService from '../base/base.service';
+import EntityService from '../entities/entities.service';
 
 const WIT_AI_BASE_URL = 'https://api.wit.ai';
 
@@ -26,9 +27,12 @@ class WitAIService extends BaseService {
    *  }
    * } data
    */
-  createSample = async ({
-    text, intent_name, entities = [],
-  }) => {
+
+  createSample = async ({ text, intent_name, entities = [] }) => {
+    const cleanEntityList = entities.filter(entity => !!entity.entity);
+    const newEntityList = cleanEntityList.map(entity => EntityService.insert(entity.entity));
+    await Promise.all(newEntityList);
+
     await axios.post(
       `${WIT_AI_BASE_URL}/samples`,
       [
@@ -39,7 +43,7 @@ class WitAIService extends BaseService {
               entity: 'intent',
               value: intent_name,
             },
-            ...entities,
+            ...cleanEntityList,
             // {
             //   entity: entity_name,
             //   value: entity_value,
@@ -56,9 +60,16 @@ class WitAIService extends BaseService {
         },
       }
     );
-    const result = await this.service.insert({
-      text, intent_name, entities,
-    });
+
+    const entityPromiseList = entities.map(entity => this.insert({
+      user_input: text,
+      intent_name,
+      entity_name: entity.entity,
+      entity_value: entity.value,
+      response: entity.response,
+    }));
+
+    const result = await Promise.all(entityPromiseList);
     return result;
   }
 
