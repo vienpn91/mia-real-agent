@@ -33,11 +33,11 @@ const persistConfig = {
   transforms: [
     authenticationFilter,
     immutableTransform({
-      whitelist: ['auth'],
+      whitelist: ['auth', 'entities'],
     }),
   ],
   stateReconciler: autoMerge,
-  whitelist: ['auth'],
+  whitelist: ['auth', 'entities'],
   key: 'root',
   storage,
   version: 0,

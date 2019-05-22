@@ -16,7 +16,7 @@ class UserController extends BaseController {
     super(UserService);
   }
 
-  async insert(req, res) {
+  insert = async (req, res) => {
     try {
       const { email, password } = req.body;
 

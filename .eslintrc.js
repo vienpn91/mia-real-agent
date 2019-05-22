@@ -48,6 +48,7 @@ module.exports = {
         controlComponents: ['Input'],
       },
     ],
+    'no-continue': 0,
     'jsx-a11y/label-has-for': 0,
     'jsx-a11y/mouse-events-have-key-events': 2,
     'jsx-a11y/role-has-required-aria-props': 2,

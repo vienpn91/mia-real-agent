@@ -44,7 +44,7 @@ class AuthController {
 
       if (!user) {
         const newUser = {
-          verifiedAt: moment().utc(),
+          verifiedAt: moment().utc().format(),
           provider: [provider],
         };
 

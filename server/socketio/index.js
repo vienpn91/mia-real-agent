@@ -24,9 +24,9 @@ class SocketIOServer {
       const { authenticated, data: user } = await this.authenticate(socket);
       if (authenticated) {
         const { email } = user;
-        Logger.info('SocketIO: %s has been connected', email);
+        Logger.info('[SocketIO]: %s has been connected', email);
       } else {
-        Logger.warning('SocketIO: user unauthorized');
+        Logger.warning('[SocketIO]: user unauthorized');
         socket.disconnect();
       }
     });

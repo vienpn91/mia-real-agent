@@ -21,6 +21,7 @@ import {
 } from './middlewares/authenticateMiddlewares';
 import setup from './middlewares/frontendMiddleware';
 import registerRouters from './modules/routers';
+import startUpTask from './startup';
 
 const app = express();
 const server = http.createServer(app);
@@ -34,7 +35,7 @@ global.socketIOServer = socketIOServer;
 app.use('/assets', express.static(join(__dirname, './../app/assets/')));
 
 const getStatusColor = (status) => {
-  switch (+status / 100) {
+  switch (Number(status) / 100) {
     case 2:
       return chalk.green;
     case 4:
@@ -116,8 +117,10 @@ app.get('*.js', (req, res, next) => {
 const db = mongoose.connection;
 const { MONGO_URL, MONGO_USER, MONGO_PASSWORD } = process.env;
 db.once('open', () => {
-  Logger.info('Established connection to database server.');
-  Logger.info('Starting server...');
+  Logger.info('[DB]: Established connection to database server.');
+  Logger.info('[STARTUP]: Running startup task');
+  startUpTask();
+  Logger.info('[APP]: Starting server...');
 
 
   // Start your app.
@@ -132,12 +135,12 @@ db.once('open', () => {
 
 // prevent server from starting if db is not connected
 db.on('error', (err) => {
-  Logger.error('Unable to connect to database server');
+  Logger.error('[DB]: Unable to connect to database server');
   Logger.error(`${err.message}`);
-  Logger.error('Server has been stopped!');
+  Logger.error('[APP]: Server has been stopped!');
 });
 
-Logger.info('Connecting to database');
+Logger.info('[APP]: Connecting to database');
 mongoose.connect(MONGO_URL, {
   user: MONGO_USER,
   pass: MONGO_PASSWORD,

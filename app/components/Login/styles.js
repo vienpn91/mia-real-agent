@@ -1,7 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 
 export const LoginWrapper = styled.div`
-  height: 100%;
+  height: 100vh;
   width: 100%;
   display: flex;
   justify-content: center;

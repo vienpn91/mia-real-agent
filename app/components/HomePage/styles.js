@@ -2,7 +2,7 @@ import styled, { keyframes } from 'styled-components';
 
 export const MiaWrapper = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background: #fafafa;
   display: flex;
   justify-content: center;

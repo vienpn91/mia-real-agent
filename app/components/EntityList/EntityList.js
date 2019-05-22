@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import EntityRow from './EntityRow';
 import {
   EntityListWrapper,
@@ -9,59 +10,56 @@ import {
   EntityTableRow,
 } from './styles';
 
-const EntityList = () => (
-  <EntityListWrapper>
-    <EntityListHeader>Mia is using 6 entities</EntityListHeader>
-    <EntityTable>
-      <EntityTableHeader>
-        <EntityTableRow>
-          <EntityTableHeaderCell>
-            Entity
-          </EntityTableHeaderCell>
-          <EntityTableHeaderCell>
-            Description
-          </EntityTableHeaderCell>
-          <EntityTableHeaderCell>
-            Value
-          </EntityTableHeaderCell>
-        </EntityTableRow>
-      </EntityTableHeader>
-      <EntityRow
-        entityName="learningName"
-        lookupStrategy="free-text & keywords"
-        description="User-defined entity"
-        values={[
-          'javascript',
-          'jquery',
-        ]}
-      />
-      <EntityRow
-        entityName="emotion"
-        entityTheme="rgba(208, 251, 237, 0.5)"
-        lookupStrategy="free-text & keywords"
-        description="User-defined entity"
-        values={[
-          'javascript',
-          'jquery',
-        ]}
-      />
-      <EntityRow
-        entityName="swear_word"
-        entityTheme="rgba(215, 208, 251, 0.5)"
-        lookupStrategy="free-text & keywords"
-        description="User-defined entity"
-        values={[
-          'javascript',
-          'jquery',
-        ]}
-      />
-      <EntityRow
-        entityName="wit/wolfram_search_query"
-        entityTheme="rgba(237, 208, 251, 0.5)"
-        description="Captures free text that's a typical query for Wolfram Alpha, like `distance between the Earth and the moon`."
-      />
-    </EntityTable>
-  </EntityListWrapper>
-);
+const EntityList = ({ entityList }) => {
+  const printableEntityList = entityList.map((entity) => {
+    const lookups = entity.lookups.join` & `;
+    const values = entity.values.map(value => value.value);
+    return {
+      ...entity,
+      lookups,
+      values,
+    };
+  });
+  return (
+    <EntityListWrapper>
+      <EntityListHeader>{`Mia is using ${entityList.length} entities`}</EntityListHeader>
+      <EntityTable>
+        <EntityTableHeader>
+          <EntityTableRow>
+            <EntityTableHeaderCell>
+              Entity
+            </EntityTableHeaderCell>
+            <EntityTableHeaderCell>
+              Description
+            </EntityTableHeaderCell>
+            <EntityTableHeaderCell>
+              Value
+            </EntityTableHeaderCell>
+          </EntityTableRow>
+        </EntityTableHeader>
+        <tbody>
+          {printableEntityList.map(entity => (
+            <EntityRow
+              key={entity.name}
+              entityName={entity.name}
+              // entityTheme={}
+              lookupStrategy={entity.lookups}
+              description={entity.doc}
+              values={entity.values}
+            />
+          ))}
+        </tbody>
+      </EntityTable>
+    </EntityListWrapper>
+  );
+};
+
+EntityList.propTypes = {
+  entityList: PropTypes.arrayOf(PropTypes.any),
+};
+
+EntityList.defaultProps = {
+  entityList: [],
+};
 
 export default EntityList;
