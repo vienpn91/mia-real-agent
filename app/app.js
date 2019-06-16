@@ -18,6 +18,7 @@ import FontFaceObserver from 'fontfaceobserver';
 import history from './utils/history';
 import SpinnerLoading from './components/PageLoading';
 import GlobalStyle from './global-styles';
+import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 
 // Import root app
 import App from './routers';
