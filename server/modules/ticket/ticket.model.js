@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { TICKET_STATUS } from '../../utils/enums';
+import { TICKET_STATUS } from '../../../common/enums';
 
 const { Schema } = mongoose;
 
