@@ -41,18 +41,18 @@ export default class BaseService {
     const queryCondition = {
       $and: [condition, notDeletedCondition],
     };
-    const totalRecord = await this.collection
+    const totalRecordPromise = this.collection
       .find(queryCondition, null, options)
       .count();
-    const result = await this.collection
+    const resultPromise = this.collection
       .find(queryCondition, null, options)
       .sort(sort)
       .skip(+skip)
       .limit(+limit || 0)
       .exec();
     return {
-      result,
-      totalRecord,
+      result: await resultPromise,
+      totalRecord: await totalRecordPromise,
     };
   }
 }
