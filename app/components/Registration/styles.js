@@ -1,15 +1,19 @@
 import styled, { keyframes } from 'styled-components';
+import { Input } from 'antd';
 
 export const RegistrationWrapper = styled.div`
-  height: 100%;
+  height: 100vh;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  @media (max-height: 736px) {
+    height: 100%;
+  }
 `;
 
 export const RegistrationCard = styled.div`
-  width: 360px;
+  width: 720px;
   display: flex;
   flex-direction: column;
   background-color: #fff;
@@ -28,18 +32,23 @@ export const RegistrationTitle = styled.div`
 export const RegistrationInputWrapper = styled.div`
   width: 100%;
   text-align: left;
-  margin-bottom: 55px;
+  margin-bottom: 30px;
 `;
 
-export const RegistrationInput = styled.input`
-  width: 100%;
-  height: 27.5px;
-  border: 0;
-  outline: 0 none;
-  -webkit-transition: border-color .2s linear;
-  transition: border-color .2s linear;
-  border-bottom: 1px solid #000;
-  -webkit-font-smoothing: antialiased;
+export const RegistrationInput = styled(Input)`
+  width: 100% !important;
+  height: 27.5px !important;
+  border: 0 !important;
+  padding: 0 !important;
+  outline: 0 none !important;
+  -webkit-transition: border-color .2s linear !important;
+  transition: border-color .2s linear !important;
+  border-bottom: 1px solid #000 !important;
+  -webkit-font-smoothing: antialiased !important;
+  border-radius: 0 !important;  
+  :focus {
+    box-shadow: none !important;
+  }
 `;
 
 export const RegistrationLabel = styled.div`
@@ -110,3 +119,5 @@ export const RegistrationErrorMessage = styled.div`
   text-align: center;
   margin-bottom: 15px;
 `;
+
+export const SelectStyled = { width: '100%' };
