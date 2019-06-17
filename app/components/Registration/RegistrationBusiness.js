@@ -112,11 +112,24 @@ class Registration extends Component {
             <Col sm={12} xs={24}>
               <RegistrationInputWrapper>
                 <RegistrationLabel>Company size</RegistrationLabel>
-                <RegistrationInput
-                  type="text"
-                  value={companySize}
-                  onChange={this.handleInputChanged('companySize')}
-                />
+                <Select
+                  showSearch
+                  style={SelectStyled}
+                  placeholder="Select fields"
+                  optionFilterProp="children"
+                  filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                >
+                  <Select.Option value="A">Self-employed</Select.Option>
+                  <Select.Option value="B">1-10 employees</Select.Option>
+                  <Select.Option value="C">11-50 employees</Select.Option>
+                  <Select.Option value="D">51-200 employees</Select.Option>
+                  <Select.Option value="E">201-500 employees</Select.Option>
+                  <Select.Option value="F">501-1000 employees</Select.Option>
+                  <Select.Option value="G">1001-5000 employees</Select.Option>
+                  <Select.Option value="H">5001-10,000 employees</Select.Option>
+                  <Select.Option value="I">10,001+ employees</Select.Option>
+                </Select>
               </RegistrationInputWrapper>
             </Col>
           </Row>
