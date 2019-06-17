@@ -17,29 +17,6 @@ export const VALIDATION_TYPE = {
   STRING: 'STRING',
 };
 
-export const TICKET_STATUS = [
-  {
-    value: 'created',
-    title: 'Created',
-  },
-  {
-    value: 'canceled',
-    title: 'Canceled',
-  },
-  {
-    value: 'pending',
-    title: 'Pending',
-  },
-  {
-    value: 'confirmed',
-    title: 'Confirmed',
-  },
-  {
-    value: 'resolved',
-    title: 'Resolved',
-  },
-];
-
 export const ROLES = [
   {
     title: 'Admin',
@@ -52,3 +29,11 @@ export const ROLES = [
 ];
 
 export const ROLES_BY_VALUE = keyBy(ROLES, 'value');
+
+export const TICKET_STATUS = {
+  NEW: 'New',
+  RESOLVED: 'Resolved',
+  CLOSED: 'Closed',
+  PENDING: 'Pending',
+  PROCESSING: 'Processing',
+};
