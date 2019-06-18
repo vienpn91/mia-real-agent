@@ -1,21 +1,63 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Select } from 'antd';
+import {
+  Row, Col, Form,
+} from 'antd';
+import * as Yup from 'yup';
+import { Formik } from 'formik';
 import {
   RegistrationWrapper,
   RegistrationCard,
-  RegistrationInput,
-  RegistrationLabel,
-  RegistrationInputWrapper,
-  RegistrationTitle,
   RegistrationBtn,
   RegistrationFooter,
   RegistrationFooterText,
   RegistrationFooterLink,
   RegistrationSpinner,
   RegistrationErrorMessage,
-  SelectStyled,
+  RegistrationTitle,
 } from './styles';
+import FormInput from '../FormInput/FormInput';
+
+const initialValues = {
+  email: '',
+  password: '',
+  username: '',
+  firstName: '',
+  lastName: '',
+  company: '',
+  role: '',
+  birthday: '',
+  address: '',
+  phoneNumber: '',
+};
+
+const roleOptions = [
+  {
+    label: 'IT',
+    value: 'IT',
+  },
+  {
+    label: 'CEO',
+    value: 'CEO',
+  },
+  {
+    label: 'John Wick',
+    value: 'John Wick',
+  },
+];
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid Email').trim().required('Required'),
+  username: Yup.string().trim().required('Required'),
+  password: Yup.string().trim().required('Required'),
+  firstName: Yup.string().trim().required('Required'),
+  lastName: Yup.string().trim().required('Required'),
+  birthday: Yup.date().required('Required'),
+  company: Yup.string().trim().required('Required'),
+  role: Yup.string().trim().required('Required'),
+  address: Yup.string().trim(),
+  phoneNumber: Yup.string().trim(),
+});
 
 class Registration extends Component {
   static propTypes = {
@@ -24,26 +66,14 @@ class Registration extends Component {
     errorMessage: PropTypes.string,
   }
 
-  state = {
-    email: '',
-    password: '',
-    username: '',
-    firstName: '',
-    lastName: '',
-    company: '',
-    birthday: '',
-    address: '',
-    phoneNumber: '',
-  }
-
   handleInputChanged = fieldName => ({ target }) => {
     this.setState({
       [fieldName]: target.value,
     });
   }
 
-  register = () => {
-    const { email, password } = this.state;
+  register = (values) => {
+    const { email, password } = values;
     const { register } = this.props;
     register(email, password);
   }
@@ -60,7 +90,7 @@ class Registration extends Component {
     }
     return (
       <RegistrationBtn
-        onClick={this.register}
+        type="submit"
       >
         Register
       </RegistrationBtn>
@@ -68,141 +98,112 @@ class Registration extends Component {
   }
 
   render() {
-    const {
-      email, password, username, firstName, lastName,
-      company, birthday, address, phoneNumber,
-    } = this.state;
     const { errorMessage } = this.props;
-
     return (
       <RegistrationWrapper>
         <RegistrationCard>
           <RegistrationTitle>Mia Consult</RegistrationTitle>
-          <Row gutter={32}>
-            <Col sm={12} xs={24}>
-              <RegistrationInputWrapper>
-                <RegistrationLabel>Username</RegistrationLabel>
-                <RegistrationInput
-                  type="text"
-                  value={username}
-                  onChange={this.handleInputChanged('username')}
-                />
-              </RegistrationInputWrapper>
-            </Col>
-            <Col sm={12} xs={24}>
-              <RegistrationInputWrapper>
-                <RegistrationLabel>Password</RegistrationLabel>
-                <RegistrationInput
-                  type="password"
-                  value={password}
-                  onChange={this.handleInputChanged('password')}
-                />
-              </RegistrationInputWrapper>
-            </Col>
-          </Row>
-          <Row gutter={32}>
-            <Col sm={12} xs={24}>
-              <RegistrationInputWrapper>
-                <RegistrationLabel>First name</RegistrationLabel>
-                <RegistrationInput
-                  type="text"
-                  value={firstName}
-                  onChange={this.handleInputChanged('firstName')}
-                />
-              </RegistrationInputWrapper>
-            </Col>
-            <Col sm={12} xs={24}>
-              <RegistrationInputWrapper>
-                <RegistrationLabel>Last name</RegistrationLabel>
-                <RegistrationInput
-                  type="text"
-                  value={lastName}
-                  onChange={this.handleInputChanged('lastName')}
-                />
-              </RegistrationInputWrapper>
-            </Col>
-          </Row>
-          <Row gutter={32}>
-            <Col sm={12} xs={24}>
-              <RegistrationInputWrapper>
-                <RegistrationLabel>Birthday</RegistrationLabel>
-                <RegistrationInput
-                  type="date"
-                  value={birthday}
-                  onChange={this.handleInputChanged('birthday')}
-                />
-              </RegistrationInputWrapper>
-            </Col>
-            <Col sm={12} xs={24}>
-              <RegistrationInputWrapper>
-                <RegistrationLabel>Address</RegistrationLabel>
-                <RegistrationInput
-                  type="text"
-                  value={address}
-                  onChange={this.handleInputChanged('address')}
-                />
-              </RegistrationInputWrapper>
-            </Col>
-          </Row>
-          <Row gutter={32}>
-            <Col sm={12} xs={24}>
-              <RegistrationInputWrapper>
-                <RegistrationLabel>Email</RegistrationLabel>
-                <RegistrationInput
-                  type="email"
-                  value={email}
-                  onChange={this.handleInputChanged('email')}
-                />
-              </RegistrationInputWrapper>
-            </Col>
-            <Col sm={12} xs={24}>
-              <RegistrationInputWrapper>
-                <RegistrationLabel>Phone No.</RegistrationLabel>
-                <RegistrationInput
-                  type="text"
-                  value={phoneNumber}
-                  onChange={this.handleInputChanged('phoneNumber')}
-                />
-              </RegistrationInputWrapper>
-            </Col>
-          </Row>
-          <Row gutter={32}>
-            <Col sm={12} xs={24}>
-              <RegistrationInputWrapper>
-                <RegistrationLabel>Company</RegistrationLabel>
-                <RegistrationInput
-                  type="text"
-                  value={company}
-                  onChange={this.handleInputChanged('company')}
-                />
-              </RegistrationInputWrapper>
-            </Col>
-            <Col sm={12} xs={24}>
-              <RegistrationInputWrapper>
-                <RegistrationLabel>Role</RegistrationLabel>
-                <Select
-                  showSearch
-                  style={SelectStyled}
-                  placeholder="Select a role"
-                  optionFilterProp="children"
-                  filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  <Select.Option value="IT">IT</Select.Option>
-                  <Select.Option value="CEO">CEO</Select.Option>
-                  <Select.Option value="John Wick">John Wick</Select.Option>
-                </Select>
-              </RegistrationInputWrapper>
-            </Col>
-          </Row>
-
-
-          {errorMessage ? (
-            <RegistrationErrorMessage>
-              {errorMessage}
-            </RegistrationErrorMessage>
-          ) : null}
-          {this.renderRegisterBtn()}
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={this.register}
+          >
+            {({ handleSubmit }) => (
+              <Form onSubmit={handleSubmit}>
+                <Row gutter={32}>
+                  <Col sm={12} xs={24}>
+                    <FormInput
+                      name="username"
+                      type="text"
+                      label="Username"
+                    />
+                  </Col>
+                  <Col sm={12} xs={24}>
+                    <FormInput
+                      name="password"
+                      type="password"
+                      label="Password"
+                    />
+                  </Col>
+                </Row>
+                <Row gutter={32}>
+                  <Col sm={12} xs={24}>
+                    <FormInput
+                      name="firstName"
+                      type="text"
+                      label="First name"
+                    />
+                  </Col>
+                  <Col sm={12} xs={24}>
+                    <FormInput
+                      name="lastName"
+                      type="text"
+                      label="Last name"
+                    />
+                  </Col>
+                </Row>
+                <Row gutter={32}>
+                  <Col sm={12} xs={24}>
+                    <FormInput
+                      name="email"
+                      type="text"
+                      label="Email"
+                    />
+                  </Col>
+                  <Col sm={12} xs={24}>
+                    <FormInput
+                      name="birthday"
+                      type="text"
+                      label="Birthday"
+                    />
+                  </Col>
+                </Row>
+                <Row gutter={32}>
+                  <Col sm={12} xs={24}>
+                    <FormInput
+                      name="company"
+                      type="text"
+                      label="Company"
+                    />
+                  </Col>
+                  <Col sm={12} xs={24}>
+                    <FormInput
+                      name="role"
+                      type="select"
+                      options={roleOptions}
+                      label="Role"
+                    />
+                  </Col>
+                </Row>
+                <Row gutter={32}>
+                  <Col sm={12} xs={24}>
+                    <FormInput
+                      name="address"
+                      type="text"
+                      label="Address"
+                    />
+                  </Col>
+                  <Col sm={12} xs={24}>
+                    <FormInput
+                      name="phoneNumber"
+                      type="text"
+                      label="Phone No."
+                    />
+                  </Col>
+                </Row>
+                <Row gutter={32}>
+                  <Col sm={24} xs={24}>
+                    {this.renderRegisterBtn()}
+                  </Col>
+                </Row>
+                {errorMessage && (
+                  <RegistrationErrorMessage>
+                    {errorMessage}
+                  </RegistrationErrorMessage>
+                )}
+              </Form>
+            )}
+          </Formik>
           <RegistrationFooter>
             <RegistrationFooterText>Already had an account?</RegistrationFooterText>
             <RegistrationFooterLink href="/login">

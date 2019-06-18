@@ -1,0 +1,566 @@
+import React from 'react';
+import { Field, getIn } from 'formik';
+import { func, bool, shape } from 'prop-types';
+import _ from 'lodash';
+import {
+  Form, Input, Checkbox, Select,
+  DatePicker, Radio, InputNumber, Switch,
+} from 'antd'; // eslint-disable-line import/named
+import { InputStyled, InputLabelStyled } from './styles';
+
+export const INPUT_TYPES = {
+  TEXT: 'text',
+  NUMBER: 'number',
+  CHECKBOX: 'checkbox',
+  CHECKBOXGROUP: 'checkboxgroup',
+  RADIOGROUP: 'radiogroup',
+  SELECT: 'select',
+  DATE_PICKER: 'datepicker',
+  TEXT_AREA: 'textarea',
+  SWITCH: 'switch',
+};
+
+const FORM_LAYOUT = {
+  labelCol: { xs: 24, sm: 24 },
+  wrapperCol: { xs: 24, sm: 24 },
+};
+
+
+class FormInput extends React.Component {
+  static propTypes = {
+    refInput: func,
+    shouldRenderFeedback: bool,
+    formLayout: shape(),
+  }
+
+  static defaultProps = {
+    formLayout: FORM_LAYOUT,
+    refInput: () => { },
+    shouldRenderFeedback: true,
+  }
+
+
+  refFormInput = (input) => {
+    const { refInput } = this.props;
+    this.input = input;
+    refInput(input);
+  }
+
+  renderTextInput = ({
+    field, // { name, value, onChange, onBlur }
+    form: { touched, errors },
+    form,
+    ...props
+  }) => {
+    const {
+      inputSize,
+      label,
+      formLayout,
+      onChange,
+      refInput,
+      shouldRenderFeedback,
+      ...rest
+    } = props;
+
+
+    const isTouched = getIn(touched, field.name);
+    let errorMessage = '';
+    let validateStatus = 'success';
+
+    if (isTouched) {
+      errorMessage = getIn(errors, field.name);
+      if (errorMessage) {
+        validateStatus = 'error';
+      }
+    }
+
+    const handleChange = (e) => {
+      if (_.isFunction(onChange)) {
+        onChange(e);
+      }
+
+      field.onChange(e);
+    };
+    return (
+      <InputLabelStyled
+        label={label}
+        hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
+        validateStatus={validateStatus}
+        help={errorMessage}
+        {...formLayout}
+      >
+        <InputStyled
+          ref={this.refFormInput}
+          {...field}
+          {...rest}
+          onChange={handleChange}
+          size={inputSize}
+        />
+      </InputLabelStyled>
+    );
+  };
+
+
+  renderTextArea = ({
+    field, // { name, value, onChange, onBlur }
+    form: { touched, errors },
+    ...props
+  }) => {
+    const {
+      inputSize,
+      label,
+      formLayout,
+      onChange,
+      refInput,
+      shouldRenderFeedback,
+      ...rest
+    } = props;
+
+    const isTouched = getIn(touched, field.name);
+    let errorMessage = '';
+    let validateStatus = 'success';
+
+    if (isTouched) {
+      errorMessage = getIn(errors, field.name);
+      if (errorMessage) {
+        validateStatus = 'error';
+      }
+    }
+
+    const handleChange = (e) => {
+      if (_.isFunction(onChange)) {
+        onChange(e);
+      }
+
+      field.onChange(e);
+    };
+
+    return (
+      <InputLabelStyled
+        label={label}
+        hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
+        validateStatus={validateStatus}
+        help={errorMessage}
+
+        {...formLayout}
+      >
+        <Input.TextArea
+          {...field}
+          {...rest}
+          ref={this.refFormInput}
+          onChange={handleChange}
+          size={inputSize}
+        />
+      </InputLabelStyled>
+    );
+  };
+
+  renderNumberInput = ({
+    field, // { name, value, onChange, onBlur }
+    form: { touched, errors, setFieldValue },
+    ...props
+  }) => {
+    const {
+      inputSize,
+      label,
+      formLayout,
+      shouldRenderFeedback,
+      ...rest
+    } = props;
+
+    const isTouched = getIn(touched, field.name);
+    let errorMessage = '';
+    let validateStatus = 'success';
+
+    if (isTouched) {
+      errorMessage = getIn(errors, field.name);
+      if (errorMessage) {
+        validateStatus = 'error';
+      }
+    }
+
+    const handleChange = value => setFieldValue(field.name, value);
+
+
+    return (
+      <InputLabelStyled
+        label={label}
+        hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
+        validateStatus={validateStatus}
+        help={errorMessage}
+
+        {...formLayout}
+      >
+        <InputNumber
+          {...field}
+          {...rest}
+          style={{ width: '100%' }}
+          onChange={handleChange}
+          size={inputSize}
+        />
+      </InputLabelStyled>
+    );
+  };
+
+  renderCheckbox = ({
+    field, // { name, value, onChange, onBlur }
+    form,
+    ...props
+  }) => {
+    const {
+      label,
+      inputSize,
+      handleChange,
+      formLayout,
+      labelForm,
+      shouldRenderFeedback,
+    } = props;
+    const { touched, errors } = form;
+
+    const isTouched = getIn(touched, field.name);
+    let errorMessage = '';
+    let validateStatus = 'success';
+
+    if (isTouched) {
+      errorMessage = getIn(errors, field.name);
+      if (errorMessage) {
+        validateStatus = 'error';
+      }
+    }
+
+    const onChange = (e) => {
+      if (typeof handleChange === 'function') {
+        handleChange();
+      }
+      field.onChange(e);
+    };
+    return (
+      <InputLabelStyled
+        label={labelForm}
+        hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
+        validateStatus={validateStatus}
+        help={errorMessage}
+        {...formLayout}
+
+      >
+        <Checkbox
+          {...field}
+          size={inputSize}
+          onChange={onChange}
+          checked={_.get(form, `values.${field.name}`)}
+        >
+          {label}
+        </Checkbox>
+      </InputLabelStyled>
+    );
+  };
+
+
+  renderSwitch = ({
+    field, // { name, value, onChange, onBlur }
+    form,
+    ...props
+  }) => {
+    const {
+      label,
+      inputSize,
+      handleChange,
+      formLayout,
+      shouldRenderFeedback,
+    } = props;
+    const { touched, errors } = form;
+
+    const isTouched = getIn(touched, field.name);
+    let errorMessage = '';
+    let validateStatus = 'success';
+
+    if (isTouched) {
+      errorMessage = getIn(errors, field.name);
+      if (errorMessage) {
+        validateStatus = 'error';
+      }
+    }
+
+    const onChange = (checked) => {
+      if (typeof handleChange === 'function') {
+        handleChange(checked);
+      }
+      form.setFieldValue(field.name, checked);
+    };
+    return (
+      <InputLabelStyled
+        hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
+        validateStatus={validateStatus}
+        help={errorMessage}
+        label={label}
+        {...formLayout}
+
+      >
+        <Switch
+          {...field}
+          size={inputSize}
+          onChange={onChange}
+          checked={_.get(form, `values.${field.name}`)}
+        />
+      </InputLabelStyled>
+    );
+  };
+
+  randerCheckBoxGroup = ({
+    field, // { name, value, onChange, onBlur }
+    form: { touched, errors, setFieldValue },
+    options,
+    formLayout,
+    shouldRenderFeedback,
+    ...props
+  }) => {
+    const {
+      label: fieldLabel,
+      inputSize,
+      handleChange,
+    } = props;
+
+
+    const isTouched = getIn(touched, field.name);
+    let errorMessage = '';
+    let validateStatus = 'success';
+
+    if (isTouched) {
+      errorMessage = getIn(errors, field.name);
+      if (errorMessage) {
+        validateStatus = 'error';
+      }
+    }
+
+    const onChange = (e) => {
+      if (typeof handleChange === 'function') {
+        handleChange();
+      }
+      setFieldValue(field.name, e);
+    };
+
+    return (
+      <InputLabelStyled
+        label={fieldLabel}
+        hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
+        validateStatus={validateStatus}
+        help={errorMessage}
+
+        {...formLayout}
+      >
+        <Checkbox.Group
+          {...field}
+          onChange={onChange}
+          size={inputSize}
+        >
+          {_.map(options, ({ label, value }) => (
+            <Checkbox key={value} value={value}>{label}</Checkbox>
+          ))}
+        </Checkbox.Group>
+      </InputLabelStyled>
+    );
+  };
+
+  renderRadioGroup = ({
+    field, // { name, value, onChange, onBlur }
+    form: { touched, errors },
+    options,
+    formLayout,
+    shouldRenderFeedback,
+    ...props
+  }) => {
+    const {
+      label: fieldLabel,
+      inputSize,
+      disabled,
+      handleChange,
+    } = props;
+
+    const onChange = (e) => {
+      if (typeof handleChange === 'function') {
+        handleChange(e);
+      }
+      field.onChange(e);
+    };
+
+    const isTouched = getIn(touched, field.name);
+    let errorMessage = '';
+    let validateStatus = 'success';
+
+    if (isTouched) {
+      errorMessage = getIn(errors, field.name);
+      if (errorMessage) {
+        validateStatus = 'error';
+      }
+    }
+
+    return (
+      <InputLabelStyled
+        label={fieldLabel}
+        hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
+        validateStatus={validateStatus}
+        help={errorMessage}
+
+        {...formLayout}
+      >
+        <Radio.Group
+          {...field}
+          size={inputSize}
+          onChange={onChange}
+          disabled={disabled}
+        >
+          {_.map(options, ({ label, value }) => (
+            <Radio key={value} value={value}>{label}</Radio>
+          ))}
+        </Radio.Group>
+      </InputLabelStyled>
+    );
+  };
+
+
+  renderSelect = ({
+    field, // { name, value, onChange, onBlur }
+    form: { touched, errors },
+    form,
+    formLayout,
+    shouldRenderFeedback,
+    ...props
+  }) => {
+    const { disabled, options, handleChange, inputSize, label: fieldLabel } = props; // required
+
+    const onChange = (value) => {
+      form.setFieldValue(field.name, value);
+      if (typeof handleChange === 'function') {
+        handleChange(value, form);
+      }
+    };
+
+    const isTouched = getIn(touched, field.name);
+    let errorMessage = '';
+    let validateStatus = 'success';
+
+    if (isTouched) {
+      errorMessage = getIn(errors, field.name);
+      if (errorMessage) {
+        validateStatus = 'error';
+      }
+    }
+
+    return (
+      <InputLabelStyled
+        label={fieldLabel}
+        hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
+        validateStatus={validateStatus}
+        help={errorMessage}
+
+        {...formLayout}
+      >
+        <Select
+          value={field.value}
+          options={options}
+          onChange={onChange}
+          disabled={disabled}
+          size={inputSize}
+          {...props}
+        >
+          {_.map(options, ({ label, value }) => (
+            <Select.Option key={value} value={value}>
+              {label}
+            </Select.Option>
+          ))}
+        </Select>
+      </InputLabelStyled>
+    );
+  };
+
+  renderDatePicker = ({
+    field, // { name, value, onChange, onBlur }
+    form: { touched, errors, setFieldValue },
+    formLayout,
+    inputSize,
+    label,
+    shouldRenderFeedback,
+    ...rest
+  }) => {
+    const onChange = (date) => {
+      setFieldValue(field.name, date === null ? '' : date);
+    };
+
+    const isTouched = getIn(touched, field.name);
+    let errorMessage = '';
+    let validateStatus = 'success';
+
+    if (isTouched) {
+      errorMessage = getIn(errors, field.name);
+      if (errorMessage) {
+        validateStatus = 'error';
+      }
+    }
+
+    return (
+      <InputLabelStyled
+        label={label}
+        hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
+        validateStatus={validateStatus}
+        help={errorMessage}
+
+        {...formLayout}
+      >
+        <DatePicker
+          value={field.value}
+          size={inputSize}
+          selected={field.value}
+          onChange={onChange}
+          format="MM/DD/YYYY"
+          {...rest}
+        />
+      </InputLabelStyled>
+    );
+  };
+
+  renderFormInput = (props) => {
+    const { type } = props;
+    switch (type) {
+      case INPUT_TYPES.TEXT:
+        return this.renderTextInput(props);
+      case INPUT_TYPES.NUMBER:
+        return this.renderNumberInput(props);
+
+      case INPUT_TYPES.CHECKBOX:
+        return this.renderCheckbox(props);
+
+      case INPUT_TYPES.CHECKBOXGROUP:
+        return this.randerCheckBoxGroup(props);
+
+      case INPUT_TYPES.RADIOGROUP:
+        return this.renderRadioGroup(props);
+
+      case INPUT_TYPES.SELECT:
+        return this.renderSelect(props);
+
+      case INPUT_TYPES.DATE_PICKER:
+        return this.renderDatePicker(props);
+      case INPUT_TYPES.TEXT_AREA:
+        return this.renderTextArea(props);
+      case INPUT_TYPES.SWITCH:
+        return this.renderSwitch(props);
+      default:
+        return this.renderTextInput(props);
+    }
+  };
+
+  render() {
+    const { regular } = this.props;
+    if (regular) {
+      return this.renderFormInput(this.props);
+    }
+    return (
+      <Field
+        {...this.props}
+        component={this.renderFormInput}
+      />
+    );
+  }
+}
+
+export default FormInput;
