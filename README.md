@@ -1,5 +1,5 @@
 # mia-real-agent
-An website to management chat history and bot training
+An website to management chat history 
 
 ## Stack
 - NodeJS
