@@ -12,7 +12,8 @@ export const Wrapper = styled.div`
 `;
 
 export const Card = styled.div`
-  width: 1000px;
+  height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   background-color: #fff;
@@ -25,7 +26,7 @@ export const Header = styled.div``;
 export const LeftContainer = styled.div`
   box-shadow: 5px 0 5px #d0d0d0;    
   box-sizing: border-box;
-  height: 600px;
+  height: calc(100vh - 71px);
 `;
 
 export const RightContainer = styled.div``;

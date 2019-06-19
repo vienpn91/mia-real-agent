@@ -28,23 +28,23 @@ export class Dashboard extends Component {
         <Card>
           <Header>
             <Row>
-              <Col span={7}>
+              <Col span={4}>
                 <DashboardLogo>
                   <span>Mia End-user</span>
                 </DashboardLogo>
               </Col>
-              <Col span={17}>
+              <Col span={20}>
                 Warning cc
               </Col>
             </Row>
           </Header>
           <Row>
-            <Col span={7}>
+            <Col span={4}>
               <LeftContainer>
                 <Ticket handleSelectTicket={this.handleSelectTicket} />
               </LeftContainer>
             </Col>
-            <Col span={17}>
+            <Col span={20}>
               <RightContainer>
                 {ticket
                   ? (
