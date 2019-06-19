@@ -1,5 +1,3 @@
-import keyBy from 'lodash/keyBy';
-
 export const VALIDATION_ERROR_MESSAGE = {
   REQUIRED: 'Required',
   INVALID: 'Invalid',
@@ -17,18 +15,11 @@ export const VALIDATION_TYPE = {
   STRING: 'STRING',
 };
 
-export const ROLES = [
-  {
-    title: 'Admin',
-    value: 'ADMIN',
-  },
-  {
-    title: 'User',
-    value: 'USER',
-  },
-];
-
-export const ROLES_BY_VALUE = keyBy(ROLES, 'value');
+export const ROLES = {
+  ADMIN: 'admin',
+  INDIVIDUAL: 'individual',
+  BUSINESS: 'business',
+};
 
 export const TICKET_STATUS = {
   NEW: 'New',
