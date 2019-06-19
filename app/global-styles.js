@@ -26,7 +26,9 @@ html, body, div, span, applet, object, iframe,
   footer, header, hgroup, menu, nav, section {
     display: block;
   }
-
+  i, input, button {
+    cursor: pointer;
+  }
   ol, ul {
     list-style: none;
   }
