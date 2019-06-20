@@ -27,6 +27,7 @@ export const ChatbotTicketListWrapper = styled.div`
     }
   }
   .ant-menu-item {
+    line-height: normal;
     .anticon {
       margin-right: 0px;
     }
@@ -37,11 +38,6 @@ export const ChatbotTicketListWrapper = styled.div`
     justify-content: center;
     float: left;
     margin-right: 10px;
-  }
-  .ant-menu-inline {
-    .ant-menu-item {
-      line-height: normal;
-    }
   }
   @media (max-width: 1024px) {
     flex: 0 0 300px;
@@ -55,6 +51,11 @@ export const ChatbotTicketListWrapper = styled.div`
       li {
         justify-content: center;
         height: 54px;
+      }
+    }
+    .ant-menu-vertical {
+      .ant-menu-item {
+        padding: 0 8px;
       }
     }
   }
@@ -143,11 +144,17 @@ export const TicketFilterWrapper = styled.div`
   .ant-select {
     margin-top: 5px;
   }
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const TicketPaginationWrapper = styled.div`
   padding: 0 16px;
   text-align: center;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const TickerActionWrapper = styled.div``;

@@ -17,12 +17,12 @@ import {
 } from '../styles';
 
 const scrollStyle = {
-  height: 'calc(100vh - 420px)',
+  height: 'calc(100vh - 260px)',
   width: '100%',
 };
 
 const scrollStyleMobile = {
-  height: 'calc(100vh - 460px)',
+  height: 'calc(100vh - 60px)',
   width: '100%',
 };
 
