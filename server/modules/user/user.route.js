@@ -1,20 +1,16 @@
 import passport from 'passport';
 import BaseRouter from '../base/base.route';
 import UserController from './user.controller';
-import { ROLES_BY_VALUE } from '../../../common/enums';
+import { ROLES } from '../../../common/enums';
 import { allow } from '../../middlewares/verifyMiddlewares';
-
-const {
-  ADMIN: { value: ADMIN_ROLE },
-} = ROLES_BY_VALUE;
 
 class UserRouter extends BaseRouter {
   constructor() {
     super(UserController);
-    this.router.post('/', allow(ADMIN_ROLE), UserController.createUser);
+    this.router.post('/', allow(ROLES.ADMIN), UserController.createUser);
     this.router.put(
       '/assign-role/:id',
-      allow(ADMIN_ROLE),
+      allow(ROLES.ADMIN),
       UserController.assignRoles,
     );
 

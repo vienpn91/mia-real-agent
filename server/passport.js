@@ -5,6 +5,7 @@ import { Strategy as FacebookStrategy } from 'passport-facebook';
 import AuthController from './modules/auth/auth.controller';
 import { compareFunc } from './utils/bcrypt';
 import UserModel from './modules/user/user.model';
+import { getTokenFromReq } from './utils/utils';
 
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
@@ -55,11 +56,18 @@ passport.use(
       passReqToCallback: true,
     },
     (req, payload, done) => {
+      const tokenReq = getTokenFromReq(req);
       const { _id } = payload;
       UserModel.findById(_id).exec((err, user) => {
         if (err || !user) {
           done(err, false, { message: 'Something is wrong' });
         }
+        const { token } = user;
+
+        if (token !== tokenReq) {
+          done(err, false, { message: 'Your session has expired. Please logout and login again' });
+        }
+
         req.user = user;
         done(false, user);
       });

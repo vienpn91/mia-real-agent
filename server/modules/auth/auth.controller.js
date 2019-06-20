@@ -5,7 +5,6 @@ import _ from 'lodash';
 import moment from 'moment';
 import UserModel from '../user/user.model';
 import UserService from '../user/user.service';
-import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import check from '../../utils/validate';
 import { VALIDATION_TYPE } from '../../../common/enums';
 import { hashFunc } from '../../utils/bcrypt';
@@ -13,8 +12,6 @@ import {
   sendUserRegisterSuccessMail,
 } from '../../mail';
 import Logger from '../../logger';
-
-const EXPIRES_IN = '2y';
 
 const loginErrorMsg = 'Something is wrong';
 
@@ -61,11 +58,16 @@ class AuthController {
           gender,
         };
 
-        const result = await UserService.insert(newUser);
+        const userDoc = await UserService.insert(newUser);
+        const { _id } = userDoc;
+        const token = jwt.sign({ _id }, process.env.SECRET_KEY_JWT);
+        userDoc.set({ token });
+        await userDoc.save();
+
         if (email) {
-          sendUserRegisterSuccessMail(result);
+          sendUserRegisterSuccessMail(user);
         }
-        return done(false, result, { message: 'Logged In Successfully' });
+        return done(false, userDoc, { message: 'Logged In Successfully' });
       }
       // update user if user doesn't have email or provider
       const updateUser = {};
@@ -98,25 +100,24 @@ class AuthController {
 
   async register(req, res) {
     try {
-      const { email, password } = req.body;
+      const data = req.body;
+      const { email, password, ...rest } = data;
 
       await check(email, VALIDATION_TYPE.EMAIL);
       await check(password, VALIDATION_TYPE.PASSWORD);
 
-      const isEmailExist = await UserService.getByEmail(email);
-
-      if (isEmailExist) {
-        const { EMAIL_EXIST } = ERROR_MESSAGE;
-        throw new APIError(EMAIL_EXIST, httpStatus.BAD_REQUEST);
-      }
-
       const hash = await hashFunc(password);
       const user = {
+        ...rest,
         email,
         password: hash,
       };
 
       const userDoc = await UserService.insert(user);
+      const { _id } = userDoc;
+      const token = jwt.sign({ _id }, process.env.SECRET_KEY_JWT);
+      userDoc.set({ token });
+      await userDoc.save();
       UserService.sendVericationEmail(email);
 
       return res.status(httpStatus.OK).json(userDoc);
@@ -138,11 +139,8 @@ class AuthController {
     }
 
     const {
-      _id, email, role, verifiedAt,
+      _id, email, role, verifiedAt, token,
     } = user;
-    const token = jwt.sign({ _id }, process.env.SECRET_KEY_JWT, {
-      expiresIn: EXPIRES_IN,
-    });
     const userProfile = await UserService.getUserProfile(user);
     return res
       .status(200)
@@ -170,10 +168,9 @@ class AuthController {
       });
     }
 
-    const { _id, email, verifiedAt } = user;
-    const token = jwt.sign({ _id }, process.env.SECRET_KEY_JWT, {
-      expiresIn: EXPIRES_IN,
-    });
+    const {
+      _id, email, verifiedAt, token,
+    } = user;
     return res
       .status(200)
       .redirect(`/login/callback/${token}/${_id}/${email}/${Number(verifiedAt)}`);

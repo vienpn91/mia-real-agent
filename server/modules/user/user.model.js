@@ -1,29 +1,28 @@
 import mongoose from 'mongoose';
-import moment from 'moment';
-import { ROLES_BY_VALUE } from '../../../common/enums';
-
-const currentDateUtc = () => moment().utc().format();
-
-const {
-  USER: { value: USER_ROLE },
-} = ROLES_BY_VALUE;
+import { ROLES } from '../../../common/enums';
 const { Schema } = mongoose;
 
 const userSchema = new Schema(
   {
+    username: { type: String, unique: true, required: true },
     email: { type: String, unique: true, required: false },
     password: { type: String, required: false },
     provider: [{ id: String, name: String, _id: false }],
-    displayName: String,
-    createdAt: { type: Date, default: currentDateUtc },
-    role: { type: String, default: USER_ROLE },
-    stripeCustomerId: { type: String, require: false },
+    role: { type: String, default: ROLES.INDIVIDUAL },
+
+    token: String, // for login
     profile: {
-      firstName: String,
-      lastName: String,
-      phone: String,
+      // profile for individual customer
+      firstName: { type: String, trim: true },
+      lastName: { type: String, trim: true },
+      position: { type: String, trim: true }, // position in company
       dateOfBirth: { type: Date, required: false },
-      gender: String,
+      // profile for business customer
+      companySize: { type: String, trim: true }, // need to discuss
+      companyFields: [{ type: String, trim: true }], // company working fields
+      // both
+      company: { type: String, trim: true },
+      phone: { type: String, trim: true },
       address: { type: String, required: false },
     },
     verifiedAt: {
@@ -34,6 +33,7 @@ const userSchema = new Schema(
   {
     versionKey: false,
     collection: 'user',
+    timestamps: true,
   },
 );
 
