@@ -11,26 +11,15 @@ class SocketIOServer {
 
   connect(server) {
     const socketIO = createSocketIO(server);
-
-    socketIO.use(
-      socketioJwt.authorize({
+    socketIO
+      .on('connection', socketioJwt.authorize({
         secret: process.env.SECRET_KEY_JWT,
-        handshake: true,
-        timeout: 15000,
-      }),
-    );
-
-    socketIO.on('connection', async (socket) => {
-      const { authenticated, data: user } = await this.authenticate(socket);
-      if (authenticated) {
+        timeout: 15000, // 15 seconds to send the authentication message
+      })).on('authenticated', async (socket) => {
+        const { data: user } = await this.authenticate(socket);
         const { email } = user;
-        Logger.info('[SocketIO]: %s has been connected', email);
-      } else {
-        Logger.warning('[SocketIO]: user unauthorized');
-        socket.disconnect();
-      }
-    });
-
+        Logger.info(`[Socket.io]: The foul [${email}] has join the fray`);
+      });
     this.socketIO = socketIO;
     return socketIO;
   }

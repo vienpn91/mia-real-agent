@@ -27,9 +27,14 @@ const app = express();
 const server = http.createServer(app);
 
 /* socket IO */
+Logger.info('[Socket.io]: Openning the tournament...');
 const socketIOServer = new SocketIOServer(authenticateSocketIO);
 socketIOServer.connect(server);
 global.socketIOServer = socketIOServer;
+
+socketIOServer.socketIO.on('connection', () => {
+  Logger.info('[Socket.io]: A poor soul has enter...');
+});
 
 // setup asset folder (public folder)
 app.use('/assets', express.static(join(__dirname, './../app/assets/')));

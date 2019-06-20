@@ -100,7 +100,7 @@ class AuthController {
 
   async register(req, res) {
     try {
-      const data = req.body;
+      const { data } = req.body;
       const { email, password, ...rest } = data;
 
       await check(email, VALIDATION_TYPE.EMAIL);

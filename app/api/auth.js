@@ -12,10 +12,9 @@ export const login = (email, password) => axios
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
-export const register = (email, password) => axios
+export const register = data => axios
   .post('auth/register', {
-    email,
-    password,
+    data,
   })
   .then(response => ({ response }))
   .catch(error => ({ error }));
