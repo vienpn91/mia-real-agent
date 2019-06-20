@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Registration from '../../components/Registration/RegistrationBusiness';
+import Registration from '../../components/Registration';
 import { selectErrorMessage, getIsLoading, register } from '../../reducers/auth';
 
 const mapStateToProps = state => ({

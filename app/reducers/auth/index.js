@@ -72,13 +72,10 @@ function logout() {
 }
 
 // register action creators
-export function register(email, password) {
+export function register(payload) {
   return {
     type: AUTH_REGISTER,
-    payload: {
-      email,
-      password,
-    },
+    payload,
   };
 }
 

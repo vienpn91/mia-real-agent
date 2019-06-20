@@ -75,7 +75,7 @@ class Registration extends Component {
   register = (values) => {
     const { email, password } = values;
     const { register } = this.props;
-    register(email, password);
+    register({ ...values, email, password });
   }
 
   renderRegisterBtn = () => {

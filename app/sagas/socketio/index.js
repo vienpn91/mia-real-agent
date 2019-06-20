@@ -31,7 +31,16 @@ function createSocketChannel(socket) {
 
 function createSocketConnection(token) {
   const endpoint = process.env.SOCKETIO_ENDPOINT;
-  const socket = socketIOClient(endpoint, { query: `token=${token}` });
+  const socket = socketIOClient(endpoint);
+  socket.on('connect', () => {
+    socket
+      .emit('authenticate', { token }) // send the jwt
+      .on('unauthorized', (msg) => {
+        console.log(`unauthorized: ${JSON.stringify(msg.data)}`);
+        socket.disconnect();
+      });
+  });
+
   return new Promise((resolve) => {
     socket.on('connect', () => {
       resolve(socket);

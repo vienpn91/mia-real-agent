@@ -63,8 +63,8 @@ function* login({ payload }) {
 
 // registration handler
 function* register({ payload }) {
-  const { email, password } = payload;
-  const { error } = yield call(AuthApi.register, email, password);
+  const { email } = payload;
+  const { error } = yield call(AuthApi.register, payload);
 
   if (error) {
     const message = _get(error, 'response.data.message', DEFAULT_ERROR_MESSAGE); // this line of code needs to refactor
