@@ -7,7 +7,6 @@ import Login from './pages/Login';
 import Registration from './pages/Registration';
 import LoginCallBackPage from './pages/LoginCallback';
 import ThankForRegistering from './pages/ThankForRegistering';
-import Dashboard from './pages/Dashboard';
 
 import ChatbotComponent from './pages/Chatbot';
 
@@ -22,7 +21,6 @@ export default class App extends React.PureComponent {
         <UnauthRoute exact path="/login" component={Login} />
         <UnauthRoute exact path="/register" component={Registration} />
         <Route exact path="/greeting" component={ThankForRegistering} />
-        <Route exact path="/dashboard" component={Dashboard} />
         <Route
           path="/login/callback/:token/:userId/:email/:verifiedAt"
           component={LoginCallBackPage}

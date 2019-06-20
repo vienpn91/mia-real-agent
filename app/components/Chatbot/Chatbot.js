@@ -1,128 +1,145 @@
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
-import MediaQuery from 'react-responsive';
 import {
-  Layout, Menu, Breadcrumb, Icon, Input,
-  Avatar,
+  Layout, Icon, Input, Tooltip,
 } from 'antd';
-import ShadowScrollbars from 'components/Scrollbar';
-import MessageBox from './MessageBox';
+import MessageBox from './MessageBox/MessageBox';
+import TicketItem from './TicketItem/TicketItem';
 import {
   ChatbotWrapper,
-  ChatbotMessengerListWrapper,
+  ChatbotTicketListWrapper,
   ChatbotContentWrapper,
-  MessengerHeaderWrapper,
-  MessengerGroup,
-  MessengerUserName,
-  MessengerTime,
-  SubMessage,
+  TicketHeaderWrapper,
+  TicketEmpty,
 } from './styles';
 
 const { Content } = Layout;
 const { Search } = Input;
 
-const scrollStyle = {
-  height: 'calc(100% - 120px)',
-  width: '100%',
-};
-
-const scrollStyleMobile = {
-  height: 'calc(100% - 60px)',
-  width: '100%',
-}
-
-const messengerData = [
-  {
-    userName: 'Dat 09',
-    userAvatar: 'user',
-    subMessage: 'Today i will buy my company',
-    lastestTime: '9:32',
-  },
-  {
-    userName: 'Long Hòn',
-    userAvatar: 'user',
-    subMessage: 'Today i will delete my project',
-    lastestTime: 'Jan 15',
-  },
-  {
-    userName: 'Cồn Lường',
-    userAvatar: 'user',
-    subMessage: 'Today i will playing game all day',
-    lastestTime: 'Mon',
-  },
-  {
-    userName: 'Lu Lu',
-    userAvatar: 'user',
-    subMessage: 'Today i will buy research all day',
-    lastestTime: '12/18/2018',
-  },
-  {
-    userName: 'Tri đẹp trai',
-    userAvatar: 'user',
-    subMessage: 'Today i will gym all day',
-    lastestTime: 'Apr 15',
-  },
-  {
-    userName: 'Phat',
-    userAvatar: 'user',
-    subMessage: 'Today i will talk all day',
-    lastestTime: '15:32',
-  },
+const categories = [
+  'Finance',
+  'Law',
+  'Insurrance',
 ];
 
+const randomCategory = () => {
+  const category = [];
+  category.push(categories[Math.floor(Math.random() * categories.length)]);
+  return category;
+};
+
 export default class ChatbotComponent extends Component {
-  renderMessengerHeader = () => (
-    <MessengerHeaderWrapper>
-      <Icon type="setting" />
-      <span>Messenger</span>
-      <Icon type="edit" />
-    </MessengerHeaderWrapper>
+  state = {
+    ticket: null,
+    ticketData: [
+      {
+        title: 'This is ticket 1',
+        assignee: 'Dat 09',
+        userAvatar: 'user',
+        subMessage: 'Today i will buy my company',
+        lastestTime: '9:32',
+        category: randomCategory(),
+      },
+      {
+        title: 'This is ticket 2',
+        assignee: 'Long Hòn',
+        userAvatar: 'user',
+        subMessage: 'Today i will delete my project',
+        lastestTime: 'Jan 15',
+        category: randomCategory(),
+      },
+      {
+        title: 'This is ticket 3',
+        assignee: 'Cồn Lường',
+        userAvatar: 'user',
+        subMessage: 'Today i will playing game all day',
+        lastestTime: 'Mon',
+        category: randomCategory(),
+      },
+      {
+        title: 'This is ticket 4',
+        assignee: 'Lu Lu',
+        userAvatar: 'user',
+        subMessage: 'Today i will buy research all day',
+        lastestTime: '12/18/2018',
+        category: randomCategory(),
+      },
+      {
+        title: 'This is ticket 5',
+        assignee: 'Tri đẹp trai',
+        userAvatar: 'user',
+        subMessage: 'Today i will gym all day',
+        lastestTime: 'Apr 15',
+        category: randomCategory(),
+      },
+      {
+        title: 'This is ticket 6',
+        assignee: 'Phat',
+        userAvatar: 'user',
+        subMessage: 'Today i will talk all day',
+        lastestTime: '15:32',
+        category: randomCategory(),
+      },
+    ],
+  }
+
+  handleSelectTicket = (ticket) => {
+    this.setState({
+      ticket,
+    });
+  }
+
+  createTicket = () => {
+    const { ticketData } = this.state;
+    this.setState({
+      ticketData: [...ticketData, {
+        title: `This is ticket ${ticketData.length + 1}`,
+        assignee: `Assignee random ${ticketData.length + 1}`,
+        userAvatar: 'user',
+        subMessage: 'This is ticket random',
+        lastestTime: 'Today',
+        category: randomCategory(),
+      }],
+    });
+  }
+
+  renderTicketHeader = () => (
+    <TicketHeaderWrapper>
+      <Tooltip title="Ticket setting">
+        <Icon type="setting" />
+      </Tooltip>
+      <span>Ticket List</span>
+      <Tooltip title="Create ticket">
+        <Icon type="edit" onClick={this.createTicket} />
+      </Tooltip>
+    </TicketHeaderWrapper>
   );
 
-  renderSearchMessenger = () => (
-    <MessengerHeaderWrapper search>
+  renderSearchTicket = () => (
+    <TicketHeaderWrapper search>
       <Search
-        placeholder="Search on Messenger"
+        placeholder="Search on Ticket"
         onSearch={value => console.log(value)}
       />
-    </MessengerHeaderWrapper>
+    </TicketHeaderWrapper>
   )
 
-  renderMessengerList = () => (
-    <MediaQuery maxWidth={768}>
-      {matches => (
-        <ShadowScrollbars autoHide style={matches ? scrollStyleMobile : scrollStyle}>
-          <Menu defaultSelectedKeys={['1']}>
-            {messengerData.map((message, index) => (
-              <Menu.Item key={index}>
-                <Avatar icon={message.userAvatar} size="large" />
-                <MessengerGroup>
-                  <MessengerUserName>{message.userName}</MessengerUserName>
-                  <SubMessage>{message.subMessage}</SubMessage>
-                </MessengerGroup>
-                <MessengerTime>{message.lastestTime}</MessengerTime>
-              </Menu.Item>
-            ))}
-          </Menu>
-        </ShadowScrollbars>
-      )}
-    </MediaQuery>
-  );
-
   render() {
+    const { ticket, ticketData } = this.state;
     return (
       <ChatbotWrapper>
-        <ChatbotMessengerListWrapper>
-          {this.renderMessengerHeader()}
-          {this.renderSearchMessenger()}
-          {this.renderMessengerList()}
-        </ChatbotMessengerListWrapper>
+        <ChatbotTicketListWrapper>
+          {this.renderTicketHeader()}
+          {this.renderSearchTicket()}
+          <TicketItem
+            ticketData={ticketData}
+            categories={categories}
+            handleSelectTicket={this.handleSelectTicket}
+          />
+        </ChatbotTicketListWrapper>
         <ChatbotContentWrapper>
           <Content>
-            <Breadcrumb>
-              <Breadcrumb.Item>Message Name</Breadcrumb.Item>
-            </Breadcrumb>
-            <MessageBox />
+            {ticket ? <MessageBox ticket={ticket} /> : <TicketEmpty>Please select a ticket</TicketEmpty>}
           </Content>
         </ChatbotContentWrapper>
       </ChatbotWrapper>

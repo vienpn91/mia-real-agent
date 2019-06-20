@@ -5,7 +5,7 @@ export const ChatbotWrapper = styled.div`
   height: 100vh;
 `;
 
-export const ChatbotMessengerListWrapper = styled.div`
+export const ChatbotTicketListWrapper = styled.div`
   flex: 0 0 400px;
   background-color: #fff;
   .ant-input-search {
@@ -19,6 +19,7 @@ export const ChatbotMessengerListWrapper = styled.div`
   }
   .ant-menu {
     height: 100%;
+    border-right: none;
     li {
       display: flex;
       align-items: center;
@@ -72,7 +73,7 @@ export const ChatbotContentWrapper = styled.div`
   }
 `;
 
-export const MessengerHeaderWrapper = styled.div`
+export const TicketHeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -96,7 +97,12 @@ export const MessengerHeaderWrapper = styled.div`
   }
 `;
 
-export const MessengerGroup = styled.div`
+export const TicketItemWrapper = styled.div`
+  height: calc(100% - 120px);
+  border-right: 1px solid #d9d9d9;
+`;
+
+export const TicketGroup = styled.div`
   flex: 1;
   line-height: normal;
   @media (max-width: 768px) {
@@ -104,7 +110,7 @@ export const MessengerGroup = styled.div`
   }
 `;
 
-export const MessengerUserName = styled.span`
+export const TicketUserName = styled.span`
   color: #000;
   font-size: 15px;
 `;
@@ -112,7 +118,7 @@ export const MessengerUserName = styled.span`
 export const SubMessage = styled.div`
   color: #999;
   font-size: 13px;
-  width: 250px;
+  width: 230px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -121,21 +127,39 @@ export const SubMessage = styled.div`
   }
 `;
 
-export const MessengerTime = styled.div`
+export const TicketTime = styled.div`
   margin-left: 10px;
   @media (max-width: 768px) {
     display: none;
   }
 `;
 
+export const TicketFilterWrapper = styled.div`
+  padding: 16px;
+  border-top: 1px solid #d9d9d9;
+  span {
+    font-weight: 700;
+  }
+  .ant-select {
+    margin-top: 5px;
+  }
+`;
+
+export const TicketPaginationWrapper = styled.div`
+  padding: 0 16px;
+  text-align: center;
+`;
+
+export const TickerActionWrapper = styled.div``;
+
 export const MessageBoxWrapper = styled.div`
-  height: calc(100vh - 60px);
+  height: 100vh;
   background: #fff;
   position: relative;
 `;
 
 export const MessageBoxContent = styled.div`
-  height: 100%;
+  height: calc(100% - 60px);
 `;
 
 export const MessageBoxItem = styled.div`
@@ -179,6 +203,30 @@ export const MessageBoxItem = styled.div`
   }
   
 `;
+
+export const MessageBoxHeaderWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  .ant-breadcrumb-link {
+    color: #595959;
+  }
+`;
+
+export const TicketName = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  span {
+    width: 100px;
+    min-width: 100px;
+    margin-right: 10px;
+    font-weight: 700;
+  }
+  p {
+    margin: 0px;
+  }
+`;
+
 
 export const MessageText = styled.div`
   width: fit-content;
@@ -224,4 +272,11 @@ export const InputAction = styled.label``;
 
 export const InputUpload = styled.input`
   display: none;
+`;
+
+export const TicketEmpty = styled.div`
+  padding: 15px;
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
 `;

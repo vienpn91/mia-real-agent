@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-import { Avatar } from 'antd';
+import { Avatar, Breadcrumb } from 'antd';
 import ShadowScrollbars from 'components/Scrollbar';
+import { object } from 'prop-types';
 import {
   MessageBoxWrapper,
   MessageBoxContent,
   MessageBoxItem,
+  MessageBoxHeaderWrapper,
   MessageText,
   MessageInputWrapper,
   MessageActionWrapper,
   MessageInput,
   InputAction,
   InputUpload,
-} from './styles';
+} from '../styles';
 
 const scrollStyle = {
   height: 'calc(100% - 60px)',
@@ -19,6 +21,10 @@ const scrollStyle = {
 };
 
 export default class MessageBox extends Component {
+  static propTypes = {
+    ticket: object.isRequired,
+  }
+
   renderLeftMessageContent = () => (
     <MessageBoxItem left>
       <Avatar icon="user" size={35} />
@@ -79,9 +85,22 @@ export default class MessageBox extends Component {
     </MessageInputWrapper>
   );
 
+  renderMessageHeader = () => {
+    const { ticket } = this.props;
+    return (
+      <MessageBoxHeaderWrapper>
+        <Breadcrumb separator="-">
+          <Breadcrumb.Item>{ticket.title}</Breadcrumb.Item>
+          <Breadcrumb.Item>{ticket.assignee}</Breadcrumb.Item>
+        </Breadcrumb>
+      </MessageBoxHeaderWrapper>
+    );
+  }
+
   render() {
     return (
       <MessageBoxWrapper>
+        {this.renderMessageHeader()}
         <MessageBoxContent>
           <ShadowScrollbars autoHide style={scrollStyle}>
             {this.renderLeftMessageContent()}
