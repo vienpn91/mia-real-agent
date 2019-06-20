@@ -133,6 +133,7 @@ export default class ChatbotComponent extends Component {
           {this.renderSearchTicket()}
           <TicketItem
             ticketData={ticketData}
+            ticket={ticket}
             categories={categories}
             handleSelectTicket={this.handleSelectTicket}
           />

@@ -8,6 +8,7 @@ export const ChatbotWrapper = styled.div`
 export const ChatbotTicketListWrapper = styled.div`
   flex: 0 0 400px;
   background-color: #fff;
+  transition: all 300ms ease;
   .ant-input-search {
     input {
       background-color: #f5f6f7;
@@ -28,6 +29,13 @@ export const ChatbotTicketListWrapper = styled.div`
   }
   .ant-menu-item {
     line-height: normal;
+    &:hover {
+      color: unset;
+      background-color: #e6f7ff;
+      .anticon-setting {
+        visibility: visible;
+      }
+    }
     .anticon {
       margin-right: 0px;
     }
@@ -38,6 +46,9 @@ export const ChatbotTicketListWrapper = styled.div`
     justify-content: center;
     float: left;
     margin-right: 10px;
+  }
+  .anticon-setting {
+    visibility: hidden;
   }
   @media (max-width: 1024px) {
     flex: 0 0 300px;
@@ -130,6 +141,15 @@ export const SubMessage = styled.div`
 
 export const TicketTime = styled.div`
   margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: normal;
+  i {
+    &:hover {
+      color: #09579E;
+    }
+  }
   @media (max-width: 768px) {
     display: none;
   }
@@ -158,6 +178,17 @@ export const TicketPaginationWrapper = styled.div`
 `;
 
 export const TickerActionWrapper = styled.div``;
+
+export const TicketGroupAction = styled.div``;
+
+export const TicketButton = styled.div`
+  padding: 6px 15px;
+  cursor: pointer;
+  &:hover {
+    background-color: #279cd4;
+    color: #fff;
+  }
+`;
 
 export const MessageBoxWrapper = styled.div`
   height: 100vh;

@@ -88,6 +88,12 @@ html, body, div, span, applet, object, iframe,
       transform: translateX(426.078px)!important;      
     }
   }
+  .ant-popover-inner-content {
+    padding: 0px !important;
+  }
+  .ant-popover-title {
+    font-weight: 700 !important;
+  }
   input{
     &:focus {
       outline: 0;

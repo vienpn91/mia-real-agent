@@ -2,9 +2,9 @@
 import React, { Component } from 'react';
 import MediaQuery from 'react-responsive';
 import ShadowScrollbars from 'components/Scrollbar';
-import { func, array } from 'prop-types';
+import { func, array, object } from 'prop-types';
 import {
-  Menu, Avatar, Select, Pagination,
+  Menu, Avatar, Select, Pagination, Popover, Icon,
 } from 'antd';
 import {
   TicketItemWrapper,
@@ -14,6 +14,8 @@ import {
   SubMessage,
   TicketFilterWrapper,
   TicketPaginationWrapper,
+  TicketGroupAction,
+  TicketButton,
 } from '../styles';
 
 const scrollStyle = {
@@ -31,11 +33,13 @@ export default class TicketItem extends Component {
     handleSelectTicket: func.isRequired,
     categories: array.isRequired,
     ticketData: array.isRequired,
+    ticket: object,
   }
 
   state = {
     current: 1,
     filter: [],
+    visible: false,
   }
 
   handleChangeFilter = (values) => {
@@ -43,6 +47,16 @@ export default class TicketItem extends Component {
       filter: values,
     });
   }
+
+  handleVisibleChange = (visible) => {
+    this.setState({ visible });
+  };
+
+  hide = () => {
+    this.setState({
+      visible: false,
+    });
+  };
 
   getFilteredList = () => {
     const { current, filter } = this.state;
@@ -66,8 +80,18 @@ export default class TicketItem extends Component {
     handleSelectTicket(ticket);
   }
 
+  renderGroupAction = () => (
+    <TicketGroupAction>
+      <TicketButton>Remove</TicketButton>
+      <TicketButton>Archive</TicketButton>
+      <TicketButton>Mark as</TicketButton>
+      <TicketButton>Rate</TicketButton>
+    </TicketGroupAction>
+
+  )
+
   renderTicketList = () => {
-    const { current } = this.state;
+    const { current, visible } = this.state;
     const { ticketData } = this.props;
     return (
       <MediaQuery maxWidth={768}>
@@ -81,7 +105,20 @@ export default class TicketItem extends Component {
                     <TicketUserName>{ticket.title}</TicketUserName>
                     <SubMessage>{ticket.subMessage}</SubMessage>
                   </TicketGroup>
-                  <TicketTime>{ticket.lastestTime}</TicketTime>
+                  <TicketTime>
+                    <span>{ticket.lastestTime}</span>
+                    <Popover
+                      content={this.renderGroupAction()}
+                      title="More action"
+                      trigger="click"
+                      visible={visible}
+                      placement="bottom"
+                      onVisibleChange={this.handleVisibleChange}
+                    >
+                      <Icon type="setting" />
+                    </Popover>
+                  </TicketTime>
+
                 </Menu.Item>
               ))}
             </Menu>
