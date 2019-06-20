@@ -1,17 +1,17 @@
 /*Fonts icon */
 @font-face {
   font-family: 'icomoon';
-  src: url('./icomoon.eot?r35nfd');
+  src: url('./icomoon.eot?4lky6n');
   src: local('icomoon'),
-    url('./icomoon.eot?r35nfd#iefix') format('embedded-opentype'),
-    url('./icomoon.ttf?r35nfd') format('truetype'),
-    url('./icomoon.woff?r35nfd') format('woff'),
-    url('./icomoon.svg?r35nfd#icomoon') format('svg');
+    url('./icomoon.eot?4lky6n#iefix') format('embedded-opentype'),
+    url('./icomoon.ttf?4lky6n') format('truetype'),
+    url('./icomoon.woff?4lky6n') format('woff'),
+    url('./icomoon.svg?4lky6n#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
-[class^="icon-"], [class*=" icon-"] {
+[class^="mia-"], [class*=" mia-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon' !important;
   speak: none;
@@ -26,108 +26,105 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-edit:before {
-  content: "\e91c";
+.mia-camera:before {
+  content: "\e91d";
 }
-.icon-more:before {
-  content: "\e91a";
+.mia-folder:before {
+  content: "\e91e";
 }
-.icon-bag:before {
-  content: "\e915";
+.mia-gallery:before {
+  content: "\e91f";
 }
-.icon-check:before {
-  content: "\e910";
+.mia-happiness:before {
+  content: "\e920";
 }
-.icon-trash:before {
-  content: "\e90f";
-}
-.icon-arrow-right-thin:before {
-  content: "\e90e";
-}
-.icon-notifications:before {
-  content: "\e90a";
-}
-.icon-person:before {
-  content: "\e90b";
-}
-.icon-arrow-right:before {
-  content: "\e905";
-}
-.icon-log-in:before {
-  content: "\e906";
-}
-.icon-add:before {
-  content: "\e903";
-}
-.icon-search:before {
-  content: "\e901";
-}
-.icon-shopping-bag:before {
-  content: "\e91b";
-}
-.icon-chevron-left:before {
-  content: "\e917";
-}
-.icon-chevron-right:before {
-  content: "\e916";
-}
-.icon-cheveron-down:before {
-  content: "\e909";
-}
-.icon-menu:before {
-  content: "\e908";
-}
-.icon-close:before {
-  content: "\e904";
-}
-.icon-person:before {
-  content: "\e90b";
-}
-.icon-arrow-right:before {
-  content: "\e905";
-}
-.icon-log-in:before {
-  content: "\e906";
-}
-.icon-add:before {
-  content: "\e903";
-}
-.icon-search:before {
-  content: "\e901";
-}
-.icon-promotion:before {
+.mia-promotion:before {
   content: "\e919";
 }
-.icon-google:before {
+.mia-google:before {
   content: "\e913";
   color: #4285f4;
 }
-.icon-twitter:before {
+.mia-twitter:before {
   content: "\e911";
   color: #1da1f2;
 }
-.icon-facebook:before {
+.mia-facebook:before {
   content: "\e912";
   color: #3b5998;
 }
-.icon-cart:before {
+.mia-cart:before {
   content: "\e900";
 }
-.icon-close1:before {
+.mia-edit:before {
+  content: "\e91c";
+}
+.mia-more:before {
+  content: "\e91a";
+}
+.mia-bag:before {
+  content: "\e915";
+}
+.mia-check:before {
+  content: "\e910";
+}
+.mia-trash:before {
+  content: "\e90f";
+}
+.mia-arrow-right-thin:before {
+  content: "\e90e";
+}
+.mia-notifications:before {
+  content: "\e90a";
+}
+.mia-person:before {
+  content: "\e90b";
+}
+.mia-arrow-right:before {
+  content: "\e905";
+}
+.mia-log-in:before {
+  content: "\e906";
+}
+.mia-add:before {
+  content: "\e903";
+}
+.mia-search:before {
+  content: "\e901";
+}
+.mia-shopping-bag:before {
+  content: "\e91b";
+}
+.mia-chevron-left:before {
+  content: "\e917";
+}
+.mia-chevron-right:before {
+  content: "\e916";
+}
+.mia-cheveron-down:before {
+  content: "\e909";
+}
+.mia-menu:before {
+  content: "\e908";
+}
+.mia-close:before {
+  content: "\e904";
+}
+.mia-close1:before {
   content: "\e918";
 }
-.icon-filter:before {
+.mia-filter:before {
   content: "\e90d";
 }
-.icon-user-circle-o:before {
+.mia-user-circle-o:before {
   content: "\e902";
 }
-.icon-payment:before {
+.mia-payment:before {
   content: "\e914";
 }
-.icon-exit:before {
+.mia-exit:before {
   content: "\e90c";
 }
-.icon-user-plus:before {
+.mia-user-plus:before {
   content: "\e907";
 }

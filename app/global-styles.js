@@ -26,7 +26,9 @@ html, body, div, span, applet, object, iframe,
   footer, header, hgroup, menu, nav, section {
     display: block;
   }
-
+  i, input, button {
+    cursor: pointer;
+  }
   ol, ul {
     list-style: none;
   }
@@ -85,6 +87,12 @@ html, body, div, span, applet, object, iframe,
     @media (max-width: 960px) {
       transform: translateX(426.078px)!important;      
     }
+  }
+  .ant-popover-inner-content {
+    padding: 0px !important;
+  }
+  .ant-popover-title {
+    font-weight: 700 !important;
   }
   input{
     &:focus {
