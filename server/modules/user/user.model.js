@@ -19,7 +19,7 @@ const userSchema = new Schema(
       dateOfBirth: { type: Date, required: false },
       // profile for business customer
       companySize: { type: String, trim: true }, // need to discuss
-      companyField: [{ type: String, trim: true }], // company working fields
+      companyFields: [{ type: String, trim: true }], // company working fields
       // both
       company: { type: String, trim: true },
       phone: { type: String, trim: true },
