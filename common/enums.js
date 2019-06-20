@@ -19,6 +19,8 @@ export const ROLES = {
   ADMIN: 'admin',
   INDIVIDUAL: 'individual',
   BUSINESS: 'business',
+  FREELANCER: 'freelancer',
+  EMPLOYEE: 'employee',
 };
 
 export const TICKET_STATUS = {
