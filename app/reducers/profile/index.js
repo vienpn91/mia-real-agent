@@ -23,12 +23,12 @@ const fetchDetailFailAction = errorMessage => ({
 
 // selector
 const getProfileIsFetching = ({ profile }) => profile.get('isFetching');
-const getProfileFetchedProfile = ({ profile }) => profile.get('fetchProfile');
+const getProfileFetchedProfile = ({ profile }) => profile.get('fetchUser');
 
 const initialState = fromJS({
   isFetching: false,
   fetchError: '',
-  fetchProfile: {},
+  fetchUser: {},
 });
 
 function profileReducer(state = initialState, action) {
@@ -36,10 +36,10 @@ function profileReducer(state = initialState, action) {
     case FETCH_DETAIL:
       return state.set('isFetching', true)
         .set('fetchError', '')
-        .set('fetchProfile', {});
+        .set('fetchUser', {});
     case FETCH_DETAIL_SUCCESS:
       return state.set('isFetching', false)
-        .set('fetchProfile', action.payload);
+        .set('fetchUser', action.payload);
     case FETCH_DETAIL_FAIL:
       return state.set('isFetching', false)
         .set('fetchError', action.errorMessage);
