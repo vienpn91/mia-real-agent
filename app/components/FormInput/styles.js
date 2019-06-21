@@ -102,26 +102,59 @@ export const InputWrapper = styled.div`
 
 export const InputStyled = styled(Input)`
   width: 100% !important;
-  height: 27.5px !important;
+  height: 36px !important;
   border: 0 !important;
-  padding: 0 !important;
+  padding: 8px !important;
   outline: 0 none !important;
-  -webkit-transition: border-color .2s linear !important;
   transition: border-color .2s linear !important;
   border-bottom: 1px solid #000 !important;
   -webkit-font-smoothing: antialiased !important;
-  border-radius: 0 !important;  
-  :focus {
+  border-radius: 0 !important;
+  background: transparent !important;
+  &:focus {
     box-shadow: none !important;
+    border: 1px solid #000 !important;
+    border-radius: 2px !important;
+  }
+  &:hover {
+    transition: all 300ms ease;
+    background-color: #ddd;
   }
 `;
 
-export const InputLabelStyled = styled(Form.Item)`
+export const InputWrapperStyled = styled(Form.Item)`
   color: #000;
   label{
     float: left;
     ::after{
       content: '' !important;
     }
+  }
+  input {
+    
+    
+  }
+  .ant-select-selection {
+    background-color: transparent;
+    border-radius: 0px;
+    border: none;
+    border-bottom: 1px solid #000;
+    &:focus {
+      box-shadow: none;
+      border-radius: 2px;
+      border: 1px solid #000;
+    }
+    &:hover {
+      border-color: #000;
+    }
+    .anticon-down {
+      color: #000;
+    }
+  }
+  .ant-select-open .ant-select-selection {
+    border-color: #000;
+  }
+  .ant-select-selection__rendered {
+    outline: none;
   }
 `;

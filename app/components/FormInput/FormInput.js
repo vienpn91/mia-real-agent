@@ -3,10 +3,10 @@ import { Field, getIn } from 'formik';
 import { func, bool, shape } from 'prop-types';
 import _ from 'lodash';
 import {
-  Form, Input, Checkbox, Select,
+  Input, Checkbox, Select,
   DatePicker, Radio, InputNumber, Switch,
 } from 'antd'; // eslint-disable-line import/named
-import { InputStyled, InputLabelStyled } from './styles';
+import { InputStyled, InputWrapperStyled } from './styles';
 
 export const INPUT_TYPES = {
   TEXT: 'text',
@@ -82,7 +82,7 @@ class FormInput extends React.Component {
       field.onChange(e);
     };
     return (
-      <InputLabelStyled
+      <InputWrapperStyled
         label={label}
         hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
         validateStatus={validateStatus}
@@ -96,7 +96,7 @@ class FormInput extends React.Component {
           onChange={handleChange}
           size={inputSize}
         />
-      </InputLabelStyled>
+      </InputWrapperStyled>
     );
   };
 
@@ -136,7 +136,7 @@ class FormInput extends React.Component {
     };
 
     return (
-      <InputLabelStyled
+      <InputWrapperStyled
         label={label}
         hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
         validateStatus={validateStatus}
@@ -151,7 +151,7 @@ class FormInput extends React.Component {
           onChange={handleChange}
           size={inputSize}
         />
-      </InputLabelStyled>
+      </InputWrapperStyled>
     );
   };
 
@@ -183,7 +183,7 @@ class FormInput extends React.Component {
 
 
     return (
-      <InputLabelStyled
+      <InputWrapperStyled
         label={label}
         hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
         validateStatus={validateStatus}
@@ -198,7 +198,7 @@ class FormInput extends React.Component {
           onChange={handleChange}
           size={inputSize}
         />
-      </InputLabelStyled>
+      </InputWrapperStyled>
     );
   };
 
@@ -235,7 +235,7 @@ class FormInput extends React.Component {
       field.onChange(e);
     };
     return (
-      <InputLabelStyled
+      <InputWrapperStyled
         label={labelForm}
         hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
         validateStatus={validateStatus}
@@ -251,7 +251,7 @@ class FormInput extends React.Component {
         >
           {label}
         </Checkbox>
-      </InputLabelStyled>
+      </InputWrapperStyled>
     );
   };
 
@@ -288,7 +288,7 @@ class FormInput extends React.Component {
       form.setFieldValue(field.name, checked);
     };
     return (
-      <InputLabelStyled
+      <InputWrapperStyled
         hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
         validateStatus={validateStatus}
         help={errorMessage}
@@ -302,7 +302,7 @@ class FormInput extends React.Component {
           onChange={onChange}
           checked={_.get(form, `values.${field.name}`)}
         />
-      </InputLabelStyled>
+      </InputWrapperStyled>
     );
   };
 
@@ -340,7 +340,7 @@ class FormInput extends React.Component {
     };
 
     return (
-      <InputLabelStyled
+      <InputWrapperStyled
         label={fieldLabel}
         hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
         validateStatus={validateStatus}
@@ -357,7 +357,7 @@ class FormInput extends React.Component {
             <Checkbox key={value} value={value}>{label}</Checkbox>
           ))}
         </Checkbox.Group>
-      </InputLabelStyled>
+      </InputWrapperStyled>
     );
   };
 
@@ -395,7 +395,7 @@ class FormInput extends React.Component {
     }
 
     return (
-      <InputLabelStyled
+      <InputWrapperStyled
         label={fieldLabel}
         hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
         validateStatus={validateStatus}
@@ -413,7 +413,7 @@ class FormInput extends React.Component {
             <Radio key={value} value={value}>{label}</Radio>
           ))}
         </Radio.Group>
-      </InputLabelStyled>
+      </InputWrapperStyled>
     );
   };
 
@@ -447,7 +447,7 @@ class FormInput extends React.Component {
     }
 
     return (
-      <InputLabelStyled
+      <InputWrapperStyled
         label={fieldLabel}
         hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
         validateStatus={validateStatus}
@@ -469,7 +469,7 @@ class FormInput extends React.Component {
             </Select.Option>
           ))}
         </Select>
-      </InputLabelStyled>
+      </InputWrapperStyled>
     );
   };
 
@@ -498,7 +498,7 @@ class FormInput extends React.Component {
     }
 
     return (
-      <InputLabelStyled
+      <InputWrapperStyled
         label={label}
         hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
         validateStatus={validateStatus}
@@ -514,7 +514,7 @@ class FormInput extends React.Component {
           format="MM/DD/YYYY"
           {...rest}
         />
-      </InputLabelStyled>
+      </InputWrapperStyled>
     );
   };
 

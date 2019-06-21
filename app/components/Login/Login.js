@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import {
+  Row, Col, Form,
+} from 'antd';
+import FormInput from '../FormInput/FormInput';
 import {
   LoginWrapper,
-  LoginCard,
-  LoginInput,
-  LoginLabel,
-  LoginInputWrapper,
+  LoginItem,
   LoginTitle,
   LoginBtn,
   LoginFBBtn,
@@ -15,6 +18,16 @@ import {
   LoginSpinner,
   LoginErrorMessage,
 } from './styles';
+
+const initialValues = {
+  email: '',
+  password: '',
+};
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid Email').trim().required('Required'),
+  password: Yup.string().trim().required('Required'),
+});
 
 class Login extends Component {
   static propTypes = {
@@ -28,21 +41,16 @@ class Login extends Component {
     errorMessage: '',
   }
 
-  state = {
-    email: '',
-    password: '',
-  }
-
   handleInputChanged = fieldName => ({ target }) => {
     this.setState({
       [fieldName]: target.value,
     });
   }
 
-  login = () => {
-    const { email, password } = this.state;
+  login = (values) => {
+    const { email, password } = values;
     const { login } = this.props;
-    login(email, password);
+    login({ ...values, email, password });
   }
 
   renderLoginBtn = () => {
@@ -57,7 +65,7 @@ class Login extends Component {
     }
     return (
       <LoginBtn
-        onClick={this.login}
+        type="submit"
       >
         Login
       </LoginBtn>
@@ -65,46 +73,57 @@ class Login extends Component {
   }
 
   render() {
-    const { email, password } = this.state;
     const { errorMessage } = this.props;
-
     return (
       <LoginWrapper>
-        <LoginCard>
-          <LoginTitle>Mia Consult</LoginTitle>
-          <LoginInputWrapper>
-            <LoginLabel>Email</LoginLabel>
-            <LoginInput
-              type="email"
-              value={email}
-              onChange={this.handleInputChanged('email')}
-            />
-          </LoginInputWrapper>
-          <LoginInputWrapper>
-            <LoginLabel>Password</LoginLabel>
-            <LoginInput
-              type="password"
-              value={password}
-              onChange={this.handleInputChanged('password')}
-            />
-          </LoginInputWrapper>
-          {errorMessage ? (
-            <LoginErrorMessage>
-              {errorMessage}
-            </LoginErrorMessage>
-          ) : null}
-          {this.renderLoginBtn()}
+        <LoginItem>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={this.login}
+          >
+            {({ handleSubmit }) => (
+              <Form onSubmit={handleSubmit}>
+                <LoginTitle>Mia Consult</LoginTitle>
+                <Row gutter={32}>
+                  <Col>
+                    <FormInput
+                      type="email"
+                      name="email"
+                      label="Email"
+                    />
+                  </Col>
+                </Row>
+                <Row gutter={32}>
+                  <Col>
+                    <FormInput
+                      type="password"
+                      name="password"
+                      label="Password"
+                    />
+                  </Col>
+                </Row>
+                {this.renderLoginBtn()}
+                {errorMessage && (
+                  <LoginErrorMessage>
+                    {errorMessage}
+                  </LoginErrorMessage>
+                )}
+
+              </Form>
+            )}
+          </Formik>
           <LoginFBBtn href="api/auth/login/facebook">
-            <i className="icon-facebook" />
-            Login with Facebook
+            <i className="mia-facebook" />
+                  Login with Facebook
           </LoginFBBtn>
           <LoginFooter>
             <LoginFooterText>Don't have an account?</LoginFooterText>
             <LoginFooterLink href="/register">
-              Register now!
+                    Register now!
             </LoginFooterLink>
           </LoginFooter>
-        </LoginCard>
+        </LoginItem>
       </LoginWrapper>
     );
   }

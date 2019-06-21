@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 export const LoginWrapper = styled.div`
   height: 100vh;
@@ -6,16 +6,36 @@ export const LoginWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url('../../assets/images/bg-login.jpg');
+  background-position: left center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  &:before {
+    position: absolute;
+    content: '';
+    top: 0px;
+    lefT: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #0202024a;
+    z-index: 0;
+  }
 `;
 
-export const LoginCard = styled.div`
-  width: 360px;
+export const LoginItem = styled.div`
+  width: 420px;
   display: flex;
   flex-direction: column;
-  background-color: #fff;
-  box-shadow: 0 3px 10px 3px #e7e7e7;
+  background-color: #ffffffe0;
+  box-shadow: 0px 0px 12px -2px #2a3a51;;
   padding: 50px;
-  color: #000;
+  color: #6e6c83fa;
+  position: relative;
+  z-index: 1;
+  ${({ register }) => register && css`
+    width: 640px;
+  `};
 `;
 
 export const LoginTitle = styled.div`
@@ -23,6 +43,7 @@ export const LoginTitle = styled.div`
   font-size: 32px;
   font-family: Countryside, sans-serif;
   margin-bottom: 55px;
+  color: #000;
 `;
 
 export const LoginInputWrapper = styled.div`
@@ -36,63 +57,47 @@ export const LoginInput = styled.input`
   height: 27.5px;
   border: 0;
   outline: 0 none;
-  -webkit-transition: border-color .2s linear;
   transition: border-color .2s linear;
   border-bottom: 1px solid #000;
   -webkit-font-smoothing: antialiased;
+  background-color: transparent;
 `;
 
 export const LoginLabel = styled.div`
-  margin-bottom: 7.5px;
+  margin-bottom: 5px;
   color: #000;
 `;
 
 export const LoginBtn = styled.button`
-  height: 40px;
-  border: 1px solid black;
+  height: 50px;
+  width: 100%;
+  border-radius: 50px;
+  border: 1px solid #000;
   transition: .3s ease;
-  background: #fff;
+  background: #000;
+  color: #fff;
   cursor: pointer;
   margin-bottom: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
-  
-
   &:hover {
-    background: #000;
-    color: #fff;
-  }
-  &:hover div {
-    border-color: white white white transparent !important;
+    background: #fff;
+    color: #000;
   }
 `;
 
-export const LoginFBBtn = styled.a`
-  display: block;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  border-radius: 5;
-  transition: .3s ease;
+export const LoginFBBtn = styled(LoginBtn)`
+  border: 1px solid #3b5998;
   background: #3b5998;
-  cursor: pointer;
-  text-decoration: none;
-  position: relative;
   color: #fff;
-
-  & > i {
-    position: absolute;
-    left: 12px;
+  i {
+    font-size: 16px;
+    margin-right: 5px;
   }
-
-  & > i::before {
-    color: #fff;
-  }
-
   &:hover {
-    background: #2f477a;
+    background: #fff;
+    color: #3b5998;
   }
 `;
 
@@ -109,9 +114,9 @@ export const LoginFooterLink = styled.a`
   text-decoration: none;
   color: black;
   font-weight: bold;
-
   &:hover {
     text-decoration: underline;
+    color: #1872bb;
   }
 `;
 
