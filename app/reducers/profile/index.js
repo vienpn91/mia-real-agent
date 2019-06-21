@@ -9,6 +9,24 @@ const fetchDetailAction = () => ({
   type: FETCH_DETAIL,
 });
 
+// payload: {
+//   username: { type: String },
+//   email: { type: String },
+//   profile: {
+//     // profile for individual customer
+//     firstName: { type: String },
+//     lastName: { type: String },
+//     position: { type: String }, // position in company
+//     dateOfBirth: { type: Date },
+//     // profile for business customer
+//     companySize: { type: String }, // need to discuss
+//     companyFields: [{ type: String }], // company working fields
+//     // both
+//     company: { type: String },
+//     phone: { type: String },
+//     address: { type: String },
+//   }
+// }
 const fetchDetailCompleteAction = payload => ({
   type: FETCH_DETAIL_SUCCESS,
   payload,
