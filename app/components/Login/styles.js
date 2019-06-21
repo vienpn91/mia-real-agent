@@ -10,17 +10,6 @@ export const LoginWrapper = styled.div`
   background-position: left center;
   background-size: cover;
   background-repeat: no-repeat;
-  position: relative;
-  &:before {
-    position: absolute;
-    content: '';
-    top: 0px;
-    lefT: 0px;
-    width: 100%;
-    height: 100%;
-    background-color: #0202024a;
-    z-index: 0;
-  }
 `;
 
 export const LoginItem = styled.div`
