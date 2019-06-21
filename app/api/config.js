@@ -6,5 +6,5 @@ export function configAxios() {
 }
 
 export function configToken(token) {
-  axios.defaults.headers.common.Authorization = `Beaver ${token}`;
+  axios.defaults.headers.common.Authorization = `bearer ${token}`;
 }

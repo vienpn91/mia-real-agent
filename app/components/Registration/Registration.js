@@ -28,7 +28,7 @@ const initialValues = {
   role: '',
   birthday: '',
   address: '',
-  phoneNumber: '',
+  phone: '',
 };
 
 const roleOptions = [
@@ -56,7 +56,7 @@ const validationSchema = Yup.object().shape({
   company: Yup.string().trim().required('Required'),
   role: Yup.string().trim().required('Required'),
   address: Yup.string().trim(),
-  phoneNumber: Yup.string().trim(),
+  phone: Yup.string().trim(),
 });
 
 class Registration extends Component {
@@ -73,9 +73,11 @@ class Registration extends Component {
   }
 
   register = (values) => {
-    const { email, password } = values;
+    const { username, email, password } = values;
     const { register } = this.props;
-    register({ ...values, email, password });
+    register({
+      username, email, password, profile: { ...values },
+    });
   }
 
   renderRegisterBtn = () => {
@@ -185,7 +187,7 @@ class Registration extends Component {
                   </Col>
                   <Col sm={12} xs={24}>
                     <FormInput
-                      name="phoneNumber"
+                      name="phone"
                       type="text"
                       label="Phone No."
                     />
