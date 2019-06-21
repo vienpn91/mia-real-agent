@@ -56,5 +56,5 @@ export const InputLabelStyled = styled.div`
 `;
 
 export const RowStyled = styled(Row)`
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 `;

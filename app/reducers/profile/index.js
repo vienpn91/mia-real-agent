@@ -12,6 +12,7 @@ const fetchDetailAction = () => ({
 // payload: {
 //   username: { type: String },
 //   email: { type: String },
+//   role: { type: String },
 //   profile: {
 //     // profile for individual customer
 //     firstName: { type: String },

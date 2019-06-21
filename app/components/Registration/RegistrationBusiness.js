@@ -20,7 +20,7 @@ const initialValues = {
   email: '',
   password: '',
   username: '',
-  companyName: '',
+  company: '',
   companySize: '',
   workingFields: [],
   address: '',
@@ -85,7 +85,7 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email('Invalid Email').trim().required('Required'),
   username: Yup.string().trim().required('Required'),
   password: Yup.string().trim().required('Required'),
-  companyName: Yup.string().trim().required('Required'),
+  company: Yup.string().trim().required('Required'),
   companySize: Yup.string().trim().required('Required'),
   workingFields: Yup.array().of(Yup.string()).required('Required'),
   address: Yup.string().trim(),
@@ -170,7 +170,7 @@ class Registration extends Component {
                   </Col>
                   <Col sm={12} xs={24}>
                     <FormInput
-                      name="companyName"
+                      name="company"
                       type="text"
                       label="Company name"
                     />
