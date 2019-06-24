@@ -17,6 +17,7 @@ import {
   RegistrationTitle,
 } from './styles';
 import FormInput from '../FormInput/FormInput';
+import { POSITION_OPTIONS } from '../../../common/enums';
 
 const initialValues = {
   email: '',
@@ -30,21 +31,6 @@ const initialValues = {
   address: '',
   phone: '',
 };
-
-const positionOptions = [
-  {
-    label: 'IT',
-    value: 'IT',
-  },
-  {
-    label: 'CEO',
-    value: 'CEO',
-  },
-  {
-    label: 'John Wick',
-    value: 'John Wick',
-  },
-];
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email('Invalid Email').trim().required('Required'),
@@ -172,7 +158,7 @@ class Registration extends Component {
                     <FormInput
                       name="position"
                       type="select"
-                      options={positionOptions}
+                      options={POSITION_OPTIONS}
                       label="Position"
                     />
                   </Col>

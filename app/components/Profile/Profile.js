@@ -1,20 +1,26 @@
 import React, { Component } from 'react';
 import { func, bool, shape } from 'prop-types';
-import { Row, Col, Divider } from 'antd';
+import {
+  Row, Col, Divider, Button,
+} from 'antd';
 import {
   ProfileWrapper, ProfileCard, ProfileTitle,
   InputStyled,
   InputLabelStyled,
-  RowStyled,
 } from './styles';
 import LoadingSpin from '../Loading';
-import { ROLES } from '../../../common/enums';
+import ProfileDetail from './ProfileDetail/ProfileDetail';
+import ProfileFormContainer from '../../containers/Profile/ProfileForm';
 
 export default class Profile extends Component {
+  state = {
+    isOpenConfirmPasswordModal: false,
+  }
+
   static propTypes = {
     fetchProfile: func.isRequired,
     isFetching: bool.isRequired,
-    profile: shape().isRequired,
+    user: shape().isRequired,
   }
 
   componentDidMount = () => {
@@ -26,94 +32,24 @@ export default class Profile extends Component {
     fetchProfile();
   }
 
-  renderIndividual = () => {
-    const { profile: { profile = {} } } = this.props;
-    const {
-      firstName, lastName, phone, address,
-      dateOfBirth, position, company,
-    } = profile;
-    return (
-      <div>
-        <RowStyled gutter={32}>
-          <Col span={12}>
-            <InputLabelStyled>First name:</InputLabelStyled>
-            <InputStyled>{firstName}</InputStyled>
-          </Col>
-          <Col span={12}>
-            <InputLabelStyled>Last name:</InputLabelStyled>
-            <InputStyled>{lastName}</InputStyled>
-          </Col>
-        </RowStyled>
-        <RowStyled gutter={32}>
-          <Col span={12}>
-            <InputLabelStyled>Phone No.:</InputLabelStyled>
-            <InputStyled>{phone}</InputStyled>
-          </Col>
-          <Col span={12}>
-            <InputLabelStyled>Address:</InputLabelStyled>
-            <InputStyled>{address}</InputStyled>
-          </Col>
-        </RowStyled>
-        <RowStyled gutter={32}>
-          <Col span={12}>
-            <InputLabelStyled>Date of birth:</InputLabelStyled>
-            <InputStyled>{dateOfBirth}</InputStyled>
-          </Col>
-          <Col span={12}>
-            <InputLabelStyled>Position:</InputLabelStyled>
-            <InputStyled>{position}</InputStyled>
-          </Col>
-        </RowStyled>
-        <RowStyled gutter={32}>
-          <Col span={12}>
-            <InputLabelStyled>Company:</InputLabelStyled>
-            <InputStyled>{company}</InputStyled>
-          </Col>
-        </RowStyled>
-      </div>
-    );
+  handleOpenConfirmPasswordModal = () => {
+    this.setState({
+      isOpenConfirmPasswordModal: true,
+    });
   }
 
-  renderBusiness = () => {
-    const { profile: { profile = {} } } = this.props;
-    const {
-      companyFields, phone, address,
-      companySize, company,
-    } = profile;
-    return (
-      <div>
-        <RowStyled gutter={32}>
-          <Col span={12}>
-            <InputLabelStyled>Company:</InputLabelStyled>
-            <InputStyled>{company}</InputStyled>
-          </Col>
-        </RowStyled>
-        <RowStyled gutter={32}>
-          <Col span={12}>
-            <InputLabelStyled>Company fields:</InputLabelStyled>
-            <InputStyled>{companyFields}</InputStyled>
-          </Col>
-          <Col span={12}>
-            <InputLabelStyled>Company fields:</InputLabelStyled>
-            <InputStyled>{companySize}</InputStyled>
-          </Col>
-        </RowStyled>
-        <RowStyled gutter={32}>
-          <Col span={12}>
-            <InputLabelStyled>Phone No.:</InputLabelStyled>
-            <InputStyled>{phone}</InputStyled>
-          </Col>
-          <Col span={12}>
-            <InputLabelStyled>Address:</InputLabelStyled>
-            <InputStyled>{address}</InputStyled>
-          </Col>
-        </RowStyled>
-      </div>
-    );
+  handleCloseConfirmPasswordModal = () => {
+    this.setState({
+      isOpenConfirmPasswordModal: false,
+    });
   }
 
   renderProfile = () => {
-    const { profile: { role, username, email } } = this.props;
+    const {
+      user: {
+        role, username, email, profile,
+      },
+    } = this.props;
     return (
       <div>
         <Row gutter={32}>
@@ -127,13 +63,13 @@ export default class Profile extends Component {
           </Col>
         </Row>
         <Divider />
-        {role === ROLES.INDIVIDUAL
-          ? this.renderIndividual() : this.renderBusiness()}
+        <ProfileDetail role={role} profile={profile} />
       </div>
     );
   }
 
   render() {
+    const { isOpenConfirmPasswordModal } = this.state;
     const { isFetching } = this.props;
     return (
       <ProfileWrapper>
@@ -141,8 +77,15 @@ export default class Profile extends Component {
           <LoadingSpin loading={isFetching}>
             <ProfileTitle>Profile</ProfileTitle>
             {this.renderProfile()}
+            <Button type="primary" onClick={this.handleOpenConfirmPasswordModal}>
+              Edit
+            </Button>
           </LoadingSpin>
         </ProfileCard>
+        <ProfileFormContainer
+          isOpen={isOpenConfirmPasswordModal}
+          handleCancel={this.handleCloseConfirmPasswordModal}
+        />
       </ProfileWrapper>
     );
   }

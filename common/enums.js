@@ -30,3 +30,73 @@ export const TICKET_STATUS = {
   PENDING: 'Pending',
   PROCESSING: 'Processing',
 };
+
+export const POSITION_OPTIONS = [
+  {
+    label: 'IT',
+    value: 'IT',
+  },
+  {
+    label: 'CEO',
+    value: 'CEO',
+  },
+  {
+    label: 'John Wick',
+    value: 'John Wick',
+  },
+];
+
+
+export const SIZE_OPTIONS = [
+  {
+    label: 'Self-employed',
+    value: 'A',
+  },
+  {
+    label: '1-10 employees',
+    value: 'B',
+  },
+  {
+    label: '11-50 employees',
+    value: 'C',
+  },
+  {
+    label: '51-200 employees',
+    value: 'D',
+  },
+  {
+    label: '201-500 employees',
+    value: 'E',
+  },
+  {
+    label: '501-1000 employees',
+    value: 'F',
+  },
+  {
+    label: '1001-5000 employees',
+    value: 'G',
+  },
+  {
+    label: '5001-10,000 employees',
+    value: 'H',
+  },
+  {
+    label: '10,001+ employees',
+    value: 'I',
+  },
+];
+
+export const FIELD_OPTIONS = [
+  {
+    label: 'IT',
+    value: 'IT',
+  },
+  {
+    label: 'Consultant',
+    value: 'Consultant',
+  },
+  {
+    label: 'Accounting',
+    value: 'Accounting',
+  },
+];

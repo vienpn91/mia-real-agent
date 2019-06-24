@@ -29,3 +29,10 @@ export const deleteAddress = index => axios
   .delete(`users/address/${index}`)
   .then(response => ({ response }))
   .catch(error => ({ error }));
+
+export const checkPassword = (userId, password) => axios
+  .post('users/checkPassword', {
+    userId, password,
+  })
+  .then(response => ({ response }))
+  .catch(error => ({ error }));

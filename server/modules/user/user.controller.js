@@ -49,7 +49,6 @@ class UserController extends BaseController {
   async createUser(req, res) {
     try {
       const data = req.body;
-
       const newUser = await this.service.insert(data);
 
       return res.status(httpStatus.OK).send(newUser);
@@ -87,10 +86,10 @@ class UserController extends BaseController {
   async updateUserProfile(req, res) {
     try {
       const { model } = req;
-      const newUpdate = req.body;
+      const { data } = req.body;
       const newUserProfile = await UserService.updateUserProfile(
         model,
-        newUpdate,
+        data,
       );
       sendUpdateProfileMail(newUserProfile);
       return res.status(httpStatus.OK).send(newUserProfile);
@@ -139,6 +138,19 @@ class UserController extends BaseController {
       );
       sendCreatePasswordMail(user);
       return res.status(httpStatus.OK).send(newUserProfile);
+    } catch (error) {
+      return super.handleError(res, error);
+    }
+  }
+
+  async checkPassword(req, res) {
+    try {
+      const { userId, password } = req.body;
+      const confirmed = await UserService.checkPassword(
+        userId,
+        password,
+      );
+      return res.status(httpStatus.OK).send({ confirmed });
     } catch (error) {
       return super.handleError(res, error);
     }
