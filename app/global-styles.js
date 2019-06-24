@@ -28,6 +28,7 @@ html, body, div, span, applet, object, iframe,
   }
   i, input, button {
     cursor: pointer;
+    outline: none;
   }
   ol, ul {
     list-style: none;
@@ -97,6 +98,7 @@ html, body, div, span, applet, object, iframe,
   input{
     &:focus {
       outline: 0;
+      box-shadow: none !important;
     }
     &[type='number'] {
       &::-webkit-inner-spin-button,
