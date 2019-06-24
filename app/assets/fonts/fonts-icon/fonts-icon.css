@@ -1,12 +1,12 @@
 /*Fonts icon */
 @font-face {
   font-family: 'icomoon';
-  src: url('./icomoon.eot?4lky6n');
+  src: url('./icomoon.eot?qzxatu');
   src: local('icomoon'),
-    url('./icomoon.eot?4lky6n#iefix') format('embedded-opentype'),
-    url('./icomoon.ttf?4lky6n') format('truetype'),
-    url('./icomoon.woff?4lky6n') format('woff'),
-    url('./icomoon.svg?4lky6n#icomoon') format('svg');
+    url('./icomoon.eot?qzxatu#iefix') format('embedded-opentype'),
+    url('./icomoon.ttf?qzxatu') format('truetype'),
+    url('./icomoon.woff?qzxatu') format('woff'),
+    url('./icomoon.svg?qzxatu#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -26,6 +26,27 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.mia-slack:before {
+  content: "\e913";
+}
+.mia-twitter:before {
+  content: "\e921";
+}
+.mia-google:before {
+  content: "\e922";
+}
+.mia-facebook:before {
+  content: "\e912";
+}
+.mia-close1:before {
+  content: "\e918";
+}
+.mia-filter:before {
+  content: "\e90d";
+}
+.mia-user-circle-o:before {
+  content: "\e902";
+}
 .mia-camera:before {
   content: "\e91d";
 }
@@ -41,17 +62,9 @@
 .mia-promotion:before {
   content: "\e919";
 }
-.mia-google:before {
-  content: "\e913";
-  color: #4285f4;
-}
-.mia-twitter:before {
+.mia-twitter1:before {
   content: "\e911";
   color: #1da1f2;
-}
-.mia-facebook:before {
-  content: "\e912";
-  color: #3b5998;
 }
 .mia-cart:before {
   content: "\e900";
@@ -109,15 +122,6 @@
 }
 .mia-close:before {
   content: "\e904";
-}
-.mia-close1:before {
-  content: "\e918";
-}
-.mia-filter:before {
-  content: "\e90d";
-}
-.mia-user-circle-o:before {
-  content: "\e902";
 }
 .mia-payment:before {
   content: "\e914";

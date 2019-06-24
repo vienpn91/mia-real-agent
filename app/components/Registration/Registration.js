@@ -6,16 +6,16 @@ import {
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import {
-  RegistrationWrapper,
-  RegistrationCard,
-  RegistrationBtn,
-  RegistrationFooter,
-  RegistrationFooterText,
-  RegistrationFooterLink,
-  RegistrationSpinner,
-  RegistrationErrorMessage,
-  RegistrationTitle,
-} from './styles';
+  LoginWrapper,
+  LoginItem,
+  LoginTitle,
+  LoginBtn,
+  LoginFooter,
+  LoginFooterText,
+  LoginFooterLink,
+  LoginSpinner,
+  LoginErrorMessage,
+} from '../Login/styles';
 import FormInput from '../FormInput/FormInput';
 
 const initialValues = {
@@ -84,27 +84,27 @@ class Registration extends Component {
     const { isLoading } = this.props;
     if (isLoading) {
       return (
-        <RegistrationBtn>
-          <RegistrationSpinner />
+        <LoginBtn>
+          <LoginSpinner />
           Registering
-        </RegistrationBtn>
+        </LoginBtn>
       );
     }
     return (
-      <RegistrationBtn
+      <LoginBtn
         type="submit"
       >
         Register
-      </RegistrationBtn>
+      </LoginBtn>
     );
   }
 
   render() {
     const { errorMessage } = this.props;
     return (
-      <RegistrationWrapper>
-        <RegistrationCard>
-          <RegistrationTitle>Mia Consult</RegistrationTitle>
+      <LoginWrapper>
+        <LoginItem register>
+          <LoginTitle>Mia Consult</LoginTitle>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -199,21 +199,21 @@ class Registration extends Component {
                   </Col>
                 </Row>
                 {errorMessage && (
-                  <RegistrationErrorMessage>
+                  <LoginErrorMessage>
                     {errorMessage}
-                  </RegistrationErrorMessage>
+                  </LoginErrorMessage>
                 )}
               </Form>
             )}
           </Formik>
-          <RegistrationFooter>
-            <RegistrationFooterText>Already had an account?</RegistrationFooterText>
-            <RegistrationFooterLink href="/login">
+          <LoginFooter>
+            <LoginFooterText>Already had an account?</LoginFooterText>
+            <LoginFooterLink href="/login">
               Login now!
-            </RegistrationFooterLink>
-          </RegistrationFooter>
-        </RegistrationCard>
-      </RegistrationWrapper>
+            </LoginFooterLink>
+          </LoginFooter>
+        </LoginItem>
+      </LoginWrapper>
     );
   }
 }
