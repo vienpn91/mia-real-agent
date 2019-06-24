@@ -60,9 +60,6 @@ export const ChatbotTicketListWrapper = styled.div`
     float: left;
     margin-right: 10px;
   }
-  .anticon-setting {
-    visibility: hidden;
-  }
   .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
     background-color: #3f4953;
     color: #fff;
@@ -178,6 +175,7 @@ export const TicketStatus = styled.div`
     && css`
       font-style: italic;
       color: ${[COLOR_BY_STATUS[status]]};
+      opacity: 0.7;
     `};
 `;
 

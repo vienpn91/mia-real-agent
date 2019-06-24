@@ -40,3 +40,9 @@ export const COLOR_BY_STATUS = {
   Processing: '#9ccd44',
   Searching: '#69889d',
 };
+
+export const POPUP_TYPE = {
+  CONFIRM: 'confirm',
+  ERROR: 'error',
+  MESSAGE: 'message',
+};

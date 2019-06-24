@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import {
   Layout, Icon, Input, Tooltip,
 } from 'antd';
+import PopupOverlay from 'components/Popup';
 import MessageBox from './MessageBox/MessageBox';
 import TicketItem from './TicketItem/TicketItem';
 import {

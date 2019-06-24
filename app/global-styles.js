@@ -28,6 +28,7 @@ html, body, div, span, applet, object, iframe,
   }
   i, input, button {
     cursor: pointer;
+    outline: none;
   }
   ol, ul {
     list-style: none;
