@@ -29,4 +29,14 @@ export const TICKET_STATUS = {
   CLOSED: 'Closed',
   PENDING: 'Pending',
   PROCESSING: 'Processing',
+  SEARCHING: 'Searching',
+};
+
+export const COLOR_BY_STATUS = {
+  New: '#449bea',
+  Resolved: '#05ca05',
+  Closed: '#d4101e',
+  Pending: '#e5cc94',
+  Processing: '#9ccd44',
+  Searching: '#69889d',
 };

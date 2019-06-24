@@ -130,10 +130,6 @@ export const InputWrapperStyled = styled(Form.Item)`
       content: '' !important;
     }
   }
-  input {
-    
-    
-  }
   .ant-select-selection {
     background-color: transparent;
     border-radius: 0px;

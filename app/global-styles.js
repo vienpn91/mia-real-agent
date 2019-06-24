@@ -97,6 +97,7 @@ html, body, div, span, applet, object, iframe,
   input{
     &:focus {
       outline: 0;
+      box-shadow: none !important;
     }
     &[type='number'] {
       &::-webkit-inner-spin-button,

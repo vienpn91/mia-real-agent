@@ -12,6 +12,7 @@ import {
   TicketHeaderWrapper,
   TicketEmpty,
 } from './styles';
+import { TICKET_STATUS } from '../../../common/enums';
 
 const { Content } = Layout;
 const { Search } = Input;
@@ -36,49 +37,49 @@ export default class ChatbotComponent extends Component {
         title: 'This is ticket 1',
         assignee: 'Dat 09',
         userAvatar: 'user',
-        subMessage: 'Today i will buy my company',
         lastestTime: '9:32',
         category: randomCategory(),
+        status: TICKET_STATUS.NEW,
       },
       {
         title: 'This is ticket 2',
         assignee: 'Long Hòn',
         userAvatar: 'user',
-        subMessage: 'Today i will delete my project',
         lastestTime: 'Jan 15',
         category: randomCategory(),
+        status: TICKET_STATUS.RESOLVED,
       },
       {
         title: 'This is ticket 3',
         assignee: 'Cồn Lường',
         userAvatar: 'user',
-        subMessage: 'Today i will playing game all day',
         lastestTime: 'Mon',
         category: randomCategory(),
+        status: TICKET_STATUS.CLOSED,
       },
       {
         title: 'This is ticket 4',
         assignee: 'Lu Lu',
         userAvatar: 'user',
-        subMessage: 'Today i will buy research all day',
         lastestTime: '12/18/2018',
         category: randomCategory(),
+        status: TICKET_STATUS.PENDING,
       },
       {
         title: 'This is ticket 5',
         assignee: 'Tri đẹp trai',
         userAvatar: 'user',
-        subMessage: 'Today i will gym all day',
         lastestTime: 'Apr 15',
         category: randomCategory(),
+        status: TICKET_STATUS.PROCESSING,
       },
       {
         title: 'This is ticket 6',
         assignee: 'Phat',
         userAvatar: 'user',
-        subMessage: 'Today i will talk all day',
         lastestTime: '15:32',
         category: randomCategory(),
+        status: TICKET_STATUS.SEARCHING,
       },
     ],
   }
@@ -96,9 +97,9 @@ export default class ChatbotComponent extends Component {
         title: `This is ticket ${ticketData.length + 1}`,
         assignee: `Assignee random ${ticketData.length + 1}`,
         userAvatar: 'user',
-        subMessage: 'This is ticket random',
         lastestTime: 'Today',
         category: randomCategory(),
+        status: TICKET_STATUS.NEW,
       }],
     });
   }

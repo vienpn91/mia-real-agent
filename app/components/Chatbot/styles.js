@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { COLOR_BY_STATUS } from '../../../common/enums';
 
 export const ChatbotWrapper = styled.div`
   display: flex;
@@ -7,11 +8,20 @@ export const ChatbotWrapper = styled.div`
 
 export const ChatbotTicketListWrapper = styled.div`
   flex: 0 0 400px;
-  background-color: #fff;
+  background-color: #363e47;
+  color: #fff;
   transition: all 300ms ease;
   .ant-input-search {
+    .ant-input-search-icon {
+      color: #fff;
+    }
     input {
-      background-color: #f5f6f7;
+      background-color: #303841;
+      color: #fff;
+      border: none;
+      &:focus {
+        border-color: #363e47 !important;
+      }
       &::placeholder {
         font-style: normal;
         color: #ccc;
@@ -20,24 +30,27 @@ export const ChatbotTicketListWrapper = styled.div`
   }
   .ant-menu {
     height: 100%;
+    background-color: #363e47;
+    color: #fff;
     border-right: none;
     li {
       display: flex;
       align-items: center;
-      height: 64px;
+      height: 85px;
     }
   }
   .ant-menu-item {
     line-height: normal;
     &:hover {
       color: unset;
-      background-color: #e6f7ff;
+      background-color: #3f4953;
       .anticon-setting {
         visibility: visible;
       }
     }
     .anticon {
       margin-right: 0px;
+      margin-top: 5px;
     }
   }
   .ant-avatar {
@@ -49,6 +62,10 @@ export const ChatbotTicketListWrapper = styled.div`
   }
   .anticon-setting {
     visibility: hidden;
+  }
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: #3f4953;
+    color: #fff;
   }
   @media (max-width: 1024px) {
     flex: 0 0 300px;
@@ -91,8 +108,7 @@ export const TicketHeaderWrapper = styled.div`
   justify-content: space-between;
   padding: 15px 24px;
   height: 60px;
-  border-bottom: 1px solid #d9d9d9;
-  border-right: 1px solid #d9d9d9;
+  border-bottom: 1px solid #303841;
   span {
     font-weight: 700;
   }
@@ -111,7 +127,6 @@ export const TicketHeaderWrapper = styled.div`
 
 export const TicketItemWrapper = styled.div`
   height: calc(100% - 120px);
-  border-right: 1px solid #d9d9d9;
 `;
 
 export const TicketGroup = styled.div`
@@ -122,21 +137,13 @@ export const TicketGroup = styled.div`
   }
 `;
 
-export const TicketUserName = styled.span`
-  color: #000;
+export const TicketName = styled.div`
   font-size: 15px;
-`;
-
-export const SubMessage = styled.div`
-  color: #999;
-  font-size: 13px;
-  width: 230px;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  margin-bottom: 5px;
+  max-width: 140px;
   white-space: nowrap;
-  @media (max-width: 1024px) {
-    width: 125px;
-  }
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const TicketTime = styled.div`
@@ -147,7 +154,7 @@ export const TicketTime = styled.div`
   line-height: normal;
   i {
     &:hover {
-      color: #09579E;
+      color: #f9ba59;
     }
   }
   @media (max-width: 768px) {
@@ -155,14 +162,40 @@ export const TicketTime = styled.div`
   }
 `;
 
+export const TicketCategory = styled.div`
+  flex: 0 0 100px;
+  height: 100%;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  font-weight: 700;
+`;
+
+export const TicketStatus = styled.div`
+  ${({ status }) => status
+    && css`
+      font-style: italic;
+      color: ${[COLOR_BY_STATUS[status]]};
+    `};
+`;
+
 export const TicketFilterWrapper = styled.div`
   padding: 16px;
-  border-top: 1px solid #d9d9d9;
-  span {
-    font-weight: 700;
-  }
+  border-top: 1px solid #303841;
   .ant-select {
     margin-top: 5px;
+    border-radius: 4px;
+  }
+  .ant-select-selection--multiple {
+    background-color: #303841;
+    color: #fff;
+    border: none;
+  }
+  .ant-select-open .ant-select-selection {
+    border: none;
+    box-shadow: none;
   }
   @media (max-width: 768px) {
     display: none;
@@ -172,6 +205,27 @@ export const TicketFilterWrapper = styled.div`
 export const TicketPaginationWrapper = styled.div`
   padding: 0 16px;
   text-align: center;
+  .ant-pagination-item a {
+    color: #fff;
+    &:hover {
+      color: #9e9e9e;
+    }
+  }
+  .ant-pagination-item.ant-pagination-item-active a {
+    color: #000;
+  }
+  .ant-pagination-item-active {
+    border-color: #000;
+  }
+  .ant-pagination-prev,
+  .ant-pagination-next {
+    .ant-pagination-item-link {
+      color: #fff;
+      &:hover {
+        color: #9e9e9e;
+      }
+    }
+  }
   @media (max-width: 768px) {
     display: none;
   }
@@ -250,21 +304,6 @@ export const MessageBoxHeaderWrapper = styled.div`
   }
 `;
 
-export const TicketName = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 16px;
-  span {
-    width: 100px;
-    min-width: 100px;
-    margin-right: 10px;
-    font-weight: 700;
-  }
-  p {
-    margin: 0px;
-  }
-`;
-
 
 export const MessageText = styled.div`
   width: fit-content;
@@ -306,7 +345,11 @@ export const MessageInput = styled.input`
   }
 `;
 
-export const InputAction = styled.label``;
+export const InputAction = styled.label`
+  &:hover {
+    color: #000;
+  }
+`;
 
 export const InputUpload = styled.input`
   display: none;
