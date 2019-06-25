@@ -3,7 +3,7 @@ import Profile from '../../components/Profile';
 import { actions, selectors } from '../../reducers/profile';
 
 const mapStateToProps = state => ({
-  profile: selectors.getProfileFetchedProfile(state),
+  user: selectors.getProfileFetchedProfile(state),
   isFetching: selectors.getProfileIsFetching(state),
 });
 

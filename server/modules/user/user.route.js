@@ -35,6 +35,11 @@ class UserRouter extends BaseRouter {
       passport.authenticate('jwt', { session: false }),
       UserController.createPassword,
     );
+    this.router.post(
+      '/checkPassword',
+      passport.authenticate('jwt', { session: false }),
+      UserController.checkPassword,
+    );
   }
 }
 

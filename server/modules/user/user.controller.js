@@ -1,4 +1,5 @@
 import httpStatus from 'http-status';
+import jwt from 'jsonwebtoken';
 import BaseController from '../base/base.controller';
 import UserService from './user.service';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
@@ -49,7 +50,6 @@ class UserController extends BaseController {
   async createUser(req, res) {
     try {
       const data = req.body;
-
       const newUser = await this.service.insert(data);
 
       return res.status(httpStatus.OK).send(newUser);
@@ -87,10 +87,10 @@ class UserController extends BaseController {
   async updateUserProfile(req, res) {
     try {
       const { model } = req;
-      const newUpdate = req.body;
+      const { data } = req.body;
       const newUserProfile = await UserService.updateUserProfile(
         model,
-        newUpdate,
+        data,
       );
       sendUpdateProfileMail(newUserProfile);
       return res.status(httpStatus.OK).send(newUserProfile);
@@ -119,6 +119,10 @@ class UserController extends BaseController {
       }
 
       user.password = await hashFunc(newPassword);
+      // Update user's token
+      const { _id } = user;
+      const token = jwt.sign({ _id }, process.env.SECRET_KEY_JWT);
+      user.set({ token });
 
       const result = await user.save();
       sendChangePasswordMail(user);
@@ -139,6 +143,19 @@ class UserController extends BaseController {
       );
       sendCreatePasswordMail(user);
       return res.status(httpStatus.OK).send(newUserProfile);
+    } catch (error) {
+      return super.handleError(res, error);
+    }
+  }
+
+  async checkPassword(req, res) {
+    try {
+      const { userId, password } = req.body;
+      const confirmed = await UserService.checkPassword(
+        userId,
+        password,
+      );
+      return res.status(httpStatus.OK).send({ confirmed });
     } catch (error) {
       return super.handleError(res, error);
     }

@@ -101,18 +101,19 @@ class AuthController {
   async register(req, res) {
     try {
       const { data } = req.body;
-      const { email, password, ...rest } = data;
-
+      const {
+        email, password, username, role, ...rest
+      } = data;
       await check(email, VALIDATION_TYPE.EMAIL);
       await check(password, VALIDATION_TYPE.PASSWORD);
-
       const hash = await hashFunc(password);
       const user = {
-        ...rest,
         email,
         password: hash,
+        role,
+        username,
+        profile: rest,
       };
-
       const userDoc = await UserService.insert(user);
       const { _id } = userDoc;
       const token = jwt.sign({ _id }, process.env.SECRET_KEY_JWT);

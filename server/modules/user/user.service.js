@@ -2,6 +2,7 @@ import pick from 'lodash/pick';
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
 import moment from 'moment';
+import bcrypt from 'bcrypt';
 import { hashFunc } from '../../utils/bcrypt';
 import userCollection from './user.model';
 import BaseService from '../base/base.service';
@@ -36,7 +37,8 @@ class UserService extends BaseService {
 
   async updateUserProfile(user, newUpdate) {
     const newModel = newUpdate;
-    _.assign(user, newModel);
+    const { profile } = user;
+    _.assign(user, { profile: { ...profile, ...newModel } });
 
     const savedModel = await user.save();
     return this.getUserProfile(savedModel);
@@ -46,6 +48,11 @@ class UserService extends BaseService {
     const hash = await hashFunc(password);
     const newUpdate = { password: hash };
     return this.updateUserProfile(user, newUpdate);
+  }
+
+  async checkPassword(userId, password) {
+    const user = await this.collection.findOne({ _id: userId }).exec();
+    return bcrypt.compareSync(password, user.password);
   }
 
   async sendVericationEmail(email) {

@@ -21,6 +21,7 @@ export const AUTH_SEND_VERICATION_EMAIL = 'auth/SEND_VERICATION_EMAIL';
 export const AUTH_SEND_VERICATION_EMAIL_SUCCESS = 'auth/SEND_VERICATION_EMAIL_SUCCESS';
 export const AUTH_SEND_VERICATION_EMAIL_FAIL = 'auth/SEND_VERICATION_EMAIL_FAIL';
 const CLEAR_TRANSACTION = 'root/CLEAR_TRANSACTION';
+const UPDATE_TOKEN = 'auth/UPDATE_TOKEN';
 
 // initialState
 const initialState = fromJS({
@@ -38,6 +39,14 @@ const initialState = fromJS({
 });
 
 // action creator
+// update token creator
+export const updateToken = token => ({
+  type: UPDATE_TOKEN,
+  payload: {
+    token,
+  },
+});
+
 // login/logout action creators
 export function login(email, password) {
   return {
@@ -313,6 +322,11 @@ function authReducer(state = initialState, action) {
         .set('errorMessage', '')
         .set('isVerifing', false)
         .set('verifyError', '');
+
+    case UPDATE_TOKEN: {
+      const { payload } = action;
+      return state.set('token', payload.token);
+    }
 
     default:
       return state;

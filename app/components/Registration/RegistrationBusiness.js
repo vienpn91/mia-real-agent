@@ -15,6 +15,7 @@ import {
   RegistrationErrorMessage,
 } from './styles';
 import FormInput from '../FormInput/FormInput';
+import { FIELD_OPTIONS, SIZE_OPTIONS, ROLES } from '../../../common/enums';
 
 const initialValues = {
   email: '',
@@ -22,64 +23,10 @@ const initialValues = {
   username: '',
   company: '',
   companySize: '',
-  workingFields: [],
+  companyFields: [],
   address: '',
   phoneNumber: '',
 };
-
-const sizeOptions = [
-  {
-    label: 'Self-employed',
-    value: 'A',
-  },
-  {
-    label: '1-10 employees',
-    value: 'B',
-  },
-  {
-    label: '11-50 employees',
-    value: 'C',
-  },
-  {
-    label: '51-200 employees',
-    value: 'D',
-  },
-  {
-    label: '201-500 employees',
-    value: 'E',
-  },
-  {
-    label: '501-1000 employees',
-    value: 'F',
-  },
-  {
-    label: '1001-5000 employees',
-    value: 'G',
-  },
-  {
-    label: '5001-10,000 employees',
-    value: 'H',
-  },
-  {
-    label: '10,001+ employees',
-    value: 'I',
-  },
-];
-
-const fieldOptions = [
-  {
-    label: 'IT',
-    value: 'IT',
-  },
-  {
-    label: 'Consultant',
-    value: 'Consultant',
-  },
-  {
-    label: 'Accounting',
-    value: 'Accounting',
-  },
-];
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email('Invalid Email').trim().required('Required'),
@@ -87,7 +34,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().trim().required('Required'),
   company: Yup.string().trim().required('Required'),
   companySize: Yup.string().trim().required('Required'),
-  workingFields: Yup.array().of(Yup.string()).required('Required'),
+  companyFields: Yup.array().of(Yup.string()).required('Required'),
   address: Yup.string().trim(),
   phoneNumber: Yup.string().trim(),
 });
@@ -105,10 +52,9 @@ class Registration extends Component {
     });
   }
 
-  register = () => {
-    const { email, password } = this.state;
+  register = (values) => {
     const { register } = this.props;
-    register(email, password);
+    register({ ...values, role: ROLES.BUSINESS });
   }
 
   renderRegisterBtn = () => {
@@ -181,16 +127,16 @@ class Registration extends Component {
                     <FormInput
                       name="companySize"
                       type="select"
-                      options={sizeOptions}
+                      options={SIZE_OPTIONS}
                       label="companySize"
                     />
                   </Col>
                   <Col sm={12} xs={24}>
                     <FormInput
-                      name="workingFields"
+                      name="companyFields"
                       type="select"
                       mode="multiple"
-                      options={fieldOptions}
+                      options={FIELD_OPTIONS}
                       label="Working fields"
                     />
                   </Col>
