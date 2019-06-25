@@ -39,6 +39,7 @@ export const COLOR_BY_STATUS = {
   Pending: '#e5cc94',
   Processing: '#9ccd44',
   Searching: '#69889d',
+  Assigned: '',
 };
 
 export const POPUP_TYPE = {

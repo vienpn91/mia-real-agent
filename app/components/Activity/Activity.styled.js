@@ -1,17 +1,13 @@
 import styled from 'styled-components';
 
-export const DashboardContainer = styled.section`
-  background-color:#f6f8fa;
-`;
-
 export const DashboardInfoUser = styled.div`
-  color: #24292e;
+  color: #000;
   font-size: 14px;
 `;
 
 export const DashboardLink = styled.a`
   font-weight: 600;
-  color: #24292e;
+  color: #000;
   margin:0 3px;
 `;
 
@@ -25,12 +21,16 @@ export const DashboardDesc = styled.span`
 `;
 
 export const DashboardSubTitle = styled.h3`
-   font-size: 16px;
+  font-size: 16px;
+  margin-bottom: 0px;
 `;
 
 export const DashboardLinkTitle = styled.a`  
-  color: #24292e;
+  color: #000;
   font-weight: 600;
+  &:hover {
+    color: #ff5402;
+  }
 `;
 
 export const DashboardContent = styled.div`
@@ -39,6 +39,10 @@ export const DashboardContent = styled.div`
   background-color: #fff;
   border: 1px solid #d1d5da;
   border-radius: 3px;
+`;
+
+export const DashboardTitle = styled.div`
+  color: #000;
 `;
 
 export const DashboardLeftBlock = styled.div`
@@ -50,6 +54,12 @@ export const DashboardRightBlock = styled.div`
 `;
 
 export const DashboardSubDesc = styled.span`
-  color: #24292e;
+  color: #000;
   margin-bottom: 15px;
+`;
+
+export const DashboardSubActivity = styled.span`
+  color: #586069;
+  font-size: 12px;
+  text-transform: lowercase;
 `;

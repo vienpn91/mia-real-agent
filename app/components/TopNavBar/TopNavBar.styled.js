@@ -6,8 +6,8 @@ export const TopNavBarWrapper = styled.div`
     align-items: center;
     height: 64px;
     padding: 0px 15px;
-    background-color: #fff;
-    box-shadow: 0px 0px 15px -2px #d9d9d9;
+    background-color: #fafbfc;
+    border-bottom: 1px solid #d9d9d9;
     position: relative;
     z-index: 1;
   }
@@ -55,7 +55,7 @@ export const UserProfile = styled.div`
     .ant-menu-item {
       margin: 0px;
       &:hover {
-        background-color: #ffecd2;
+        background-color: #fff7eb;
         a {
           color: #000;
         }
