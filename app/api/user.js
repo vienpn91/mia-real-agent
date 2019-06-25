@@ -36,3 +36,11 @@ export const checkPassword = (userId, password) => axios
   })
   .then(response => ({ response }))
   .catch(error => ({ error }));
+
+export const changePassword = (oldPassword, newPassword) => axios
+  .post('users/changePassword', {
+    oldPassword,
+    newPassword,
+  })
+  .then(response => ({ response }))
+  .catch(error => ({ error }));

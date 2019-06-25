@@ -4,9 +4,18 @@ import {
   Form, Row, Col,
   Button,
 } from 'antd';
+import * as Yup from 'yup';
 import { shape, func } from 'prop-types';
 import FormInput from '../../../FormInput/FormInput';
 import { SIZE_OPTIONS, FIELD_OPTIONS } from '../../../../../common/enums';
+import { ActionBar } from '../../styles';
+
+const validationSchema = Yup.object().shape({
+  companySize: Yup.string().trim().required('Required'),
+  companyFields: Yup.array().of(Yup.string()).required('Required'),
+  address: Yup.string().trim(),
+  phoneNumber: Yup.string().trim(),
+});
 
 export default class ProfileFormBusiness extends PureComponent {
   static propTypes = {
@@ -20,6 +29,7 @@ export default class ProfileFormBusiness extends PureComponent {
     return (
       <Formik
         initialValues={initialValues}
+        validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
         {({ handleSubmit }) => (
@@ -60,12 +70,14 @@ export default class ProfileFormBusiness extends PureComponent {
               </Col>
             </Row>
             <Row gutter={32}>
-              <Button key="back" onClick={onCancel}>
-                Return
-              </Button>
-              <Button key="submit" type="primary" onClick={handleSubmit}>
-                Save
-              </Button>
+              <ActionBar>
+                <Button key="submit" type="primary" onClick={handleSubmit}>
+                  Save
+                </Button>
+                <Button key="back" onClick={onCancel}>
+                  Return
+                </Button>
+              </ActionBar>
             </Row>
           </Form>
         )}

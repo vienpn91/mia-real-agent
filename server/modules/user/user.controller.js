@@ -1,4 +1,5 @@
 import httpStatus from 'http-status';
+import jwt from 'jsonwebtoken';
 import BaseController from '../base/base.controller';
 import UserService from './user.service';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
@@ -118,6 +119,10 @@ class UserController extends BaseController {
       }
 
       user.password = await hashFunc(newPassword);
+      // Update user's token
+      const { _id } = user;
+      const token = jwt.sign({ _id }, process.env.SECRET_KEY_JWT);
+      user.set({ token });
 
       const result = await user.save();
       sendChangePasswordMail(user);

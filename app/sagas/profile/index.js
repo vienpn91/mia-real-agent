@@ -6,8 +6,9 @@ import { DEFAULT_ERROR_MESSAGE } from 'utils/constants';
 import {
   FETCH_DETAIL, actions, CHECK_PASSWORD,
   UPDATE_PROFILE,
+  CHANGE_PASSWORD,
 } from '../../reducers/profile';
-import { getUserId, getToken } from '../../reducers/auth';
+import { getUserId, getToken, updateToken } from '../../reducers/auth';
 import * as UserApi from '../../api/user';
 import { configToken } from '../../api/config';
 import { handleEmailCensor } from './utils';
@@ -61,6 +62,22 @@ function* updateProfile({ payload }) {
   yield put(actions.updateProfileCompleteAction(data));
 }
 
+function* changePassword({ payload }) {
+  yield configAxiosForProfile();
+  const { currentPassword, newPassword } = payload;
+  const { response, error } = yield call(UserApi.changePassword, currentPassword, newPassword);
+  if (error) {
+    const message = _get(
+      error, 'response.data.message', DEFAULT_ERROR_MESSAGE
+    );
+    yield put(actions.changePasswordFailAction(message));
+  }
+  const { data } = response;
+  const { token } = data;
+  yield put(actions.changePasswordCompleteAction());
+  yield put(updateToken(token));
+}
+
 export function* configAxiosForProfile() {
   const token = yield select(getToken);
   configToken(token);
@@ -71,6 +88,7 @@ function* profileFlow() {
   yield takeEvery(FETCH_DETAIL, fetchDetail);
   yield takeEvery(UPDATE_PROFILE, updateProfile);
   yield takeEvery(CHECK_PASSWORD, checkPassword);
+  yield takeEvery(CHANGE_PASSWORD, changePassword);
 }
 
 export default profileFlow;

@@ -58,3 +58,10 @@ export const InputLabelStyled = styled.div`
 export const RowStyled = styled(Row)`
   margin-bottom: 25px;
 `;
+
+export const ActionBar = styled.div`
+  button{
+    float: right;
+    margin-right: 10px;
+  }
+`;

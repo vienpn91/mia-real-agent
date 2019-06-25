@@ -4,9 +4,20 @@ import {
   Form, Row, Col,
   Button,
 } from 'antd';
+import * as Yup from 'yup';
 import { shape, func } from 'prop-types';
 import FormInput from '../../../FormInput/FormInput';
 import { POSITION_OPTIONS } from '../../../../../common/enums';
+import { ActionBar } from '../../styles';
+
+const validationSchema = Yup.object().shape({
+  firstName: Yup.string().trim().required('Required'),
+  lastName: Yup.string().trim().required('Required'),
+  dateOfBirth: Yup.date().required('Required'),
+  position: Yup.string().trim().required('Required'),
+  address: Yup.string().trim(),
+  phone: Yup.string().trim(),
+});
 
 export class ProfileFormIndividual extends PureComponent {
   static propTypes = {
@@ -20,6 +31,7 @@ export class ProfileFormIndividual extends PureComponent {
     return (
       <Formik
         initialValues={initialValues}
+        validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
         {({ handleSubmit }) => (
@@ -74,12 +86,14 @@ export class ProfileFormIndividual extends PureComponent {
               </Col>
             </Row>
             <Row gutter={32}>
-              <Button key="back" onClick={onCancel}>
-                Return
-              </Button>
-              <Button key="submit" type="primary" onClick={handleSubmit}>
-                Save
-              </Button>
+              <ActionBar>
+                <Button key="submit" type="primary" onClick={handleSubmit}>
+                  Save
+                </Button>
+                <Button key="back" onClick={onCancel}>
+                  Return
+                </Button>
+              </ActionBar>
             </Row>
           </Form>
         )}

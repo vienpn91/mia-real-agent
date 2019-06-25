@@ -7,14 +7,17 @@ import {
   ProfileWrapper, ProfileCard, ProfileTitle,
   InputStyled,
   InputLabelStyled,
+  ActionBar,
 } from './styles';
 import LoadingSpin from '../Loading';
 import ProfileDetail from './ProfileDetail/ProfileDetail';
 import ProfileFormContainer from '../../containers/Profile/ProfileForm';
+import ChangePasswordFormContainer from '../../containers/Profile/ChangePasswordForm/ChangePasswordFormContainer';
 
 export default class Profile extends Component {
   state = {
     isOpenConfirmPasswordModal: false,
+    isOpenChangePasswordModal: false,
   }
 
   static propTypes = {
@@ -44,6 +47,18 @@ export default class Profile extends Component {
     });
   }
 
+  handleOpenChangePasswordModal = () => {
+    this.setState({
+      isOpenChangePasswordModal: true,
+    });
+  }
+
+  handleCloseChangePasswordModal = () => {
+    this.setState({
+      isOpenChangePasswordModal: false,
+    });
+  }
+
   renderProfile = () => {
     const {
       user: {
@@ -69,7 +84,7 @@ export default class Profile extends Component {
   }
 
   render() {
-    const { isOpenConfirmPasswordModal } = this.state;
+    const { isOpenConfirmPasswordModal, isOpenChangePasswordModal } = this.state;
     const { isFetching } = this.props;
     return (
       <ProfileWrapper>
@@ -77,14 +92,23 @@ export default class Profile extends Component {
           <LoadingSpin loading={isFetching}>
             <ProfileTitle>Profile</ProfileTitle>
             {this.renderProfile()}
-            <Button type="primary" onClick={this.handleOpenConfirmPasswordModal}>
-              Edit
-            </Button>
+            <ActionBar>
+              <Button type="primary" onClick={this.handleOpenConfirmPasswordModal}>
+                Edit
+              </Button>
+              <Button type="primary" onClick={this.handleOpenChangePasswordModal}>
+                Change password
+              </Button>
+            </ActionBar>
           </LoadingSpin>
         </ProfileCard>
         <ProfileFormContainer
           isOpen={isOpenConfirmPasswordModal}
           handleCancel={this.handleCloseConfirmPasswordModal}
+        />
+        <ChangePasswordFormContainer
+          isOpen={isOpenChangePasswordModal}
+          handleCancel={this.handleCloseChangePasswordModal}
         />
       </ProfileWrapper>
     );

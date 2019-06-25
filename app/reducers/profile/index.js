@@ -12,6 +12,10 @@ export const UPDATE_PROFILE = 'profile/UPDATE_PROFILE';
 export const UPDATE_PROFILE_SUCCESS = 'profile/UPDATE_PROFILE_SUCCESS';
 export const UPDATE_PROFILE_FAIL = 'profile/UPDATE_PROFILE_FAIL';
 
+export const CHANGE_PASSWORD = 'profile/CHANGE_PASSWORD';
+export const CHANGE_PASSWORD_SUCCESS = 'profile/CHANGE_PASSWORD_SUCCESS';
+export const CHANGE_PASSWORD_FAIL = 'profile/CHANGE_PASSWORD_FAIL';
+
 // action creator
 const fetchDetailAction = () => ({
   type: FETCH_DETAIL,
@@ -86,6 +90,25 @@ const updateProfileFailAction = errorMessage => ({
   },
 });
 
+const changePasswordAction = (currentPassword, newPassword) => ({
+  type: CHANGE_PASSWORD,
+  payload: {
+    currentPassword, newPassword,
+  },
+});
+
+// payload: same as fetchDetailCompleteAction
+const changePasswordCompleteAction = () => ({
+  type: CHANGE_PASSWORD_SUCCESS,
+});
+
+const changePasswordFailAction = errorMessage => ({
+  type: CHANGE_PASSWORD_FAIL,
+  payload: {
+    errorMessage,
+  },
+});
+
 
 // selector
 const getProfileIsFetching = ({ profile }) => profile.get('isFetching');
@@ -107,6 +130,9 @@ const initialState = fromJS({
 
   isUpdating: false,
   updateError: '',
+
+  isChangingPassword: false,
+  changePasswordError: '',
 });
 
 function profileReducer(state = initialState, action) {
@@ -121,6 +147,7 @@ function profileReducer(state = initialState, action) {
     case FETCH_DETAIL_FAIL:
       return state.set('isFetching', false)
         .set('fetchError', action.errorMessage);
+
     case CHECK_PASSWORD:
       return state
         .set('isCheckingPassword', true)
@@ -134,6 +161,7 @@ function profileReducer(state = initialState, action) {
       return state
         .set('isCheckingPassword', false)
         .set('checkPasswordError', action.errorMessage);
+
     case UPDATE_PROFILE:
       return state.set('isUpdating', true)
         .set('updateError', '');
@@ -143,6 +171,15 @@ function profileReducer(state = initialState, action) {
     case UPDATE_PROFILE_FAIL:
       return state.set('isUpdating', false)
         .set('updateError', action.errorMessage);
+
+    case CHANGE_PASSWORD:
+      return state.set('isChangingPassword', true)
+        .set('changePasswordError', '');
+    case CHANGE_PASSWORD_SUCCESS:
+      return state.set('isChangingPassword', false);
+    case CHANGE_PASSWORD_FAIL:
+      return state.set('isChangingPassword', false)
+        .set('changePasswordError', action.errorMessage);
     default: return state;
   }
 }
@@ -161,6 +198,10 @@ export const actions = {
   updateProfileAction,
   updateProfileCompleteAction,
   updateProfileFailAction,
+
+  changePasswordAction,
+  changePasswordCompleteAction,
+  changePasswordFailAction,
 };
 
 export const selectors = {
