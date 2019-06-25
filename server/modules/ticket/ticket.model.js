@@ -10,10 +10,11 @@ const ticketSchema = new Schema(
     status: {
       type: String,
       enum: [TICKET_STATUS.CLOSED, TICKET_STATUS.NEW, TICKET_STATUS.PENDING, TICKET_STATUS.PROCESSING, TICKET_STATUS.RESOLVED],
+      default: TICKET_STATUS.NEW,
     },
     category: [String],
     owner: mongoose.Schema.Types.ObjectId,
-    resolvedBy: mongoose.Schema.Types.ObjectId,
+    assignee: mongoose.Schema.Types.ObjectId,
     resolvedAt: mongoose.Schema.Types.ObjectId,
   },
   {

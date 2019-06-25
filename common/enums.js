@@ -116,3 +116,18 @@ export const FIELD_OPTIONS = [
     value: 'Accounting',
   },
 ];
+
+export const CATEGORY_OPTIONS = [
+  {
+    label: 'IT',
+    value: 'IT',
+  },
+  {
+    label: 'Consultant',
+    value: 'Consultant',
+  },
+  {
+    label: 'Accounting',
+    value: 'Accounting',
+  },
+];
