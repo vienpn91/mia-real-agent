@@ -4,6 +4,7 @@ import { REHYDRATE_COMPLETE, CLEAR_TRANSACTION } from '../reducers';
 import authSaga from './auth';
 import socketioSaga from './socketio';
 import profileSaga from './profile';
+import ticketSaga from './ticket';
 
 export default function* rootSagas() {
   configAxios();
@@ -14,5 +15,6 @@ export default function* rootSagas() {
     authSaga(),
     socketioSaga(),
     profileSaga(),
+    ticketSaga(),
   ]);
 }

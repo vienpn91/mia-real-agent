@@ -13,6 +13,7 @@ import {
   TicketEmpty,
 } from './styles';
 import { TICKET_STATUS } from '../../../common/enums';
+import CreateTicketFormContainer from '../../containers/Chatbot/CreateTicket';
 
 const { Content } = Layout;
 const { Search } = Input;
@@ -82,11 +83,24 @@ export default class ChatbotComponent extends Component {
         status: TICKET_STATUS.SEARCHING,
       },
     ],
+    isOpenCreateModal: false,
   }
 
   handleSelectTicket = (ticket) => {
     this.setState({
       ticket,
+    });
+  }
+
+  handleOpenCreateModal = () => {
+    this.setState({
+      isOpenCreateModal: true,
+    });
+  }
+
+  handleCloseCreateModal = () => {
+    this.setState({
+      isOpenCreateModal: false,
     });
   }
 
@@ -111,7 +125,7 @@ export default class ChatbotComponent extends Component {
       </Tooltip>
       <span>Ticket List</span>
       <Tooltip title="Create ticket">
-        <Icon type="edit" onClick={this.createTicket} />
+        <Icon type="edit" onClick={this.handleOpenCreateModal} />
       </Tooltip>
     </TicketHeaderWrapper>
   );
@@ -126,7 +140,7 @@ export default class ChatbotComponent extends Component {
   )
 
   render() {
-    const { ticket, ticketData } = this.state;
+    const { ticket, ticketData, isOpenCreateModal } = this.state;
     return (
       <ChatbotWrapper>
         <ChatbotTicketListWrapper>
@@ -144,6 +158,10 @@ export default class ChatbotComponent extends Component {
             {ticket ? <MessageBox ticket={ticket} /> : <TicketEmpty>Please select a ticket</TicketEmpty>}
           </Content>
         </ChatbotContentWrapper>
+        <CreateTicketFormContainer
+          isOpen={isOpenCreateModal}
+          handleCancel={this.handleCloseCreateModal}
+        />
       </ChatbotWrapper>
     );
   }
