@@ -51,6 +51,7 @@ html, body, div, span, applet, object, iframe,
   body {
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
+    color: #000;
     @media (max-width: 480px){
       font-size: 12px;
     }

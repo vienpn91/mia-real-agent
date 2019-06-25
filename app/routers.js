@@ -9,7 +9,6 @@ import Registration from './pages/Registration';
 import LoginCallBackPage from './pages/LoginCallback';
 import ThankForRegistering from './pages/ThankForRegistering';
 import Profile from './pages/Profile';
-
 import ChatbotComponent from './pages/Chatbot';
 
 export default class App extends React.PureComponent {
