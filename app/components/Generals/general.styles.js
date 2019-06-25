@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 export const DefaultButton = styled.button`
   color: #fff;
-  background-color: #508fb9;
+  background-color: #ff5402;
   text-align: center;
   border: 1px solid transparent;
   border-radius: 3px;

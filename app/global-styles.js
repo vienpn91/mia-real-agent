@@ -62,9 +62,6 @@ html, body, div, span, applet, object, iframe,
   html {
     scroll-behavior: smooth;
   }
-  .ReactModal__Body--open{
-    overflow: hidden;
-  }
   html, body {
     height: 100%;
     min-height: 100%;
@@ -75,26 +72,47 @@ html, body, div, span, applet, object, iframe,
     min-height: 100%;
     min-width: 100%;
   }
-  .Popover {
-    z-index: 9;
-    color: #fff;
-    left: calc(100% - 500px)!important;
-  }
-  .ReactModalPortal {
-    position: fixed;
-    z-index: 1000;
-  }
-  .Popover-tip{
-    transform: translateX(400.078px)!important;
-    @media (max-width: 960px) {
-      transform: translateX(426.078px)!important;      
-    }
-  }
   .ant-popover-inner-content {
     padding: 0px !important;
   }
   .ant-popover-title {
     font-weight: 700 !important;
+  }
+  .ant-menu-item {
+    cursor: pointer;
+    margin: 0px !important;
+    border-bottom: 1px solid #d9d9d9;
+    height: 32px;
+    line-height: 32px;
+    font-size: 13px;
+    &:last-child {
+      border-bottom: none !important;
+    }
+    &:hover {
+      background-color: #ff5402;
+      border-bottom: 1px solid #ff5402;
+      color: #fff;
+    }
+  }
+  .ant-menu-item.ant-menu-item-selected {
+    background-color: #ff5402;
+    border-bottom: 1px solid #ff5402;
+    color: #fff;
+  }
+  .ant-dropdown-menu {
+    padding: 0 !important;
+    .ant-dropdown-menu-item {
+      cursor: pointer;
+      margin: 0px !important;
+      border-bottom: 1px solid #d9d9d9;
+      height: 32px;
+      font-size: 13px;
+      &:hover {
+        background-color: #ff5402 !important;
+        border-bottom: 1px solid #ff5402;
+        color: #fff;
+      }
+    }
   }
   input{
     &:focus {
