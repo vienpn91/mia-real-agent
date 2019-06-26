@@ -4,3 +4,23 @@ export const createTicket = data => axios
   .post('tickets', data)
   .then(response => ({ response }))
   .catch(error => ({ error }));
+
+export const getAllTicket = data => axios
+  .get('tickets', data)
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
+
+export const getTicket = id => axios
+  .get(`tickets/${id}`)
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
+
+export const updateTicket = ({ _id, ...rest }) => axios
+  .put(`tickets/${_id}`, rest)
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
+
+export const removeTicket = id => axios
+  .delete(`tickets/${id}`)
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
