@@ -1,5 +1,5 @@
 import {
-  takeEvery, call, put, select,
+  takeEvery, call, put, select, takeLatest,
 } from 'redux-saga/effects';
 import _get from 'lodash/get';
 import { DEFAULT_ERROR_MESSAGE } from 'utils/constants';
@@ -87,10 +87,10 @@ export function* configAxiosForTicket() {
 
 function* ticketFlow() {
   yield takeEvery(CREATE, createTicket);
-  yield takeEvery(GET_ALL, getAllTicket);
-  yield takeEvery(GET, getTicket);
-  yield takeEvery(UPDATE, updateTicket);
-  yield takeEvery(REMOVE, removeTicket);
+  yield takeLatest(GET_ALL, getAllTicket);
+  yield takeLatest(GET, getTicket);
+  yield takeLatest(UPDATE, updateTicket);
+  yield takeLatest(REMOVE, removeTicket);
 }
 
 export default ticketFlow;
