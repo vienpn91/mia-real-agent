@@ -4,6 +4,22 @@ export const CREATE = 'ticket/CREATE';
 export const CREATE_SUCCESS = 'ticket/CREATE_SUCCESS';
 export const CREATE_FAIL = 'ticket/CREATE_FAIL';
 
+export const GET_ALL = 'ticket/GET_ALL';
+export const GET_ALL_SUCCESS = 'ticket/GET_ALL_SUCCESS';
+export const GET_ALL_FAIL = 'ticket/GET_ALL_FAIL';
+
+export const GET = 'ticket/GET';
+export const GET_SUCCESS = 'ticket/GET_SUCCESS';
+export const GET_FAIL = 'ticket/GET_FAIL';
+
+export const UPDATE = 'ticket/UPDATE';
+export const UPDATE_SUCCESS = 'ticket/UPDATE_SUCCESS';
+export const UPDATE_FAIL = 'ticket/UPDATE_FAIL';
+
+export const REMOVE = 'ticket/REMOVE';
+export const REMOVE_SUCCESS = 'ticket/REMOVE_SUCCESS';
+export const REMOVE_FAIL = 'ticket/REMOVE_FAIL';
+
 // action creator
 
 // payload: {
@@ -23,6 +39,80 @@ const createCompleteAction = () => ({
 
 const createFailAction = errorMessage => ({
   type: CREATE_FAIL,
+  payload: {
+    errorMessage,
+  },
+});
+
+const getAllAction = () => ({
+  type: GET_ALL,
+});
+
+
+const getAllCompleteAction = payload => ({
+  type: GET_ALL_SUCCESS,
+  payload,
+});
+
+const getAllFailAction = errorMessage => ({
+  type: GET_ALL_FAIL,
+  payload: {
+    errorMessage,
+  },
+});
+
+const getAction = ticketId => ({
+  type: GET,
+  payload: {
+    ticketId,
+  },
+});
+
+
+const getCompleteAction = ticket => ({
+  type: GET_SUCCESS,
+  payload: {
+    ticket,
+  },
+});
+
+const getFailAction = errorMessage => ({
+  type: GET_FAIL,
+  payload: {
+    errorMessage,
+  },
+});
+const updateAction = ticket => ({
+  type: UPDATE,
+  payload: { ticket },
+});
+
+
+const updateCompleteAction = () => ({
+  type: UPDATE_SUCCESS,
+});
+
+const updateFailAction = errorMessage => ({
+  type: UPDATE_FAIL,
+  payload: {
+    errorMessage,
+  },
+});
+
+const removeAction = ticketId => ({
+  type: REMOVE,
+  payload: {
+    ticketId,
+  },
+});
+
+
+const removeCompleteAction = () => ({
+  type: REMOVE_SUCCESS,
+});
+
+const removeFailAction = errorMessage => ({
+  type: REMOVE_FAIL,
   payload: {
     errorMessage,
   },
@@ -58,6 +148,22 @@ export const actions = {
   createAction,
   createCompleteAction,
   createFailAction,
+
+  getAllAction,
+  getAllCompleteAction,
+  getAllFailAction,
+
+  getAction,
+  getCompleteAction,
+  getFailAction,
+
+  updateAction,
+  updateCompleteAction,
+  updateFailAction,
+
+  removeAction,
+  removeCompleteAction,
+  removeFailAction,
 };
 
 export const selectors = {

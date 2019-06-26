@@ -16,6 +16,9 @@ const ticketSchema = new Schema(
     owner: mongoose.Schema.Types.ObjectId,
     assignee: mongoose.Schema.Types.ObjectId,
     resolvedAt: mongoose.Schema.Types.ObjectId,
+    deleted: {
+      type: Boolean,
+    },
   },
   {
     versionKey: false,
