@@ -5,7 +5,10 @@ import {
 } from 'antd';
 import { Formik } from 'formik';
 import ShadowScrollbars from 'components/Scrollbar';
-import { object, func, shape } from 'prop-types';
+import {
+  object, func, shape,
+  bool, string,
+} from 'prop-types';
 import {
   MessageBoxWrapper,
   MessageBoxContent,
@@ -18,18 +21,31 @@ import {
   InputAction,
   InputUpload,
 } from '../styles';
+import LoadingSpin from '../../Loading';
 
 const scrollStyle = {
   height: 'calc(100% - 60px)',
   width: '100%',
 };
 
+const initialValues = {
+  content: '',
+};
+
 export default class MessageBox extends Component {
+  messagesEndRef = React.createRef();
+
+  state = {
+    pendingMessages: [],
+  }
+
   static propTypes = {
+    isGetting: bool.isRequired,
     ticket: object.isRequired,
     chatData: shape(),
     sendMessage: func.isRequired,
     getChat: func.isRequired,
+    userId: string.isRequired,
   }
 
   static defaultProps = {
@@ -41,57 +57,63 @@ export default class MessageBox extends Component {
     getChat();
   }
 
-  renderLeftMessageContent = () => (
-    <MessageBoxItem left>
+  componentDidUpdate = (prevProps) => {
+    this.scrollChatToBottom();
+    const { chatData } = this.props;
+    if (prevProps.chatData !== chatData) {
+      const { pendingMessages } = this.state;
+      const updatePendingMessage = pendingMessages.filter(
+        ({ timestamp }) => !chatData.messages.find(
+          (message) => {
+            const { timestamp: msgTimestamp } = message;
+            if (!msgTimestamp) {
+              return false;
+            }
+            return new Date(msgTimestamp).getTime()
+              === new Date(timestamp).getTime();
+          }
+        )
+      );
+      this.setState({
+        pendingMessages: updatePendingMessage,
+      });
+    }
+  }
+
+  renderLeftMessageContent = (_id, content) => (
+    <MessageBoxItem left key={_id}>
       <Avatar icon="user" size={35} />
       <MessageText>
-        <p>Hello</p>
-        <p>Hello</p>
-        <p>Hello</p>
-        <p>Hello</p>
-        <p>Hello</p>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys
-          standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
-          a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-          Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-        </p>
+        <p>{content}</p>
       </MessageText>
     </MessageBoxItem>
   )
 
-  renderRightMessageContent = message => (
-    <MessageBoxItem right>
-      <MessageText>
-        <p>{message}</p>
-        {/* <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys
-          standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
-          a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-          Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-        </p>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys
-          standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
-          a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-          Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-        </p> */}
+  renderRightMessageContent = (_id, content, isPending) => (
+    <MessageBoxItem right key={_id}>
+      <MessageText isPending={isPending}>
+        <p>{content}</p>
       </MessageText>
       <Avatar icon="user" size={35} />
     </MessageBoxItem>
   )
 
   renderMessageContent = () => {
-    const { chatData } = this.props;
+    const { chatData, userId } = this.props;
+    const { pendingMessages } = this.state;
     if (!chatData) {
       return (<h2>No data</h2>);
     }
     const { messages } = chatData;
     // TODO: Seperate chat here
-    return messages.map(({ content }) => this.renderRightMessageContent(content));
+    return [messages.map(({ _id, messageOwner, content }) => {
+      if (messageOwner === userId) {
+        return this.renderRightMessageContent(_id, content);
+      }
+      return this.renderLeftMessageContent(_id, content);
+    }),
+    pendingMessages.map(({ content }, index) => this.renderRightMessageContent(index, content, true)),
+    ];
   }
 
   renderGroupAction = () => (
@@ -105,20 +127,25 @@ export default class MessageBox extends Component {
   );
 
   handleChatSubmit = (values) => {
-    const { sendMessage } = this.props;
+    const { sendMessage, userId } = this.props;
     const { content } = values;
     const msg = {
-      messageOwner: '5d0c8b175cb62a15742eec17',
+      messageOwner: userId,
       content,
+      timestamp: new Date(),
     };
+    const { pendingMessages } = this.state;
+    this.setState({
+      pendingMessages: pendingMessages.concat(msg),
+    });
     sendMessage(msg);
+    this.formik.getFormikContext().resetForm();
   }
 
   renderMessageInput = () => (
     <Formik
       ref={(formik) => { this.formik = formik; }}
-      // validationSchema={validationSchema}
-      // initialValues={initialValues}
+      initialValues={initialValues}
       onSubmit={this.handleChatSubmit}
     >
       {({ handleSubmit }) => (
@@ -148,17 +175,30 @@ export default class MessageBox extends Component {
     );
   }
 
+  scrollChatToBottom() {
+    this.messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+  }
+
   render() {
+    const { isGetting } = this.props;
     return (
-      <MessageBoxWrapper>
-        {this.renderMessageHeader()}
-        <MessageBoxContent>
-          <ShadowScrollbars autoHide style={scrollStyle}>
-            {this.renderMessageContent()}
-          </ShadowScrollbars>
-        </MessageBoxContent>
-        {this.renderMessageInput()}
-      </MessageBoxWrapper>
+      <LoadingSpin loading={isGetting}>
+        <MessageBoxWrapper>
+          {this.renderMessageHeader()}
+          <MessageBoxContent>
+            <ShadowScrollbars
+              autoHide
+              style={scrollStyle}
+            >
+              {this.renderLeftMessageContent()}
+              {this.renderMessageContent()}
+              <div ref={this.messagesEndRef} />
+            </ShadowScrollbars>
+          </MessageBoxContent>
+          {this.renderMessageInput()}
+        </MessageBoxWrapper>
+      </LoadingSpin>
+
     );
   }
 }

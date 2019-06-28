@@ -11,17 +11,18 @@ class ChatLogController extends BaseController {
   async insertMessage(req, res) {
     try {
       const data = req.body;
-      console.log(data);
       const { model } = req;
       const ticket = await ChatLogService.insertMessage(model, data);
       const { socketIO } = global.socketIOServer;
-      // socketIO.in('chat').emit('message', 'the game will start soon');
+      const { from, to } = model;
       const { connected } = socketIO.sockets;
       const sockets = Object.keys(connected).map(i => connected[i]);
       sockets.forEach(
         async (socket) => {
           const { data: user } = await authenticateSocketIO(socket);
-          if (user) {
+          const { _id } = user;
+          if (_id.toString() === from.toString()
+            || _id.toString() === to.toString()) {
             socket.emit('UPDATE_CHAT', 'reset');
           }
         }

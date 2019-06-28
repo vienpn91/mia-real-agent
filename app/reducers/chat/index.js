@@ -8,6 +8,10 @@ export const GET_CHAT = 'chat/GET_CHAT';
 export const GET_CHAT_SUCCESS = 'chat/GET_CHAT_SUCCESS';
 export const GET_CHAT_FAIL = 'chat/GET_CHAT_FAIL';
 
+export const UPDATE_CHAT = 'chat/UPDATE_CHAT';
+export const UPDATE_CHAT_SUCCESS = 'chat/UPDATE_CHAT_SUCCESS';
+export const UPDATE_CHAT_FAIL = 'chat/UPDATE_CHAT_FAIL';
+
 export const INSERT_MESSAGE = 'chat/INSERT_MESSAGE';
 export const INSERT_MESSAGE_SUCCESS = 'chat/INSERT_MESSAGE_SUCCESS';
 export const INSERT_MESSAGE_FAIL = 'chat/INSERT_MESSAGE_FAIL';
@@ -65,6 +69,23 @@ const getChatFailAction = errorMessage => ({
   },
 });
 
+const updateChatAction = () => ({
+  type: UPDATE_CHAT,
+});
+
+// Same as createChatAction
+const updateChatCompleteAction = payload => ({
+  type: UPDATE_CHAT_SUCCESS,
+  payload,
+});
+
+const updateChatFailAction = errorMessage => ({
+  type: UPDATE_CHAT_FAIL,
+  payload: {
+    errorMessage,
+  },
+});
+
 // payload: {
 //   messageOwner: String,
 //   content: String,
@@ -90,7 +111,7 @@ const insertMessageFailAction = errorMessage => ({
 });
 
 // selector
-// const getchatIsCreating = ({ chat }) => chat.get('isCreating');
+const getChatIsGetting = ({ chat }) => chat.get('isGetting');
 const getChatData = ({ chat }) => chat.get('chatData');
 
 const initialState = fromJS({
@@ -98,6 +119,7 @@ const initialState = fromJS({
   createError: '',
 
   isGetting: false,
+  getError: '',
   chatData: null,
 });
 
@@ -105,13 +127,16 @@ function profileReducer(state = initialState, action) {
   switch (action.type) {
     case GET_CHAT:
       return state.set('isGetting', true)
-        .set('chatData', '');
+        .set('chatData', null);
     case GET_CHAT_SUCCESS:
       return state.set('isGetting', false)
         .set('chatData', action.payload);
-    // case CREATE_FAIL:
-    //   return state.set('isCreating', false)
-    //     .set('createError', action.errorMessage);
+    case GET_CHAT_FAIL:
+      return state.set('isGetting', false)
+        .set('getError', action.errorMessage);
+
+    case UPDATE_CHAT_SUCCESS:
+      return state.set('chatData', action.payload);
     default: return state;
   }
 }
@@ -127,11 +152,16 @@ export const actions = {
   getChatCompleteAction,
   getChatFailAction,
 
+  updateChatAction,
+  updateChatCompleteAction,
+  updateChatFailAction,
+
   insertMessageAction,
   insertMessageCompleteAction,
   insertMessageFailAction,
 };
 
 export const selectors = {
+  getChatIsGetting,
   getChatData,
 };

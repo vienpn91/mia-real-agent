@@ -307,6 +307,11 @@ export const MessageBoxHeaderWrapper = styled.div`
 export const MessageText = styled.div`
   width: fit-content;
   max-width: 60%;
+  ${({ isPending }) => isPending && css`
+    p {
+      background-color: #98c4ed;
+    }
+  `};
 `;
 
 export const MessageInputWrapper = styled.div`

@@ -62,24 +62,19 @@ function* connectFlow() {
   // watch message and relay the action
   while (true) {
     yield take(socketChannel);
-    yield put(actions.getChatAction());
+    yield put(actions.updateChatAction());
   }
 }
 
 function* disconnectFlow() {
-  // socketConnection.disconnect();
-}
-
-function* chat({ msg }) {
-  console.log(socketConnection);
-  socketConnection.emit('msg', msg);
-  // socketConnection.emit('message', 'msg');
+  socketConnection.disconnect();
 }
 
 function* socketIOFlow() {
-  yield takeEvery([AUTH_LOGIN_SUCCESS, 'persist/REHYDRATE'], connectFlow);
+  yield takeEvery([AUTH_LOGIN_SUCCESS,
+    'persist/REHYDRATE',
+  ], connectFlow);
   yield takeEvery(AUTH_LOGOUT, disconnectFlow);
-  yield takeEvery('CHAT', chat);
 }
 
 export default socketIOFlow;
