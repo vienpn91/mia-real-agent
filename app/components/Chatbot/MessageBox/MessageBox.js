@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
-import { Avatar, Breadcrumb } from 'antd';
+import {
+  Avatar, Breadcrumb,
+  Button, Form,
+} from 'antd';
+import { Formik } from 'formik';
 import ShadowScrollbars from 'components/Scrollbar';
-import { object } from 'prop-types';
+import {
+  object, func, shape,
+  bool, string,
+} from 'prop-types';
 import {
   MessageBoxWrapper,
   MessageBoxContent,
@@ -14,59 +21,100 @@ import {
   InputAction,
   InputUpload,
 } from '../styles';
+import LoadingSpin from '../../Loading';
 
 const scrollStyle = {
   height: 'calc(100% - 60px)',
   width: '100%',
 };
 
+const initialValues = {
+  content: '',
+};
+
 export default class MessageBox extends Component {
-  static propTypes = {
-    ticket: object.isRequired,
+  messagesEndRef = React.createRef();
+
+  state = {
+    pendingMessages: [],
   }
 
-  renderLeftMessageContent = () => (
-    <MessageBoxItem left>
+  static propTypes = {
+    isGetting: bool.isRequired,
+    ticket: object.isRequired,
+    chatData: shape(),
+    sendMessage: func.isRequired,
+    getChat: func.isRequired,
+    userId: string.isRequired,
+  }
+
+  static defaultProps = {
+    chatData: null,
+  }
+
+  componentDidMount = () => {
+    const { getChat } = this.props;
+    getChat();
+  }
+
+  componentDidUpdate = (prevProps) => {
+    this.scrollChatToBottom();
+    const { chatData } = this.props;
+    if (prevProps.chatData !== chatData) {
+      const { pendingMessages } = this.state;
+      const updatePendingMessage = pendingMessages.filter(
+        ({ timestamp }) => !chatData.messages.find(
+          (message) => {
+            const { timestamp: msgTimestamp } = message;
+            if (!msgTimestamp) {
+              return false;
+            }
+            return new Date(msgTimestamp).getTime()
+              === new Date(timestamp).getTime();
+          }
+        )
+      );
+      this.setState({
+        pendingMessages: updatePendingMessage,
+      });
+    }
+  }
+
+  renderLeftMessageContent = (_id, content) => (
+    <MessageBoxItem left key={_id}>
       <Avatar icon="user" size={35} />
       <MessageText>
-        <p>Hello</p>
-        <p>Hello</p>
-        <p>Hello</p>
-        <p>Hello</p>
-        <p>Hello</p>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys
-          standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
-          a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-          Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-        </p>
+        <p>{content}</p>
       </MessageText>
     </MessageBoxItem>
   )
 
-  renderRightMessageContent = () => (
-    <MessageBoxItem right>
-      <MessageText>
-        <p>Whats your name ?</p>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys
-          standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
-          a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-          Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-        </p>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys
-          standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
-          a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-          Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-        </p>
+  renderRightMessageContent = (_id, content, isPending) => (
+    <MessageBoxItem right key={_id}>
+      <MessageText isPending={isPending}>
+        <p>{content}</p>
       </MessageText>
       <Avatar icon="user" size={35} />
     </MessageBoxItem>
   )
+
+  renderMessageContent = () => {
+    const { chatData, userId } = this.props;
+    const { pendingMessages } = this.state;
+    if (!chatData) {
+      return (<h2>No data</h2>);
+    }
+    const { messages } = chatData;
+    // TODO: Seperate chat here
+    return [messages.map(({ _id, messageOwner, content }) => {
+      if (messageOwner === userId) {
+        return this.renderRightMessageContent(_id, content);
+      }
+      return this.renderLeftMessageContent(_id, content);
+    }),
+    pendingMessages.map(({ content }, index) => this.renderRightMessageContent(index, content, true)),
+    ];
+  }
 
   renderGroupAction = () => (
     <MessageActionWrapper>
@@ -74,15 +122,45 @@ export default class MessageBox extends Component {
       <InputAction className="mia-folder" htmlFor="file-upload" />
       <InputAction className="mia-camera" />
       <InputAction className="mia-happiness" />
-      <InputUpload type="file" id="file-upload" />
+      {/* <InputUpload type="file" id="file-upload" /> */}
     </MessageActionWrapper>
   );
 
+  handleChatSubmit = (values) => {
+    const { sendMessage, userId } = this.props;
+    const { content } = values;
+    const msg = {
+      messageOwner: userId,
+      content,
+      timestamp: new Date(),
+    };
+    const { pendingMessages } = this.state;
+    this.setState({
+      pendingMessages: pendingMessages.concat(msg),
+    });
+    sendMessage(msg);
+    this.formik.getFormikContext().resetForm();
+  }
+
   renderMessageInput = () => (
-    <MessageInputWrapper>
-      <MessageInput type="text" placeholder="Type message ..." />
-      {this.renderGroupAction()}
-    </MessageInputWrapper>
+    <Formik
+      ref={(formik) => { this.formik = formik; }}
+      initialValues={initialValues}
+      onSubmit={this.handleChatSubmit}
+    >
+      {({ handleSubmit }) => (
+        <Form
+          onSubmit={handleSubmit}
+          onChange={this.handleChangeValues}
+        >
+          <MessageInputWrapper>
+            <MessageInput type="text" name="content" placeholder="Type message ..." />
+            {this.renderGroupAction()}
+            <Button key="submit" type="primary" onClick={handleSubmit}>Send</Button>
+          </MessageInputWrapper>
+        </Form>
+      )}
+    </Formik>
   );
 
   renderMessageHeader = () => {
@@ -97,20 +175,30 @@ export default class MessageBox extends Component {
     );
   }
 
+  scrollChatToBottom() {
+    this.messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+  }
+
   render() {
+    const { isGetting } = this.props;
     return (
-      <MessageBoxWrapper>
-        {this.renderMessageHeader()}
-        <MessageBoxContent>
-          <ShadowScrollbars autoHide style={scrollStyle}>
-            {this.renderLeftMessageContent()}
-            {this.renderRightMessageContent()}
-            {this.renderLeftMessageContent()}
-            {this.renderRightMessageContent()}
-          </ShadowScrollbars>
-        </MessageBoxContent>
-        {this.renderMessageInput()}
-      </MessageBoxWrapper>
+      <LoadingSpin loading={isGetting}>
+        <MessageBoxWrapper>
+          {this.renderMessageHeader()}
+          <MessageBoxContent>
+            <ShadowScrollbars
+              autoHide
+              style={scrollStyle}
+            >
+              {this.renderLeftMessageContent()}
+              {this.renderMessageContent()}
+              <div ref={this.messagesEndRef} />
+            </ShadowScrollbars>
+          </MessageBoxContent>
+          {this.renderMessageInput()}
+        </MessageBoxWrapper>
+      </LoadingSpin>
+
     );
   }
 }

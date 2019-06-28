@@ -1,9 +1,10 @@
 import styled, { css } from 'styled-components';
 import { COLOR_BY_STATUS } from '../../../common/enums';
+import FormInput from '../FormInput/FormInput';
 
 export const ChatbotWrapper = styled.div`
   display: flex;
-  height: 100vh;
+  height: calc(100vh - 64px);
 `;
 
 export const ChatbotTicketListWrapper = styled.div`
@@ -243,7 +244,7 @@ export const TicketButton = styled.div`
 `;
 
 export const MessageBoxWrapper = styled.div`
-  height: 100vh;
+  height: calc(100vh - 64px);
   background: #fff;
   position: relative;
 `;
@@ -306,6 +307,11 @@ export const MessageBoxHeaderWrapper = styled.div`
 export const MessageText = styled.div`
   width: fit-content;
   max-width: 60%;
+  ${({ isPending }) => isPending && css`
+    p {
+      background-color: #98c4ed;
+    }
+  `};
 `;
 
 export const MessageInputWrapper = styled.div`
@@ -318,6 +324,15 @@ export const MessageInputWrapper = styled.div`
   height: 60px;
   width: 100%;
   padding: 0px 10px;
+
+  .ant-form-item{
+    width: 100%;
+    margin: 0;
+    input{
+      outline: none !important;
+      border: 1px solid transparent !important;
+    }
+  }
 `;
 
 export const MessageActionWrapper = styled.div`
@@ -333,7 +348,7 @@ export const MessageActionWrapper = styled.div`
   }
 `;
 
-export const MessageInput = styled.input`
+export const MessageInput = styled(FormInput)`
   flex: 1;
   border: none;
   height: 100%;

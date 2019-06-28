@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import {
   Layout, Icon, Input, Tooltip,
 } from 'antd';
-import MessageBox from './MessageBox/MessageBox';
+import { func, shape } from 'prop-types';
+import MessageBoxContainer from '../../containers/Chatbot/MessageBox';
 import TicketItem from './TicketItem/TicketItem';
 import {
   ChatbotWrapper,
@@ -86,6 +87,20 @@ export default class ChatbotComponent extends Component {
     isOpenCreateModal: false,
   }
 
+  static propTypes = {
+    getTicket: func.isRequired,
+    ticketDetail: shape(),
+  }
+
+  static defaultProps = {
+    ticketDetail: null,
+  }
+
+  componentDidMount = () => {
+    const { getTicket } = this.props;
+    getTicket('5d11e3bd82125b32a52683bc');
+  }
+
   handleSelectTicket = (ticket) => {
     this.setState({
       ticket,
@@ -140,7 +155,10 @@ export default class ChatbotComponent extends Component {
   )
 
   render() {
-    const { ticket, ticketData, isOpenCreateModal } = this.state;
+    const {
+      ticket, ticketData, isOpenCreateModal,
+    } = this.state;
+    const { ticketDetail } = this.props;
     return (
       <ChatbotWrapper>
         <ChatbotTicketListWrapper>
@@ -155,7 +173,7 @@ export default class ChatbotComponent extends Component {
         </ChatbotTicketListWrapper>
         <ChatbotContentWrapper>
           <Content>
-            {ticket ? <MessageBox ticket={ticket} /> : <TicketEmpty>Please select a ticket</TicketEmpty>}
+            {ticketDetail ? <MessageBoxContainer ticket={ticketDetail} /> : <TicketEmpty>Please select a ticket</TicketEmpty>}
           </Content>
         </ChatbotContentWrapper>
         <CreateTicketFormContainer

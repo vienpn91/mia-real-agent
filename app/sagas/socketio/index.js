@@ -8,9 +8,10 @@ import {
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
 } from '../../reducers/auth';
+import { actions } from '../../reducers/chat';
 
 /* events */
-const NEW_MESSAGE = 'NEW_MESSAGE';
+const UPDATE_CHAT = 'UPDATE_CHAT';
 
 let socketConnection;
 
@@ -21,26 +22,31 @@ function createSocketChannel(socket) {
         emit(data);
       }
     };
-    socket.on(NEW_MESSAGE, handler);
+    socket.on(UPDATE_CHAT, handler);
     const unsubscribe = () => {
-      socket.off(NEW_MESSAGE, handler);
+      socket.off(UPDATE_CHAT, handler);
     };
     return unsubscribe;
   });
 }
 
 function createSocketConnection(token) {
-  const endpoint = process.env.SOCKETIO_ENDPOINT;
-  const socket = socketIOClient(endpoint);
+  // const endpoint = process.env.SOCKETIO_ENDPOINT;
+  const socket = socketIOClient('/chat', {
+    upgradeTimeout: 30000000, // default value is 10000ms, try changing it to 20k or more
+  });
+  socket.heartbeatTimeout = 1000;
   socket.on('connect', () => {
     socket
       .emit('authenticate', { token }) // send the jwt
       .on('unauthorized', (msg) => {
         console.log(`unauthorized: ${JSON.stringify(msg.data)}`);
-        socket.disconnect();
+        // socket.disconnect();
+      })
+      .on('disconnect', () => {
+        socketConnection.connect();
       });
   });
-
   return new Promise((resolve) => {
     socket.on('connect', () => {
       resolve(socket);
@@ -55,8 +61,8 @@ function* connectFlow() {
 
   // watch message and relay the action
   while (true) {
-    const payload = yield take(socketChannel);
-    yield put(payload);
+    yield take(socketChannel);
+    yield put(actions.updateChatAction());
   }
 }
 
@@ -65,7 +71,9 @@ function* disconnectFlow() {
 }
 
 function* socketIOFlow() {
-  yield takeEvery([AUTH_LOGIN_SUCCESS], connectFlow);
+  yield takeEvery([AUTH_LOGIN_SUCCESS,
+    'persist/REHYDRATE',
+  ], connectFlow);
   yield takeEvery(AUTH_LOGOUT, disconnectFlow);
 }
 

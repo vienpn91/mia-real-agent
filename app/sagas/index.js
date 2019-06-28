@@ -5,6 +5,7 @@ import authSaga from './auth';
 import socketioSaga from './socketio';
 import profileSaga from './profile';
 import ticketSaga from './ticket';
+import chatSaga from './chat';
 
 export default function* rootSagas() {
   configAxios();
@@ -16,5 +17,6 @@ export default function* rootSagas() {
     socketioSaga(),
     profileSaga(),
     ticketSaga(),
+    chatSaga(),
   ]);
 }
