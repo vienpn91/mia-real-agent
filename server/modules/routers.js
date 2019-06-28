@@ -5,12 +5,14 @@ import AuthRouter from './auth/auth.route';
 import WitAIRouter from './witai/witai.route';
 import ConversationRouter from './conversation/conversation.route';
 import TicketRouter from './ticket/ticket.route';
+import ChatLogRouter from './chatlog/chatlog.route';
 const router = express.Router();
 
 export default () => {
   router.use('/users', UserRouter.router);
   router.use('/auth', AuthRouter.router);
   router.use('/witai', WitAIRouter.router);
+  router.use('/chats', ChatLogRouter.router);
   router.use('/conversations', ConversationRouter.router);
   router.use('/tickets', TicketRouter.router);
   return router;

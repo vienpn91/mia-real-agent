@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import { Avatar, Breadcrumb } from 'antd';
+import {
+  Avatar, Breadcrumb,
+  Button, Form,
+} from 'antd';
+import { Formik } from 'formik';
 import ShadowScrollbars from 'components/Scrollbar';
-import { object } from 'prop-types';
+import { object, func, shape } from 'prop-types';
 import {
   MessageBoxWrapper,
   MessageBoxContent,
@@ -23,6 +27,18 @@ const scrollStyle = {
 export default class MessageBox extends Component {
   static propTypes = {
     ticket: object.isRequired,
+    chatData: shape(),
+    sendMessage: func.isRequired,
+    getChat: func.isRequired,
+  }
+
+  static defaultProps = {
+    chatData: null,
+  }
+
+  componentDidMount = () => {
+    const { getChat } = this.props;
+    getChat();
   }
 
   renderLeftMessageContent = () => (
@@ -45,11 +61,11 @@ export default class MessageBox extends Component {
     </MessageBoxItem>
   )
 
-  renderRightMessageContent = () => (
+  renderRightMessageContent = message => (
     <MessageBoxItem right>
       <MessageText>
-        <p>Whats your name ?</p>
-        <p>
+        <p>{message}</p>
+        {/* <p>
           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys
           standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
           a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
@@ -62,11 +78,21 @@ export default class MessageBox extends Component {
           a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
           remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
           Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-        </p>
+        </p> */}
       </MessageText>
       <Avatar icon="user" size={35} />
     </MessageBoxItem>
   )
+
+  renderMessageContent = () => {
+    const { chatData } = this.props;
+    if (!chatData) {
+      return (<h2>No data</h2>);
+    }
+    const { messages } = chatData;
+    // TODO: Seperate chat here
+    return messages.map(({ content }) => this.renderRightMessageContent(content));
+  }
 
   renderGroupAction = () => (
     <MessageActionWrapper>
@@ -74,15 +100,40 @@ export default class MessageBox extends Component {
       <InputAction className="mia-folder" htmlFor="file-upload" />
       <InputAction className="mia-camera" />
       <InputAction className="mia-happiness" />
-      <InputUpload type="file" id="file-upload" />
+      {/* <InputUpload type="file" id="file-upload" /> */}
     </MessageActionWrapper>
   );
 
+  handleChatSubmit = (values) => {
+    const { sendMessage } = this.props;
+    const { content } = values;
+    const msg = {
+      messageOwner: '5d0c8b175cb62a15742eec17',
+      content,
+    };
+    sendMessage(msg);
+  }
+
   renderMessageInput = () => (
-    <MessageInputWrapper>
-      <MessageInput type="text" placeholder="Type message ..." />
-      {this.renderGroupAction()}
-    </MessageInputWrapper>
+    <Formik
+      ref={(formik) => { this.formik = formik; }}
+      // validationSchema={validationSchema}
+      // initialValues={initialValues}
+      onSubmit={this.handleChatSubmit}
+    >
+      {({ handleSubmit }) => (
+        <Form
+          onSubmit={handleSubmit}
+          onChange={this.handleChangeValues}
+        >
+          <MessageInputWrapper>
+            <MessageInput type="text" name="content" placeholder="Type message ..." />
+            {this.renderGroupAction()}
+            <Button key="submit" type="primary" onClick={handleSubmit}>Send</Button>
+          </MessageInputWrapper>
+        </Form>
+      )}
+    </Formik>
   );
 
   renderMessageHeader = () => {
@@ -103,10 +154,7 @@ export default class MessageBox extends Component {
         {this.renderMessageHeader()}
         <MessageBoxContent>
           <ShadowScrollbars autoHide style={scrollStyle}>
-            {this.renderLeftMessageContent()}
-            {this.renderRightMessageContent()}
-            {this.renderLeftMessageContent()}
-            {this.renderRightMessageContent()}
+            {this.renderMessageContent()}
           </ShadowScrollbars>
         </MessageBoxContent>
         {this.renderMessageInput()}

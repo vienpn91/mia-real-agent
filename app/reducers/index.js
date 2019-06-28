@@ -7,6 +7,7 @@ import { connectRouter } from 'connected-react-router';
 import auth from './auth';
 import profile from './profile';
 import ticket from './ticket';
+import chat from './chat';
 import history from '../utils/history';
 
 export const REHYDRATE_COMPLETE = 'root/REHYDRATE_COMPLETE';
@@ -20,6 +21,7 @@ export default function createReducer(injectedReducers = {}) {
     auth,
     profile,
     ticket,
+    chat,
     router: connectRouter(history),
     ...injectedReducers,
   });

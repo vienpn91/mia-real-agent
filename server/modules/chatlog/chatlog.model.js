@@ -4,6 +4,10 @@ const { Schema } = mongoose;
 
 const chatLogSchema = new Schema(
   {
+    ticketId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+    },
     from: {
       type: Schema.Types.ObjectId,
       required: true,
@@ -28,6 +32,8 @@ const chatLogSchema = new Schema(
       ],
       required: true,
     },
+    type: String,
+    status: String,
   },
   {
     versionKey: false,

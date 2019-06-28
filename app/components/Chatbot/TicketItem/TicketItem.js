@@ -4,7 +4,7 @@ import MediaQuery from 'react-responsive';
 import ShadowScrollbars from 'components/Scrollbar';
 import { func, array } from 'prop-types';
 import {
-  Menu, Avatar, Select, Pagination, Popover, Icon,
+  Menu, Select, Pagination, Popover, Icon,
 } from 'antd';
 import {
   TicketItemWrapper,
@@ -20,7 +20,7 @@ import {
 } from '../styles';
 
 const scrollStyle = {
-  height: 'calc(100vh - 260px)',
+  height: 'calc(100vh - 324px)',
   width: '100%',
 };
 

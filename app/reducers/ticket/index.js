@@ -122,9 +122,15 @@ const removeFailAction = errorMessage => ({
 const getTicketIsCreating = ({ ticket }) => ticket.get('isCreating');
 const getTicketCreateError = ({ ticket }) => ticket.get('createError');
 
+const getTicketGetTicketDetail = ({ ticket }) => ticket.get('ticketDetail');
+
 const initialState = fromJS({
   isCreating: false,
   createError: '',
+
+  isGetting: false,
+  getError: '',
+  ticketDetail: null,
 });
 
 function profileReducer(state = initialState, action) {
@@ -137,6 +143,17 @@ function profileReducer(state = initialState, action) {
     case CREATE_FAIL:
       return state.set('isCreating', false)
         .set('createError', action.errorMessage);
+
+    case GET:
+      return state.set('isGetting', true)
+        .set('ticketDetail', null)
+        .set('getError', '');
+    case GET_SUCCESS:
+      return state.set('isGetting', false)
+        .set('ticketDetail', action.payload.ticket);
+    case GET_FAIL:
+      return state.set('isGetting', false)
+        .set('getError', action.errorMessage);
 
     default: return state;
   }
@@ -169,4 +186,6 @@ export const actions = {
 export const selectors = {
   getTicketIsCreating,
   getTicketCreateError,
+
+  getTicketGetTicketDetail,
 };

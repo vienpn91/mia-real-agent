@@ -24,3 +24,8 @@ export const removeTicket = id => axios
   .delete(`tickets/${id}`)
   .then(response => ({ response }))
   .catch(error => ({ error }));
+
+export const insertChat = (id, data) => axios
+  .post(`tickets/chat/${id}`, data)
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
