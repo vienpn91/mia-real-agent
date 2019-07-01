@@ -5,6 +5,7 @@ export const ERROR_MESSAGE = {
   BAD_REQUEST: 'Invalid request',
   EMAIL_EXIST: 'Email is exist',
   PASSWORD_INCORRECT: 'Current password is not correct',
+  UNAUTHORIZED: 'Unauthorized',
 
   // tax
   ZIP_CODE_NOT_FOUND:

@@ -13,11 +13,12 @@ const ticketSchema = new Schema(
       default: TICKET_STATUS.NEW,
     },
     category: [String],
-    owner: mongoose.Schema.Types.ObjectId,
-    assignee: mongoose.Schema.Types.ObjectId,
-    resolvedAt: mongoose.Schema.Types.ObjectId,
+    owner: { type: Schema.Types.ObjectId, ref: 'User' },
+    assignee: { type: Schema.Types.ObjectId, ref: 'User' },
+    resolvedBy: { type: Schema.Types.ObjectId, ref: 'User' },
     deleted: {
       type: Boolean,
+      default: false,
     },
   },
   {

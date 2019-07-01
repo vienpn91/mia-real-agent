@@ -44,8 +44,9 @@ const createFailAction = errorMessage => ({
   },
 });
 
-const getAllAction = () => ({
+const getAllAction = payload => ({
   type: GET_ALL,
+  payload,
 });
 
 

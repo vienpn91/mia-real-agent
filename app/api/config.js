@@ -6,5 +6,9 @@ export function configAxios() {
 }
 
 export function configToken(token) {
-  axios.defaults.headers.common.Authorization = `bearer ${token}`;
+  if (token) {
+    axios.defaults.headers.common.Authorization = `bearer ${token}`;
+  } else {
+    delete axios.defaults.headers.common.Authorization;
+  }
 }
