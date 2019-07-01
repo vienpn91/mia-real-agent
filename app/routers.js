@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import AuthenticatedRoute from 'containers/Route/AuthenticatedRoute';
 import UnauthRoute from './containers/Route/UnauthenticateRoute';
 import HomePage from './pages/HomePage';
 import Dashboard from './pages/Dashboard';
@@ -14,14 +14,12 @@ import TicketPage from './pages/TicketPage';
 
 export default class App extends React.PureComponent {
   render() {
-    const { history } = this.props;
-
     return (
       <Switch>
         <Route exact path="/" component={HomePage} />
-        <Route exact path="/dashboard" component={Dashboard} />
-        <Route exact path="/ticket" component={TicketPage} />
-        <Route exact path="/ticket/:id?" component={ChatbotComponent} />
+        <AuthenticatedRoute exact path="/dashboard" component={Dashboard} />
+        <AuthenticatedRoute exact path="/ticket" component={TicketPage} />
+        <AuthenticatedRoute exact path="/ticket/:id?" component={ChatbotComponent} />
         <UnauthRoute exact path="/login" component={Login} />
         <UnauthRoute exact path="/register" component={Registration} />
         <Route exact path="/greeting" component={ThankForRegistering} />
@@ -34,7 +32,3 @@ export default class App extends React.PureComponent {
     );
   }
 }
-
-App.propTypes = {
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
-};
