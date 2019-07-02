@@ -99,7 +99,7 @@ class Ticket extends Component {
     return (
       <TableContentWrapper bgTable>
         {isNoTicket
-          ? <TableEmptyContent>No Ticket Yet</TableEmptyContent>
+          ? <TableEmptyContent>No tickets available, click here to create one</TableEmptyContent>
           : tickets.map(this.renderTicketItem)
         }
       </TableContentWrapper>

@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
 import React, { Component } from 'react';
-import _get from 'lodash/get';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { object, number } from 'prop-types';
 import { Icon } from 'antd';
@@ -41,11 +41,17 @@ class TicketItem extends Component {
 
   renderTicketContent = () => {
     const { ticket } = this.props;
+    const { ticketId } = ticket;
+
     return (
       <DashboardTitle>
         <DashboardRightBlock>
           <DashboardSubTitle>
-            <DashboardLinkTitle>{ticket.title}</DashboardLinkTitle>
+            <DashboardLinkTitle>
+              <Link to={`/ticket/${ticketId}`}>
+                {ticket.title}
+              </Link>
+            </DashboardLinkTitle>
           </DashboardSubTitle>
           {this.renderSubtitle()}
         </DashboardRightBlock>
