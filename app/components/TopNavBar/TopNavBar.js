@@ -11,7 +11,6 @@ import {
   Nav,
   UserName,
   UserProfile,
-  Dropdown,
 } from './TopNavBar.styled';
 
 const { Header } = Layout;
@@ -35,7 +34,7 @@ export default class TopNavBar extends Component {
 
   renderLogo = () => (
     <Logo>
-      <Link to="/">
+      <Link to="/dashboard">
         <Avatar src="../../assets/images/logo.png" />
       </Link>
     </Logo>
@@ -82,7 +81,7 @@ export default class TopNavBar extends Component {
           {this.renderLogo()}
           <NavBar>
             <Nav>
-              <Link to="/">Home</Link>
+              <Link to="/dashboard">Dashboard</Link>
             </Nav>
             <Nav key="2">
               <Link to="/ticket">Ticket</Link>

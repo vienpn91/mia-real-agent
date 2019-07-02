@@ -3,7 +3,7 @@ import {
   Row, Col, Tabs,
 } from 'antd';
 import Activity from 'components/Activity';
-import TicketPage from 'components/TicketPage';
+import TicketPage from 'containers/TicketPage';
 import {
   DashboardContainer,
   DashboardItem,
