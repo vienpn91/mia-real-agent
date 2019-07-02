@@ -23,9 +23,9 @@ function* createTicket({ payload }) {
   yield put(actions.createCompleteAction());
 }
 
-function* getAllTicket() {
+function* getAllTicket({ payload }) {
   yield configAxiosForTicket();
-  const { response, error } = yield call(TicketApi.getAllTicket);
+  const { response, error } = yield call(TicketApi.getAllTicket, payload);
   if (error) {
     const message = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE
@@ -33,8 +33,11 @@ function* getAllTicket() {
     yield put(actions.getAllFailAction(message));
     return;
   }
-  const { data } = response;
-  yield put(actions.getAllCompleteAction(data));
+
+  const data = _get(response, 'data', {});
+  const { result, totalRecord } = data;
+
+  yield put(actions.getAllCompleteAction(result, totalRecord));
 }
 
 function* getTicket({ payload }) {

@@ -1,8 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/no-array-index-key */
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Menu, Dropdown, Icon } from 'antd';
-import Ticket from 'components/TicketPage/Ticket';
+import Ticket from 'containers/TicketPage/Ticket';
 import {
   TicketPageWrapper,
   TicketFilterWrapper,
@@ -18,7 +19,13 @@ const fiterOption = [
   'Everything mentioning you',
 ];
 
-export default class TicketPage extends Component {
+class TicketPage extends PureComponent {
+  componentDidMount() {
+    const { getAllAction } = this.props;
+
+    getAllAction();
+  }
+
   menu = () => (
     <Menu>
       {fiterOption.map((status, index) => (
@@ -61,3 +68,9 @@ export default class TicketPage extends Component {
     );
   }
 }
+
+TicketPage.propTypes = {
+  getAllAction: PropTypes.func,
+};
+
+export default TicketPage;

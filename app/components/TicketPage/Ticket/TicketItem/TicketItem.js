@@ -1,5 +1,7 @@
 /* eslint-disable default-case */
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
 import { object, number } from 'prop-types';
 import { Icon } from 'antd';
 import {
@@ -16,47 +18,40 @@ import {
 import { TableContent } from '../../../TableComponent/TableComponent';
 import { columnSizeContent } from '../ColumnSize';
 
-export default class TicketItem extends Component {
+class TicketItem extends Component {
   static propTypes = {
-    value: object.isRequired,
+    ticket: object.isRequired,
     index: number,
   }
 
   renderSubtitle = () => {
-    const { value } = this.props;
+    const { ticket } = this.props;
     const {
-      ticketId, activityStatus, modifiedTime, userName,
-    } = value;
-    switch (activityStatus.toString()) {
-      case 'Created':
-        return (
-          <DashboardSubActivity>
-            {`${ticketId} ${activityStatus} ${modifiedTime} ago`}
-          </DashboardSubActivity>
-        );
-      case 'Assigned':
-        return (
-          <DashboardSubActivity>
-            {`${activityStatus} to ${userName} ${modifiedTime} ago`}
-          </DashboardSubActivity>
-        );
-      case 'Closed':
-        return (
-          <DashboardSubActivity>
-            {`${ticketId} ${activityStatus} ${modifiedTime} ago`}
-          </DashboardSubActivity>
-        );
-      default:
-    }
+      ticketId,
+      createdAt,
+    } = ticket;
+    const timeFromNow = moment(createdAt).fromNow();
+
+    return (
+      <DashboardSubActivity>
+        {`#${ticketId} opened ${timeFromNow}`}
+      </DashboardSubActivity>
+    );
   }
 
   renderTicketContent = () => {
-    const { value } = this.props;
+    const { ticket } = this.props;
+    const { ticketId } = ticket;
+
     return (
       <DashboardTitle>
         <DashboardRightBlock>
           <DashboardSubTitle>
-            <DashboardLinkTitle>{value.title}</DashboardLinkTitle>
+            <DashboardLinkTitle>
+              <Link to={`/ticket/${ticketId}`}>
+                {ticket.title}
+              </Link>
+            </DashboardLinkTitle>
           </DashboardSubTitle>
           {this.renderSubtitle()}
         </DashboardRightBlock>
@@ -88,3 +83,5 @@ export default class TicketItem extends Component {
     );
   }
 }
+
+export default TicketItem;

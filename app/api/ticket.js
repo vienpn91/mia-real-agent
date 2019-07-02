@@ -5,8 +5,8 @@ export const createTicket = data => axios
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
-export const getAllTicket = data => axios
-  .get('tickets', data)
+export const getAllTicket = params => axios
+  .get('tickets', { params })
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
