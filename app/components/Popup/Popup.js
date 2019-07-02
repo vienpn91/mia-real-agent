@@ -29,12 +29,8 @@ export default class PopupOverlay extends Component {
     loading: false,
   }
 
-  hello = () => {
-    alert('cc');
-  }
-
   renderConfirmPopup = () => {
-    const { onClose, onSubmit } = this.props;
+    const { onClose } = this.props;
     return (
       <PopupGroupAction>
         <DefaultButton type="submit">Accept</DefaultButton>
