@@ -81,7 +81,10 @@ class Ticket extends Component {
     </TableHeadWrapper>
   );
 
-  renderTicketItem = (ticket, index) => <TicketItem ticket={ticket} index={index} />;
+  renderTicketItem = (ticket, index) => {
+    const { _id } = ticket;
+    return <TicketItem key={_id} ticket={ticket} index={index} />;
+  };
 
   renderTicketTableContent = () => {
     const { tickets, fetchingContext } = this.props;

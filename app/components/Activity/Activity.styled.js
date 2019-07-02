@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const DashboardInfoUser = styled.div`
   color: #000;
@@ -25,7 +26,7 @@ export const DashboardSubTitle = styled.h3`
   margin-bottom: 0px;
 `;
 
-export const DashboardLinkTitle = styled.a`  
+export const DashboardLinkTitle = styled(Link)`
   color: #000;
   font-weight: 600;
   &:hover {

@@ -1,6 +1,5 @@
 /* eslint-disable default-case */
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { object, number } from 'prop-types';
 import { Icon } from 'antd';
@@ -47,10 +46,8 @@ class TicketItem extends Component {
       <DashboardTitle>
         <DashboardRightBlock>
           <DashboardSubTitle>
-            <DashboardLinkTitle>
-              <Link to={`/ticket/${ticketId}`}>
-                {ticket.title}
-              </Link>
+            <DashboardLinkTitle to={`/ticket/${ticketId}`}>
+              {ticket.title}
             </DashboardLinkTitle>
           </DashboardSubTitle>
           {this.renderSubtitle()}

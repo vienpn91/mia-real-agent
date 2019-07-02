@@ -36,8 +36,9 @@ const createAction = payload => ({
 });
 
 
-const createCompleteAction = () => ({
+const createCompleteAction = payload => ({
   type: CREATE_SUCCESS,
+  payload,
 });
 
 const createFailAction = errorMessage => ({
@@ -155,8 +156,11 @@ function profileReducer(state = initialState, action) {
     case CREATE:
       return state.set('isCreating', true)
         .set('createError', '');
-    case CREATE_SUCCESS:
-      return state.set('isCreating', false);
+    case CREATE_SUCCESS: {
+      const { payload } = action;
+      const { _id } = payload;
+      return state.set('isCreating', false).setIn(['tickets', _id], fromJS(payload));
+    }
     case CREATE_FAIL:
       return state.set('isCreating', false)
         .set('createError', action.errorMessage);

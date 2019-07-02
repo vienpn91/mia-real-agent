@@ -12,6 +12,7 @@ import {
   CreateItem,
 } from './Ticket.styles';
 import { DefaultButton } from '../Generals/general.styles';
+import CreateTicketFormContainer from '../../containers/Chatbot/CreateTicket';
 
 const fiterOption = [
   'Your ticket',
@@ -20,11 +21,28 @@ const fiterOption = [
 ];
 
 class TicketPage extends PureComponent {
+  state = {
+    isOpenCreateModal: false,
+  }
+
   componentDidMount() {
     const { getAllAction } = this.props;
 
     getAllAction();
   }
+
+  handleOpenCreateModal = () => {
+    this.setState({
+      isOpenCreateModal: true,
+    });
+  }
+
+  handleCloseCreateModal = () => {
+    this.setState({
+      isOpenCreateModal: false,
+    });
+  }
+
 
   menu = () => (
     <Menu>
@@ -54,16 +72,22 @@ class TicketPage extends PureComponent {
         <input type="text" />
       </FilterItem>
       <CreateItem>
-        <DefaultButton>Create Ticket</DefaultButton>
+        <DefaultButton onClick={this.handleOpenCreateModal}>Create Ticket</DefaultButton>
       </CreateItem>
     </TicketFilterWrapper>
   )
 
   render() {
+    const { isOpenCreateModal } = this.state;
+
     return (
       <TicketPageWrapper>
         {this.renderFilterTicket()}
         <Ticket />
+        <CreateTicketFormContainer
+          isOpen={isOpenCreateModal}
+          handleCancel={this.handleCloseCreateModal}
+        />
       </TicketPageWrapper>
     );
   }
