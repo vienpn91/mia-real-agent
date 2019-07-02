@@ -91,6 +91,7 @@ class Login extends Component {
                       type="email"
                       name="email"
                       label="Email"
+                      login
                     />
                   </Col>
                 </Row>
@@ -100,6 +101,7 @@ class Login extends Component {
                       type="password"
                       name="password"
                       label="Password"
+                      login
                     />
                   </Col>
                 </Row>

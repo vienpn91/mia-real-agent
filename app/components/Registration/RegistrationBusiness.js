@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import {
   RegistrationWrapper,
-  RegistrationCard,
+  RegistrationItem,
   RegistrationTitle,
   RegistrationBtn,
   RegistrationFooter,
@@ -69,7 +69,7 @@ class Registration extends Component {
     }
     return (
       <RegistrationBtn
-        onClick={this.register}
+        type="submit"
       >
         Register
       </RegistrationBtn>
@@ -81,7 +81,7 @@ class Registration extends Component {
 
     return (
       <RegistrationWrapper>
-        <RegistrationCard>
+        <RegistrationItem>
           <RegistrationTitle>Mia Consult</RegistrationTitle>
           <Formik
             initialValues={initialValues}
@@ -96,6 +96,7 @@ class Registration extends Component {
                       name="username"
                       type="text"
                       label="Username"
+                      login
                     />
                   </Col>
                   <Col sm={12} xs={24}>
@@ -103,6 +104,7 @@ class Registration extends Component {
                       name="password"
                       type="password"
                       label="Password"
+                      login
                     />
                   </Col>
                 </Row>
@@ -112,6 +114,7 @@ class Registration extends Component {
                       name="email"
                       type="text"
                       label="Email"
+                      login
                     />
                   </Col>
                   <Col sm={12} xs={24}>
@@ -119,6 +122,7 @@ class Registration extends Component {
                       name="company"
                       type="text"
                       label="Company name"
+                      login
                     />
                   </Col>
                 </Row>
@@ -129,6 +133,7 @@ class Registration extends Component {
                       type="select"
                       options={SIZE_OPTIONS}
                       label="companySize"
+                      login
                     />
                   </Col>
                   <Col sm={12} xs={24}>
@@ -138,6 +143,7 @@ class Registration extends Component {
                       mode="multiple"
                       options={FIELD_OPTIONS}
                       label="Working fields"
+                      login
                     />
                   </Col>
                 </Row>
@@ -147,6 +153,7 @@ class Registration extends Component {
                       name="address"
                       type="text"
                       label="Address"
+                      login
                     />
                   </Col>
                   <Col sm={12} xs={24}>
@@ -154,6 +161,7 @@ class Registration extends Component {
                       name="phoneNumber"
                       type="text"
                       label="Phone No."
+                      login
                     />
                   </Col>
                 </Row>
@@ -176,7 +184,7 @@ class Registration extends Component {
               Login now!
             </RegistrationFooterLink>
           </RegistrationFooter>
-        </RegistrationCard>
+        </RegistrationItem>
       </RegistrationWrapper>
     );
   }

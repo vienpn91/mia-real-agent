@@ -143,6 +143,9 @@ html, body, div, span, applet, object, iframe,
       font-style: italic;
     }
   }
+  .ant-select-selection--single {
+    height: 36px !important;
+  }
 `;
 
 export default GlobalStyle;

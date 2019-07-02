@@ -6,8 +6,8 @@ export const TopNavBarWrapper = styled.div`
     align-items: center;
     height: 64px;
     padding: 0px 15px;
-    background-color: #fafbfc;
-    border-bottom: 1px solid #d9d9d9;
+    background-color: #fff;
+    box-shadow: 0px 0px 6px -1px #d9d9d9;
     position: relative;
     z-index: 1;
   }

@@ -104,6 +104,7 @@ class Registration extends Component {
                       name="username"
                       type="text"
                       label="Username"
+                      login
                     />
                   </Col>
                   <Col sm={12} xs={24}>
@@ -111,6 +112,7 @@ class Registration extends Component {
                       name="password"
                       type="password"
                       label="Password"
+                      login
                     />
                   </Col>
                 </Row>
@@ -120,6 +122,7 @@ class Registration extends Component {
                       name="firstName"
                       type="text"
                       label="First name"
+                      login
                     />
                   </Col>
                   <Col sm={12} xs={24}>
@@ -127,6 +130,7 @@ class Registration extends Component {
                       name="lastName"
                       type="text"
                       label="Last name"
+                      login
                     />
                   </Col>
                 </Row>
@@ -136,6 +140,7 @@ class Registration extends Component {
                       name="email"
                       type="text"
                       label="Email"
+                      login
                     />
                   </Col>
                   <Col sm={12} xs={24}>
@@ -143,6 +148,7 @@ class Registration extends Component {
                       name="dateOfBirth"
                       type="text"
                       label="Date of birth"
+                      login
                     />
                   </Col>
                 </Row>
@@ -152,6 +158,7 @@ class Registration extends Component {
                       name="company"
                       type="text"
                       label="Company"
+                      login
                     />
                   </Col>
                   <Col sm={12} xs={24}>
@@ -160,6 +167,7 @@ class Registration extends Component {
                       type="select"
                       options={POSITION_OPTIONS}
                       label="Position"
+                      login
                     />
                   </Col>
                 </Row>
@@ -169,6 +177,7 @@ class Registration extends Component {
                       name="address"
                       type="text"
                       label="Address"
+                      login
                     />
                   </Col>
                   <Col sm={12} xs={24}>
@@ -176,6 +185,7 @@ class Registration extends Component {
                       name="phone"
                       type="text"
                       label="Phone No."
+                      login
                     />
                   </Col>
                 </Row>

@@ -103,42 +103,51 @@ export const InputWrapper = styled.div`
 export const InputStyled = styled(Input)`
   width: 100% !important;
   height: 36px !important;
-  border: 0 !important;
   padding: 8px !important;
   outline: 0 none !important;
   transition: border-color .2s linear !important;
-  border-bottom: 1px solid #000 !important;
+  border: 1px solid #000 !important;
   -webkit-font-smoothing: antialiased !important;
-  border-radius: 0 !important;
+  border-radius: 3px !important;
   background: transparent !important;
+  color: #000 !important;
   &:focus {
     box-shadow: none !important;
+    border-radius: 3px !important;
     border: 1px solid #000 !important;
-    border-radius: 2px !important;
   }
   &:hover {
     transition: all 300ms ease;
     background-color: #ddd;
   }
+  ${({ login }) => login && css`
+    border: 0 !important;
+    border-bottom: 1px solid #000 !important;
+    border-radius: 0 !important;
+  `};
 `;
 
 export const InputWrapperStyled = styled(Form.Item)`
   color: #000;
   label{
     float: left;
+    color: #000 !important;
     ::after{
       content: '' !important;
     }
   }
+  
   .ant-select-selection {
+    width: 100% !important;
+    padding: 2px !important;
+    outline: 0 none !important;
     background-color: transparent;
-    border-radius: 0px;
-    border: none;
-    border-bottom: 1px solid #000;
+    border: 1px solid #000 !important;
+    border-radius: 3px !important;
     &:focus {
       box-shadow: none;
-      border-radius: 2px;
-      border: 1px solid #000;
+      border-radius: 3px !important;
+      border: 1px solid #000 !important;
     }
     &:hover {
       border-color: #000;
@@ -148,9 +157,30 @@ export const InputWrapperStyled = styled(Form.Item)`
     }
   }
   .ant-select-open .ant-select-selection {
-    border-color: #000;
+    border-radius: 3px !important;
+    border: 1px solid #000 !important;
+    box-shadow: none;
   }
   .ant-select-selection__rendered {
     outline: none;
+    height: 24px;
+    line-height: 26px;
+    margin-top: 3px;
   }
+  .ant-select-selection-selected-value {
+    background-color: #fafafa;
+    padding-left: 10px;
+  }
+  ${({ login }) => login && css`
+    .ant-select-selection {
+      border: none !important;
+      border-bottom: 1px solid #000 !important;
+      border-radius: 0px !important;
+      &:focus {
+        box-shadow: none;
+        border-radius: 3px !important;
+        border: 1px solid #000 !important;
+      }
+    }
+  `}
 `;

@@ -11,7 +11,6 @@ import {
   TicketGroup,
   TicketName,
   TicketTime,
-  TicketCategory,
   TicketStatus,
   TicketFilterWrapper,
   TicketPaginationWrapper,
@@ -20,7 +19,7 @@ import {
 } from '../styles';
 
 const scrollStyle = {
-  height: 'calc(100vh - 324px)',
+  height: 'calc(100vh - 250px)',
   width: '100%',
 };
 
@@ -100,11 +99,13 @@ export default class TicketItem extends Component {
             <Menu>
               {ticketData.slice((current - 1) * 10, current * 10).map((ticket, index) => (
                 <Menu.Item key={index} onClick={() => this.handleSelect(ticket)}>
-                  {/* <Avatar icon={ticket.userAvatar} size="large" /> */}
-                  <TicketCategory>{ticket.category}</TicketCategory>
                   <TicketGroup>
                     <TicketName>{ticket.title}</TicketName>
-                    <TicketStatus status={ticket.status}>{ticket.status}</TicketStatus>
+                    <TicketStatus status={ticket.status}>
+                      <span>{ticket.category}</span>
+                      <span>-</span>
+                      <span>{ticket.status}</span>
+                    </TicketStatus>
                   </TicketGroup>
                   <TicketTime>
                     <span>{ticket.lastestTime}</span>
