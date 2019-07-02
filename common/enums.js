@@ -18,6 +18,7 @@ export const VALIDATION_TYPE = {
 export const ROLES = {
   ADMIN: 'admin',
   INDIVIDUAL: 'individual',
+  AGENT: 'agent',
   BUSINESS: 'business',
   FREELANCER: 'freelancer',
   EMPLOYEE: 'employee',
@@ -30,6 +31,11 @@ export const TICKET_STATUS = {
   PENDING: 'Pending',
   PROCESSING: 'Processing',
   SEARCHING: 'Searching',
+};
+
+export const REQUEST_STATUS = {
+  AVAILABLE: 'Available',
+  REQUESTED: 'REQUESTED',
 };
 
 export const COLOR_BY_STATUS = {

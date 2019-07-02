@@ -41,9 +41,11 @@ export default class MessageBox extends Component {
 
   static propTypes = {
     isGetting: bool.isRequired,
+    isFindingAgent: bool.isRequired,
     ticket: object.isRequired,
     chatData: shape(),
     sendMessage: func.isRequired,
+    findAgent: func.isRequired,
     getChat: func.isRequired,
     userId: string.isRequired,
   }
@@ -142,26 +144,43 @@ export default class MessageBox extends Component {
     this.formik.getFormikContext().resetForm();
   }
 
-  renderMessageInput = () => (
-    <Formik
-      ref={(formik) => { this.formik = formik; }}
-      initialValues={initialValues}
-      onSubmit={this.handleChatSubmit}
-    >
-      {({ handleSubmit }) => (
-        <Form
-          onSubmit={handleSubmit}
-          onChange={this.handleChangeValues}
-        >
-          <MessageInputWrapper>
-            <MessageInput type="text" name="content" placeholder="Type message ..." />
-            {this.renderGroupAction()}
-            <Button key="submit" type="primary" onClick={handleSubmit}>Send</Button>
-          </MessageInputWrapper>
-        </Form>
-      )}
-    </Formik>
-  );
+  handleFindAgent = () => {
+    const { ticket, findAgent } = this.props;
+    const { _id } = ticket;
+    findAgent(_id);
+  }
+
+  renderMessageInput = () => {
+    const { isFindingAgent } = this.props;
+    return (
+      <Formik
+        ref={(formik) => { this.formik = formik; }}
+        initialValues={initialValues}
+        onSubmit={this.handleChatSubmit}
+      >
+        {({ handleSubmit }) => (
+          <Form
+            onSubmit={handleSubmit}
+            onChange={this.handleChangeValues}
+          >
+            <MessageInputWrapper>
+              <MessageInput type="text" name="content" placeholder="Type message ..." />
+              {this.renderGroupAction()}
+              <Button key="submit" type="primary" onClick={handleSubmit}>Send</Button>
+              <Button
+                loading={isFindingAgent}
+                key="button"
+                type="primary"
+                onClick={this.handleFindAgent}
+              >
+                Find Agent
+              </Button>
+            </MessageInputWrapper>
+          </Form>
+        )}
+      </Formik>
+    );
+  }
 
   renderMessageHeader = () => {
     const { ticket } = this.props;
@@ -198,7 +217,6 @@ export default class MessageBox extends Component {
           {this.renderMessageInput()}
         </MessageBoxWrapper>
       </LoadingSpin>
-
     );
   }
 }

@@ -16,7 +16,82 @@ export const INSERT_MESSAGE = 'chat/INSERT_MESSAGE';
 export const INSERT_MESSAGE_SUCCESS = 'chat/INSERT_MESSAGE_SUCCESS';
 export const INSERT_MESSAGE_FAIL = 'chat/INSERT_MESSAGE_FAIL';
 
+export const FIND_AGENT = 'chat/FIND_AGENT';
+export const FIND_AGENT_SUCCESS = 'chat/FIND_AGENT_SUCCESS';
+export const FIND_AGENT_FAIL = 'chat/FIND_AGENT_FAIL';
+
+export const ACCEPT_AGENT = 'chat/ACCEPT_AGENT';
+export const ACCEPT_AGENT_SUCCESS = 'chat/ACCEPT_AGENT_SUCCESS';
+export const ACCEPT_AGENT_FAIL = 'chat/ACCEPT_AGENT_FAIL';
+
+export const REQUEST_ACCEPT = 'chat/REQUEST_ACCEPT';
+export const REQUEST_CONFIRM = 'chat/REQUEST_CONFIRM';
+export const REQUEST_CONFIRM_SUCCESS = 'chat/REQUEST_CONFIRM_SUCCESS';
+export const REQUEST_CONFIRM_FAIL = 'chat/REQUEST_CONFIRM_FAIL';
+
 // action creator
+
+const requestConfirmAction = (agentId, ticketId, isConfirm) => ({
+  type: REQUEST_CONFIRM,
+  payload: {
+    agentId,
+    ticketId,
+    isConfirm,
+  },
+});
+
+const requestConfirmCompleteAction = () => ({
+  type: REQUEST_CONFIRM_SUCCESS,
+});
+
+const requestConfirmFailAction = errorMessage => ({
+  type: REQUEST_CONFIRM_FAIL,
+  payload: {
+    errorMessage,
+  },
+});
+
+const requestAcceptAction = ticket => ({
+  type: REQUEST_ACCEPT,
+  payload: ticket,
+});
+
+const acceptAgentAction = agentId => ({
+  type: ACCEPT_AGENT,
+  payload: {
+    agentId,
+  },
+});
+
+const acceptAgentCompleteAction = () => ({
+  type: ACCEPT_AGENT_SUCCESS,
+});
+
+const acceptAgentFailAction = errorMessage => ({
+  type: ACCEPT_AGENT_FAIL,
+  payload: {
+    errorMessage,
+  },
+});
+
+const findAgentAction = ticketId => ({
+  type: FIND_AGENT,
+  payload: {
+    ticketId,
+  },
+});
+
+const findAgentCompleteAction = agent => ({
+  type: FIND_AGENT_SUCCESS,
+  payload: agent,
+});
+
+const findAgentFailAction = errorMessage => ({
+  type: FIND_AGENT_FAIL,
+  payload: {
+    errorMessage,
+  },
+});
 
 // payload: {
 // ticketId: String,
@@ -114,6 +189,12 @@ const insertMessageFailAction = errorMessage => ({
 const getChatIsGetting = ({ chat }) => chat.get('isGetting');
 const getChatData = ({ chat }) => chat.get('chatData');
 
+const getChatIsFindingAgent = ({ chat }) => chat.get('isFindingAgent');
+
+const getChatIsAgentRequesting = ({ chat }) => chat.get('isRequesting');
+const getChatIsAgentRequestTicket = ({ chat }) => chat.get('requestTicket');
+const getChatIsAgentRequestIsConfirming = ({ chat }) => chat.get('isConfirming');
+
 const initialState = fromJS({
   isCreating: false,
   createError: '',
@@ -121,6 +202,15 @@ const initialState = fromJS({
   isGetting: false,
   getError: '',
   chatData: null,
+
+  isFindingAgent: false,
+  findAgentError: '',
+
+  isRequesting: false,
+  requestError: '',
+  requestTicket: null,
+  isConfirming: false,
+  confirmError: '',
 });
 
 function profileReducer(state = initialState, action) {
@@ -137,6 +227,33 @@ function profileReducer(state = initialState, action) {
 
     case UPDATE_CHAT_SUCCESS:
       return state.set('chatData', action.payload);
+
+    case FIND_AGENT:
+      return state.set('isFindingAgent', true)
+        .set('findAgentError', '');
+    case FIND_AGENT_SUCCESS:
+      return state.set('isFindingAgent', false);
+    case FIND_AGENT_FAIL:
+      return state.set('isFindingAgent', false)
+        .set('findAgentError', action.errorMessage);
+
+    case REQUEST_ACCEPT:
+      return state.set('isRequesting', true)
+        .set('requestError', '')
+        .set('requestTicket', action.payload);
+
+    case REQUEST_CONFIRM:
+      return state.set('isConfirming', true)
+        .set('confirmError', '');
+
+    case REQUEST_CONFIRM_SUCCESS:
+      return state.set('isConfirming', false)
+        .set('isRequesting', false);
+
+    case REQUEST_CONFIRM_FAIL:
+      return state.set('isConfirming', false)
+        .set('confirmError', action.errorMessage);
+
     default: return state;
   }
 }
@@ -159,9 +276,28 @@ export const actions = {
   insertMessageAction,
   insertMessageCompleteAction,
   insertMessageFailAction,
+
+  acceptAgentAction,
+  acceptAgentCompleteAction,
+  acceptAgentFailAction,
+
+  findAgentAction,
+  findAgentCompleteAction,
+  findAgentFailAction,
+
+  requestAcceptAction,
+  requestConfirmAction,
+  requestConfirmCompleteAction,
+  requestConfirmFailAction,
 };
 
 export const selectors = {
   getChatIsGetting,
   getChatData,
+
+  getChatIsFindingAgent,
+
+  getChatIsAgentRequesting,
+  getChatIsAgentRequestTicket,
+  getChatIsAgentRequestIsConfirming,
 };

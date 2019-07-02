@@ -44,3 +44,15 @@ export const changePassword = (oldPassword, newPassword) => axios
   })
   .then(response => ({ response }))
   .catch(error => ({ error }));
+
+export const findAvailableAgent = ticketId => axios
+  .post('users/agent/findAvailable', {
+    ticketId,
+  })
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
+
+export const acceptAgent = (id, ticketId, isConfirm) => axios
+  .post(`users/agent/accept/${id}`, { ticketId, isConfirm })
+  .then(response => ({ response }))
+  .catch(error => ({ error }));

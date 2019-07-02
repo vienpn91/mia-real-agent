@@ -1,6 +1,10 @@
 /* eslint-disable react/button-has-type */
 import React, { Component } from 'react';
-import { string, func } from 'prop-types';
+import {
+  string, func, node,
+  oneOfType,
+  bool,
+} from 'prop-types';
 import { POPUP_TYPE } from '../../../common/enums';
 import {
   PopupOverlayWrapper,
@@ -10,16 +14,27 @@ import {
   PopupGroupAction,
 } from './Popup.styled';
 import { DefaultButton } from '../Generals/general.styles';
+import LoadingSpin from '../Loading';
 
 export default class PopupOverlay extends Component {
   static propTypes = {
     type: string,
-    textContent: string,
+    loading: bool,
+    content: oneOfType([string, node]),
+    onSubmit: func,
     onClose: func,
   }
 
+  static defaultProps = {
+    loading: false,
+  }
+
+  hello = () => {
+    alert('cc');
+  }
+
   renderConfirmPopup = () => {
-    const { onClose } = this.props;
+    const { onClose, onSubmit } = this.props;
     return (
       <PopupGroupAction>
         <DefaultButton type="submit">Accept</DefaultButton>
@@ -29,13 +44,14 @@ export default class PopupOverlay extends Component {
   }
 
   renderMessagePopup = () => {
-    const { type, onClose } = this.props;
+    const { type, onClose, onSubmit } = this.props;
     const error = type === POPUP_TYPE.ERROR;
     return (
       <PopupGroupAction>
         <DefaultButton
           error={error}
-          type="submit"
+          type="button"
+          onClick={onSubmit}
         >
           Ok
         </DefaultButton>
@@ -53,20 +69,22 @@ export default class PopupOverlay extends Component {
   }
 
   render() {
-    const { type, textContent } = this.props;
+    const { type, content, loading } = this.props;
     const error = type === POPUP_TYPE.ERROR;
     return (
       <PopupOverlayWrapper>
         <PopupModalWrapper>
-          <PopupHeader
-            error={error}
-          >
-            <span>{type}</span>
-          </PopupHeader>
-          <PopupContent>
-            <p>{textContent}</p>
-          </PopupContent>
-          {this.renderGroupAction()}
+          <LoadingSpin loading={loading}>
+            <PopupHeader
+              error={error}
+            >
+              <span>{type}</span>
+            </PopupHeader>
+            <PopupContent>
+              {content}
+            </PopupContent>
+            {this.renderGroupAction()}
+          </LoadingSpin>
         </PopupModalWrapper>
       </PopupOverlayWrapper>
     );
