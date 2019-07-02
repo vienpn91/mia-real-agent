@@ -47,10 +47,8 @@ class TicketItem extends Component {
       <DashboardTitle>
         <DashboardRightBlock>
           <DashboardSubTitle>
-            <DashboardLinkTitle>
-              <Link to={`/ticket/${ticketId}`}>
-                {ticket.title}
-              </Link>
+            <DashboardLinkTitle to={`/ticket/${ticketId}`}>
+              {ticket.title}
             </DashboardLinkTitle>
           </DashboardSubTitle>
           {this.renderSubtitle()}

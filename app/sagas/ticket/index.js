@@ -12,7 +12,7 @@ import { getToken } from '../../reducers/auth';
 
 function* createTicket({ payload }) {
   yield configAxiosForTicket();
-  const { error } = yield call(TicketApi.createTicket, payload);
+  const { error, response } = yield call(TicketApi.createTicket, payload);
   if (error) {
     const message = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE
@@ -20,7 +20,10 @@ function* createTicket({ payload }) {
     yield put(actions.createFailAction(message));
     return;
   }
-  yield put(actions.createCompleteAction());
+
+  const { data } = response;
+
+  yield put(actions.createCompleteAction(data));
 }
 
 function* getAllTicket({ payload }) {
