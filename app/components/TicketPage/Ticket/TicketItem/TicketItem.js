@@ -1,6 +1,5 @@
 /* eslint-disable default-case */
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { object, number } from 'prop-types';
 import { Icon } from 'antd';
