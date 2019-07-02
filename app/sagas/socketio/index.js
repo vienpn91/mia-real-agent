@@ -85,7 +85,6 @@ function* requestConfirm() {
     const { isConfirm } = yield take(socketChannel);
     if (isConfirm) {
       notification.success({ message: 'Please wait while establishing connection' });
-      this.handleCancelConfirm();
     } else {
       notification.error({ message: 'The Agent had declined the request' });
     }

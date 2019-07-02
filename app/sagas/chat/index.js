@@ -1,8 +1,9 @@
 import {
-  takeEvery, call, put, select, takeLatest,
+  call, put, select, takeLatest,
 } from 'redux-saga/effects';
 import _get from 'lodash/get';
 import { DEFAULT_ERROR_MESSAGE } from 'utils/constants';
+import { notification } from 'antd';
 import {
   actions, GET_CHAT, INSERT_MESSAGE, UPDATE_CHAT, FIND_AGENT, ACCEPT_AGENT, REQUEST_CONFIRM,
 } from '../../reducers/chat';
@@ -70,6 +71,12 @@ export function* findAvailableAgent({ payload }) {
     return;
   }
   const { data } = response;
+  const { agent } = data;
+  if (!agent) {
+    notification.error({ message: 'No Agent found' });
+  } else {
+    notification.success({ message: 'Found Agent' });
+  }
   yield put(actions.findAgentCompleteAction(data));
 }
 
