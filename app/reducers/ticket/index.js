@@ -1,6 +1,7 @@
 import { fromJS } from 'immutable';
 import _keyBy from 'lodash/keyBy';
 import _values from 'lodash/values';
+import _pick from 'lodash/pick';
 import { createSelector } from 'reselect';
 
 export const CREATE = 'ticket/CREATE';
@@ -133,9 +134,13 @@ const getTicketCreateError = ({ ticket }) => ticket.get('createError');
 
 const getTicketGetTicketDetail = ({ ticket }) => ticket.get('ticketDetail');
 const getTicketsById = ({ ticket }) => ticket.get('tickets');
-const getTicketsList = createSelector(getTicketsById, (ticketByIds) => {
+const getVisibleTicketIds = ({ ticket }) => ticket.get('visibleTicketIds');
+const getTicketsList = createSelector(getTicketsById, getVisibleTicketIds, (ticketByIds, visibleTicketIds) => {
   const plainTickets = ticketByIds.toJS();
-  return _values(plainTickets);
+  const plainVisibleTicketIds = visibleTicketIds.toJS();
+  const visibleTickets = _pick(plainTickets, plainVisibleTicketIds);
+
+  return _values(visibleTickets);
 });
 
 const getFetchingContext = ({ ticket }) => ticket.get('fetching', fetchingObj).toJS();
@@ -143,6 +148,7 @@ const getFetchingContext = ({ ticket }) => ticket.get('fetching', fetchingObj).t
 const initialState = fromJS({
   createError: '',
   tickets: {},
+  visibleTicketIds: [],
   getError: '',
   ticketDetail: null,
   // processing value
@@ -179,9 +185,14 @@ function profileReducer(state = initialState, action) {
       return state.set('fetching', fromJS({ isFetching: true, errorMsg: '' }));
     case GET_ALL_SUCCESS: {
       const { data, totalRecord } = action;
+      const newTickets = state
+        .get('tickets')
+        .merge(fromJS(_keyBy(data, '_id')));
+      const visibleTicketIds = data.map(({ _id }) => _id);
 
       return state
-        .set('tickets', fromJS(_keyBy(data, '_id')))
+        .set('visibleTicketIds', fromJS(visibleTicketIds))
+        .set('tickets', newTickets)
         .set('totalRecord', totalRecord)
         .set('fetching', fromJS(fetchingObj));
     }
