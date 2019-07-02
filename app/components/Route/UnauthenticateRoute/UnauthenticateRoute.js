@@ -14,7 +14,7 @@ const UnauthenticateRoute = ({
         return <Component {...props} authenticated />;
       }
 
-      const { from } = props.location.state || { from: { pathname: '/' } };
+      const { from } = props.location.state || { from: { pathname: '/dashboard' } };
 
       return <Redirect to={from} />;
     }}
