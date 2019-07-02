@@ -26,9 +26,11 @@ const HomePage = () => (
       <MiaLinkText>Chat with Mia</MiaLinkText>
     </MiaMessengerLink>
     <MiaFBLogin>
-      Or
-      <MiaLoginText href="api/auth/login/facebook">
+      {/* <MiaLoginText href="api/auth/login/facebook">
         Login with Facebook
+      </MiaLoginText> */}
+      <MiaLoginText href="/login">
+        Login for more
       </MiaLoginText>
     </MiaFBLogin>
   </MiaWrapper>
