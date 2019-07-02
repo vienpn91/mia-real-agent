@@ -1,6 +1,10 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
+<<<<<<< HEAD
 import AuthenticatedRoute from 'containers/Route/AuthenticatedRoute';
+=======
+import MainLayout from 'components/MainLayout';
+>>>>>>> Top Navbar only display in dashboard and ticket page
 import UnauthRoute from './containers/Route/UnauthenticateRoute';
 import HomePage from './pages/HomePage';
 import Dashboard from './pages/Dashboard';
@@ -12,14 +16,12 @@ import Profile from './pages/Profile';
 import ChatbotComponent from './pages/Chatbot';
 import TicketPage from './pages/TicketPage';
 
+
 export default class App extends React.PureComponent {
   render() {
     return (
       <Switch>
         <Route exact path="/" component={HomePage} />
-        <AuthenticatedRoute exact path="/dashboard" component={Dashboard} />
-        <AuthenticatedRoute exact path="/ticket" component={TicketPage} />
-        <AuthenticatedRoute exact path="/ticket/:id?" component={ChatbotComponent} />
         <UnauthRoute exact path="/login" component={Login} />
         <UnauthRoute exact path="/register" component={Registration} />
         <Route exact path="/greeting" component={ThankForRegistering} />
@@ -28,6 +30,13 @@ export default class App extends React.PureComponent {
           path="/login/callback/:token/:userId/:email/:verifiedAt"
           component={LoginCallBackPage}
         />
+        <MainLayout>
+          <Switch>
+            <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/ticket" component={TicketPage} />
+            <Route exact path="/ticket/:id?" component={ChatbotComponent} />
+          </Switch>
+        </MainLayout>
       </Switch>
     );
   }

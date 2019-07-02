@@ -13,7 +13,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import MainLayout from 'components/MainLayout';
 import { ConnectedRouter } from 'connected-react-router';
 import FontFaceObserver from 'fontfaceobserver';
 import history from './utils/history';
@@ -53,9 +52,7 @@ const render = () => {
       <Provider store={store}>
         <PersistGate loading={<SpinnerLoading />} persistor={persistor}>
           <ConnectedRouter history={history}>
-            <MainLayout>
-              <App history={history} />
-            </MainLayout>
+            <App history={history} />
           </ConnectedRouter>
         </PersistGate>
       </Provider>
