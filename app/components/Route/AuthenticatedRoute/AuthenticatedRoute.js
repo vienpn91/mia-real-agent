@@ -10,7 +10,6 @@ const AuthenticatedRoute = ({
   <Route
     {...rest}
     render={(props) => {
-      console.log(authenticated);
       if (authenticated) {
         return <Component {...props} authenticated />;
       }
@@ -18,6 +17,7 @@ const AuthenticatedRoute = ({
         pathname: '/login',
         state: { from: props.location },
       };
+
       if (!authenticated) return <Redirect to={toObj} />;
       return <Redirect to="/error/404" />;
     }}
