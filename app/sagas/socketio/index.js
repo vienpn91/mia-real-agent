@@ -32,7 +32,8 @@ function createSocketChannel(socket) {
 
 function createSocketConnection(token) {
   // const endpoint = process.env.SOCKETIO_ENDPOINT;
-  const socket = socketIOClient('/chat', {
+  const socket = socketIOClient('/', {
+    path: '/chat',
     upgradeTimeout: 30000000, // default value is 10000ms, try changing it to 20k or more
   });
   socket.heartbeatTimeout = 1000;
@@ -43,8 +44,9 @@ function createSocketConnection(token) {
         console.log(`unauthorized: ${JSON.stringify(msg.data)}`);
         // socket.disconnect();
       })
-      .on('disconnect', () => {
-        socketConnection.connect();
+      .on('disconnect', (reason) => {
+        console.log('reasson', reason);
+        // socketConnection.connect();
       });
   });
   return new Promise((resolve) => {
