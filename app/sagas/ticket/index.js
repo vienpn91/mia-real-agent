@@ -33,8 +33,11 @@ function* getAllTicket({ payload }) {
     yield put(actions.getAllFailAction(message));
     return;
   }
-  const { data } = response;
-  yield put(actions.getAllCompleteAction(data));
+
+  const data = _get(response, 'data', {});
+  const { result, totalRecord } = data;
+
+  yield put(actions.getAllCompleteAction(result, totalRecord));
 }
 
 function* getTicket({ payload }) {

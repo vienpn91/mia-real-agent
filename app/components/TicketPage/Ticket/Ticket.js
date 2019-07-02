@@ -1,7 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Menu, Dropdown, Icon } from 'antd';
+import SpinnerLoading from 'components/PageLoading';
 import { columnSizeHead } from './ColumnSize';
 import TicketItem from './TicketItem/TicketItem';
 import { TicketWrapper } from '../Ticket.styles';
@@ -11,9 +13,6 @@ import {
   TableEmptyContent,
 } from '../../TableComponent/TableComponent.styled';
 import { TableHeader } from '../../TableComponent/TableComponent';
-import { TICKET_STATUS } from '../../../../common/enums';
-
-const isNoTicket = false;
 
 const activityData = [
   'Created',
@@ -27,57 +26,8 @@ const categories = [
   'Insurrance',
 ];
 
-const randomActivityStatus = () => {
-  const activity = [];
-  activity.push(activityData[Math.floor(Math.random() * activityData.length)]);
-  return activity;
-};
 
-const ticketData = [
-  {
-    title: 'User should be able to chat with other agent',
-    ticketId: '#10',
-    userName: 'longhp',
-    ticketStatus: TICKET_STATUS.PROCESSING,
-    activityStatus: randomActivityStatus(),
-    modifiedTime: '1 minute',
-  },
-  {
-    title: 'User should be able to chat with other agent',
-    ticketId: '#11',
-    userName: 'longhp',
-    ticketStatus: TICKET_STATUS.SEARCHING,
-    activityStatus: randomActivityStatus(),
-    modifiedTime: 'yesterday',
-  },
-  {
-    title: 'User should be able to chat with other agent',
-    ticketId: '#12',
-    userName: 'longhp',
-    ticketStatus: TICKET_STATUS.PROCESSING,
-    activityStatus: randomActivityStatus(),
-    modifiedTime: '23 hours',
-  },
-  {
-    title: 'User should be able to chat with other agent',
-    ticketId: '#13',
-    userName: 'longhp',
-    ticketStatus: TICKET_STATUS.PENDING,
-    activityStatus: randomActivityStatus(),
-    modifiedTime: '10 days',
-  },
-  {
-    title: 'User should be able to chat with other agent',
-    ticketId: '#14',
-    userName: 'longhp',
-    ticketStatus: TICKET_STATUS.RESOLVED,
-    activityStatus: randomActivityStatus(),
-    modifiedTime: 'Apr 19',
-  },
-];
-
-
-export default class Ticket extends Component {
+class Ticket extends Component {
   filterStatus = () => (
     <Menu>
       {activityData.map((status, index) => (
@@ -131,16 +81,30 @@ export default class Ticket extends Component {
     </TableHeadWrapper>
   );
 
-  renderTicketItem = (value, index) => <TicketItem value={value} index={index} />;
+  renderTicketItem = (ticket, index) => <TicketItem ticket={ticket} index={index} />;
 
-  renderTicketTableContent = () => (
-    <TableContentWrapper bgTable>
-      {isNoTicket
-        ? <TableEmptyContent>No SKU Yet</TableEmptyContent>
-        : ticketData.map(this.renderTicketItem)
-      }
-    </TableContentWrapper>
-  )
+  renderTicketTableContent = () => {
+    const { tickets, fetchingContext } = this.props;
+    const { isFetching = false } = fetchingContext;
+
+    if (isFetching) {
+      return (
+        <TableContentWrapper>
+          <SpinnerLoading />
+        </TableContentWrapper>
+      );
+    }
+
+    const isNoTicket = tickets.length === 0;
+    return (
+      <TableContentWrapper bgTable>
+        {isNoTicket
+          ? <TableEmptyContent>No Ticket Yet</TableEmptyContent>
+          : tickets.map(this.renderTicketItem)
+        }
+      </TableContentWrapper>
+    );
+  }
 
   render() {
     return (
@@ -151,3 +115,10 @@ export default class Ticket extends Component {
     );
   }
 }
+
+Ticket.propTypes = {
+  tickets: PropTypes.array,
+  fetchingContext: PropTypes.object,
+};
+
+export default Ticket;

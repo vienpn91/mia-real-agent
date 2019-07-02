@@ -3,7 +3,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Menu, Dropdown, Icon } from 'antd';
-import Ticket from 'components/TicketPage/Ticket';
+import Ticket from 'containers/TicketPage/Ticket';
 import {
   TicketPageWrapper,
   TicketFilterWrapper,

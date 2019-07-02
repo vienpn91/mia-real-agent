@@ -1,4 +1,7 @@
 import { fromJS } from 'immutable';
+import _keyBy from 'lodash/keyBy';
+import _values from 'lodash/values';
+import { createSelector } from 'reselect';
 
 export const CREATE = 'ticket/CREATE';
 export const CREATE_SUCCESS = 'ticket/CREATE_SUCCESS';
@@ -50,16 +53,15 @@ const getAllAction = payload => ({
 });
 
 
-const getAllCompleteAction = payload => ({
+const getAllCompleteAction = (data, totalRecord) => ({
   type: GET_ALL_SUCCESS,
-  payload,
+  data,
+  totalRecord,
 });
 
-const getAllFailAction = errorMessage => ({
+const getAllFailAction = errorMsg => ({
   type: GET_ALL_FAIL,
-  payload: {
-    errorMessage,
-  },
+  errorMsg,
 });
 
 const getAction = ticketId => ({
@@ -119,19 +121,33 @@ const removeFailAction = errorMessage => ({
   },
 });
 
+const fetchingObj = {
+  isFetching: false,
+  errorMsg: '',
+};
+
 // selector
 const getTicketIsCreating = ({ ticket }) => ticket.get('isCreating');
 const getTicketCreateError = ({ ticket }) => ticket.get('createError');
 
 const getTicketGetTicketDetail = ({ ticket }) => ticket.get('ticketDetail');
+const getTicketsById = ({ ticket }) => ticket.get('tickets');
+const getTicketsList = createSelector(getTicketsById, (ticketByIds) => {
+  const plainTickets = ticketByIds.toJS();
+  return _values(plainTickets);
+});
+
+const getFetchingContext = ({ ticket }) => ticket.get('fetching', fetchingObj).toJS();
 
 const initialState = fromJS({
-  isCreating: false,
   createError: '',
-
-  isGetting: false,
+  tickets: {},
   getError: '',
   ticketDetail: null,
+  // processing value
+  isCreating: false,
+  isGetting: false,
+  fetching: fetchingObj,
 });
 
 function profileReducer(state = initialState, action) {
@@ -155,7 +171,18 @@ function profileReducer(state = initialState, action) {
     case GET_FAIL:
       return state.set('isGetting', false)
         .set('getError', action.errorMessage);
+    case GET_ALL:
+      return state.set('fetching', fromJS({ isFetching: true, errorMsg: '' }));
+    case GET_ALL_SUCCESS: {
+      const { data, totalRecord } = action;
 
+      return state
+        .set('tickets', fromJS(_keyBy(data, '_id')))
+        .set('totalRecord', totalRecord)
+        .set('fetching', fromJS(fetchingObj));
+    }
+    case GET_ALL_FAIL:
+      return state.set('fetching', fromJS({ isFetching: false, errorMsg: action.errorMsg }));
     default: return state;
   }
 }
@@ -189,4 +216,6 @@ export const selectors = {
   getTicketCreateError,
 
   getTicketGetTicketDetail,
+  getTicketsList,
+  getFetchingContext,
 };

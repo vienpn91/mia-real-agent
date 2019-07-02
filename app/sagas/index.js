@@ -1,6 +1,6 @@
-import { all, take, put } from 'redux-saga/effects';
+import { all, put } from 'redux-saga/effects';
 import { configAxios } from '../api/config';
-import { REHYDRATE_COMPLETE, CLEAR_TRANSACTION } from '../reducers';
+import { CLEAR_TRANSACTION } from '../reducers';
 import authSaga from './auth';
 import socketioSaga from './socketio';
 import profileSaga from './profile';

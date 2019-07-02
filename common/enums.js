@@ -24,7 +24,7 @@ export const ROLES = {
 };
 
 export const TICKET_STATUS = {
-  NEW: 'New',
+  OPEN: 'Open',
   RESOLVED: 'Resolved',
   CLOSED: 'Closed',
   PENDING: 'Pending',
@@ -33,7 +33,7 @@ export const TICKET_STATUS = {
 };
 
 export const COLOR_BY_STATUS = {
-  New: '#449bea',
+  Open: '#449bea',
   Resolved: '#05ca05',
   Closed: '#d4101e',
   Pending: '#e5cc94',
