@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { ROLES } from '../../../common/enums';
+import { ROLES, REQUEST_STATUS } from '../../../common/enums';
 const { Schema } = mongoose;
 
 const userSchema = new Schema(
@@ -9,7 +9,8 @@ const userSchema = new Schema(
     password: { type: String, required: false },
     provider: [{ id: String, name: String, _id: false }],
     role: { type: String, default: ROLES.INDIVIDUAL },
-
+    requestStatus: { type: String, default: REQUEST_STATUS.AVAILABLE },
+    categories: { type: [String] },
     token: String, // for login
     profile: {
       // profile for individual customer

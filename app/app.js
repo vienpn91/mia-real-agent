@@ -30,6 +30,7 @@ import '!file-loader?name=[name].[ext]!./assets/images/favicon.ico';
 import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line import/extensions
 
 import configureStore from './store';
+import AgentAcceptRequestContainer from './containers/AgentAcceptRequest/AgentAcceptRequestContainer';
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
@@ -53,6 +54,7 @@ const render = () => {
         <PersistGate loading={<SpinnerLoading />} persistor={persistor}>
           <ConnectedRouter history={history}>
             <App history={history} />
+            <AgentAcceptRequestContainer />
           </ConnectedRouter>
         </PersistGate>
       </Provider>

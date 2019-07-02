@@ -333,6 +333,9 @@ export const MessageInputWrapper = styled.div`
       border: 1px solid transparent !important;
     }
   }
+  button{
+    margin-left: 10px;
+  }
 `;
 
 export const MessageActionWrapper = styled.div`

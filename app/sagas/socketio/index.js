@@ -1,5 +1,5 @@
 import {
-  take, takeEvery, call, put, select,
+  take, takeEvery, call, put, select, all,
 } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import socketIOClient from 'socket.io-client';
@@ -9,22 +9,25 @@ import {
   AUTH_LOGOUT,
 } from '../../reducers/auth';
 import { actions } from '../../reducers/chat';
+import { notification } from 'antd';
 
 /* events */
 const UPDATE_CHAT = 'UPDATE_CHAT';
+const REQUEST_AVAILABLE = 'REQUEST_AVAILABLE';
+const REQUEST_CONFIRM = 'REQUEST_CONFIRM';
 
 let socketConnection;
 
-function createSocketChannel(socket) {
+function createSocketChannel(socket, type) {
   return eventChannel((emit) => {
     const handler = (data) => {
       if (data) {
         emit(data);
       }
     };
-    socket.on(UPDATE_CHAT, handler);
+    socket.on(type, handler);
     const unsubscribe = () => {
-      socket.off(UPDATE_CHAT, handler);
+      socket.off(type, handler);
     };
     return unsubscribe;
   });
@@ -56,16 +59,48 @@ function createSocketConnection(token) {
   });
 }
 
-function* connectFlow() {
-  const token = yield select(getToken);
-  socketConnection = yield call(createSocketConnection, token);
-  const socketChannel = yield call(createSocketChannel, socketConnection);
+function* updateChat() {
+  const socketChannel = yield call(createSocketChannel, socketConnection, UPDATE_CHAT);
 
   // watch message and relay the action
   while (true) {
     yield take(socketChannel);
     yield put(actions.updateChatAction());
   }
+}
+
+function* requestAgent() {
+  const socketChannel = yield call(createSocketChannel, socketConnection, REQUEST_AVAILABLE);
+
+  // watch message and relay the action
+  while (true) {
+    const data = yield take(socketChannel);
+    yield put(actions.requestAcceptAction(data));
+  }
+}
+
+function* requestConfirm() {
+  const socketChannel = yield call(createSocketChannel, socketConnection, REQUEST_CONFIRM);
+
+  // watch message and relay the action
+  while (true) {
+    const { isConfirm } = yield take(socketChannel);
+    if (isConfirm) {
+      notification.success({ message: 'Please wait while establishing connection' });
+    } else {
+      notification.error({ message: 'The Agent had declined the request' });
+    }
+  }
+}
+
+function* connectFlow() {
+  const token = yield select(getToken);
+  socketConnection = yield call(createSocketConnection, token);
+  yield all([
+    updateChat(),
+    requestAgent(),
+    requestConfirm(),
+  ]);
 }
 
 function* disconnectFlow() {

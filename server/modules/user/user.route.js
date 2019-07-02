@@ -19,7 +19,6 @@ class UserRouter extends BaseRouter {
       passport.authenticate('jwt', { session: false }),
       UserController.getUserProfile,
     );
-
     this.router.put(
       '/profile/:id',
       passport.authenticate('jwt', { session: false }),
@@ -39,6 +38,16 @@ class UserRouter extends BaseRouter {
       '/checkPassword',
       passport.authenticate('jwt', { session: false }),
       UserController.checkPassword,
+    );
+    this.router.post(
+      '/agent/findAvailable',
+      passport.authenticate('jwt', { session: false }),
+      UserController.findAgent,
+    );
+    this.router.post(
+      '/agent/accept/:id',
+      passport.authenticate('jwt', { session: false }),
+      UserController.acceptRequest,
     );
   }
 }
