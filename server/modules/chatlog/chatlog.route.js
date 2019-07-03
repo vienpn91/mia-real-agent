@@ -10,6 +10,11 @@ class ChatLogRouter extends BaseRouter {
       passport.authenticate('jwt', { session: false }),
       ChatLogController.insertMessage,
     );
+    this.router.get(
+      '/find/ticketAndAgent',
+      passport.authenticate('jwt', { session: false }),
+      ChatLogController.getChatByTicketAndAgent,
+    );
   }
 }
 

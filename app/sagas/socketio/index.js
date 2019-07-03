@@ -3,13 +3,14 @@ import {
 } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import socketIOClient from 'socket.io-client';
+import { notification } from 'antd';
 import {
   getToken,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
 } from '../../reducers/auth';
 import { actions } from '../../reducers/chat';
-import { notification } from 'antd';
+import { actions as TicketActions } from '../../reducers/ticket';
 
 /* events */
 const UPDATE_CHAT = 'UPDATE_CHAT';
@@ -84,9 +85,9 @@ function* requestConfirm() {
 
   // watch message and relay the action
   while (true) {
-    const { isConfirm } = yield take(socketChannel);
+    const { ticketId, isConfirm } = yield take(socketChannel);
     if (isConfirm) {
-      notification.success({ message: 'Please wait while establishing connection' });
+      notification.success({ message: `The Agent had accepted ticket: #${ticketId}` });
     } else {
       notification.error({ message: 'The Agent had declined the request' });
     }

@@ -5,8 +5,9 @@ import _get from 'lodash/get';
 import { DEFAULT_ERROR_MESSAGE } from 'utils/constants';
 import { notification } from 'antd';
 import {
-  actions, GET_CHAT, INSERT_MESSAGE, UPDATE_CHAT, FIND_AGENT, ACCEPT_AGENT, REQUEST_CONFIRM,
+  actions, GET_CHAT, INSERT_MESSAGE, UPDATE_CHAT, FIND_AGENT, ACCEPT_AGENT, REQUEST_CONFIRM, selectors,
 } from '../../reducers/chat';
+import { selectors as TicketSelectors } from '../../reducers/ticket';
 import * as ChatApi from '../../api/chat';
 import * as UserApi from '../../api/user';
 import { configToken } from '../../api/config';
@@ -17,9 +18,10 @@ export function* configAxiosForChat() {
   configToken(token);
 }
 
-export function* getChat() {
+export function* getChat({ payload }) {
   yield configAxiosForChat();
-  const { response, error } = yield call(ChatApi.getChat, '5d159d5936d1f80cb1d52436');
+  const { ticketId, agentId } = payload;
+  const { response, error } = yield call(ChatApi.getChatByTicketAndAgent, ticketId, agentId);
   if (error) {
     const errorMessage = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE
@@ -33,7 +35,8 @@ export function* getChat() {
 
 export function* updateChat() {
   yield configAxiosForChat();
-  const { response, error } = yield call(ChatApi.getChat, '5d159d5936d1f80cb1d52436');
+  const { _id } = yield select(selectors.getChatData);
+  const { response, error } = yield call(ChatApi.getChat, _id);
   if (error) {
     const errorMessage = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE
@@ -47,8 +50,9 @@ export function* updateChat() {
 
 export function* sendMessage({ payload }) {
   yield configAxiosForChat();
-  const { chatId, message } = payload;
-  const { error } = yield call(ChatApi.sendMessage, '5d159d5936d1f80cb1d52436', message);
+  const { message } = payload;
+  const { _id } = yield select(selectors.getChatData);
+  const { error } = yield call(ChatApi.sendMessage, _id, message);
   if (error) {
     const errorMessage = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE

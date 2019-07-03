@@ -33,11 +33,6 @@ export const TICKET_STATUS = {
   SEARCHING: 'Searching',
 };
 
-export const REQUEST_STATUS = {
-  AVAILABLE: 'Available',
-  REQUESTED: 'REQUESTED',
-};
-
 export const COLOR_BY_STATUS = {
   Open: '#449bea',
   Resolved: '#05ca05',

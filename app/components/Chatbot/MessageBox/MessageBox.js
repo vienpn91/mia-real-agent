@@ -23,6 +23,7 @@ import {
   InputUpload,
 } from '../styles';
 import LoadingSpin from '../../Loading';
+import { InfoNotification } from './styles';
 
 const scrollStyle = {
   height: 'calc(100% - 60px)',
@@ -55,14 +56,15 @@ export default class MessageBox extends Component {
     chatData: null,
   }
 
-  componentDidMount = () => {
-    const { getChat } = this.props;
-    getChat();
-  }
-
   componentDidUpdate = (prevProps) => {
     this.scrollChatToBottom();
-    const { chatData } = this.props;
+    const { chatData, getChat, ticket } = this.props;
+    const { ticket: prevTicket } = prevProps;
+    const { _id, assignee } = ticket;
+    const { _id: prevId } = prevTicket;
+    if (ticket !== null && _id !== prevId && assignee) {
+      getChat(_id, assignee);
+    }
     if (prevProps.chatData !== chatData) {
       const { pendingMessages } = this.state;
       const updatePendingMessage = pendingMessages.filter(
@@ -102,10 +104,13 @@ export default class MessageBox extends Component {
   )
 
   renderMessageContent = () => {
-    const { chatData, userId } = this.props;
+    const { chatData, userId, ticket } = this.props;
+    const { assignee } = ticket;
+    if (!assignee) {
+      return (<InfoNotification>Please find Agent</InfoNotification>);
+    }
     const { pendingMessages } = this.state;
     const { messages } = chatData;
-    // TODO: Seperate chat here
     return [messages.map(({ _id, messageOwner, content }) => {
       if (messageOwner === userId) {
         return this.renderRightMessageContent(_id, content);
@@ -207,11 +212,10 @@ export default class MessageBox extends Component {
               autoHide
               style={scrollStyle}
             >
-              { !chatData
+              {!chatData
                 ? <MessageEmpty>No Message</MessageEmpty>
                 : (
                   <React.Fragment>
-                    {this.renderLeftMessageContent()}
                     {this.renderMessageContent()}
                   </React.Fragment>
                 )

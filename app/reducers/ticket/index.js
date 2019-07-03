@@ -69,10 +69,11 @@ const getAllFailAction = errorMsg => ({
   errorMsg,
 });
 
-const getAction = ticketId => ({
+const getAction = (ticketId, owner) => ({
   type: GET,
   payload: {
     ticketId,
+    owner,
   },
 });
 
@@ -184,10 +185,10 @@ function profileReducer(state = initialState, action) {
         .set('getError', '');
     case GET_SUCCESS: {
       const { ticket } = action.payload;
-      const { _id } = ticket;
+      const { ticketId } = ticket;
 
       return state.set('isGetting', false)
-        .setIn(['tickets', _id], fromJS(ticket));
+        .setIn(['tickets', ticketId], fromJS(ticket));
     }
     case GET_FAIL:
       return state.set('isGetting', false)

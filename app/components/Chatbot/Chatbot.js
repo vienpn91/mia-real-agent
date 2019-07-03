@@ -40,16 +40,19 @@ export default class ChatbotComponent extends Component {
   componentDidMount = () => {
     const { getTicket } = this.props;
     const id = _get(this.props, 'match.params.id', null);
-    getTicket(id);
+    const owner = _get(this.props, 'match.params.owner', null);
+    getTicket(id, owner);
   }
 
   componentDidUpdate(prevProps) {
     const { getTicket } = this.props;
     const prevId = _get(prevProps, 'match.params.id', null);
+    const prevOwner = _get(prevProps, 'match.params.owner', null);
     const id = _get(this.props, 'match.params.id', null);
+    const owner = _get(this.props, 'match.params.owner', null);
 
-    if (prevId !== id) {
-      getTicket(id);
+    if (prevId !== id || prevOwner !== owner) {
+      getTicket(id, owner);
     }
   }
 

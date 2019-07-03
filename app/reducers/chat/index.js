@@ -127,14 +127,20 @@ const createChatFailAction = errorMessage => ({
   },
 });
 
-const getChatAction = () => ({
+const getChatAction = (ticketId, agentId) => ({
   type: GET_CHAT,
+  payload: {
+    ticketId,
+    agentId,
+  },
 });
 
 // Same as createChatAction
-const getChatCompleteAction = payload => ({
+const getChatCompleteAction = chatData => ({
   type: GET_CHAT_SUCCESS,
-  payload,
+  payload: {
+    chatData,
+  },
 });
 
 const getChatFailAction = errorMessage => ({
@@ -220,7 +226,7 @@ function profileReducer(state = initialState, action) {
         .set('chatData', null);
     case GET_CHAT_SUCCESS:
       return state.set('isGetting', false)
-        .set('chatData', action.payload);
+        .set('chatData', action.payload.chatData);
     case GET_CHAT_FAIL:
       return state.set('isGetting', false)
         .set('getError', action.errorMessage);
