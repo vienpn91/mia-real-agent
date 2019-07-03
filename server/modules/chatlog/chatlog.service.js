@@ -13,6 +13,15 @@ class ChatLogService extends BaseService {
     const saved = await model.save();
     return saved;
   }
+
+  getByTicketAndAgent(ticketId, agentId) {
+    const chat = this.collection.findOne({
+      ticketId,
+      to: agentId,
+    }).exec();
+    console.log(chat);
+    return chat;
+  }
 }
 
 export default new ChatLogService();

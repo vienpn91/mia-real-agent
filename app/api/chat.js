@@ -24,3 +24,8 @@ export const sendMessage = (id, data) => axios
   .post(`chats/${id}`, data)
   .then(response => ({ response }))
   .catch(error => ({ error }));
+
+export const getChatByTicketAndAgent = (ticketId, agentId) => axios
+  .get(`chats/find/ticketAndAgent?ticketId=${ticketId}&agentId=${agentId}`)
+  .then(response => ({ response }))
+  .catch(error => ({ error }));

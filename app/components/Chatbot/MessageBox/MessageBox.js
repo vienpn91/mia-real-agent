@@ -56,8 +56,11 @@ export default class MessageBox extends Component {
   }
 
   componentDidMount = () => {
-    const { getChat } = this.props;
-    getChat();
+    const { getChat, ticket } = this.props;
+    const { assignee } = ticket;
+    if (assignee) {
+      getChat(assignee);
+    }
   }
 
   componentDidUpdate = (prevProps) => {
@@ -105,7 +108,6 @@ export default class MessageBox extends Component {
     const { chatData, userId } = this.props;
     const { pendingMessages } = this.state;
     const { messages } = chatData;
-    // TODO: Seperate chat here
     return [messages.map(({ _id, messageOwner, content }) => {
       if (messageOwner === userId) {
         return this.renderRightMessageContent(_id, content);

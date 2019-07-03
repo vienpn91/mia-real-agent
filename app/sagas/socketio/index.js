@@ -84,9 +84,10 @@ function* requestConfirm() {
 
   // watch message and relay the action
   while (true) {
-    const { isConfirm } = yield take(socketChannel);
+    const { agentId, isConfirm } = yield take(socketChannel);
     if (isConfirm) {
       notification.success({ message: 'Please wait while establishing connection' });
+      yield put(actions.getChatAction(agentId));
     } else {
       notification.error({ message: 'The Agent had declined the request' });
     }

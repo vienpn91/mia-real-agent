@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import BaseController from '../base/base.controller';
 import UserService from './user.service';
 import TicketService from '../ticket/ticket.service';
+import ChatlogService from '../chatlog/chatlog.service';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import check from '../../utils/validate';
 import { VALIDATION_TYPE } from '../../../common/enums';
@@ -208,9 +209,17 @@ class UserController extends BaseController {
       const ticket = await TicketService.get(ticketId);
       const { owner } = ticket;
       const { _id } = model;
-      // TODO: Create chat here
       if (isConfirm) {
         AgentQueue.remove(_id);
+        // Update asignnee for ticket
+        TicketService.update(ticketId,
+          { assignee: _id });
+        // Create chat here
+        ChatlogService.insert({
+          ticketId,
+          from: owner,
+          to: _id,
+        });
       }
       const { socketIO } = global.socketIOServer;
       const { connected } = socketIO.sockets;
@@ -220,7 +229,7 @@ class UserController extends BaseController {
           const { data: user } = await authenticateSocketIO(socket);
           const { _id: userId } = user;
           if (userId.toString() === owner.toString()) {
-            socket.emit('REQUEST_CONFIRM', { isConfirm });
+            socket.emit('REQUEST_CONFIRM', { agentId: _id, isConfirm });
           }
         }
       );
