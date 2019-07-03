@@ -5,7 +5,7 @@ import { object, number } from 'prop-types';
 import { Icon } from 'antd';
 import {
   DashboardTitle,
-  DashboardLeftBlock,
+  DashboardStatus,
   DashboardRightBlock,
   DashboardSubTitle,
   DashboardLinkTitle,
@@ -57,9 +57,9 @@ class TicketItem extends Component {
   }
 
   renderTicketStatus = () => (
-    <DashboardLeftBlock>
+    <DashboardStatus>
       <Icon twoToneColor="#28a745" type="exclamation-circle" theme="twoTone" />
-    </DashboardLeftBlock>
+    </DashboardStatus>
   )
 
 
@@ -68,12 +68,9 @@ class TicketItem extends Component {
     return (
       <TableContentItem key={index}>
         <TableContent {...columnSizeContent[0]}>
-          <input type="checkbox" />
-        </TableContent>
-        <TableContent {...columnSizeContent[1]}>
           {this.renderTicketStatus()}
         </TableContent>
-        <TableContent {...columnSizeContent[2]}>
+        <TableContent {...columnSizeContent[1]}>
           {this.renderTicketContent()}
         </TableContent>
       </TableContentItem>

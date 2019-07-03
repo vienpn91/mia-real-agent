@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
 export const DashboardContainer = styled.section`
-  background-color: #fff;
-  height: 100vh;
+  background-color: #f5f6f7;
+  height: 100%;
   width: 100%;
+  padding: 20px;
 `;
 
 export const DashboardItem = styled.div`
@@ -11,6 +12,11 @@ export const DashboardItem = styled.div`
   max-width: 960px;
   height: 100%;
   margin: 0 auto;
+  background-color: #fff;
+  box-shadow: 0px 0px 8px -2px #d9d9d9;
+  .ant-tabs-bar {
+    margin: 16px 0px;
+  }
   .ant-tabs-nav .ant-tabs-tab {
     &:hover {
       color: #ff5402;

@@ -1,11 +1,13 @@
 import React from 'react';
-import { SpinnerWrapperStyled } from './PageLoading.styled';
+import { SpinnerWrapperStyled, SpinnerItemStyled } from './PageLoading.styled';
 
 export default function SpinnerLoading() {
   return (
     <SpinnerWrapperStyled className="spinner-container">
-      <div className="main-circle" />
-      <div className="sub-circle" />
+      <SpinnerItemStyled>
+        <div className="main-circle" />
+        <div className="sub-circle" />
+      </SpinnerItemStyled>
     </SpinnerWrapperStyled>
   );
 }
