@@ -139,11 +139,11 @@ const getTicketGetTicketDetail = ({ ticket }, id) => ticket.getIn(['tickets', id
 const getTicketsById = ({ ticket }) => ticket.get('tickets');
 const getVisibleTicketIds = ({ ticket }) => ticket.get('visibleTicketIds');
 const getTicketsList = createSelector(getTicketsById, getVisibleTicketIds, (ticketByIds, visibleTicketIds) => {
-  const plainTickets = ticketByIds.toJS();
+  const plainTicketById = ticketByIds.toJS();
   const plainVisibleTicketIds = visibleTicketIds.toJS();
-  const visibleTickets = _pick(plainTickets, plainVisibleTicketIds);
+  const sortTickets = plainVisibleTicketIds.map(itemId => plainTicketById[itemId]);
 
-  return _values(visibleTickets);
+  return sortTickets;
 });
 
 const getFetchingContext = ({ ticket }) => ticket.get('fetching', fetchingObj).toJS();
@@ -167,8 +167,13 @@ function profileReducer(state = initialState, action) {
         .set('createError', '');
     case CREATE_SUCCESS: {
       const { payload } = action;
-      const { _id } = payload;
-      return state.set('isCreating', false).setIn(['tickets', _id], fromJS(payload));
+      const { ticketId } = payload;
+      const visibleTicketIds = state.get('visibleTicketIds').toJS();
+      const newVisibleTicketIds = [ticketId, ...visibleTicketIds];
+      return state
+        .set('isCreating', false)
+        .setIn(['tickets', ticketId], fromJS(payload))
+        .set('visibleTicketIds', fromJS(newVisibleTicketIds));
     }
     case CREATE_FAIL:
       return state.set('isCreating', false)

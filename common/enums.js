@@ -138,3 +138,22 @@ export const CATEGORY_OPTIONS = [
     value: 'Accounting',
   },
 ];
+
+export const APPLICATION_STATUS = {
+  PENDING: 'Pending',
+  REVIEWING: 'Reviewing',
+  REJECTED: 'Rejected',
+  APPROVED: 'Approved',
+};
+
+export const APPLICATION_TYPE = {
+  FREELANCER: 'Freelancer',
+  FULLTIME: 'Fulltime',
+};
+
+export const APPLICATION_LANGUAGE = {
+  VIETNAMESE: 'Vietnamese',
+  CHINESE: 'Chinese',
+  JANPANESE: 'Japanese',
+  ENGLISH: 'English',
+};
