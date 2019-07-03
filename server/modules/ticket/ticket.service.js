@@ -6,6 +6,11 @@ class TicketService extends BaseService {
   constructor(collection) {
     super(collection);
     this.countDocument = this.countDocument.bind(this);
+    this.getByCondition = this.getByCondition.bind(this);
+  }
+
+  getByCondition(condition) {
+    return this.collection.findOne(condition);
   }
 
   countDocument(filter) {

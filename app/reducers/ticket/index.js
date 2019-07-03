@@ -1,6 +1,7 @@
 import { fromJS } from 'immutable';
 import _keyBy from 'lodash/keyBy';
 import _values from 'lodash/values';
+import _pick from 'lodash/pick';
 import { createSelector } from 'reselect';
 
 export const CREATE = 'ticket/CREATE';
@@ -30,6 +31,9 @@ export const REMOVE_FAIL = 'ticket/REMOVE_FAIL';
 //   description: { type: String },
 //   category: { type: Array[String] },
 // }
+
+const emptyMap = fromJS({});
+
 const createAction = payload => ({
   type: CREATE,
   payload,
@@ -131,11 +135,15 @@ const fetchingObj = {
 const getTicketIsCreating = ({ ticket }) => ticket.get('isCreating');
 const getTicketCreateError = ({ ticket }) => ticket.get('createError');
 
-const getTicketGetTicketDetail = ({ ticket }) => ticket.get('ticketDetail');
+const getTicketGetTicketDetail = ({ ticket }, id) => ticket.getIn(['tickets', id], emptyMap).toJS();
 const getTicketsById = ({ ticket }) => ticket.get('tickets');
-const getTicketsList = createSelector(getTicketsById, (ticketByIds) => {
+const getVisibleTicketIds = ({ ticket }) => ticket.get('visibleTicketIds');
+const getTicketsList = createSelector(getTicketsById, getVisibleTicketIds, (ticketByIds, visibleTicketIds) => {
   const plainTickets = ticketByIds.toJS();
-  return _values(plainTickets);
+  const plainVisibleTicketIds = visibleTicketIds.toJS();
+  const visibleTickets = _pick(plainTickets, plainVisibleTicketIds);
+
+  return _values(visibleTickets);
 });
 
 const getFetchingContext = ({ ticket }) => ticket.get('fetching', fetchingObj).toJS();
@@ -143,6 +151,7 @@ const getFetchingContext = ({ ticket }) => ticket.get('fetching', fetchingObj).t
 const initialState = fromJS({
   createError: '',
   tickets: {},
+  visibleTicketIds: [],
   getError: '',
   ticketDetail: null,
   // processing value
@@ -167,11 +176,14 @@ function profileReducer(state = initialState, action) {
 
     case GET:
       return state.set('isGetting', true)
-        .set('ticketDetail', null)
         .set('getError', '');
-    case GET_SUCCESS:
+    case GET_SUCCESS: {
+      const { ticket } = action.payload;
+      const { _id } = ticket;
+
       return state.set('isGetting', false)
-        .set('ticketDetail', action.payload.ticket);
+        .setIn(['tickets', _id], fromJS(ticket));
+    }
     case GET_FAIL:
       return state.set('isGetting', false)
         .set('getError', action.errorMessage);
@@ -179,9 +191,14 @@ function profileReducer(state = initialState, action) {
       return state.set('fetching', fromJS({ isFetching: true, errorMsg: '' }));
     case GET_ALL_SUCCESS: {
       const { data, totalRecord } = action;
+      const newTickets = state
+        .get('tickets')
+        .merge(fromJS(_keyBy(data, 'ticketId')));
+      const visibleTicketIds = data.map(({ ticketId }) => ticketId);
 
       return state
-        .set('tickets', fromJS(_keyBy(data, '_id')))
+        .set('visibleTicketIds', fromJS(visibleTicketIds))
+        .set('tickets', newTickets)
         .set('totalRecord', totalRecord)
         .set('fetching', fromJS(fetchingObj));
     }

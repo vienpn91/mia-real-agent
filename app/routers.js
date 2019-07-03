@@ -1,6 +1,6 @@
 /* eslint-disable react/prefer-stateless-function */
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import AuthenticatedRoute from 'containers/Route/AuthenticatedRoute';
 import MainLayout from 'components/MainLayout';
 import UnauthRoute from './containers/Route/UnauthenticateRoute';
