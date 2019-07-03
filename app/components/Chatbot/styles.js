@@ -61,7 +61,8 @@ export const ChatbotTicketListWrapper = styled.div`
     border-bottom: 1px solid #d9d9d9;
   }
   .ant-tabs-bar {
-    margin: 0px;
+    margin: 0px 25px;
+    border-bottom: none;
   }
   .ant-tabs-nav {
     width: 100%;
@@ -81,6 +82,7 @@ export const ChatbotTicketListWrapper = styled.div`
     }
     .ant-tabs-tab-active {
       color: #000;
+      font-weight: bold;
       opacity: 1;
     }
     .ant-tabs-ink-bar {
@@ -406,23 +408,41 @@ export const TicketDetailAvatar = styled.div`
 `;
 
 export const TicketInfoWrapper = styled.div`
-  .ant-list-item {
-    border-bottom: 1px solid #d9d9d9;
-    padding: 0px 25px;
-    &:first-child {
-      border-bottom: none;
-      padding-bottom: 0px;
-      font-weight: bold;
+  .ant-descriptions-row {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 25px;
+    border-bottom: 1px solid #d9d9d9 !important;
+    > td {
+      padding-bottom: 16px;
+      padding-top: 16px;
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid #d9d9d9;
+      &:last-child {
+        border-bottom: none;
+      }
+      .ant-descriptions-item-label {
+        font-size: 12px;
+        color: #808080;
+        &:after {
+          content: none;
+        }
+      }
+      .ant-descriptions-item-content {
+        font-size: 15px;
+        color: #000;
+      }
     }
-    &:nth-child(2) {
-      padding-top: 0px;
-      color: #b5b5b5;
-    }
-    &:nth-child(3) {
-      color: #3f93cd;
-    }
-    &:last-child {
-      border-bottom: 1px solid #d9d9d9 !important;
-    }
+  }
+`;
+
+export const TicketTimelineWrapper = styled.div`
+  padding: 25px;
+  .ant-timeline-item-content {
+    margin: 0px 0x 0px 25px;
+  }
+  .ant-timeline-item {
+    padding: 0 0 30px;
   }
 `;
