@@ -19,7 +19,7 @@ export const FilterItem = styled.div`
   align-items: center;
   border-radius: 3px;
   height: 32px;
-  flex: 0 0 50%;
+  flex: 0 0 70%;
   font-size: 13px;
   > * {
     height: 100%;
@@ -32,6 +32,9 @@ export const FilterItem = styled.div`
     border-radius: 0px 3px 3px 0px;
     padding: 0px 8px;
     flex: 1;
+    &::placeholder {
+      opacity: 0.6;
+    }
   }
   .ant-menu {
     position: absolute;
@@ -72,6 +75,8 @@ export const Filter = styled.div`
   border: 1px solid #d9d9d9;
   border-radius: 3px 0px 0px 3px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
   a {
     background-color: #fff;
     background-image: linear-gradient(-180deg,#fff,#eff3f6 90%);
@@ -87,6 +92,9 @@ export const Filter = styled.div`
     height: 100%;
     &:hover {
       color: #000;
+    }
+    &:first-child {
+      border-right: 1px solid #d9d9d9;
     }
   }
   i {

@@ -33,7 +33,10 @@ const Spin = keyframes`
 `;
 
 export const SpinnerWrapperStyled = styled.div`
-  height: 30px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   .main-circle {
     background-color: rgba(0, 0, 0, 0);
     border: 2px solid #f3f3f3;
@@ -59,6 +62,10 @@ export const SpinnerWrapperStyled = styled.div`
     left: 5px;
     animation: ${Spin} 800ms infinite reverse linear;
   }
+`;
+
+export const SpinnerItemStyled = styled.div`
+  margin-top: 20px;
 `;
 
 export const LoadingStyled = styled.div`

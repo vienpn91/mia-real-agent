@@ -56,7 +56,6 @@ export const TableContentWrapper = styled.div`
       border: none;
       font-size: 14px;
       & > div {
-        border-color: #cccccc;
         & > div {
           border: none;
         }
@@ -72,7 +71,9 @@ export const TableContentItem = styled.div`
   display: flex;
   flex: 1;
   border: 1px solid #cccccc;
-  border-top: none;
+  margin-bottom: 15px;
+  min-height: 80px;
+  border-radius: 3px;
   &:hover {
     background-color: #f7f7f7;
   }

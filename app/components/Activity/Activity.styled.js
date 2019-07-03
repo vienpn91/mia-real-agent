@@ -64,3 +64,8 @@ export const DashboardSubActivity = styled.span`
   font-size: 12px;
   text-transform: lowercase;
 `;
+
+export const DashboardStatus = styled.div`
+  flex: 0 0 50px;
+  text-align: center;
+`;

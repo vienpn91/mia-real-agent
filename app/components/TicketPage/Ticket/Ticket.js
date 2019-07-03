@@ -2,85 +2,15 @@
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Menu, Dropdown, Icon } from 'antd';
 import SpinnerLoading from 'components/PageLoading';
-import { columnSizeHead } from './ColumnSize';
 import TicketItem from './TicketItem/TicketItem';
 import { TicketWrapper } from '../Ticket.styles';
 import {
-  TableHeadWrapper,
   TableContentWrapper,
   TableEmptyContent,
 } from '../../TableComponent/TableComponent.styled';
-import { TableHeader } from '../../TableComponent/TableComponent';
-
-const activityData = [
-  'Created',
-  'Closed',
-  'Assigned',
-];
-
-const categories = [
-  'Finance',
-  'Law',
-  'Insurrance',
-];
-
 
 class Ticket extends Component {
-  filterStatus = () => (
-    <Menu>
-      {activityData.map((status, index) => (
-        <Menu.Item key={index}>
-          <span>{status}</span>
-        </Menu.Item>
-      ))}
-    </Menu>
-  );
-
-  filterCategory = () => (
-    <Menu>
-      {categories.map((status, index) => (
-        <Menu.Item key={index}>
-          <span>{status}</span>
-        </Menu.Item>
-      ))}
-    </Menu>
-  );
-
-  renderSelectStatus = () => (
-    <Dropdown overlay={this.filterStatus} trigger={['click']}>
-      <a className="ant-dropdown-link" href="#">
-        Status
-        <Icon type="caret-down" />
-      </a>
-    </Dropdown>
-  )
-
-
-  renderSelectCategory = () => (
-    <Dropdown overlay={this.filterCategory} trigger={['click']}>
-      <a className="ant-dropdown-link" href="#">
-        Categories
-        <Icon type="caret-down" />
-      </a>
-    </Dropdown>
-  )
-
-  renderTicketTableHead = () => (
-    <TableHeadWrapper>
-      <TableHeader {...columnSizeHead[0]}>
-        <input type="checkbox" />
-      </TableHeader>
-      <TableHeader {...columnSizeHead[1]}>
-        {this.renderSelectStatus()}
-      </TableHeader>
-      <TableHeader {...columnSizeHead[2]}>
-        {this.renderSelectCategory()}
-      </TableHeader>
-    </TableHeadWrapper>
-  );
-
   renderTicketItem = (ticket, index) => {
     const { _id } = ticket;
     return <TicketItem key={_id} ticket={ticket} index={index} />;
@@ -92,7 +22,7 @@ class Ticket extends Component {
 
     if (isFetching) {
       return (
-        <TableContentWrapper>
+        <TableContentWrapper bgTable>
           <SpinnerLoading />
         </TableContentWrapper>
       );
@@ -112,7 +42,6 @@ class Ticket extends Component {
   render() {
     return (
       <TicketWrapper>
-        {this.renderTicketTableHead()}
         {this.renderTicketTableContent()}
       </TicketWrapper>
     );

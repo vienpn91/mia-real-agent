@@ -14,11 +14,18 @@ import {
 import { DefaultButton } from '../Generals/general.styles';
 import CreateTicketFormContainer from '../../containers/Chatbot/CreateTicket';
 
-const fiterOption = [
-  'Your ticket',
-  'Everything assigned to you',
-  'Everything mentioning you',
+const activityData = [
+  'Created',
+  'Closed',
+  'Assigned',
 ];
+
+const categories = [
+  'Finance',
+  'Law',
+  'Insurrance',
+];
+
 
 class TicketPage extends PureComponent {
   state = {
@@ -43,10 +50,19 @@ class TicketPage extends PureComponent {
     });
   }
 
-
-  menu = () => (
+  filterStatus = () => (
     <Menu>
-      {fiterOption.map((status, index) => (
+      {activityData.map((status, index) => (
+        <Menu.Item key={index}>
+          <span>{status}</span>
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
+
+  filterCategory = () => (
+    <Menu>
+      {categories.map((status, index) => (
         <Menu.Item key={index}>
           <span>{status}</span>
         </Menu.Item>
@@ -55,9 +71,19 @@ class TicketPage extends PureComponent {
   );
 
   renderSelectStatus = () => (
-    <Dropdown overlay={this.menu} trigger={['click']}>
+    <Dropdown overlay={this.filterStatus} trigger={['click']}>
       <a className="ant-dropdown-link" href="#">
-        Filter
+        Status
+        <Icon type="caret-down" />
+      </a>
+    </Dropdown>
+  )
+
+
+  renderSelectCategory = () => (
+    <Dropdown overlay={this.filterCategory} trigger={['click']}>
+      <a className="ant-dropdown-link" href="#">
+        Categories
         <Icon type="caret-down" />
       </a>
     </Dropdown>
@@ -68,8 +94,9 @@ class TicketPage extends PureComponent {
       <FilterItem>
         <Filter>
           {this.renderSelectStatus()}
+          {this.renderSelectCategory()}
         </Filter>
-        <input type="text" />
+        <input type="text" placeholder="Search ticket ..." />
       </FilterItem>
       <CreateItem>
         <DefaultButton onClick={this.handleOpenCreateModal}>Create Ticket</DefaultButton>
