@@ -17,6 +17,6 @@ export default () => {
   router.use('/chats', ChatLogRouter.router);
   router.use('/conversations', ConversationRouter.router);
   router.use('/tickets', TicketRouter.router);
-  router.use('/application', ApplicationRouter.router);
+  router.use('/applications', ApplicationRouter.router);
   return router;
 };
