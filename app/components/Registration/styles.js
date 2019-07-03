@@ -7,19 +7,22 @@ export const RegistrationWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  @media (max-height: 736px) {
-    height: 100%;
-  }
+  background-image: url('../../assets/images/bg-login.jpg');
+  background-position: left center;
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
 
-export const RegistrationCard = styled.div`
+export const RegistrationItem = styled.div`
   width: 720px;
   display: flex;
   flex-direction: column;
-  background-color: #fff;
-  box-shadow: 0 3px 10px 3px #e7e7e7;
+  background-color: #ffffffe0;
+  box-shadow: 0px 0px 12px -2px #2a3a51;
   padding: 50px;
-  color: #000;
+  color: #6e6c83fa;
+  position: relative;
+  z-index: 1;
 `;
 
 export const RegistrationTitle = styled.div`
@@ -57,24 +60,21 @@ export const RegistrationLabel = styled.div`
 `;
 
 export const RegistrationBtn = styled.button`
-  height: 40px;
+  height: 50px;
   width: 100%;
-  border: 1px solid black;
-  border-radius: 5;
+  border-radius: 50px;
+  border: 1px solid #000;
   transition: .3s ease;
-  background: #fff;
+  background: #000;
+  color: #fff;
   cursor: pointer;
   margin-bottom: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
-
   &:hover {
-    background: #000;
-    color: #fff;
-  }
-  &:hover div {
-    border-color: white white white transparent !important;
+    background: #fff;
+    color: #000;
   }
 `;
 

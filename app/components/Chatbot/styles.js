@@ -4,25 +4,19 @@ import FormInput from '../FormInput/FormInput';
 
 export const ChatbotWrapper = styled.div`
   display: flex;
-  height: calc(100vh - 64px);
+  height: 100vh;
 `;
 
 export const ChatbotTicketListWrapper = styled.div`
   flex: 0 0 400px;
-  background-color: #363e47;
-  color: #fff;
+  color: #000;
+  background-color: #fff;
+  border-right: 1px solid #d9d9d9;
   transition: all 300ms ease;
   .ant-input-search {
-    .ant-input-search-icon {
-      color: #fff;
-    }
-    input {
-      background-color: #303841;
-      color: #fff;
+    .ant-input {
+      background-color: #f5f6f7;
       border: none;
-      &:focus {
-        border-color: #363e47 !important;
-      }
       &::placeholder {
         font-style: normal;
         color: #ccc;
@@ -31,8 +25,6 @@ export const ChatbotTicketListWrapper = styled.div`
   }
   .ant-menu {
     height: 100%;
-    background-color: #363e47;
-    color: #fff;
     border-right: none;
     li {
       display: flex;
@@ -42,9 +34,11 @@ export const ChatbotTicketListWrapper = styled.div`
   }
   .ant-menu-item {
     line-height: normal;
+    color: #000;
     &:hover {
-      color: unset;
-      background-color: #3f4953;
+      color: #000;
+      background-color: #f5f6f7;
+      border-bottom: 1px solid #d9d9d9;
       .anticon-setting {
         visibility: visible;
       }
@@ -62,8 +56,36 @@ export const ChatbotTicketListWrapper = styled.div`
     margin-right: 10px;
   }
   .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-    background-color: #3f4953;
-    color: #fff;
+    color: #000;
+    background-color: #f5f6f7;
+    border-bottom: 1px solid #d9d9d9;
+  }
+  .ant-tabs-bar {
+    margin: 0px;
+  }
+  .ant-tabs-nav {
+    width: 100%;
+    > div {
+      display: flex;
+    }
+    .ant-tabs-tab {
+      flex: 1;
+      text-align: center;
+      margin: 0px;
+      color: #000;
+      opacity: 0.6;
+      &:hover {
+        color: #000;
+        opacity: 1;
+      }
+    }
+    .ant-tabs-tab-active {
+      color: #000;
+      opacity: 1;
+    }
+    .ant-tabs-ink-bar {
+      background-color: #000;
+    }
   }
   @media (max-width: 1024px) {
     flex: 0 0 300px;
@@ -106,7 +128,7 @@ export const TicketHeaderWrapper = styled.div`
   justify-content: space-between;
   padding: 15px 24px;
   height: 60px;
-  border-bottom: 1px solid #303841;
+  border-bottom: 1px solid #d9d9d9;
   span {
     font-weight: 700;
   }
@@ -137,8 +159,9 @@ export const TicketGroup = styled.div`
 
 export const TicketName = styled.div`
   font-size: 15px;
+  font-weight: 700;
   margin-bottom: 5px;
-  max-width: 140px;
+  max-width: 280px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -160,40 +183,41 @@ export const TicketTime = styled.div`
   }
 `;
 
-export const TicketCategory = styled.div`
-  flex: 0 0 100px;
-  height: 100%;
-  margin-right: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-transform: uppercase;
-  font-weight: 700;
-`;
-
 export const TicketStatus = styled.div`
-  ${({ status }) => status
-    && css`
-      font-style: italic;
-      color: ${[COLOR_BY_STATUS[status]]};
-      opacity: 0.7;
-    `};
+  span {
+    font-size: 13px;
+    &:first-child {
+      padding-right: 10px;
+    }
+    &:last-child {
+      padding: 10px;
+      ${({ status }) => status
+      && css`
+        font-style: italic;
+        color: ${[COLOR_BY_STATUS[status]]};
+        opacity: 0.8;
+      `};
+    } 
+  }
+
 `;
 
 export const TicketFilterWrapper = styled.div`
   padding: 16px;
-  border-top: 1px solid #303841;
+  border-top: 1px solid #d9d9d9;
   .ant-select {
     margin-top: 5px;
     border-radius: 4px;
   }
   .ant-select-selection--multiple {
-    background-color: #303841;
     color: #fff;
-    border: none;
+    border: 1px solid #d9d9d9;
+    &:hover {
+      border-color: #b1b1b1;
+    }
   }
   .ant-select-open .ant-select-selection {
-    border: none;
+    border-color: #b1b1b1;
     box-shadow: none;
   }
   @media (max-width: 768px) {
@@ -204,26 +228,11 @@ export const TicketFilterWrapper = styled.div`
 export const TicketPaginationWrapper = styled.div`
   padding: 0 16px;
   text-align: center;
-  .ant-pagination-item a {
-    color: #fff;
-    &:hover {
-      color: #9e9e9e;
-    }
-  }
   .ant-pagination-item.ant-pagination-item-active a {
     color: #000;
   }
   .ant-pagination-item-active {
-    border-color: #000;
-  }
-  .ant-pagination-prev,
-  .ant-pagination-next {
-    .ant-pagination-item-link {
-      color: #fff;
-      &:hover {
-        color: #9e9e9e;
-      }
-    }
+    border-color: #d9d9d9;
   }
   @media (max-width: 768px) {
     display: none;
@@ -244,13 +253,14 @@ export const TicketButton = styled.div`
 `;
 
 export const MessageBoxWrapper = styled.div`
-  height: calc(100vh - 64px);
+  height: 100vh;
   background: #fff;
   position: relative;
 `;
 
 export const MessageBoxContent = styled.div`
   height: calc(100% - 60px);
+  background-color: #f5f6f7;
 `;
 
 export const MessageBoxItem = styled.div`
@@ -274,9 +284,9 @@ export const MessageBoxItem = styled.div`
     }
     p {
       float: left;
-      background-color: #f1f0f0;
+      background-color: #e2e2e2;
     }
-  `};
+  `}
   ${({ right }) => right && css`
     justify-content: flex-end;
     padding-right: 10px;
@@ -286,20 +296,19 @@ export const MessageBoxItem = styled.div`
     p {
       float: right;
       color: #fff;
-      background-color: #0084ff;
+      background-color: #ff5504;
     }
-  `};
+  `}
   &:first-child {
     padding-top: 15px;
   }
-  
 `;
 
 export const MessageBoxHeaderWrapper = styled.div`
   display: flex;
   flex-direction: column;
   .ant-breadcrumb-link {
-    color: #595959;
+    color: #000;
   }
 `;
 
@@ -309,7 +318,7 @@ export const MessageText = styled.div`
   max-width: 60%;
   ${({ isPending }) => isPending && css`
     p {
-      background-color: #98c4ed;
+      background-color: #f78b5f;
     }
   `};
 `;
@@ -343,12 +352,6 @@ export const MessageActionWrapper = styled.div`
   align-items: center;
   height: 100%;
   padding: 12px 0px;
-  label {
-    margin-left: 15px;
-    font-size: 30px;
-    color: #b5b5b5;
-    cursor: pointer;
-  }
 `;
 
 export const MessageInput = styled(FormInput)`
@@ -361,7 +364,18 @@ export const MessageInput = styled(FormInput)`
   }
 `;
 
+export const MessageEmpty = styled.div`
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const InputAction = styled.label`
+  margin-left: 15px;
+  font-size: 22px !important;
+  color: #b5b5b5;
+  cursor: pointer;
   &:hover {
     color: #000;
   }
@@ -376,4 +390,39 @@ export const TicketEmpty = styled.div`
   width: 100%;
   text-align: center;
   text-transform: uppercase;
+`;
+
+export const TicketDetailWrapper = styled.div``;
+
+export const TicketDetailAvatar = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px 15px;
+  img {
+    object-fit: cover;
+    object-position: center;
+  }
+`;
+
+export const TicketInfoWrapper = styled.div`
+  .ant-list-item {
+    border-bottom: 1px solid #d9d9d9;
+    padding: 0px 25px;
+    &:first-child {
+      border-bottom: none;
+      padding-bottom: 0px;
+      font-weight: bold;
+    }
+    &:nth-child(2) {
+      padding-top: 0px;
+      color: #b5b5b5;
+    }
+    &:nth-child(3) {
+      color: #3f93cd;
+    }
+    &:last-child {
+      border-bottom: 1px solid #d9d9d9 !important;
+    }
+  }
 `;

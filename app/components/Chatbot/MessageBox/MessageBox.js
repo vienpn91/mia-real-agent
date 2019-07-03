@@ -18,6 +18,7 @@ import {
   MessageInputWrapper,
   MessageActionWrapper,
   MessageInput,
+  MessageEmpty,
   InputAction,
   InputUpload,
 } from '../styles';
@@ -103,9 +104,6 @@ export default class MessageBox extends Component {
   renderMessageContent = () => {
     const { chatData, userId } = this.props;
     const { pendingMessages } = this.state;
-    if (!chatData) {
-      return (<h2>No data</h2>);
-    }
     const { messages } = chatData;
     // TODO: Seperate chat here
     return [messages.map(({ _id, messageOwner, content }) => {
@@ -166,7 +164,7 @@ export default class MessageBox extends Component {
             <MessageInputWrapper>
               <MessageInput type="text" name="content" placeholder="Type message ..." />
               {this.renderGroupAction()}
-              <Button key="submit" type="primary" onClick={handleSubmit}>Send</Button>
+              <InputAction onClick={handleSubmit} className="mia-enter" />
               <Button
                 loading={isFindingAgent}
                 key="button"
@@ -199,7 +197,7 @@ export default class MessageBox extends Component {
   }
 
   render() {
-    const { isGetting } = this.props;
+    const { isGetting, chatData } = this.props;
     return (
       <LoadingSpin loading={isGetting}>
         <MessageBoxWrapper>
@@ -209,8 +207,15 @@ export default class MessageBox extends Component {
               autoHide
               style={scrollStyle}
             >
-              {this.renderLeftMessageContent()}
-              {this.renderMessageContent()}
+              { !chatData
+                ? <MessageEmpty>No Message</MessageEmpty>
+                : (
+                  <React.Fragment>
+                    {this.renderLeftMessageContent()}
+                    {this.renderMessageContent()}
+                  </React.Fragment>
+                )
+              }
               <div ref={this.messagesEndRef} />
             </ShadowScrollbars>
           </MessageBoxContent>

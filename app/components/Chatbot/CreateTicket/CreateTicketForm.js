@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import {
   Modal, Form, Row,
   Col,
-  Button,
   Popconfirm,
   notification,
 } from 'antd';
@@ -10,9 +9,10 @@ import { bool, func, string } from 'prop-types';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import FormInput from '../../FormInput/FormInput';
-import { ActionBar, PopconfirmStyled } from './styles';
+import { ActionBar } from './styles';
 import { CATEGORY_OPTIONS } from '../../../../common/enums';
 import LoadingSpin from '../../Loading';
+import { DefaultButton } from '../../Generals/general.styles';
 
 const initialValues = {
   title: '',
@@ -144,12 +144,12 @@ export default class CreateTicketForm extends PureComponent {
                 </Row>
                 <Row gutter={32}>
                   <ActionBar>
-                    <Button key="submit" type="primary" onClick={handleSubmit}>
+                    <DefaultButton cancel onClick={this.handleCancel}>
+                      Cancel
+                    </DefaultButton>
+                    <DefaultButton submit onClick={handleSubmit}>
                       Submit
-                    </Button>
-                    <Button key="back" onClick={this.handleCancel}>
-                      Return
-                    </Button>
+                    </DefaultButton>
                   </ActionBar>
                 </Row>
               </Form>

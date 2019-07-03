@@ -452,8 +452,8 @@ class FormInput extends React.Component {
         hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
         validateStatus={validateStatus}
         help={errorMessage}
-
         {...formLayout}
+        {...props}
       >
         <Select
           value={field.value}
