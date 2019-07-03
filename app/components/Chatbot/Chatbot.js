@@ -5,9 +5,10 @@ import {
 } from 'antd';
 import { func, shape } from 'prop-types';
 import _get from 'lodash/get';
-import MessageBoxContainer from '../../containers/Chatbot/MessageBox';
-import TicketItem from './TicketItem/TicketItem';
+import Tickets from 'containers/Chatbot/Tickets';
+import history from 'utils/history';
 import TicketDetail from './TicketDetail/TicketDetail';
+import MessageBoxContainer from '../../containers/Chatbot/MessageBox';
 import {
   ChatbotWrapper,
   ChatbotTicketListWrapper,
@@ -16,79 +17,14 @@ import {
   TicketEmpty,
 } from './styles';
 import { Return } from '../Generals/general.styles';
-import { TICKET_STATUS } from '../../../common/enums';
 import CreateTicketFormContainer from '../../containers/Chatbot/CreateTicket';
-import history from '../../utils/history';
 
 const { Content } = Layout;
 const { Search } = Input;
 const { TabPane } = Tabs;
 
-const categories = [
-  'Finance',
-  'Law',
-  'Insurrance',
-];
-
-const randomCategory = () => {
-  const category = [];
-  category.push(categories[Math.floor(Math.random() * categories.length)]);
-  return category;
-};
-
 export default class ChatbotComponent extends Component {
   state = {
-    ticket: null,
-    ticketData: [
-      {
-        title: 'This is ticket 1',
-        assignee: 'Dat 09',
-        userAvatar: 'user',
-        lastestTime: '9:32',
-        category: randomCategory(),
-        status: TICKET_STATUS.OPEN,
-      },
-      {
-        title: 'This is ticket 2',
-        assignee: 'Long Hòn',
-        userAvatar: 'user',
-        lastestTime: 'Jan 15',
-        category: randomCategory(),
-        status: TICKET_STATUS.RESOLVED,
-      },
-      {
-        title: 'This is ticket 3',
-        assignee: 'Cồn Lường',
-        userAvatar: 'user',
-        lastestTime: 'Mon',
-        category: randomCategory(),
-        status: TICKET_STATUS.CLOSED,
-      },
-      {
-        title: 'This is ticket 4',
-        assignee: 'Lu Lu',
-        userAvatar: 'user',
-        lastestTime: '12/18/2018',
-        category: randomCategory(),
-        status: TICKET_STATUS.PENDING,
-      },
-      {
-        title: 'This is ticket 5',
-        assignee: 'Tri đẹp trai',
-        userAvatar: 'user',
-        lastestTime: 'Apr 15',
-        category: randomCategory(),
-        status: TICKET_STATUS.PROCESSING,
-      },
-      {
-        title: 'This is ticket 6',
-        assignee: 'Phat',
-        userAvatar: 'user',
-        lastestTime: '15:32',
-        category: randomCategory(),
-        status: TICKET_STATUS.SEARCHING,
-      },
-    ],
     isOpenCreateModal: false,
   }
 
@@ -107,10 +43,14 @@ export default class ChatbotComponent extends Component {
     getTicket(id);
   }
 
-  handleSelectTicket = (ticket) => {
-    this.setState({
-      ticket,
-    });
+  componentDidUpdate(prevProps) {
+    const { getTicket } = this.props;
+    const prevId = _get(prevProps, 'match.params.id', null);
+    const id = _get(this.props, 'match.params.id', null);
+
+    if (prevId !== id) {
+      getTicket(id);
+    }
   }
 
   handleOpenCreateModal = () => {
@@ -125,25 +65,13 @@ export default class ChatbotComponent extends Component {
     });
   }
 
-  createTicket = () => {
-    const { ticketData } = this.state;
-    this.setState({
-      ticketData: [...ticketData, {
-        title: `This is ticket ${ticketData.length + 1}`,
-        assignee: `Assignee random ${ticketData.length + 1}`,
-        userAvatar: 'user',
-        lastestTime: 'Today',
-        category: randomCategory(),
-        status: TICKET_STATUS.NEW,
-      }],
-    });
+  goToDashboard = () => {
+    history.push('/dashboard');
   }
-
-  goBack = () => (history.goBack());
 
   renderTicketHeader = () => (
     <TicketHeaderWrapper>
-      <Return onClick={this.goBack}>
+      <Return onClick={this.goToDashboard}>
         <Icon type="left" />
         <span>MENU</span>
       </Return>
@@ -162,34 +90,21 @@ export default class ChatbotComponent extends Component {
     </TicketHeaderWrapper>
   );
 
-  callBack = key => (
-    console.log(key)
-  );
-
-  renderTabItem = () => {
-    const {
-      ticket, ticketData,
-    } = this.state;
-    return (
-      <Tabs defaultActiveKey="1" onChange={this.callback}>
-        <TabPane tab="Detail" key="1">
-          <TicketDetail />
-        </TabPane>
-        <TabPane tab="List" key="2">
-          <TicketItem
-            ticketData={ticketData}
-            ticket={ticket}
-            categories={categories}
-            handleSelectTicket={this.handleSelectTicket}
-          />
-        </TabPane>
-      </Tabs>
-    );
-  }
+  renderTabItem = () => (
+    <Tabs defaultActiveKey="1">
+      <TabPane tab="Detail" key="1">
+        <TicketDetail />
+      </TabPane>
+      <TabPane tab="List" key="2">
+        <Tickets />
+      </TabPane>
+    </Tabs>
+  )
 
   render() {
     const { isOpenCreateModal } = this.state;
     const { ticketDetail } = this.props;
+
     return (
       <ChatbotWrapper>
         <ChatbotTicketListWrapper>
