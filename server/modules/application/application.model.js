@@ -1,0 +1,81 @@
+import mongoose from 'mongoose';
+import { APPLICATION_STATUS, APPLICATION_TYPE, APPLICATION_LANGUAGE } from '../../../common/enums';
+
+const { Schema } = mongoose;
+
+const applicationSchema = new Schema(
+  {
+    status: {
+      type: String,
+      enum: [
+        APPLICATION_STATUS.PENDING,
+        APPLICATION_STATUS.REVIEWING,
+        APPLICATION_STATUS.REJECTED,
+        APPLICATION_STATUS.APPROVED,
+      ],
+      default: APPLICATION_STATUS.PENDING,
+    },
+    type: { type: String, enum: [APPLICATION_TYPE.FREELANCER, APPLICATION_TYPE.FULLTIME] },
+    firstName: { type: String, trim: true },
+    lastName: { type: String, trim: true },
+    address: { type: String, trim: true },
+    country: { type: String, trim: true },
+    phone: { type: String, trim: true },
+    email: { type: String, trim: true },
+    work_experience: [
+      {
+        title: { type: String, trim: true },
+        company: { type: String, trim: true },
+        address: { type: String, trim: true },
+        from: Number,
+        to: Number,
+        isWorking: Boolean,
+        role_description: { type: String },
+      },
+    ],
+    education: [
+      {
+        school: { type: String, trim: true },
+        degree: { type: String, trim: true },
+        fieldOfStudy: [String],
+        gpa: Number,
+      },
+    ],
+    skills: [String],
+    languages: [
+      {
+        name: {
+          type: String,
+          enum: [
+            APPLICATION_LANGUAGE.CHINESE,
+            APPLICATION_LANGUAGE.ENGLISH,
+            APPLICATION_LANGUAGE.JANPANESE,
+            APPLICATION_LANGUAGE.VIETNAMESE,
+          ],
+        },
+        writing: Number,
+        reading: Number,
+        speaking: Number,
+        overall: Number,
+      },
+    ],
+    cv: String,
+    social: {
+      linkedin: String,
+      facebook: String,
+      zalo: String,
+      github: String,
+      gitlab: String,
+      stackOverflow: String,
+      twitter: String,
+      websites: String,
+    },
+  },
+  {
+    versionKey: false,
+    timestamps: true,
+    collection: 'application',
+  }
+);
+
+export default mongoose.model('Application', applicationSchema);

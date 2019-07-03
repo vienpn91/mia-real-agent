@@ -26,7 +26,7 @@ export default class App extends React.PureComponent {
           path="/login/callback/:token/:userId/:email/:verifiedAt"
           component={LoginCallBackPage}
         />
-        <AuthenticatedRoute exact path="/ticket/:id?" component={ChatbotComponent} />
+        <AuthenticatedRoute exact path="/ticket/:id" component={ChatbotComponent} />
         <MainLayout>
           <Switch>
             <AuthenticatedRoute exact path="/profile" component={Profile} />

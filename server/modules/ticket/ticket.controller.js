@@ -86,8 +86,6 @@ class TicketController extends BaseController {
         owner: _id,
       };
 
-      console.log('newQuery', newQuery);
-
       const result = await this.service.getAll(newQuery, option);
       return res.status(httpStatus.OK).send(result);
     } catch (error) {
