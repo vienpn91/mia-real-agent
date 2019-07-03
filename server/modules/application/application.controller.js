@@ -10,6 +10,7 @@ class ApplicationController extends BaseController {
   constructor(service) {
     super(service);
     this.approveApplication = this.approveApplication.bind(this);
+    this.updateStatus = this.updateStatus.bind(this);
   }
 
   async approveApplication(req, res) {
@@ -29,6 +30,19 @@ class ApplicationController extends BaseController {
       const user = await UserService.insert(newUserPayload);
 
       return res.status(httpStatus.OK).send(user);
+    } catch (error) {
+      return this.handleError(res, error);
+    }
+  }
+
+  async updateStatus(req, res) {
+    try {
+      const { model: application, params: { status } } = req;
+
+      application.set({ status });
+      await application.save();
+
+      return res.status(httpStatus.OK).send(application);
     } catch (error) {
       return this.handleError(res, error);
     }

@@ -5,6 +5,7 @@ class ApplicationRouter extends BaseRouter {
   constructor(controller) {
     super(controller);
     this.router.post('/approve/:id', this.controller.approveApplication);
+    this.router.put('/:id/status/:status', this.controller.updateStatus);
   }
 }
 
