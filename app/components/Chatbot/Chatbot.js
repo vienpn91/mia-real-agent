@@ -1,11 +1,12 @@
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
 import {
-  Layout, Icon, Input, Tooltip,
+  Layout, Icon, Input, Tooltip, Tabs,
 } from 'antd';
 import { func, shape } from 'prop-types';
 import MessageBoxContainer from '../../containers/Chatbot/MessageBox';
 import TicketItem from './TicketItem/TicketItem';
+import TicketDetail from './TicketDetail/TicketDetail';
 import {
   ChatbotWrapper,
   ChatbotTicketListWrapper,
@@ -20,6 +21,7 @@ import history from '../../utils/history';
 
 const { Content } = Layout;
 const { Search } = Input;
+const { TabPane } = Tabs;
 
 const categories = [
   'Finance',
@@ -156,24 +158,42 @@ export default class ChatbotComponent extends Component {
         onSearch={value => console.log(value)}
       />
     </TicketHeaderWrapper>
-  )
+  );
 
-  render() {
+  callBack = key => (
+    console.log(key)
+  );
+
+  renderTabItem = () => {
     const {
-      ticket, ticketData, isOpenCreateModal,
+      ticket, ticketData,
     } = this.state;
-    const { ticketDetail } = this.props;
     return (
-      <ChatbotWrapper>
-        <ChatbotTicketListWrapper>
-          {this.renderTicketHeader()}
-          {this.renderSearchTicket()}
+      <Tabs defaultActiveKey="1" onChange={this.callback}>
+        <TabPane tab="Detail" key="1">
+          <TicketDetail />
+        </TabPane>
+        <TabPane tab="List" key="2">
           <TicketItem
             ticketData={ticketData}
             ticket={ticket}
             categories={categories}
             handleSelectTicket={this.handleSelectTicket}
           />
+        </TabPane>
+      </Tabs>
+    );
+  }
+
+  render() {
+    const { isOpenCreateModal } = this.state;
+    const { ticketDetail } = this.props;
+    return (
+      <ChatbotWrapper>
+        <ChatbotTicketListWrapper>
+          {this.renderTicketHeader()}
+          {this.renderSearchTicket()}
+          {this.renderTabItem()}
         </ChatbotTicketListWrapper>
         <ChatbotContentWrapper>
           <Content>

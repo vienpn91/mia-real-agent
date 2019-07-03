@@ -19,7 +19,7 @@ import {
 } from '../styles';
 
 const scrollStyle = {
-  height: 'calc(100vh - 250px)',
+  height: 'calc(100vh - 310px)',
   width: '100%',
 };
 

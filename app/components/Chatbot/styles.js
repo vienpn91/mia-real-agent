@@ -60,6 +60,33 @@ export const ChatbotTicketListWrapper = styled.div`
     background-color: #f5f6f7;
     border-bottom: 1px solid #d9d9d9;
   }
+  .ant-tabs-bar {
+    margin: 0px;
+  }
+  .ant-tabs-nav {
+    width: 100%;
+    > div {
+      display: flex;
+    }
+    .ant-tabs-tab {
+      flex: 1;
+      text-align: center;
+      margin: 0px;
+      color: #000;
+      opacity: 0.6;
+      &:hover {
+        color: #000;
+        opacity: 1;
+      }
+    }
+    .ant-tabs-tab-active {
+      color: #000;
+      opacity: 1;
+    }
+    .ant-tabs-ink-bar {
+      background-color: #000;
+    }
+  }
   @media (max-width: 1024px) {
     flex: 0 0 300px;
   }
@@ -168,7 +195,7 @@ export const TicketStatus = styled.div`
       && css`
         font-style: italic;
         color: ${[COLOR_BY_STATUS[status]]};
-        opacity: 0.7;
+        opacity: 0.8;
       `};
     } 
   }
@@ -363,4 +390,39 @@ export const TicketEmpty = styled.div`
   width: 100%;
   text-align: center;
   text-transform: uppercase;
+`;
+
+export const TicketDetailWrapper = styled.div``;
+
+export const TicketDetailAvatar = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px 15px;
+  img {
+    object-fit: cover;
+    object-position: center;
+  }
+`;
+
+export const TicketInfoWrapper = styled.div`
+  .ant-list-item {
+    border-bottom: 1px solid #d9d9d9;
+    padding: 0px 25px;
+    &:first-child {
+      border-bottom: none;
+      padding-bottom: 0px;
+      font-weight: bold;
+    }
+    &:nth-child(2) {
+      padding-top: 0px;
+      color: #b5b5b5;
+    }
+    &:nth-child(3) {
+      color: #3f93cd;
+    }
+    &:last-child {
+      border-bottom: 1px solid #d9d9d9 !important;
+    }
+  }
 `;
