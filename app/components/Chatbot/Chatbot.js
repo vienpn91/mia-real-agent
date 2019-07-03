@@ -4,6 +4,7 @@ import {
   Layout, Icon, Input, Tooltip, Tabs,
 } from 'antd';
 import { func, shape } from 'prop-types';
+import _get from 'lodash/get';
 import MessageBoxContainer from '../../containers/Chatbot/MessageBox';
 import TicketItem from './TicketItem/TicketItem';
 import TicketDetail from './TicketDetail/TicketDetail';
@@ -102,7 +103,8 @@ export default class ChatbotComponent extends Component {
 
   componentDidMount = () => {
     const { getTicket } = this.props;
-    getTicket('5d11e3bd82125b32a52683bc');
+    const id = _get(this.props, 'match.params.id', null);
+    getTicket(id);
   }
 
   handleSelectTicket = (ticket) => {

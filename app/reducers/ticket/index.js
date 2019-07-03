@@ -31,6 +31,9 @@ export const REMOVE_FAIL = 'ticket/REMOVE_FAIL';
 //   description: { type: String },
 //   category: { type: Array[String] },
 // }
+
+const emptyMap = fromJS({});
+
 const createAction = payload => ({
   type: CREATE,
   payload,
@@ -132,7 +135,7 @@ const fetchingObj = {
 const getTicketIsCreating = ({ ticket }) => ticket.get('isCreating');
 const getTicketCreateError = ({ ticket }) => ticket.get('createError');
 
-const getTicketGetTicketDetail = ({ ticket }) => ticket.get('ticketDetail');
+const getTicketGetTicketDetail = ({ ticket }, id) => ticket.getIn(['tickets', id], emptyMap).toJS();
 const getTicketsById = ({ ticket }) => ticket.get('tickets');
 const getVisibleTicketIds = ({ ticket }) => ticket.get('visibleTicketIds');
 const getTicketsList = createSelector(getTicketsById, getVisibleTicketIds, (ticketByIds, visibleTicketIds) => {
@@ -173,11 +176,14 @@ function profileReducer(state = initialState, action) {
 
     case GET:
       return state.set('isGetting', true)
-        .set('ticketDetail', null)
         .set('getError', '');
-    case GET_SUCCESS:
+    case GET_SUCCESS: {
+      const { ticket } = action.payload;
+      const { _id } = ticket;
+
       return state.set('isGetting', false)
-        .set('ticketDetail', action.payload.ticket);
+        .setIn(['tickets', _id], fromJS(ticket));
+    }
     case GET_FAIL:
       return state.set('isGetting', false)
         .set('getError', action.errorMessage);
@@ -187,8 +193,8 @@ function profileReducer(state = initialState, action) {
       const { data, totalRecord } = action;
       const newTickets = state
         .get('tickets')
-        .merge(fromJS(_keyBy(data, '_id')));
-      const visibleTicketIds = data.map(({ _id }) => _id);
+        .merge(fromJS(_keyBy(data, 'ticketId')));
+      const visibleTicketIds = data.map(({ ticketId }) => ticketId);
 
       return state
         .set('visibleTicketIds', fromJS(visibleTicketIds))

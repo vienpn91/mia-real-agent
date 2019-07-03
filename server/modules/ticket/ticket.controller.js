@@ -11,6 +11,31 @@ class TicketController extends BaseController {
     super(TicketService);
   }
 
+  load = async (req, res, next, id) => {
+    try {
+      const { user } = req;
+
+      if (!user) {
+        throw new APIError(ERROR_MESSAGE.UNAUTHORIZED, httpStatus.UNAUTHORIZED);
+      }
+
+      const { _id: owner } = user;
+      const condition = { owner, ticketId: id };
+
+      const model = await this.service.getByCondition(condition);
+
+      if (model == null) {
+        const { CONTENT_NOT_FOUND } = ERROR_MESSAGE;
+        throw new APIError(CONTENT_NOT_FOUND, httpStatus.NOT_FOUND);
+      }
+
+      req.model = model;
+      return next();
+    } catch (error) {
+      return this.handleError(res, error);
+    }
+  }
+
   insert = async (req, res) => {
     try {
       const { user, body: data } = req;
