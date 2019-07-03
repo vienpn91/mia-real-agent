@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { string } from 'prop-types';
 import SpinnerLoading from 'components/PageLoading';
 import ShadowScrollbars from 'components/Scrollbar';
 import MediaQuery from 'react-responsive';
@@ -13,6 +13,7 @@ import {
   TicketFilterWrapper,
   TicketPaginationWrapper,
 } from '../styles';
+import { ROLES } from '../../../../common/enums';
 
 const categories = [
   'Finance',
@@ -38,15 +39,17 @@ class Tickets extends React.PureComponent {
     getAllAction();
   }
 
-  selectTicket = (ticketId) => {
-    history.push(`/ticket/${ticketId}`);
+  selectTicket = (ticket) => {
+    const { ticketId, owner } = ticket;
+    const { userRole } = this.props;
+    history.push(`/ticket/${ticketId}${userRole === ROLES.AGENT ? `/${owner}` : ''}`);
   }
 
   renderTicketItem = (ticket) => {
-    const { _id, ticketId } = ticket;
+    const { _id } = ticket;
 
     return (
-      <Menu.Item key={_id} onClick={() => this.selectTicket(ticketId)}>
+      <Menu.Item key={_id} onClick={() => this.selectTicket(ticket)}>
         <TicketItem ticket={ticket} />
       </Menu.Item>
     );
@@ -119,6 +122,7 @@ Tickets.propTypes = {
   tickets: PropTypes.array,
   getAllAction: PropTypes.func,
   fetchingContext: PropTypes.object,
+  userRole: string.isRequired,
 };
 
 export default Tickets;

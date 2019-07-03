@@ -229,7 +229,8 @@ class UserController extends BaseController {
           const { data: user } = await authenticateSocketIO(socket);
           const { _id: userId } = user;
           if (userId.toString() === owner.toString()) {
-            socket.emit('REQUEST_CONFIRM', { agentId: _id, isConfirm });
+            const { _doc } = ticket;
+            socket.emit('REQUEST_CONFIRM', { ticketId: _doc.ticketId, isConfirm });
           }
         }
       );

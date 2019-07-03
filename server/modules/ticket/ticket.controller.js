@@ -3,6 +3,7 @@ import _get from 'lodash/get';
 import BaseController from '../base/base.controller';
 import TicketService from './ticket.service';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
+import { ROLES } from '../../../common/enums';
 
 const emptyObjString = '{}';
 
@@ -14,14 +15,15 @@ class TicketController extends BaseController {
   load = async (req, res, next, id) => {
     try {
       const { user } = req;
-
+      const { owner } = req.query;
       if (!user) {
         throw new APIError(ERROR_MESSAGE.UNAUTHORIZED, httpStatus.UNAUTHORIZED);
       }
 
-      const { _id: owner } = user;
-      const condition = { owner, ticketId: id };
-
+      const { _id, role } = user;
+      const condition = (role === ROLES.AGENT)
+        ? { owner, ticketId: id }
+        : { owner: _id, ticketId: id };
       const model = await this.service.getByCondition(condition);
 
       if (model == null) {
@@ -72,7 +74,10 @@ class TicketController extends BaseController {
       if (!user) {
         throw new APIError(ERROR_MESSAGE.UNAUTHORIZED, httpStatus.UNAUTHORIZED);
       }
-      const { _id } = user;
+      const { _id, role } = user;
+      const condition = (role === ROLES.AGENT)
+        ? { assignee: _id }
+        : { owner: _id };
 
       const option = { skip, limit };
       if (sort) {
@@ -83,7 +88,7 @@ class TicketController extends BaseController {
       const query = JSON.parse(_get(params, 'query', emptyObjString));
       const newQuery = {
         ...query,
-        owner: _id,
+        ...condition,
       };
 
       const result = await this.service.getAll(newQuery, option);

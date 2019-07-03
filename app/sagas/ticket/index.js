@@ -8,7 +8,8 @@ import {
 } from '../../reducers/ticket';
 import * as TicketApi from '../../api/ticket';
 import { configToken } from '../../api/config';
-import { getToken } from '../../reducers/auth';
+import { getToken, getUserRole } from '../../reducers/auth';
+import { ROLES } from '../../../common/enums';
 
 function* createTicket({ payload }) {
   yield configAxiosForTicket();
@@ -45,8 +46,8 @@ function* getAllTicket({ payload }) {
 
 function* getTicket({ payload }) {
   yield configAxiosForTicket();
-  const { ticketId } = payload;
-  const { response, error } = yield call(TicketApi.getTicket, ticketId);
+  const { ticketId, owner } = payload;
+  const { response, error } = yield call(TicketApi.getTicket, ticketId, owner);
   if (error) {
     const message = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE

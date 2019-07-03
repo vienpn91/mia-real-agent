@@ -20,9 +20,8 @@ export function* configAxiosForChat() {
 
 export function* getChat({ payload }) {
   yield configAxiosForChat();
-  const { agentId } = payload;
-  const { _id } = yield select(TicketSelectors.getTicketGetTicketDetail);
-  const { response, error } = yield call(ChatApi.getChatByTicketAndAgent, _id, agentId);
+  const { ticketId, agentId } = payload;
+  const { response, error } = yield call(ChatApi.getChatByTicketAndAgent, ticketId, agentId);
   if (error) {
     const errorMessage = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE

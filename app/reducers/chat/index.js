@@ -127,9 +127,10 @@ const createChatFailAction = errorMessage => ({
   },
 });
 
-const getChatAction = agentId => ({
+const getChatAction = (ticketId, agentId) => ({
   type: GET_CHAT,
   payload: {
+    ticketId,
     agentId,
   },
 });
