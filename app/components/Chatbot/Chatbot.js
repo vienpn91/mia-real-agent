@@ -50,7 +50,6 @@ export default class ChatbotComponent extends Component {
     const prevOwner = _get(prevProps, 'match.params.owner', null);
     const id = _get(this.props, 'match.params.id', null);
     const owner = _get(this.props, 'match.params.owner', null);
-
     if (prevId !== id || prevOwner !== owner) {
       getTicket(id, owner);
     }
@@ -107,7 +106,6 @@ export default class ChatbotComponent extends Component {
   render() {
     const { isOpenCreateModal } = this.state;
     const { ticketDetail } = this.props;
-
     return (
       <ChatbotWrapper>
         <ChatbotTicketListWrapper>

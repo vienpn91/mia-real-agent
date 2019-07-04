@@ -56,6 +56,12 @@ export default class MessageBox extends Component {
     chatData: null,
   }
 
+  componentDidMount = () => {
+    const { getChat, ticket } = this.props;
+    const { _id, assignee } = ticket;
+    getChat(_id, assignee);
+  }
+
   componentDidUpdate = (prevProps) => {
     this.scrollChatToBottom();
     const { chatData, getChat, ticket } = this.props;

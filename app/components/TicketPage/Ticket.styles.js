@@ -108,4 +108,21 @@ export const Filter = styled.div`
 
 export const CreateItem = styled.div``;
 
-export const TicketWrapper = styled.div``;
+export const TicketWrapper = styled.div`
+  height: calc(100vh - 300px);
+  margin-bottom: 20px;
+`;
+
+export const TicketPaginationWrapper = styled.div`
+  padding: 0 16px;
+  text-align: center;
+  .ant-pagination-item.ant-pagination-item-active a {
+    color: #000;
+  }
+  .ant-pagination-item-active {
+    border-color: #d9d9d9;
+  }
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;

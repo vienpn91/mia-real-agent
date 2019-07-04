@@ -30,7 +30,7 @@ export default class App extends React.PureComponent {
         <MainLayout>
           <Switch>
             <AuthenticatedRoute exact path="/profile" component={Profile} />
-            <AuthenticatedRoute exact path="/dashboard" component={Dashboard} />
+            <AuthenticatedRoute exact path="/dashboard/:tab?/:page?" component={Dashboard} />
           </Switch>
         </MainLayout>
       </Switch>

@@ -47,7 +47,6 @@ class Tickets extends React.PureComponent {
 
   renderTicketItem = (ticket) => {
     const { _id } = ticket;
-
     return (
       <Menu.Item key={_id} onClick={() => this.selectTicket(ticket)}>
         <TicketItem ticket={ticket} />
@@ -57,7 +56,6 @@ class Tickets extends React.PureComponent {
 
   renderTicketList = () => {
     const { tickets } = this.props;
-
     return (
 
       <MediaQuery maxWidth={widthBreakpoint}>

@@ -152,3 +152,5 @@ export const APPLICATION_LANGUAGE = {
   JANPANESE: 'Japanese',
   ENGLISH: 'English',
 };
+
+export const PAGE_SIZE = 10;

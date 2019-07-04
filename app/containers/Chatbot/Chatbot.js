@@ -6,9 +6,10 @@ import { actions, selectors } from '../../reducers/ticket';
 const mapStateToProps = (state, ownProps) => {
   const { match } = ownProps;
   const id = _get(match, 'params.id', null);
+  const owner = _get(match, 'params.owner', null);
 
   return {
-    ticketDetail: selectors.getTicketGetTicketDetail(state, id),
+    ticketDetail: selectors.getTicketGetTicketDetail(state, id, owner),
   };
 };
 

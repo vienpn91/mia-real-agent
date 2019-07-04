@@ -1,8 +1,10 @@
 import { connect } from 'react-redux';
 import TicketPage from 'components/TicketPage';
-import { actions } from 'reducers/ticket';
+import { actions, selectors } from 'reducers/ticket';
 
-const mapStateToProps = () => ({});
+const mapStateToProps = state => ({
+  totalRecord: selectors.getTicketTotalRecord(state),
+});
 
 const mapDispatchToProps = {
   getAllAction: actions.getAllAction,
