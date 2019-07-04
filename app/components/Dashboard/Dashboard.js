@@ -10,7 +10,6 @@ import {
   DashboardContainer,
   DashboardItem,
 } from './Dashboard.styled';
-import { removeParamFromUrl } from '../../utils/history';
 
 const { TabPane } = Tabs;
 
@@ -26,7 +25,7 @@ const TAB = {
 
 export default class Dashboard extends Component {
   state = {
-    activeTab: '2',
+    activeTab: '',
   }
 
   static propTypes = {
@@ -35,12 +34,16 @@ export default class Dashboard extends Component {
   }
 
   componentDidMount = () => {
-    const { match } = this.props;
+    const { match, history } = this.props;
     const { params } = match;
     const { tab } = params;
-    this.setState({
-      activeTab: tab,
-    });
+    if (!tab) {
+      history.push(`/dashboard/${TAB.Ticket}`);
+    } else {
+      this.setState({
+        activeTab: tab,
+      });
+    }
   }
 
   componentDidUpdate = (prevProps) => {
@@ -67,9 +70,8 @@ export default class Dashboard extends Component {
   )
 
   handleChangeTab = (activeTab) => {
-    const { history, match } = this.props;
-    const { path } = match;
-    history.push(`${removeParamFromUrl(path)}/${activeTab}`);
+    const { history } = this.props;
+    history.push(`/dashboard/${activeTab}`);
   }
 
   render() {

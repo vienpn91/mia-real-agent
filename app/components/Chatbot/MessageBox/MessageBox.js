@@ -59,7 +59,9 @@ export default class MessageBox extends Component {
   componentDidMount = () => {
     const { getChat, ticket } = this.props;
     const { _id, assignee } = ticket;
-    getChat(_id, assignee);
+    if (assignee) {
+      getChat(_id, assignee);
+    }
   }
 
   componentDidUpdate = (prevProps) => {

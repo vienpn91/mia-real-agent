@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/no-array-index-key */
 import React, { PureComponent } from 'react';
-import PropTypes, { number } from 'prop-types';
+import PropTypes, { number, shape } from 'prop-types';
 import {
   Menu, Dropdown, Icon,
   Pagination,
@@ -33,28 +33,35 @@ const categories = [
 
 class TicketPage extends PureComponent {
   state = {
-    current: 1,
     isOpenCreateModal: false,
   }
 
   componentDidMount() {
-    const { getAllAction } = this.props;
+    const { getAllAction, match, history } = this.props;
     getAllAction({ skip: 0, limit: PAGE_SIZE });
+    const { params } = match;
+    const { tab, page } = params;
+    if (page) {
+      getAllAction({ skip: (page - 1) * PAGE_SIZE, limit: PAGE_SIZE });
+    } else {
+      history.push(`/dashboard/${tab}/1`);
+    }
   }
 
-  componentDidUpdate = (prevProps, prevState) => {
-    const { getAllAction } = this.props;
-    const { current } = this.state;
-    if (prevState.current !== current) {
-      getAllAction({ skip: (current - 1) * PAGE_SIZE, limit: PAGE_SIZE });
+  componentDidUpdate = (prevProps) => {
+    const { getAllAction, match } = this.props;
+    const { params } = match;
+    const { page } = params;
+    if (prevProps.match.params.page !== page) {
+      getAllAction({ skip: (page - 1) * PAGE_SIZE, limit: PAGE_SIZE });
     }
   }
 
   handleChangePage = (current) => {
-    console.log(this.props);
-    this.setState({
-      current,
-    });
+    const { history, match } = this.props;
+    const { params } = match;
+    const { tab } = params;
+    history.push(`/dashboard/${tab}/${current}`);
   }
 
   handleOpenCreateModal = () => {
@@ -124,8 +131,10 @@ class TicketPage extends PureComponent {
   )
 
   render() {
-    const { isOpenCreateModal, current } = this.state;
-    const { totalRecord } = this.props;
+    const { isOpenCreateModal } = this.state;
+    const { totalRecord, match } = this.props;
+    const { params } = match;
+    const { page } = params;
     return (
       <TicketPageWrapper>
         {this.renderFilterTicket()}
@@ -133,7 +142,7 @@ class TicketPage extends PureComponent {
         <TicketPaginationWrapper>
           <Pagination
             onChange={this.handleChangePage}
-            current={current}
+            current={page}
             showLessItems
             size="small"
             pageSize={PAGE_SIZE}
@@ -152,6 +161,8 @@ class TicketPage extends PureComponent {
 TicketPage.propTypes = {
   getAllAction: PropTypes.func,
   totalRecord: number.isRequired,
+  history: shape(),
+  match: shape(),
 };
 
 export default TicketPage;
