@@ -45,6 +45,7 @@ export const TableContentItemGroup = styled(TableHeadItemGroup)`
 `;
 
 export const TableContentWrapper = styled.div`
+  height: 100%;
   border: 1px solid #cccccc;
   border-top: none;
   color: #263035;

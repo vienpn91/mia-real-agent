@@ -1,11 +1,15 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import TicketPage from 'components/TicketPage';
-import { actions } from 'reducers/ticket';
+import { actions, selectors } from 'reducers/ticket';
+import { compose } from 'redux';
 
-const mapStateToProps = () => ({});
+const mapStateToProps = state => ({
+  totalRecord: selectors.getTicketTotalRecord(state),
+});
 
 const mapDispatchToProps = {
   getAllAction: actions.getAllAction,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TicketPage);
+export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(TicketPage);

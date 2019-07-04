@@ -1,8 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/no-array-index-key */
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { Menu, Dropdown, Icon } from 'antd';
+import PropTypes, { number, shape } from 'prop-types';
+import {
+  Menu, Dropdown, Icon,
+  Pagination,
+} from 'antd';
 import Ticket from 'containers/TicketPage/Ticket';
 import {
   TicketPageWrapper,
@@ -10,9 +13,11 @@ import {
   FilterItem,
   Filter,
   CreateItem,
+  TicketPaginationWrapper,
 } from './Ticket.styles';
 import { DefaultButton } from '../Generals/general.styles';
 import CreateTicketFormContainer from '../../containers/Chatbot/CreateTicket';
+import { PAGE_SIZE } from '../../../common/enums';
 
 const activityData = [
   'Created',
@@ -26,16 +31,37 @@ const categories = [
   'Insurrance',
 ];
 
-
 class TicketPage extends PureComponent {
   state = {
     isOpenCreateModal: false,
   }
 
   componentDidMount() {
-    const { getAllAction } = this.props;
+    const { getAllAction, match, history } = this.props;
+    getAllAction({ skip: 0, limit: PAGE_SIZE });
+    const { params } = match;
+    const { tab, page } = params;
+    if (page) {
+      getAllAction({ skip: (page - 1) * PAGE_SIZE, limit: PAGE_SIZE });
+    } else {
+      history.push(`/dashboard/${tab}/1`);
+    }
+  }
 
-    getAllAction();
+  componentDidUpdate = (prevProps) => {
+    const { getAllAction, match } = this.props;
+    const { params } = match;
+    const { page } = params;
+    if (prevProps.match.params.page !== page) {
+      getAllAction({ skip: (page - 1) * PAGE_SIZE, limit: PAGE_SIZE });
+    }
+  }
+
+  handleChangePage = (current) => {
+    const { history, match } = this.props;
+    const { params } = match;
+    const { tab } = params;
+    history.push(`/dashboard/${tab}/${current}`);
   }
 
   handleOpenCreateModal = () => {
@@ -106,11 +132,23 @@ class TicketPage extends PureComponent {
 
   render() {
     const { isOpenCreateModal } = this.state;
-
+    const { totalRecord, match } = this.props;
+    const { params } = match;
+    const { page } = params;
     return (
       <TicketPageWrapper>
         {this.renderFilterTicket()}
         <Ticket />
+        <TicketPaginationWrapper>
+          <Pagination
+            onChange={this.handleChangePage}
+            current={page}
+            showLessItems
+            size="small"
+            pageSize={PAGE_SIZE}
+            total={totalRecord}
+          />
+        </TicketPaginationWrapper>
         <CreateTicketFormContainer
           isOpen={isOpenCreateModal}
           handleCancel={this.handleCloseCreateModal}
@@ -122,6 +160,9 @@ class TicketPage extends PureComponent {
 
 TicketPage.propTypes = {
   getAllAction: PropTypes.func,
+  totalRecord: number.isRequired,
+  history: shape(),
+  match: shape(),
 };
 
 export default TicketPage;

@@ -136,7 +136,8 @@ const fetchingObj = {
 const getTicketIsCreating = ({ ticket }) => ticket.get('isCreating');
 const getTicketCreateError = ({ ticket }) => ticket.get('createError');
 
-const getTicketGetTicketDetail = ({ ticket }, id) => ticket.getIn(['tickets', id], emptyMap).toJS();
+const getTicketTotalRecord = ({ ticket }) => ticket.get('totalRecord');
+const getTicketGetTicketDetail = ({ ticket }, id, owner) => ticket.getIn(['tickets', `${id}#${owner}`], emptyMap).toJS();
 const getTicketsById = ({ ticket }) => ticket.get('tickets');
 const getVisibleTicketIds = ({ ticket }) => ticket.get('visibleTicketIds');
 const getTicketsList = createSelector(getTicketsById, getVisibleTicketIds, (ticketByIds, visibleTicketIds) => {
@@ -152,6 +153,7 @@ const getFetchingContext = ({ ticket }) => ticket.get('fetching', fetchingObj).t
 const initialState = fromJS({
   createError: '',
   tickets: {},
+  totalRecord: 0,
   visibleTicketIds: [],
   getError: '',
   ticketDetail: null,
@@ -168,12 +170,12 @@ function profileReducer(state = initialState, action) {
         .set('createError', '');
     case CREATE_SUCCESS: {
       const { payload } = action;
-      const { ticketId } = payload;
+      const { ticketId, owner } = payload;
       const visibleTicketIds = state.get('visibleTicketIds').toJS();
-      const newVisibleTicketIds = [ticketId, ...visibleTicketIds];
+      const newVisibleTicketIds = [`${ticketId}#${owner}`, ...visibleTicketIds];
       return state
         .set('isCreating', false)
-        .setIn(['tickets', ticketId], fromJS(payload))
+        .setIn(['tickets', `${ticketId}#${owner}`], fromJS(payload))
         .set('visibleTicketIds', fromJS(newVisibleTicketIds));
     }
     case CREATE_FAIL:
@@ -185,10 +187,10 @@ function profileReducer(state = initialState, action) {
         .set('getError', '');
     case GET_SUCCESS: {
       const { ticket } = action.payload;
-      const { ticketId } = ticket;
+      const { ticketId, owner } = ticket;
 
       return state.set('isGetting', false)
-        .setIn(['tickets', ticketId], fromJS(ticket));
+        .setIn(['tickets', `${ticketId}#${owner}`], fromJS(ticket));
     }
     case GET_FAIL:
       return state.set('isGetting', false)
@@ -199,8 +201,8 @@ function profileReducer(state = initialState, action) {
       const { data, totalRecord } = action;
       const newTickets = state
         .get('tickets')
-        .merge(fromJS(_keyBy(data, 'ticketId')));
-      const visibleTicketIds = data.map(({ ticketId }) => ticketId);
+        .merge(fromJS(_keyBy(data, ({ ticketId, owner }) => `${ticketId}#${owner}`)));
+      const visibleTicketIds = data.map(({ ticketId, owner }) => `${ticketId}#${owner}`);
 
       return state
         .set('visibleTicketIds', fromJS(visibleTicketIds))
@@ -242,6 +244,7 @@ export const selectors = {
   getTicketIsCreating,
   getTicketCreateError,
 
+  getTicketTotalRecord,
   getTicketGetTicketDetail,
   getTicketsList,
   getFetchingContext,

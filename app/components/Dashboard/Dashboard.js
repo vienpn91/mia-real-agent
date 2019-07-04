@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   Row, Col, Tabs,
 } from 'antd';
+import { shape } from 'prop-types';
 import ShadowScrollbars from 'components/Scrollbar';
 import Activity from 'components/Activity';
 import TicketPage from 'containers/TicketPage';
@@ -17,20 +18,64 @@ const scrollStyle = {
   width: '100%',
 };
 
+const TAB = {
+  Activity: 'activity',
+  Ticket: 'ticket',
+};
+
 export default class Dashboard extends Component {
+  state = {
+    activeTab: '',
+  }
+
+  static propTypes = {
+    match: shape().isRequired,
+    history: shape().isRequired,
+  }
+
+  componentDidMount = () => {
+    const { match, history } = this.props;
+    const { params } = match;
+    const { tab } = params;
+    if (!tab) {
+      history.push(`/dashboard/${TAB.Ticket}`);
+    } else {
+      this.setState({
+        activeTab: tab,
+      });
+    }
+  }
+
+  componentDidUpdate = (prevProps) => {
+    const { match } = this.props;
+    const { params } = match;
+    const { tab } = params;
+    if (prevProps.match.params.tab !== tab) {
+      this.setState({
+        activeTab: tab,
+      });
+    }
+  }
+
   renderActivityItem = () => (
-    <TabPane tab="Activity" key="1">
+    <TabPane tab="Activity" key={TAB.Activity}>
       <Activity />
     </TabPane>
   )
 
   renderTicketItem = () => (
-    <TabPane tab="Ticket" key="2">
+    <TabPane tab="Ticket" key={TAB.Ticket}>
       <TicketPage />
     </TabPane>
   )
 
+  handleChangeTab = (activeTab) => {
+    const { history } = this.props;
+    history.push(`/dashboard/${activeTab}`);
+  }
+
   render() {
+    const { activeTab } = this.state;
     return (
       <ShadowScrollbars
         autoHide
@@ -40,7 +85,11 @@ export default class Dashboard extends Component {
           <DashboardItem>
             <Row type="flex" justify="center" style={{ height: '100%' }}>
               <Col span={20}>
-                <Tabs defaultActiveKey="2" style={{ height: '100%' }}>
+                <Tabs
+                  activeKey={activeTab}
+                  style={{ height: '100%' }}
+                  onChange={this.handleChangeTab}
+                >
                   {this.renderActivityItem()}
                   {this.renderTicketItem()}
                 </Tabs>

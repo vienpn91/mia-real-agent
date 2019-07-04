@@ -66,7 +66,7 @@ class TicketController extends BaseController {
   getAll = async (req, res) => {
     try {
       const {
-        user, body: {
+        user, query: {
           skip, limit, sort, ...params
         },
       } = req;

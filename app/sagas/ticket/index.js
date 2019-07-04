@@ -8,8 +8,7 @@ import {
 } from '../../reducers/ticket';
 import * as TicketApi from '../../api/ticket';
 import { configToken } from '../../api/config';
-import { getToken, getUserRole } from '../../reducers/auth';
-import { ROLES } from '../../../common/enums';
+import { getToken } from '../../reducers/auth';
 
 function* createTicket({ payload }) {
   yield configAxiosForTicket();
