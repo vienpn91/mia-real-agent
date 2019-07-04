@@ -1,8 +1,9 @@
 /* eslint-disable react/prefer-stateless-function */
 import React from 'react';
-import { Switch } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import AuthenticatedRoute from 'containers/Route/AuthenticatedRoute';
 import MainLayout from 'components/MainLayout';
+import AdminMainLayout from 'components/AdminMainLayout';
 import UnauthRoute from './containers/Route/UnauthenticateRoute';
 import HomePage from './pages/HomePage';
 import Dashboard from './pages/Dashboard';
@@ -13,11 +14,18 @@ import ThankForRegistering from './pages/ThankForRegistering';
 import Profile from './pages/Profile';
 import ChatbotComponent from './pages/Chatbot';
 
+import AdminDashboard from './pages/AdminDashboard';
+
 
 export default class App extends React.PureComponent {
   render() {
     return (
       <Switch>
+        <Route path="/admin">
+          <AdminMainLayout>
+            <AuthenticatedRoute exact path="/admin" component={AdminDashboard} />
+          </AdminMainLayout>
+        </Route>
         <UnauthRoute exact path="/" component={HomePage} />
         <UnauthRoute exact path="/login" component={Login} />
         <UnauthRoute exact path="/register" component={Registration} />
@@ -26,7 +34,7 @@ export default class App extends React.PureComponent {
           path="/login/callback/:token/:userId/:email/:verifiedAt"
           component={LoginCallBackPage}
         />
-        <AuthenticatedRoute exact path="/ticket/:id/:owner?" component={ChatbotComponent} />
+        <AuthenticatedRoute exact path="/ticket/:id" component={ChatbotComponent} />
         <MainLayout>
           <Switch>
             <AuthenticatedRoute exact path="/profile" component={Profile} />
