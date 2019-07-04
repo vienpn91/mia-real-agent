@@ -31,17 +31,24 @@ export const REQUEST_CONFIRM_FAIL = 'chat/REQUEST_CONFIRM_FAIL';
 
 // action creator
 
-const requestConfirmAction = (agentId, ticketId, isConfirm) => ({
+const requestConfirmAction = (agentId, ticketId, isConfirm, redirectData) => ({
   type: REQUEST_CONFIRM,
   payload: {
     agentId,
     ticketId,
     isConfirm,
+    redirectData,
   },
 });
 
-const requestConfirmCompleteAction = () => ({
+// payload: {
+//   ticketId,
+//   owner,
+//   isConfirm,
+// }
+const requestConfirmCompleteAction = payload => ({
   type: REQUEST_CONFIRM_SUCCESS,
+  payload,
 });
 
 const requestConfirmFailAction = errorMessage => ({
@@ -200,6 +207,7 @@ const getChatIsFindingAgent = ({ chat }) => chat.get('isFindingAgent');
 const getChatIsAgentRequesting = ({ chat }) => chat.get('isRequesting');
 const getChatIsAgentRequestTicket = ({ chat }) => chat.get('requestTicket');
 const getChatIsAgentRequestIsConfirming = ({ chat }) => chat.get('isConfirming');
+const getChatIsAgentRequestConfirmRedirectData = ({ chat }) => chat.get('confirmRedirectData');
 
 const initialState = fromJS({
   isCreating: false,
@@ -217,6 +225,7 @@ const initialState = fromJS({
   requestTicket: null,
   isConfirming: false,
   confirmError: '',
+  confirmRedirectData: null,
 });
 
 function profileReducer(state = initialState, action) {
@@ -250,11 +259,13 @@ function profileReducer(state = initialState, action) {
 
     case REQUEST_CONFIRM:
       return state.set('isConfirming', true)
-        .set('confirmError', '');
+        .set('confirmError', '')
+        .set('confirmRedirectData', null);
 
     case REQUEST_CONFIRM_SUCCESS:
       return state.set('isConfirming', false)
-        .set('isRequesting', false);
+        .set('isRequesting', false)
+        .set('confirmRedirectData', action.payload);
 
     case REQUEST_CONFIRM_FAIL:
       return state.set('isConfirming', false)
@@ -306,4 +317,5 @@ export const selectors = {
   getChatIsAgentRequesting,
   getChatIsAgentRequestTicket,
   getChatIsAgentRequestIsConfirming,
+  getChatIsAgentRequestConfirmRedirectData,
 };

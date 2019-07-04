@@ -7,7 +7,7 @@ import { notification } from 'antd';
 import {
   actions, GET_CHAT, INSERT_MESSAGE, UPDATE_CHAT, FIND_AGENT, ACCEPT_AGENT, REQUEST_CONFIRM, selectors,
 } from '../../reducers/chat';
-import { selectors as TicketSelectors } from '../../reducers/ticket';
+import { actions as TicketActions } from '../../reducers/ticket';
 import * as ChatApi from '../../api/chat';
 import * as UserApi from '../../api/user';
 import { configToken } from '../../api/config';
@@ -100,8 +100,11 @@ export function* acceptAgent({ payload }) {
 
 export function* confirmRequest({ payload }) {
   yield configAxiosForChat();
-  const { agentId, ticketId, isConfirm } = payload;
-  const { error } = yield call(UserApi.acceptAgent, agentId, ticketId, isConfirm);
+  const {
+    agentId, ticketId: _id, isConfirm,
+    redirectData,
+  } = payload;
+  const { error } = yield call(UserApi.acceptAgent, agentId, _id, isConfirm);
   if (error) {
     const errorMessage = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE
@@ -109,7 +112,7 @@ export function* confirmRequest({ payload }) {
     yield put(actions.requestConfirmFailAction(errorMessage));
     return;
   }
-  yield put(actions.requestConfirmCompleteAction());
+  yield put(actions.requestConfirmCompleteAction({ ...redirectData, isConfirm }));
 }
 
 function* chatFlow() {
