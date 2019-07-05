@@ -12,6 +12,7 @@ import * as ChatApi from '../../api/chat';
 import * as UserApi from '../../api/user';
 import { configToken } from '../../api/config';
 import { getToken } from '../../reducers/auth';
+import { combineChat } from './utils';
 
 export function* configAxiosForChat() {
   const token = yield select(getToken);
@@ -30,7 +31,8 @@ export function* getChat({ payload }) {
     return;
   }
   const { data } = response;
-  yield put(actions.getChatCompleteAction(data));
+  const { messages } = data;
+  yield put(actions.getChatCompleteAction({ ...data, messages: combineChat(messages) }));
 }
 
 export function* updateChat() {
@@ -45,7 +47,8 @@ export function* updateChat() {
     return;
   }
   const { data } = response;
-  yield put(actions.updateChatCompleteAction(data));
+  const { messages } = data;
+  yield put(actions.updateChatCompleteAction({ ...data, messages: combineChat(messages) }));
 }
 
 export function* sendMessage({ payload }) {

@@ -22,6 +22,7 @@ import {
   MessageEmpty,
   InputAction,
   InputUpload,
+  UserMessage,
 } from '../styles';
 import LoadingSpin from '../../Loading';
 import { InfoNotification } from './styles';
@@ -67,46 +68,62 @@ export default class MessageBox extends Component {
 
   componentDidUpdate = (prevProps) => {
     this.scrollChatToBottom();
-    const { chatData, getChat, ticket } = this.props;
+    const {
+      chatData, getChat, ticket, userId,
+    } = this.props;
     const { ticket: prevTicket } = prevProps;
     const { _id, assignee } = ticket;
     const { _id: prevId } = prevTicket;
     if (ticket !== null && _id !== prevId && assignee) {
       getChat(_id, assignee);
     }
-    if (prevProps.chatData !== chatData) {
+    if (chatData && prevProps.chatData !== chatData) {
       const { pendingMessages } = this.state;
-      const updatePendingMessage = pendingMessages.filter(
-        ({ timestamp }) => !chatData.messages.find(
-          (message) => {
-            const { timestamp: msgTimestamp } = message;
-            if (!msgTimestamp) {
-              return false;
+      const { messages } = chatData;
+      const last = messages[messages.length - 1];
+      const { messageOwner, contents } = last;
+      if (messageOwner === userId && !_isEmpty(pendingMessages)) {
+        const updatePendingMessage = pendingMessages.filter(
+          ({ timestamp }) => !contents.find(
+            ({ timestamp: msgTimestamp }) => {
+              if (!msgTimestamp) {
+                return false;
+              }
+              return new Date(msgTimestamp).getTime()
+                === new Date(timestamp).getTime();
             }
-            return new Date(msgTimestamp).getTime()
-              === new Date(timestamp).getTime();
-          }
-        )
-      );
-      this.setState({
-        pendingMessages: updatePendingMessage,
-      });
+          )
+        );
+        this.setState({
+          pendingMessages: updatePendingMessage,
+        });
+      }
     }
   }
 
-  renderLeftMessageContent = (_id, content) => (
+  renderLeftMessageContent = (_id, contents) => (
     <MessageBoxItem left key={_id}>
       <Avatar icon="user" size={35} />
       <MessageText>
-        <p>{content}</p>
+        {
+          contents.map(
+            ({ _id: messageId, content }) => (<p key={messageId}>{content}</p>)
+          )
+        }
       </MessageText>
     </MessageBoxItem>
   )
 
-  renderRightMessageContent = (_id, content, isPending) => (
+  renderRightMessageContent = (_id, contents) => (
     <MessageBoxItem right key={_id}>
-      <MessageText isPending={isPending}>
-        <p>{content}</p>
+      <MessageText>
+        {
+          contents.map(
+            ({ _id: messageId, content, isPending }) => (
+              <UserMessage pending={isPending} key={messageId}>{content}</UserMessage>
+            )
+          )
+        }
       </MessageText>
       <Avatar icon="user" size={35} />
     </MessageBoxItem>
@@ -119,17 +136,35 @@ export default class MessageBox extends Component {
       return (<InfoNotification>Please find Agent</InfoNotification>);
     }
     const { pendingMessages } = this.state;
-    const { messages } = chatData;
+    const { messages: originMessages } = chatData;
+    const messages = Object.assign([], originMessages);
     if (_isEmpty(messages)) {
       return (<MessageEmpty>No Message</MessageEmpty>);
     }
-    return [messages.map(({ _id, messageOwner, content }) => {
-      if (messageOwner === userId) {
-        return this.renderRightMessageContent(_id, content);
+    // Apend pending Messages
+    if (!_isEmpty(pendingMessages)) {
+      const last = messages[messages.length - 1];
+      const { messageOwner: lastOwner, contents: lastContents } = last;
+      if (lastOwner === userId) {
+        messages[messages.length - 1] = {
+          ...last,
+          contents: lastContents.concat(pendingMessages),
+        };
+      } else {
+        messages.push({
+          _id: messages.length,
+          messageOwner: userId,
+          contents: pendingMessages,
+        });
       }
-      return this.renderLeftMessageContent(_id, content);
+    }
+
+    return [messages.map(({ _id, messageOwner, contents }) => {
+      if (messageOwner === userId) {
+        return this.renderRightMessageContent(_id, contents);
+      }
+      return this.renderLeftMessageContent(_id, contents);
     }),
-    pendingMessages.map(({ content }, index) => this.renderRightMessageContent(index, content, true)),
     ];
   }
 
@@ -146,17 +181,23 @@ export default class MessageBox extends Component {
   handleChatSubmit = (values) => {
     const { sendMessage, userId } = this.props;
     const { content } = values;
-    const msg = {
-      messageOwner: userId,
-      content,
-      timestamp: new Date(),
-    };
     const { pendingMessages } = this.state;
-    this.setState({
-      pendingMessages: pendingMessages.concat(msg),
-    });
-    sendMessage(msg);
-    this.formik.getFormikContext().resetForm();
+    if (content.trim()) {
+      const msg = {
+        messageOwner: userId,
+        content: content.trim(),
+        timestamp: new Date(),
+        isPending: true,
+      };
+      this.setState({
+        pendingMessages: pendingMessages.concat({
+          ...msg,
+          _id: pendingMessages.length,
+        }),
+      });
+      sendMessage(msg);
+      this.formik.getFormikContext().resetForm();
+    }
   }
 
   handleFindAgent = () => {

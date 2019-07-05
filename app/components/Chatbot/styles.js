@@ -194,7 +194,7 @@ export const TicketStatus = styled.div`
     &:last-child {
       padding: 10px;
       ${({ status }) => status
-      && css`
+    && css`
         font-style: italic;
         color: ${[COLOR_BY_STATUS[status]]};
         opacity: 0.8;
@@ -300,6 +300,9 @@ export const MessageBoxItem = styled.div`
       color: #fff;
       background-color: #ff5504;
     }
+    > div{
+     align-items: flex-end;
+    }
   `}
   &:first-child {
     padding-top: 15px;
@@ -318,11 +321,12 @@ export const MessageBoxHeaderWrapper = styled.div`
 export const MessageText = styled.div`
   width: fit-content;
   max-width: 60%;
-  ${({ isPending }) => isPending && css`
-    p {
-      background-color: #f78b5f;
-    }
-  `};
+  display: flex;
+  flex-direction: column;
+`;
+
+export const UserMessage = styled.p`
+  background-color: ${({ pending }) => pending && '#f78b5f !important'};
 `;
 
 export const MessageInputWrapper = styled.div`
