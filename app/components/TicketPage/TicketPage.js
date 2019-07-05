@@ -7,6 +7,7 @@ import {
   Pagination,
 } from 'antd';
 import Ticket from 'containers/TicketPage/Ticket';
+import _isNumber from 'lodash/isNumber';
 import {
   TicketPageWrapper,
   TicketFilterWrapper,
@@ -41,7 +42,7 @@ class TicketPage extends PureComponent {
     getAllAction({ skip: 0, limit: PAGE_SIZE });
     const { params } = match;
     const { tab, page } = params;
-    if (page) {
+    if (page && _isNumber(page)) {
       getAllAction({ skip: (page - 1) * PAGE_SIZE, limit: PAGE_SIZE });
     } else {
       history.push(`/dashboard/${tab}/1`);
@@ -142,7 +143,7 @@ class TicketPage extends PureComponent {
         <TicketPaginationWrapper>
           <Pagination
             onChange={this.handleChangePage}
-            current={page}
+            current={_isNumber(page) ? page : 0}
             showLessItems
             size="small"
             pageSize={PAGE_SIZE}

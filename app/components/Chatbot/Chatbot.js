@@ -3,8 +3,12 @@ import React, { Component } from 'react';
 import {
   Layout, Icon, Input, Tooltip, Tabs,
 } from 'antd';
-import { func, shape } from 'prop-types';
+import {
+  func, shape, string,
+  bool,
+} from 'prop-types';
 import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 import Tickets from 'containers/Chatbot/Tickets';
 import history from 'utils/history';
 import TicketDetail from './TicketDetail/TicketDetail';
@@ -18,6 +22,7 @@ import {
 } from './styles';
 import { Return } from '../Generals/general.styles';
 import CreateTicketFormContainer from '../../containers/Chatbot/CreateTicket';
+import { ROLES } from '../../../common/enums';
 
 const { Content } = Layout;
 const { Search } = Input;
@@ -31,6 +36,9 @@ export default class ChatbotComponent extends Component {
   static propTypes = {
     getTicket: func.isRequired,
     ticketDetail: shape(),
+    getError: string,
+    userRole: string,
+    isGetting: bool.isRequired,
   }
 
   static defaultProps = {
@@ -41,16 +49,25 @@ export default class ChatbotComponent extends Component {
     const { getTicket } = this.props;
     const id = _get(this.props, 'match.params.id', null);
     const owner = _get(this.props, 'match.params.owner', null);
-    getTicket(id, owner);
+    if (id) {
+      getTicket(id, owner);
+    }
   }
 
   componentDidUpdate(prevProps) {
-    const { getTicket } = this.props;
+    const {
+      getTicket, getError, userRole, isGetting,
+    } = this.props;
     const prevId = _get(prevProps, 'match.params.id', null);
     const prevOwner = _get(prevProps, 'match.params.owner', null);
     const id = _get(this.props, 'match.params.id', null);
     const owner = _get(this.props, 'match.params.owner', null);
-    if (prevId !== id || prevOwner !== owner) {
+    // Redirect when ticket not found
+    if (!isGetting && prevProps.isGetting && getError) {
+      history.push((userRole === ROLES.AGENT) ? '/dashboard' : '/ticket');
+    }
+
+    if (id && (prevId !== id || prevOwner !== owner)) {
       getTicket(id, owner);
     }
   }
@@ -105,7 +122,7 @@ export default class ChatbotComponent extends Component {
 
   render() {
     const { isOpenCreateModal } = this.state;
-    const { ticketDetail } = this.props;
+    const { ticketDetail, getError } = this.props;
     return (
       <ChatbotWrapper>
         <ChatbotTicketListWrapper>
@@ -115,7 +132,7 @@ export default class ChatbotComponent extends Component {
         </ChatbotTicketListWrapper>
         <ChatbotContentWrapper>
           <Content>
-            {ticketDetail ? <MessageBoxContainer ticket={ticketDetail} /> : <TicketEmpty>Please select a ticket</TicketEmpty>}
+            {(!_isEmpty(ticketDetail) && !getError) ? <MessageBoxContainer ticket={ticketDetail} /> : <TicketEmpty>Please select a ticket</TicketEmpty>}
           </Content>
         </ChatbotContentWrapper>
         <CreateTicketFormContainer

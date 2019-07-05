@@ -3,6 +3,7 @@ import {
   Avatar, Breadcrumb,
   Button, Form,
 } from 'antd';
+import _isEmpty from 'lodash/isEmpty';
 import { Formik } from 'formik';
 import ShadowScrollbars from 'components/Scrollbar';
 import {
@@ -119,6 +120,9 @@ export default class MessageBox extends Component {
     }
     const { pendingMessages } = this.state;
     const { messages } = chatData;
+    if (_isEmpty(messages)) {
+      return (<MessageEmpty>No Message</MessageEmpty>);
+    }
     return [messages.map(({ _id, messageOwner, content }) => {
       if (messageOwner === userId) {
         return this.renderRightMessageContent(_id, content);
@@ -223,7 +227,7 @@ export default class MessageBox extends Component {
               style={scrollStyle}
             >
               {!chatData
-                ? <MessageEmpty>No Message</MessageEmpty>
+                ? <MessageEmpty>No Chat Data</MessageEmpty>
                 : (
                   <React.Fragment>
                     {this.renderMessageContent()}

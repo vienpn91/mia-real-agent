@@ -1,10 +1,12 @@
 import httpStatus from 'http-status';
 import _get from 'lodash/get';
+import mongoose from 'mongoose';
 import BaseController from '../base/base.controller';
 import TicketService from './ticket.service';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import { ROLES } from '../../../common/enums';
 
+const { CONTENT_NOT_FOUND } = ERROR_MESSAGE;
 const emptyObjString = '{}';
 
 class TicketController extends BaseController {
@@ -19,15 +21,18 @@ class TicketController extends BaseController {
       if (!user) {
         throw new APIError(ERROR_MESSAGE.UNAUTHORIZED, httpStatus.UNAUTHORIZED);
       }
-
       const { _id, role } = user;
+
+      if (!mongoose.Types.ObjectId.isValid(owner) && role === ROLES.AGENT) {
+        throw new APIError(CONTENT_NOT_FOUND, httpStatus.NOT_FOUND);
+      }
+
       const condition = (role === ROLES.AGENT)
         ? { owner, ticketId: id }
         : { owner: _id, ticketId: id };
       const model = await this.service.getByCondition(condition);
 
       if (model == null) {
-        const { CONTENT_NOT_FOUND } = ERROR_MESSAGE;
         throw new APIError(CONTENT_NOT_FOUND, httpStatus.NOT_FOUND);
       }
 
