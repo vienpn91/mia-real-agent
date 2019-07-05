@@ -3,8 +3,8 @@ import styled from 'styled-components';
 export const DashboardWrapperStyled = styled.div`
   position: relative;
   height: 100%;
-  width: calc(100% - 250px);
-  margin-left: 250px;
+  width: calc(100% - 260px);
+  margin-left: 260px;
   left: 0;
   color: #222222;
   background-color: #fff;

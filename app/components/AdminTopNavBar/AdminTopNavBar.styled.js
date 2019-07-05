@@ -1,12 +1,5 @@
 import styled from 'styled-components';
 
-export const TopbarLeft = styled.div`
-  display: flex;
-  align-items: center;
-  flex: 1;
-  color: #646777;
-`;
-
 export const TopbarRight = styled.div`
   display: flex;
   flex: 1;
@@ -17,24 +10,11 @@ export const TopbarRight = styled.div`
 export const HeaderStyled = styled.div`
   position: relative;
   width: 100%;
-  height: 50px;
-  z-index: 3;
-  background-color: #f8f7f7;
+  height: 60px;
+  z-index: 1;
+  background-color: #fff;
   border-bottom: 1px solid #e0e0e0;
   display: flex;
-`;
-
-export const LogoStyled = styled.a`
-  width: 200px;
-  height: 100%;
-  margin: auto 0;
-  margin-left: 20px;
-  background-repeat: no-repeat;
-  background-position-y: center;
-  background-position-x: left;
-  background-size: contain;
-  cursor: pointer;
-  background-image: url('/assets/images/logo.png');
 `;
 
 export const ProfileStyled = styled.div`

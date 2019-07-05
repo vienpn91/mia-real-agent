@@ -3,28 +3,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _startsWith from 'lodash/startsWith';
 import { Link } from 'react-router-dom';
-import { SidebarItemStyled } from './LeftSidebar.styled';
+import { SidebarItem } from './LeftSidebar.styled';
 
-const SidebarItem = ({
-  icon, text, link, currentUrl, isOpen,
-}) => {
-  const actived = _startsWith(currentUrl, link);
-  return (
-    <Link to={link}>
-      <SidebarItemStyled isActive={actived} isOpen={isOpen}>
-        <i className={icon} />
-        <span>{text}</span>
-      </SidebarItemStyled>
-    </Link>
-  );
-};
+export default class SideBarItem extends React.PureComponent {
+  render() {
+    const {
+      icon, text, link, isActive, isToggle,
+    } = this.props;
+    return (
+      <Link to={link} key={text}>
+        <SidebarItem isActive={isActive} isToggle={isToggle}>
+          <i className={icon} />
+          <span>{text}</span>
+        </SidebarItem>
+      </Link>
+    );
+  }
+}
 
-SidebarItem.propTypes = {
-  isOpen: PropTypes.bool,
+SideBarItem.propTypes = {
   icon: PropTypes.string,
   text: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
-  currentUrl: PropTypes.string.isRequired,
+  isActive: PropTypes.bool.isRequired,
+  isToggle: PropTypes.bool,
 };
-
-export default SidebarItem;

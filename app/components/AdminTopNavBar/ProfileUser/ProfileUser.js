@@ -27,7 +27,7 @@ class ProfileUser extends React.PureComponent {
             {src ? (
               <img src="#" />
             ) : (
-              <img src="../../../images/avatars/user.svg" />
+              <img src="https://cdn1.thr.com/sites/default/files/imagecache/landscape_928x523/2017/09/gettyimages-801080928_-_h_2017.jpg" />
             )}
           </ProfileUserAvatar>
           <ProfileUserName>Tri Nguyen</ProfileUserName>

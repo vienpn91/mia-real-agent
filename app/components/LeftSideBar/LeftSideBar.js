@@ -3,80 +3,37 @@ import PropTypes from 'prop-types';
 import _find from 'lodash/find';
 import _reduce from 'lodash/reduce';
 import _startsWith from 'lodash/startsWith';
-import MediaQuery from 'react-responsive';
 import SidebarItem from './SideBarItem';
-import { LeftSideBarStyled, SidebarToggleButton, SidebarBlockStyled } from './LeftSidebar.styled';
-import { IconStyled } from '../Generals/general.styles';
+import {
+  LeftSideBarWrapper,
+  SidebarToggleButton,
+  SidebarBlock,
+  LogoWrapper,
+  Logo,
+  IconToggle,
+} from './LeftSidebar.styled';
 
 const TABS_MENU = [
   {
     key: 'dashboard',
     type: 'container',
     label: 'Dashboard',
-    icon: 'icon-home',
-    link: '/dashboard',
+    icon: 'mia-dashboard',
+    link: '/admin/dashboard',
   },
   {
-    key: 'interface',
+    key: 'tickets',
     type: 'container',
-    label: 'Interface',
-    icon: 'icon-home',
-    items: [
-      {
-        label: 'Banners',
-        link: '/banner',
-      },
-      {
-        label: 'Homepage',
-        link: '/editor/homepage',
-      },
-    ],
+    label: 'Tickets',
+    icon: 'mia-ticket',
+    link: '/admin/tickets',
   },
   {
-    key: 'promotion',
+    key: 'users',
     type: 'container',
-    label: 'Promotions',
-    icon: 'icon-percent',
-    link: '/promos',
-  },
-  {
-    key: 'items',
-    type: 'container',
-    label: 'Inventory',
-    icon: 'icon-checkout',
-    link: '/items',
-    items: [
-      {
-        label: 'Categories',
-        link: '/categories',
-      },
-      {
-        label: 'Products',
-        link: '/products',
-      },
-      { label: 'SKU', link: '/sku' },
-    ],
-  },
-  {
-    key: 'packages',
-    type: 'container',
-    label: 'Packages',
-    icon: 'icon-package',
-    link: '/package',
-  },
-  {
-    key: 'saleOrders',
-    type: 'container',
-    label: 'Sale Orders',
-    icon: 'icon-shopping',
-    link: '/orders',
-  },
-  {
-    key: 'purchaseOrders',
-    type: 'container',
-    label: 'Purchase Orders',
-    icon: 'icon-shopping-bag',
-    link: '/purchase-order',
+    label: 'Users',
+    icon: 'mia-user',
+    link: '/admin/users',
   },
 ];
 
@@ -102,6 +59,7 @@ const paths = _reduce(
 class LeftSideBar extends PureComponent {
   state = {
     activeItem: '',
+    isSidebarOpen: false,
   };
 
   componentDidMount() {
@@ -118,6 +76,12 @@ class LeftSideBar extends PureComponent {
     }
   }
 
+  onToggleSidebar = () => {
+    this.setState(prevState => ({
+      isSidebarOpen: !prevState.isSidebarOpen,
+    }));
+  };
+
   selectTab = () => {
     const { pathname } = this.props;
     const pathItem = _find(paths, path => _startsWith(pathname, path.link));
@@ -130,6 +94,11 @@ class LeftSideBar extends PureComponent {
     }
   };
 
+  // onLogoClick = () => {
+  //   const { history } = this.props;
+  //   history.push('/');
+  // };
+
   toggleContainer = (key) => {
     this.setState((prevState) => {
       const isSelected = prevState.activeItem === key;
@@ -139,53 +108,51 @@ class LeftSideBar extends PureComponent {
     });
   };
 
+  renderLogo = () => (
+    <LogoWrapper onClick={this.onLogoClick}>
+      <Logo src="/assets/images/logo-small-white.png" />
+    </LogoWrapper>
+  );
+
   renderTabItem = (tabItem) => {
-    const { pathname, isOpen } = this.props;
+    const { pathname } = this.props;
     const {
-      key, label, icon, link, items,
+      key, label, icon, link,
     } = tabItem;
-    const { activeItem } = this.state;
+    const { activeItem, isSidebarOpen } = this.state;
     return (
       <SidebarItem
-        isActive={activeItem === key}
-        link={link}
-        key={key}
-        itemKey={key}
         icon={icon}
         text={label}
-        items={items}
+        link={link}
         currentUrl={pathname}
-        toggleContainer={this.toggleContainer}
-        isOpen={isOpen}
+        isToggle={isSidebarOpen}
+        isActive={activeItem === key}
+        key={key}
       />
     );
   };
 
   render() {
-    const { isOpen, onToggleSidebar } = this.props;
+    const { isSidebarOpen } = this.state;
     return (
-      <LeftSideBarStyled
-        onMouseEnter={onToggleSidebar}
-        onMouseLeave={onToggleSidebar}
-        isOpen={isOpen}
+      <LeftSideBarWrapper
+        isToggle={isSidebarOpen}
       >
-        <SidebarBlockStyled>
-          <MediaQuery maxWidth={1280}>
-            <SidebarToggleButton isOpen={isOpen}>
-              <IconStyled className="icon-next" />
-            </SidebarToggleButton>
-          </MediaQuery>
+        <SidebarBlock>
+          <SidebarToggleButton isToggle={isSidebarOpen}>
+            {this.renderLogo()}
+            <IconToggle onClick={this.onToggleSidebar} className="mia-chevron-right" />
+          </SidebarToggleButton>
           {TABS_MENU.map(this.renderTabItem)}
-        </SidebarBlockStyled>
-      </LeftSideBarStyled>
+        </SidebarBlock>
+      </LeftSideBarWrapper>
     );
   }
 }
 
 LeftSideBar.propTypes = {
-  isOpen: PropTypes.bool,
   pathname: PropTypes.string,
-  onToggleSidebar: PropTypes.func,
 };
 
 export default LeftSideBar;

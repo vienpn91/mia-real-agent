@@ -1,34 +1,38 @@
 /* eslint-disable indent */
 import styled, { css } from 'styled-components';
 
-export const LeftSideBarStyled = styled.div`
+export const LeftSideBarWrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   z-index: 2;
-  height: calc(100vh - 50px);
-  width: 250px;
-  box-shadow: 0 1px 30px 1px rgba(0, 0, 0, 0.11);
-  background: #2d373c;
+  height: 100vh;
+  width: 260px;
   transition: all 300ms ease;
-  overflow: auto;
-  overflow: -moz-scrollbars-none;
-  -ms-overflow-style: none;
+  background-image: url('/assets/images/bg-left-side-bar.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
+  &:before {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    content: '';
+    background-color: #1d1d1d70;
+  }
   &::-webkit-scrollbar {
     width: 0 !important;
   }
-  @media (max-width: 1280px) {
-    width: 50px;
-    ${({ isOpen }) => isOpen
-      && css`
-        width: 200px;
+  ${({ isToggle }) => isToggle
+    && css`
+        width: 50px;
       `};
-  }
 `;
 
-export const SidebarBlockStyled = styled.ul`
+export const SidebarBlock = styled.ul`
   font-size: 14px;
-  margin-top: 15px;
+  position: relative;
+  z-index: 1;
   & > a {
     text-decoration: none;
     cursor: pointer;
@@ -38,23 +42,57 @@ export const SidebarBlockStyled = styled.ul`
   }
 `;
 
-export const SidebarToggleButton = styled.div`
-  font-size: 28px;
-  color: #fff;
-  padding: 16px;
-  height: 38px;
-  background-color: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+export const LogoWrapper = styled.div`
+  height: 100%;
+  width: 100%;
+  padding: 8px 15px;
+`;
+
+export const Logo = styled.img`
+  width: 200px;
+  height: 100%;
+  margin: auto 0;
+  object-fit: contain;
   cursor: pointer;
-  transition: all 300ms ease;
-  ${({ isOpen }) => isOpen
-    && css`
-      i {
-        transform: rotate(180deg);
-      }
-    `};
+`;
+
+export const IconToggle = styled.i`
+  position: absolute;
+  right: -32px;
+  top: 14px;
+  background-color: #fff;
+  padding: 8px;
+  box-shadow: 10px 0px 8px -8px #d9d9d9;
+  border: 1px solid #d9d9d9;
+  border-left: none;
+  border-radius: 0px 50% 50% 0px;
+  &:hover {
+    border-color: #bbb;
+  }
+`;
+
+export const SidebarToggleButton = styled.div`
+  height: 60px;
+  background-color: #8f8e90;
+  border-right: 1px solid #ffffff33;
+  border-bottom: 1px solid#ffffff33;
+  cursor: pointer;
+  position: relative;
+  ${({ isToggle }) => isToggle && css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    > div {
+      display: none;
+    }
+    i {
+      position: unset;
+      background-color: transparent;
+      border: none;
+      box-shadow: none;
+      color: #fff;
+    }
+  `};
 `;
 
 const SidebarItemOpen = css`
@@ -63,16 +101,18 @@ const SidebarItemOpen = css`
 `;
 
 
-export const SidebarItemStyled = styled.li`
-  color: #d9d9d9;
+export const SidebarItem = styled.li`
+  color: #fff;
   height: 40px;
-  width: 200px;
+  width: 230px;
   position: relative;
   cursor: pointer;
   display: flex;
   align-items: center;
+  margin: 8px 15px;
   padding: 12px 10px 12px 15px;
   background: transparent;
+  border-radius: 4px;
   border: none;
   transition: all 300ms ease;
   & > span {
@@ -80,22 +120,19 @@ export const SidebarItemStyled = styled.li`
     margin-left: 10px;
   }
   &:hover {
-    background-color: #1f282d;
-    color: #2fa3e6;
+    background-color: #bfbfbf9c;
   }
   ${({ actived }) => actived
     && css`
-      background-color: #1f282d;
+      background-color: #bfbfbf9c;
       color: #2fa3e6;
     `};
-  @media (max-width: 1280px) {
-    padding: 16px;
+  ${({ isToggle }) => isToggle && css`
+    width: auto;
+    margin: 8px 0px;
+    justify-content: center;
     span {
-      margin-left: 100px;
-      opacity: 0;
-      white-space: nowrap;
-      transition: all 500ms ease;
-      ${({ isOpen }) => isOpen && SidebarItemOpen};
+      display: none;
     }
-  }
+  `};
 `;

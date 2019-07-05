@@ -1,12 +1,9 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import ProfileUser from './ProfileUser/ProfileUser';
 import { PopupOverlayStyled } from '../Generals/general.styles';
 
 import {
   HeaderStyled,
-  LogoStyled,
-  TopbarLeft,
   TopbarRight,
   ProfileStyled,
   ProfileImageStyled,
@@ -19,16 +16,11 @@ class AdminTopNavBar extends PureComponent {
     isUserInfoOpen: false,
   };
 
-  onLogout = (e) => {
-    e.preventDefault();
-    const { logout } = this.props;
-    logout();
-  };
-
-  onLogoClick = () => {
-    const { history } = this.props;
-    history.push('/');
-  };
+  // onLogout = (e) => {
+  //   e.preventDefault();
+  //   const { logout } = this.props;
+  //   logout();
+  // };
 
   onToggleUserInfo = () => {
     this.setState(prevState => ({
@@ -36,55 +28,37 @@ class AdminTopNavBar extends PureComponent {
     }));
   };
 
-  renderLogo = () => <LogoStyled onClick={this.onLogoClick} />;
-
-  renderTopbarLeft = () => (
-    <TopbarLeft>
-      {this.renderLogo()}
-    </TopbarLeft>
-  );
-
   renderSettingIcon = () => <SettingIcon className="icon-settings" />;
 
-  renderTopbarRight = () => {
+  render() {
     const { isUserInfoOpen } = this.state;
     return (
-      <TopbarRight>
-        <ActionsStyled>
-          {this.renderSettingIcon()}
-        </ActionsStyled>
-        <ProfileStyled>
-          <ProfileImageStyled
-            src="/assets/images/user.svg"
-            onClick={this.onToggleUserInfo}
-          />
-          {isUserInfoOpen && (
-            <React.Fragment>
-              <PopupOverlayStyled onClick={this.onToggleUserInfo} />
-              <ProfileUser
-                onLogout={this.onLogout}
-                onToggleUserInfo={this.onToggleUserInfo}
-              />
-            </React.Fragment>
-          )}
-        </ProfileStyled>
-      </TopbarRight>
-    );
-  };
-
-  render() {
-    return (
       <HeaderStyled>
-        {this.renderTopbarLeft()}
-        {this.renderTopbarRight()}
+        <TopbarRight>
+          <ActionsStyled>
+            {this.renderSettingIcon()}
+          </ActionsStyled>
+          <ProfileStyled>
+            <ProfileImageStyled
+              src="/assets/images/user.svg"
+              onClick={this.onToggleUserInfo}
+            />
+            {isUserInfoOpen && (
+              <React.Fragment>
+                <PopupOverlayStyled onClick={this.onToggleUserInfo} />
+                <ProfileUser
+                  onLogout={this.onLogout}
+                  onToggleUserInfo={this.onToggleUserInfo}
+                />
+              </React.Fragment>
+            )}
+          </ProfileStyled>
+        </TopbarRight>
       </HeaderStyled>
     );
   }
 }
 
-AdminTopNavBar.propTypes = {
-  logout: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired,
-};
+AdminTopNavBar.propTypes = {};
 
 export default AdminTopNavBar;

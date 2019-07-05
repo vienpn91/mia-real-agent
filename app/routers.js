@@ -23,7 +23,7 @@ export default class App extends React.PureComponent {
       <Switch>
         <Route path="/admin">
           <AdminMainLayout>
-            <AuthenticatedRoute exact path="/admin" component={AdminDashboard} />
+            <AuthenticatedRoute exact path="/admin/dashboard" component={AdminDashboard} />
           </AdminMainLayout>
         </Route>
         <UnauthRoute exact path="/" component={HomePage} />

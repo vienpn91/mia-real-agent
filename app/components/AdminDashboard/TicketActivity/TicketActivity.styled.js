@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 export const TicketActivityWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: #f5faff;
+  background-color: #f7f7f8;
   border-bottom: 1px solid #dde5e8;
   @media (max-width: 1024px) {
     flex-wrap: wrap;
@@ -49,7 +49,7 @@ export const TicketActivityItem = styled.div`
   background-color: #fff;
   cursor: pointer;
   &:hover {
-    border: 1px solid #41a0d9;
+    border: 1px solid #ff5402;
   }
   &:last-child {
     margin-right: 0px;
@@ -113,7 +113,7 @@ export const TicketActivityQuantityItem = styled.div`
   padding: 15px 18px;
   height: 50px;
   &:hover {
-    border: 1px solid #41a0d9;
+    border: 1px solid #ff5402;
   }
   @media (max-width: 1024px) {
     flex: 1;

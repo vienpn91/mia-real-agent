@@ -15,7 +15,7 @@ export const ProfileUserInfoWrapper = styled.div`
 export const ProfileUserHead = styled.div`
   padding: 10px 20px;
   border-bottom: 1px solid #ededed;
-  background: #f3f8fe;
+  background-color: #f7f7f8;
   position: relative;
 `;
 
@@ -29,6 +29,7 @@ export const ProfileUserAvatar = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 100%;
   }
 `;
 
@@ -62,7 +63,8 @@ export const ProfileUserAction = styled.div`
   margin-bottom: 10px;
   button {
     cursor: pointer;
-    font-family: 'Proxima Nova Regular';
+    background-color: transparent;
+    border: none;
   }
   span {
     padding: 0px 10px;

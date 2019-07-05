@@ -8,7 +8,7 @@ import {
 } from './AdminDashboard.styled';
 
 const scrollStyle = {
-  height: 'calc(100vh - 50px)',
+  height: 'calc(100vh - 60px)',
   width: '100%',
 };
 
