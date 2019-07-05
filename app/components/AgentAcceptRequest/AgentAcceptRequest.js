@@ -12,11 +12,23 @@ export class AgentAcceptRequest extends PureComponent {
     requestConfirm: func.isRequired,
     userId: string,
     ticket: shape(),
+    history: shape(),
+    redirectData: shape(),
   }
 
   static defaultProps = {
     ticket: null,
     userId: null,
+  }
+
+  componentDidUpdate = (prevProps) => {
+    const { redirectData, history, isConfirming } = this.props;
+    if (!isConfirming && prevProps.isConfirming) {
+      const { ticketId, owner, isConfirm } = redirectData;
+      if (redirectData && isConfirm) {
+        history.push(`/ticket/${ticketId}/${owner}`);
+      }
+    }
   }
 
   renderTicketContent = () => {
@@ -38,9 +50,12 @@ export class AgentAcceptRequest extends PureComponent {
   }
 
   handleSubmit = (isConfirm) => {
-    const { requestConfirm, ticket, userId } = this.props;
-    const { _id } = ticket;
-    requestConfirm(userId, _id, isConfirm);
+    const {
+      requestConfirm, ticket,
+      userId,
+    } = this.props;
+    const { _id, ticketId, owner } = ticket;
+    requestConfirm(userId, _id, isConfirm, { ticketId, owner });
   }
 
   render() {

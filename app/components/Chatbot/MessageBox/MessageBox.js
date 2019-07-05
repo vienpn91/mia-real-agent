@@ -162,7 +162,8 @@ export default class MessageBox extends Component {
   }
 
   renderMessageInput = () => {
-    const { isFindingAgent } = this.props;
+    const { isFindingAgent, ticket } = this.props;
+    const { assignee } = ticket;
     return (
       <Formik
         ref={(formik) => { this.formik = formik; }}
@@ -179,6 +180,7 @@ export default class MessageBox extends Component {
               {this.renderGroupAction()}
               <InputAction onClick={handleSubmit} className="mia-enter" />
               <Button
+                disabled={assignee}
                 loading={isFindingAgent}
                 key="button"
                 type="primary"
