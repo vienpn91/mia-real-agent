@@ -51,7 +51,7 @@ export const MiaLinkText = styled.span`
 export const MiaMessengerLink = styled.a`
   background: #0084ff;
   height: 45px;
-  width: 250px;
+  width: 260px;
   font-size: 14;
   font-weight: bold;
   border-radius: 35px;

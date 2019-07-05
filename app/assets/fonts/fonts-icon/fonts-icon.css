@@ -1,12 +1,12 @@
 /*Fonts icon */
 @font-face {
   font-family: 'icomoon';
-  src: url('./icomoon.eot?jfv6md');
+  src: url('./icomoon.eot?5qe2db');
   src: local('icomoon'),
-    url('./icomoon.eot?jfv6md#iefix') format('embedded-opentype'),
-    url('./icomoon.ttf?jfv6md') format('truetype'),
-    url('./icomoon.woff?jfv6md') format('woff'),
-    url('./icomoon.svg?jfv6md#icomoon') format('svg');
+    url('./icomoon.eot?5qe2db#iefix') format('embedded-opentype'),
+    url('./icomoon.ttf?5qe2db') format('truetype'),
+    url('./icomoon.woff?5qe2db') format('woff'),
+    url('./icomoon.svg?5qe2db#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -26,6 +26,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.mia-ticket:before {
+  content: "\e924";
+}
+.mia-dashboard:before {
+  content: "\e925";
+}
+.mia-user:before {
+  content: "\e926";
+}
 .mia-enter:before {
   content: "\e923";
 }
