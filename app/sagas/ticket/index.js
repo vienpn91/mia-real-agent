@@ -9,6 +9,7 @@ import {
 import * as TicketApi from '../../api/ticket';
 import { configToken } from '../../api/config';
 import { getToken } from '../../reducers/auth';
+import { notification } from 'antd';
 
 function* createTicket({ payload }) {
   yield configAxiosForTicket();
@@ -46,16 +47,17 @@ function* getAllTicket({ payload }) {
 function* getTicket({ payload }) {
   yield configAxiosForTicket();
   const { ticketId, owner } = payload;
-  const { response, error } = yield call(TicketApi.getTicket, ticketId, owner);
-  if (error) {
+  try {
+    const { response } = yield call(TicketApi.getTicket, ticketId, owner);
+    const { data } = response;
+    yield put(actions.getCompleteAction(data));
+  } catch (error) {
     const message = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE
     );
+    notification.error({ message: 'Ticket not found' });
     yield put(actions.getFailAction(message));
-    return;
   }
-  const { data } = response;
-  yield put(actions.getCompleteAction(data));
 }
 
 function* updateTicket({ payload }) {
