@@ -10,7 +10,7 @@ import {
   DashboardSubTitle,
   DashboardLinkTitle,
   DashboardSubActivity,
-} from 'components/Activity/Activity.styled';
+} from 'components/ActivityTab/ActivityTab.styled';
 import {
   TableContentItem,
 } from '../../../TableComponent/TableComponent.styled';

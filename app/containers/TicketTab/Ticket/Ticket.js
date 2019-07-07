@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Ticket from 'components/TicketPage/Ticket';
+import Ticket from 'components/TicketTab/Ticket';
 import { selectors } from 'reducers/ticket';
 import { getUserRole } from 'reducers/auth';
 

@@ -5,7 +5,7 @@ import PropTypes, { string } from 'prop-types';
 import SpinnerLoading from 'components/PageLoading';
 import ShadowScrollbars from 'components/Scrollbar';
 import TicketItem from './TicketItem/TicketItem';
-import { TicketWrapper } from '../Ticket.styles';
+import { TicketWrapper } from '../TicketTab.styles';
 import {
   TableContentWrapper,
   TableEmptyContent,
