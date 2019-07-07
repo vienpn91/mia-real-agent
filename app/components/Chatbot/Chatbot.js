@@ -125,19 +125,16 @@ export default class ChatbotComponent extends Component {
     </TicketHeaderWrapper>
   );
 
-  renderTabItem = () => {
-    const { ticketDetail } = this.props;
-    return (
-      <Tabs defaultActiveKey="1">
-        <TabPane tab="Detail" key="1">
-          <TicketDetail ticket={ticketDetail} />
-        </TabPane>
-        <TabPane tab="List" key="2">
-          <Tickets openSetting={this.handleOpenSettingModal} />
-        </TabPane>
-      </Tabs>
-    );
-  }
+  renderTabItem = () => (
+    <Tabs defaultActiveKey="1">
+      <TabPane tab="Detail" key="1">
+
+      </TabPane>
+      <TabPane tab="List" key="2">
+
+      </TabPane>
+    </Tabs>
+  )
 
   render() {
     const { isOpenCreateModal, isOpenSettingModal, settingChosenTicket } = this.state;
@@ -147,13 +144,16 @@ export default class ChatbotComponent extends Component {
         <ChatbotTicketListWrapper>
           {this.renderTicketHeader()}
           {this.renderSearchTicket()}
-          {this.renderTabItem()}
+          <Tickets />
         </ChatbotTicketListWrapper>
         <ChatbotContentWrapper>
           <Content>
             {(!_isEmpty(ticketDetail) && !getError) ? <MessageBoxContainer ticket={ticketDetail} /> : <TicketEmpty>Please select a ticket</TicketEmpty>}
           </Content>
         </ChatbotContentWrapper>
+        <ChatbotTicketListWrapper>
+          <TicketDetail ticket={ticketDetail} />
+        </ChatbotTicketListWrapper>
         <CreateTicketFormContainer
           isOpen={isOpenCreateModal}
           handleCancel={this.handleCloseCreateModal}

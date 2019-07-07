@@ -24,14 +24,6 @@ export const sendVericationEmail = email => axios
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
-export const changePassword = (oldPassword, newPassword) => axios
-  .post('auth/changePassword', {
-    oldPassword,
-    newPassword,
-  })
-  .then(response => ({ response }))
-  .catch(error => ({ error }));
-
 export const createPassword = newPassword => axios
   .post('auth/createPassword', {
     newPassword,

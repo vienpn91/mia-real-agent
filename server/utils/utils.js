@@ -6,7 +6,7 @@ const charactersLength = characters.length;
 export const getTokenFromReq = (req) => {
   const token = _get(req, 'headers.authorization');
 
-  return token.replace(/^bearer /i, '');
+  return token.replace(/^Bearer\s+/i, '');
 };
 
 export const randomPassword = () => {
