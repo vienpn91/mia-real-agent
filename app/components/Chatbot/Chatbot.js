@@ -11,6 +11,7 @@ import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import Tickets from 'containers/Chatbot/Tickets';
 import history from 'utils/history';
+import { Return } from 'components/Generals/General.styled';
 import TicketDetail from './TicketDetail/TicketDetail';
 import MessageBoxContainer from '../../containers/Chatbot/MessageBox';
 import {
@@ -20,7 +21,6 @@ import {
   TicketHeaderWrapper,
   TicketEmpty,
 } from './styles';
-import { Return } from '../Generals/general.styles';
 import CreateTicketFormContainer from '../../containers/Chatbot/CreateTicket';
 import { ROLES } from '../../../common/enums';
 

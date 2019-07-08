@@ -8,6 +8,7 @@ import {
 } from 'antd';
 import Ticket from 'containers/TicketPage/Ticket';
 import _isNumber from 'lodash/isNumber';
+import { DefaultButton } from 'components/Generals/General.styled';
 import {
   TicketPageWrapper,
   TicketFilterWrapper,
@@ -16,7 +17,6 @@ import {
   CreateItem,
   TicketPaginationWrapper,
 } from './Ticket.styles';
-import { DefaultButton } from '../Generals/general.styles';
 import CreateTicketFormContainer from '../../containers/Chatbot/CreateTicket';
 import { PAGE_SIZE } from '../../../common/enums';
 

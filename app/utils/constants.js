@@ -9,3 +9,61 @@ export const DATE_TIME_FORMAT = {
   DATE_TIME: 'MMM Do YYYY, H:mm',
   DATE_RANGE: 'YYYY-MM-DD',
 };
+
+
+export const COLUMN_TYPE = {
+  TEXT: 'text',
+  IMAGE: 'image',
+  CURRENCY: 'currency',
+  DATE: 'date',
+  ACTIVE: 'active',
+  ROLE: 'role',
+  TOTAL: 'total',
+  STATUS: 'status',
+  PROMO_TYPE: 'promo-type',
+  ROLE_BUTTON_GROUP: 'role-button-group',
+};
+
+export const FILTER = {
+  TICKET_FILTER: [
+    {
+      title: 'All SKU',
+      value: 'all',
+      query: {},
+    },
+    {
+      title: 'Low Stock SKU',
+      value: 'low-stock',
+      query: { quantity: { $lt: 10 } },
+    },
+  ],
+};
+
+export const SORT = {
+  TICKET_SORT: [
+    {
+      title: 'Created Time',
+      value: 'createdAt',
+    },
+    {
+      title: 'SKU',
+      value: 'sku',
+    },
+    {
+      title: 'Price',
+      value: 'price',
+    },
+    {
+      title: 'Size',
+      value: 'size',
+    },
+    {
+      title: 'Package',
+      value: 'package',
+    },
+    {
+      title: 'Quantity',
+      value: 'quantity',
+    },
+  ],
+};

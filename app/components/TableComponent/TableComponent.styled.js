@@ -1,10 +1,11 @@
 /* eslint-disable no-nested-ternary */
 import styled, { css } from 'styled-components';
-// import { COLOR_BY_STATUS } from 'utils/constants';
+import { COLOR_BY_STATUS } from '../../../common/enums';
 
 export const TableHeadWrapper = styled.div`
   display: flex;
-  border: 1px solid #cccccc;
+  border-top: 1px solid #d9d9d9;
+  border-bottom: 1px solid #d9d9d9;
   color: #666;
   background-color: #f7f7f7;
   font-weight: 700;
@@ -45,8 +46,7 @@ export const TableContentItemGroup = styled(TableHeadItemGroup)`
 `;
 
 export const TableContentWrapper = styled.div`
-  height: 100%;
-  border: 1px solid #cccccc;
+  border-bottom: 1px solid #d9d9d9;
   border-top: none;
   color: #263035;
   background-color: #fff;
@@ -71,8 +71,7 @@ export const TableContentWrapper = styled.div`
 export const TableContentItem = styled.div`
   display: flex;
   flex: 1;
-  border: 1px solid #cccccc;
-  margin-bottom: 15px;
+  border: none;
   min-height: 80px;
   border-radius: 3px;
   &:hover {
@@ -84,6 +83,10 @@ export const TableContentItem = styled.div`
         background-color: transparent;
       }
     `};
+  ${({ ticket }) => ticket && css`
+    border: 1px solid #d9d9d9;
+    margin-bottom: 15px;
+  `}
 `;
 
 export const TableDetailWrapper = styled.div`
@@ -95,7 +98,7 @@ export const TableDetailImages = styled.div`
   flex: 0 0 45px;
   max-height: 45px;
   height: 45px;
-  border: 1px solid #cfcfcf;
+  border: 1px solid #d9d9d9;
   padding: 5px;
   img {
     width: 100%;
@@ -296,7 +299,8 @@ export const TableEmptyContent = styled.div`
 export const TableStatusContent = styled.span`
   ${({ status }) => status
     && css`
+      font-style: italic;
       text-transform: uppercase;
-      /* color: ${[COLOR_BY_STATUS[status]]}; */
+      color: ${[COLOR_BY_STATUS[status]]};
     `};
 `;

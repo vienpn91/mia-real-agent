@@ -258,62 +258,6 @@ export const CustomDateWrapper = styled.div`
   padding: 5px;
 `;
 
-export const TableHeaderSortWrapper = styled.div`
-  position: absolute;
-  top: 35px;
-  right: 0;
-  min-width: 260px;
-  padding: 5px 0;
-  margin: 2px 0 0;
-  background-color: #fff;
-  border: 1px solid #00000026;
-  border-radius: 2px;
-  box-shadow: 0 6px 12px #0000002d;
-  z-index: 5;
-  &:before {
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid;
-    border-bottom-color: rgba(0, 0, 0, 0.05);
-    top: -10px;
-    content: '';
-    right: 63px;
-    position: absolute;
-  }
-  &:after {
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 8px solid;
-    border-bottom-color: #fff
-    top: -8px;
-    content: '';
-    right: 65px;
-    position: absolute;
-  }
-`;
-
-export const TimeSelectContent = styled(TableHeaderSortWrapper)`
-  display: flex;
-  ${({ left }) => left
-    && css`
-      flex-direction: row-reverse;
-    `};
-  ${({ left }) => !left
-    && css`
-      left: -160px;
-      right: unset;
-      &:before {
-        left: 63px;
-        right: unset;
-      }
-
-      &:after {
-        left: 65px;
-        right: unset;
-      }
-    `};
-`;
-
 export const TimeSelectItemsWrapper = styled.div`
   width: 258px;
 `;

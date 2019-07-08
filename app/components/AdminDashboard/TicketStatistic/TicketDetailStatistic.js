@@ -81,11 +81,11 @@ class TicketDetailStatistic extends React.PureComponent {
   renderPieChart = () => {
     const data = [
       {
-        name: 'Low Stock SKU',
+        name: 'Ticket resolved',
         value: 10,
       },
       {
-        name: 'Normal SKU',
+        name: 'Ticket pending',
         value: 20,
       },
     ];

@@ -13,6 +13,7 @@ import LoginCallBackPage from './pages/LoginCallback';
 import ThankForRegistering from './pages/ThankForRegistering';
 import Profile from './pages/Profile';
 import ChatbotComponent from './pages/Chatbot';
+import TicketManagement from './pages/TicketManagement';
 
 import AdminDashboard from './pages/AdminDashboard';
 
@@ -24,6 +25,7 @@ export default class App extends React.PureComponent {
         <Route path="/admin">
           <AdminMainLayout>
             <AuthenticatedRoute exact path="/admin/dashboard" component={AdminDashboard} />
+            <AuthenticatedRoute exact path="/admin/tickets" component={TicketManagement} />
           </AdminMainLayout>
         </Route>
         <UnauthRoute exact path="/" component={HomePage} />

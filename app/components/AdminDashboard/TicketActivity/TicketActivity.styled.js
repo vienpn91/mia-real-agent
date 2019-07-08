@@ -4,7 +4,7 @@ export const TicketActivityWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   background-color: #f7f7f8;
-  border-bottom: 1px solid #dde5e8;
+  border-bottom: 1px solid #d9d9d9;
   @media (max-width: 1024px) {
     flex-wrap: wrap;
   }
@@ -22,7 +22,7 @@ export const TicketActivityLeftItem = styled.div`
 export const TicketActivityRightItem = styled.div`
   flex: 0 0 32%;
   padding: 30px 35px 30px 40px;
-  border-left: 1px solid #ecf1f3;
+  border-left: 1px solid #d9d9d9;
   @media (max-width: 1024px) {
     flex: 0 0 100%;
     padding: 15px 20px;
