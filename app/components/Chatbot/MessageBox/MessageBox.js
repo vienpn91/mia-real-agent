@@ -81,6 +81,9 @@ export default class MessageBox extends Component {
       const { pendingMessages } = this.state;
       const { messages } = chatData;
       const last = messages[messages.length - 1];
+      if (!last) {
+        return;
+      }
       const { messageOwner, contents } = last;
       if (messageOwner === userId && !_isEmpty(pendingMessages)) {
         const updatePendingMessage = pendingMessages.filter(
@@ -242,11 +245,13 @@ export default class MessageBox extends Component {
 
   renderMessageHeader = () => {
     const { ticket } = this.props;
+    const { assignee = {} } = ticket;
+    const { firstName = '', lastName = '' } = assignee;
     return (
       <MessageBoxHeaderWrapper>
         <Breadcrumb separator="-">
           <Breadcrumb.Item>{ticket.title}</Breadcrumb.Item>
-          <Breadcrumb.Item>{ticket.assignee}</Breadcrumb.Item>
+          <Breadcrumb.Item>{`${firstName} ${lastName}`}</Breadcrumb.Item>
         </Breadcrumb>
       </MessageBoxHeaderWrapper>
     );

@@ -3,6 +3,7 @@ import _get from 'lodash/get';
 import mongoose from 'mongoose';
 import BaseController from '../base/base.controller';
 import TicketService from './ticket.service';
+import UserService from '../user/user.service';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import { ROLES } from '../../../common/enums';
 
@@ -12,6 +13,34 @@ const emptyObjString = '{}';
 class TicketController extends BaseController {
   constructor() {
     super(TicketService);
+  }
+
+  get = async (req, res) => {
+    try {
+      const { model } = req;
+      const { _doc } = model;
+      const { assignee, owner: ticketOwner } = _doc;
+      const { profile, role: ownerRole } = await UserService.get(ticketOwner);
+      let assigneeProfile = null;
+      if (assignee) {
+        assigneeProfile = (await UserService.get(assignee)).profile;
+      }
+      return res.status(httpStatus.OK).send(
+        {
+          ...model,
+          _doc: {
+            ..._doc,
+            ownerProfile: {
+              role: ownerRole,
+              profile,
+            },
+            assigneeProfile,
+          },
+        }
+      );
+    } catch (error) {
+      return this.handleError(res, error);
+    }
   }
 
   load = async (req, res, next, id) => {
@@ -35,7 +64,6 @@ class TicketController extends BaseController {
       if (model == null) {
         throw new APIError(CONTENT_NOT_FOUND, httpStatus.NOT_FOUND);
       }
-
       req.model = model;
       return next();
     } catch (error) {

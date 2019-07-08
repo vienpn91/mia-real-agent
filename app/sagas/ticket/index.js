@@ -50,7 +50,8 @@ function* getTicket({ payload }) {
   try {
     const { response } = yield call(TicketApi.getTicket, ticketId, owner);
     const { data } = response;
-    yield put(actions.getCompleteAction(data));
+    const { _doc } = data;
+    yield put(actions.getCompleteAction(_doc));
   } catch (error) {
     const message = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE

@@ -14,6 +14,10 @@ export const GET = 'ticket/GET';
 export const GET_SUCCESS = 'ticket/GET_SUCCESS';
 export const GET_FAIL = 'ticket/GET_FAIL';
 
+export const ARCHIVE = 'ticket/ARCHIVE';
+export const ARCHIVE_SUCCESS = 'ticket/ARCHIVE_SUCCESS';
+export const ARCHIVE_FAIL = 'ticket/GET_FAIL';
+
 export const UPDATE = 'ticket/UPDATE';
 export const UPDATE_SUCCESS = 'ticket/UPDATE_SUCCESS';
 export const UPDATE_FAIL = 'ticket/UPDATE_FAIL';
@@ -81,7 +85,6 @@ const getAction = (ticketId, owner) => ({
   },
 });
 
-
 const getCompleteAction = ticket => ({
   type: GET_SUCCESS,
   payload: {
@@ -95,6 +98,30 @@ const getFailAction = errorMessage => ({
     errorMessage,
   },
 });
+
+const archiveAction = (ticketId, owner) => ({
+  type: ARCHIVE,
+  payload: {
+    ticketId,
+    owner,
+  },
+});
+
+const archiveCompleteAction = (ticketId, owner) => ({
+  type: ARCHIVE_SUCCESS,
+  payload: {
+    ticketId,
+    owner,
+  },
+});
+
+const archiveFailAction = errorMessage => ({
+  type: ARCHIVE_FAIL,
+  payload: {
+    errorMessage,
+  },
+});
+
 const updateAction = ticket => ({
   type: UPDATE,
   payload: { ticket },
@@ -155,6 +182,9 @@ const changePage = (pageIndex, sizePerPage) => ({
 const getTicketIsCreating = ({ ticket }) => ticket.get('isCreating');
 const getTicketCreateError = ({ ticket }) => ticket.get('createError');
 
+const getTicketIsUpdating = ({ ticket }) => ticket.get('isUpdating');
+const getTicketUpdateError = ({ ticket }) => ticket.get('updateError');
+
 const getTicketTotalRecord = ({ ticket }) => ticket.get('totalRecord');
 const getTicketGetTicketDetail = ({ ticket }, id, owner) => ticket.getIn(['tickets', `${id}#${owner}`], emptyMap).toJS();
 const getTicketGetTicketIsGetting = ({ ticket }) => ticket.get('isGetting');
@@ -173,6 +203,7 @@ const getFetchingContext = ({ ticket }) => ticket.get('fetching', fetchingObj).t
 
 export const initialState = fromJS({
   createError: '',
+  updateError: '',
   tickets: {},
   totalRecord: 0,
   totalCount: 0,
@@ -185,12 +216,13 @@ export const initialState = fromJS({
   ticketDetail: null,
   // processing value
   isCreating: false,
+  isUpdating: false,
   isGetting: false,
   fetching: fetchingObj,
   isLoading: false,
 });
 
-function profileReducer(state = initialState, action) {
+function ticketReducer(state = initialState, action) {
   switch (action.type) {
     case CREATE:
       return state.set('isCreating', true)
@@ -215,7 +247,6 @@ function profileReducer(state = initialState, action) {
     case GET_SUCCESS: {
       const { ticket } = action.payload;
       const { ticketId, owner } = ticket;
-
       return state.set('isGetting', false)
         .setIn(['tickets', `${ticketId}#${owner}`], fromJS(ticket));
     }
@@ -243,7 +274,7 @@ function profileReducer(state = initialState, action) {
   }
 }
 
-export default profileReducer;
+export default ticketReducer;
 
 export const actions = {
   createAction,
@@ -270,11 +301,17 @@ export const actions = {
   filterTicket,
 
   changePage,
+  archiveAction,
+  archiveCompleteAction,
+  archiveFailAction,
 };
 
 export const selectors = {
   getTicketIsCreating,
   getTicketCreateError,
+
+  getTicketIsUpdating,
+  getTicketUpdateError,
 
   getTicketTotalRecord,
   getTicketGetTicketDetail,

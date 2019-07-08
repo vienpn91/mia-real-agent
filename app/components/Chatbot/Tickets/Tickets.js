@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes, { string } from 'prop-types';
+import PropTypes, { string, func } from 'prop-types';
 import SpinnerLoading from 'components/PageLoading';
 import ShadowScrollbars from 'components/Scrollbar';
 import MediaQuery from 'react-responsive';
@@ -45,11 +45,22 @@ class Tickets extends React.PureComponent {
     history.push(`/ticket/${ticketId}${userRole === ROLES.AGENT ? `/${owner}` : ''}`);
   }
 
+  handleRemoveTicket = (ticketId) => {
+    const { removeTicket } = this.props;
+    removeTicket(ticketId);
+  }
+
   renderTicketItem = (ticket) => {
-    const { _id } = ticket;
+    const { openSetting, userRole } = this.props;
+    const { _id, ticketId } = ticket;
     return (
       <Menu.Item key={_id} onClick={() => this.selectTicket(ticket)}>
-        <TicketItem ticket={ticket} />
+        <TicketItem
+          userRole={userRole}
+          ticket={ticket}
+          onRemove={() => this.handleRemoveTicket(ticketId)}
+          openSetting={openSetting}
+        />
       </Menu.Item>
     );
   }
@@ -121,6 +132,8 @@ Tickets.propTypes = {
   getAllAction: PropTypes.func,
   fetchingContext: PropTypes.object,
   userRole: string.isRequired,
+  openSetting: func.isRequired,
+  removeTicket: func.isRequired,
 };
 
 export default Tickets;
