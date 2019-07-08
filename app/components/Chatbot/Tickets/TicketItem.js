@@ -22,7 +22,10 @@ class TicketItem extends React.PureComponent {
   }
 
   render() {
-    const { ticket = {}, userRole, onRemove } = this.props;
+    const {
+      ticket = {}, userRole,
+      onRemove, onArchive,
+    } = this.props;
     const {
       title, status, category, createdAt,
     } = ticket;
@@ -40,21 +43,19 @@ class TicketItem extends React.PureComponent {
         </TicketGroup>
         <TicketTime>
           <span>{timeFormat}</span>
-          <MenuStyled>
-            <SubMenu
-              title={
-                <Icon type="setting" />
-              }
-            >
-              {userRole === ROLES.AGENT
-                ? (<Menu.Item key="Archive">Archive</Menu.Item>)
-                : [
-                  (<Menu.Item key="Edit" onClick={this.handleOpenSetting}>Edit</Menu.Item>),
-                  (<Menu.Item key="Remove" onClick={onRemove}>Remove</Menu.Item>),
-                ]
-              }
-            </SubMenu>
-          </MenuStyled>
+          {!(userRole === ROLES.AGENT) && (
+            <MenuStyled>
+              <SubMenu
+                title={
+                  <Icon type="setting" />
+                }
+              >
+                <Menu.Item key="Archive" onClick={onArchive}>Archive</Menu.Item>
+                <Menu.Item key="Edit" onClick={this.handleOpenSetting}>Edit</Menu.Item>
+                <Menu.Item key="Remove" onClick={onRemove}>Remove</Menu.Item>
+              </SubMenu>
+            </MenuStyled>
+          )}
         </TicketTime>
 
       </React.Fragment>
@@ -66,6 +67,7 @@ TicketItem.propTypes = {
   ticket: PropTypes.object,
   openSetting: func.isRequired,
   onRemove: func.isRequired,
+  onArchive: func.isRequired,
   userRole: string.isRequired,
 };
 

@@ -12,6 +12,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   getAllAction: actions.getAllAction,
   removeTicket: actions.removeAction,
+  archiveTicket: actions.archiveAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tickets);

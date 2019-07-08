@@ -4,7 +4,7 @@ import {
 import _get from 'lodash/get';
 import { DEFAULT_ERROR_MESSAGE } from 'utils/constants';
 import {
-  actions, CREATE, GET_ALL, GET, UPDATE, REMOVE,
+  actions, CREATE, GET_ALL, GET, UPDATE, REMOVE, ARCHIVE,
 } from '../../reducers/ticket';
 import * as TicketApi from '../../api/ticket';
 import { configToken } from '../../api/config';
@@ -61,6 +61,22 @@ function* getTicket({ payload }) {
   }
 }
 
+function* archiveTicket({ payload }) {
+  yield configAxiosForTicket();
+  const { ticketId } = payload;
+  try {
+    const { response } = yield call(TicketApi.updateTicket, { ticketId, archived: true });
+    const { data } = response;
+    yield put(actions.archiveCompleteAction(data));
+  } catch (error) {
+    const message = _get(
+      error, 'response.data.message', DEFAULT_ERROR_MESSAGE
+    );
+    notification.error({ message: 'Ticket not found' });
+    yield put(actions.archiveFailAction(message));
+  }
+}
+
 function* updateTicket({ payload }) {
   yield configAxiosForTicket();
   const { ticket } = payload;
@@ -100,6 +116,7 @@ function* ticketFlow() {
   yield takeLatest(GET, getTicket);
   yield takeLatest(UPDATE, updateTicket);
   yield takeLatest(REMOVE, removeTicket);
+  yield takeLatest(ARCHIVE, archiveTicket);
 }
 
 export default ticketFlow;

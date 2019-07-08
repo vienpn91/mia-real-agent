@@ -50,6 +50,11 @@ class Tickets extends React.PureComponent {
     removeTicket(ticketId);
   }
 
+  handleArchiveTicket = (ticketId) => {
+    const { archiveTicket } = this.props;
+    archiveTicket(ticketId);
+  }
+
   renderTicketItem = (ticket) => {
     const { openSetting, userRole } = this.props;
     const { _id, ticketId } = ticket;
@@ -59,6 +64,7 @@ class Tickets extends React.PureComponent {
           userRole={userRole}
           ticket={ticket}
           onRemove={() => this.handleRemoveTicket(ticketId)}
+          onArchive={() => this.handleArchiveTicket(ticketId)}
           openSetting={openSetting}
         />
       </Menu.Item>
@@ -134,6 +140,7 @@ Tickets.propTypes = {
   userRole: string.isRequired,
   openSetting: func.isRequired,
   removeTicket: func.isRequired,
+  archiveTicket: func.isRequired,
 };
 
 export default Tickets;

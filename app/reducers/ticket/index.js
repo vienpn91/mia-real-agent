@@ -99,11 +99,10 @@ const getFailAction = errorMessage => ({
   },
 });
 
-const archiveAction = (ticketId, owner) => ({
+const archiveAction = ticketId => ({
   type: ARCHIVE,
   payload: {
     ticketId,
-    owner,
   },
 });
 
