@@ -67,7 +67,7 @@ class TicketItem extends Component {
   render() {
     const { index } = this.props;
     return (
-      <TableContentItem key={index}>
+      <TableContentItem key={index} ticket>
         <TableContent {...columnSizeContent[0]}>
           {this.renderTicketStatus()}
         </TableContent>

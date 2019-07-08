@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
+import { PopupOverlayStyled } from 'components/Generals/General.styled';
 import ProfileUser from './ProfileUser/ProfileUser';
-import { PopupOverlayStyled } from '../Generals/general.styles';
-
 import {
   HeaderStyled,
   TopbarRight,

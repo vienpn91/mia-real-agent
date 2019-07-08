@@ -5,6 +5,7 @@ import {
   oneOfType,
   bool,
 } from 'prop-types';
+import { DefaultButton } from 'components/Generals/General.styled';
 import { POPUP_TYPE } from '../../../common/enums';
 import {
   PopupOverlayWrapper,
@@ -13,7 +14,6 @@ import {
   PopupContent,
   PopupGroupAction,
 } from './Popup.styled';
-import { DefaultButton } from '../Generals/general.styles';
 import LoadingSpin from '../Loading';
 
 export default class PopupOverlay extends Component {

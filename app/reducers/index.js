@@ -8,6 +8,7 @@ import auth from './auth';
 import profile from './profile';
 import ticket from './ticket';
 import chat from './chat';
+import modal from './modal';
 import history from '../utils/history';
 
 export const REHYDRATE_COMPLETE = 'root/REHYDRATE_COMPLETE';
@@ -22,6 +23,7 @@ export default function createReducer(injectedReducers = {}) {
     profile,
     ticket,
     chat,
+    modal,
     router: connectRouter(history),
     ...injectedReducers,
   });

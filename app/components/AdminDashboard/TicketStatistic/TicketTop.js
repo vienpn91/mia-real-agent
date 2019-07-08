@@ -39,7 +39,7 @@ class TicketTop extends React.PureComponent {
     if (isEmpty) {
       return (
         <TicketTopEmpty>
-          No items were selling in this time frame
+          No ticket were pending in this time frame
         </TicketTopEmpty>
       );
     }

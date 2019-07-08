@@ -22,6 +22,12 @@ export const REMOVE = 'ticket/REMOVE';
 export const REMOVE_SUCCESS = 'ticket/REMOVE_SUCCESS';
 export const REMOVE_FAIL = 'ticket/REMOVE_FAIL';
 
+export const TICKET_SORTING = 'ticket/TICKET_SORTING';
+export const TICKET_FILTER = 'ticket/TICKET_FILTER';
+export const TICKET_FETCH = 'ticket/TICKET_FETCH';
+
+export const TICKET_CHANGE_PAGE = 'ticket/TICKET_CHANGE_PAGE';
+
 // action creator
 
 // payload: {
@@ -113,7 +119,6 @@ const removeAction = ticketId => ({
   },
 });
 
-
 const removeCompleteAction = () => ({
   type: REMOVE_SUCCESS,
 });
@@ -129,6 +134,22 @@ const fetchingObj = {
   isFetching: false,
   errorMsg: '',
 };
+
+const sortTicket = payload => ({
+  type: TICKET_SORTING,
+  payload,
+});
+
+const filterTicket = payload => ({
+  type: TICKET_FILTER,
+  payload,
+});
+
+const changePage = (pageIndex, sizePerPage) => ({
+  type: TICKET_CHANGE_PAGE,
+  pageIndex,
+  sizePerPage,
+});
 
 // selector
 const getTicketIsCreating = ({ ticket }) => ticket.get('isCreating');
@@ -150,10 +171,15 @@ const getTicketsList = createSelector(getTicketsById, getVisibleTicketIds, (tick
 
 const getFetchingContext = ({ ticket }) => ticket.get('fetching', fetchingObj).toJS();
 
-const initialState = fromJS({
+export const initialState = fromJS({
   createError: '',
   tickets: {},
   totalRecord: 0,
+  totalCount: 0,
+  pagination: fromJS({
+    selectedPage: 1,
+    sizePerPage: 20,
+  }),
   visibleTicketIds: [],
   getError: '',
   ticketDetail: null,
@@ -161,6 +187,7 @@ const initialState = fromJS({
   isCreating: false,
   isGetting: false,
   fetching: fetchingObj,
+  isLoading: false,
 });
 
 function profileReducer(state = initialState, action) {
@@ -238,6 +265,11 @@ export const actions = {
   removeAction,
   removeCompleteAction,
   removeFailAction,
+
+  sortTicket,
+  filterTicket,
+
+  changePage,
 };
 
 export const selectors = {

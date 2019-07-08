@@ -24,12 +24,12 @@ export const TicketDetailWrapper = styled.div`
 `;
 
 export const TicketDetailLeftItem = styled.div`
-  border: 1px solid #ececec;
+  border: 1px solid #d9d9d9;
   padding: 15px 12px;
 `;
 
 export const TicketTitle = styled.div`
-  border-bottom: 1px solid #ededed;
+  border-bottom: 1px solid #d9d9d9;
   padding: 0 10px 10px;
   text-transform: uppercase;
   font-size: 15px;
@@ -42,7 +42,7 @@ export const TicketDetailBlock = styled.div`
 export const TicketDetailGroupItem = styled.div`
   flex: 1;
   padding: 10px;
-  border-right: 1px solid #f1f7f8;
+  border-right: 1px solid #d9d9d9;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -101,7 +101,7 @@ export const TicketTopWrapper = styled.div`
 `;
 
 export const TicketTopRightItem = styled.div`
-  border: 1px solid #ececec;
+  border: 1px solid #d9d9d9;
   padding: 15px 12px;
   height: 100%;
 `;
@@ -115,7 +115,7 @@ export const TicketTopHeader = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0 10px 10px;
-  border-bottom: 1px solid #ededed;
+  border-bottom: 1px solid #d9d9d9;
 `;
 
 export const TicketTopTimeSelect = styled.div`
@@ -154,7 +154,7 @@ export const TopTicketItemWrapper = styled.div`
   align-items: center;
   padding: 15px;
   height: 100%;
-  border-right: 1px solid #f1f7f8;
+  border-right: 1px solid #d9d9d9;
   flex: 0 0 calc(100% / 3);
   &:last-child {
     border-right: none;

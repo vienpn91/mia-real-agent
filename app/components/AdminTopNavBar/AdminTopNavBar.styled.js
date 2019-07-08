@@ -13,7 +13,7 @@ export const HeaderStyled = styled.div`
   height: 60px;
   z-index: 1;
   background-color: #fff;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #d9d9d9;
   display: flex;
 `;
 
