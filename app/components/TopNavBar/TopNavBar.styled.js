@@ -6,8 +6,8 @@ export const TopNavBarWrapper = styled.div`
     align-items: center;
     height: 64px;
     padding: 0px 15px;
-    background-color: ${props => props.theme.secondaryColor}
-    box-shadow: 0px 0px 6px -1px #d9d9d9;
+    /* background-color: ${props => props.theme.secondaryColor}; */
+    box-shadow: 0px 0px 6px -1px ${props => props.theme.textColorSecondary};
     position: relative;
     z-index: 1;
   }
@@ -18,7 +18,9 @@ export const TopNavBarWrapper = styled.div`
 
 export const UserName = styled.span`
   margin: 0 10px;
-  font-size: 14px;
+  font-weight: 600;
+  font-size: 16px;
+  color: ${props => props.theme.textColorSecondary};
 `;
 
 export const UserProfile = styled.div`
@@ -28,7 +30,7 @@ export const UserProfile = styled.div`
     top: 56px;
     right: 5px;
     width: 180px;
-    box-shadow: 0px 0px 10px -2px #d9d9d9 !important;
+    box-shadow: 0px 0px 10px -2px ${props => props.theme.textColorSecondary} !important;
     border-radius: 6px;
     &:before {
       border-left: 8px solid transparent;
@@ -45,7 +47,7 @@ export const UserProfile = styled.div`
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
       border-bottom: 6px solid;
-      border-bottom-color: ${props => props.theme.secondaryColor}
+      border-bottom-color: ${props => props.theme.secondaryColor};
       top: -6px;
       content: '';
       left: 98%;
@@ -55,7 +57,7 @@ export const UserProfile = styled.div`
     .ant-menu-item {
       margin: 0px;
       &:hover {
-        background-color: #fff7eb;
+        background-color: ${props => props.theme.textColorSecondary};
         a {
           color: ${props => props.theme.textColor};
         }
@@ -100,12 +102,12 @@ export const Nav = styled.div`
   letter-spacing: 1px;
   cursor: pointer;
   a {
-    color: ${props => props.theme.textColor};
+    color: ${props => props.theme.textColorSecondary};
   }
   &:hover {
-    border-bottom: 2px solid #ff5402;
+    border-bottom: 2px solid ${props => props.theme.primaryColor};
     a {
-      color: #ff5402;
+      color: ${props => props.theme.primaryColor};
     } 
   }
 `;

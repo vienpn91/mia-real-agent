@@ -10,7 +10,7 @@ export const ChatbotWrapper = styled.div`
 export const ChatbotTicketListWrapper = styled.div`
   flex: 0 0 400px;
   color: ${props => props.theme.textColor};
-  background-color: ${props => props.theme.secondaryColor}
+  background-color: ${props => props.theme.secondaryColor};
   border-right: 1px solid #d9d9d9;
   transition: all 300ms ease;
   .ant-input-search {
@@ -114,7 +114,7 @@ export const ChatbotTicketListWrapper = styled.div`
 export const ChatbotContentWrapper = styled.div`
   flex: 1;
   .ant-breadcrumb {
-    background-color: ${props => props.theme.secondaryColor}
+    background-color: ${props => props.theme.secondaryColor};
     height: 60px;
     display: flex;
     align-items: center;
@@ -212,7 +212,7 @@ export const TicketFilterWrapper = styled.div`
     border-radius: 4px;
   }
   .ant-select-selection--multiple {
-    color: ${props => props.theme.secondaryColor}
+    color: ${props => props.theme.secondaryColor};
     border: 1px solid #d9d9d9;
     &:hover {
       border-color: #b1b1b1;
@@ -250,13 +250,13 @@ export const TicketButton = styled.div`
   cursor: pointer;
   &:hover {
     background-color: #279cd4;
-    color: ${props => props.theme.secondaryColor}
+    color: ${props => props.theme.secondaryColor};
   }
 `;
 
 export const MessageBoxWrapper = styled.div`
   height: 100vh;
-  background: ${props => props.theme.secondaryColor}
+  background: ${props => props.theme.secondaryColor};
   position: relative;
 `;
 
@@ -297,7 +297,7 @@ export const MessageBoxItem = styled.div`
     }
     p {
       float: right;
-      color: ${props => props.theme.secondaryColor}
+      color: ${props => props.theme.secondaryColor};
       background-color: #ff5504;
     }
     > div{
@@ -334,7 +334,7 @@ export const MessageInputWrapper = styled.div`
   bottom: 0px;
   display: flex;
   align-items: center;
-  background-color: ${props => props.theme.secondaryColor}
+  background-color: ${props => props.theme.secondaryColor};
   border-top: 1px solid #ddd;
   height: 60px;
   width: 100%;

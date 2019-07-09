@@ -11,6 +11,7 @@ const theme = {
   iconMoreColor: '#227fb5',
   iconMoreHoverColor: '#0f496b',
   textColor: '#000',
+  textColorSecondary: '#dfdfdf',
 };
 
 export default theme;
