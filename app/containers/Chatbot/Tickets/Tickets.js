@@ -6,6 +6,10 @@ import { getUserRole } from 'reducers/auth';
 const mapStateToProps = state => ({
   tickets: selectors.getTicketsList(state),
   fetchingContext: selectors.getFetchingContext(state),
+  isArchiving: selectors.getTicketIsArchiving(state),
+  archiveError: selectors.getTicketArchiveError(state),
+  isRemoving: selectors.getTicketIsRemoving(state),
+  removeError: selectors.getTicketRemoveError(state),
   userRole: getUserRole(state),
 });
 

@@ -106,12 +106,9 @@ const archiveAction = ticketId => ({
   },
 });
 
-const archiveCompleteAction = (ticketId, owner) => ({
+const archiveCompleteAction = ticket => ({
   type: ARCHIVE_SUCCESS,
-  payload: {
-    ticketId,
-    owner,
-  },
+  payload: ticket,
 });
 
 const archiveFailAction = errorMessage => ({
@@ -127,8 +124,9 @@ const updateAction = ticket => ({
 });
 
 
-const updateCompleteAction = () => ({
+const updateCompleteAction = ticket => ({
   type: UPDATE_SUCCESS,
+  payload: ticket,
 });
 
 const updateFailAction = errorMessage => ({
@@ -145,8 +143,10 @@ const removeAction = ticketId => ({
   },
 });
 
-const removeCompleteAction = () => ({
+
+const removeCompleteAction = ticket => ({
   type: REMOVE_SUCCESS,
+  payload: ticket,
 });
 
 const removeFailAction = errorMessage => ({
@@ -198,11 +198,19 @@ const getTicketsList = createSelector(getTicketsById, getVisibleTicketIds, (tick
   return sortTickets;
 });
 
+const getTicketIsArchiving = ({ ticket }) => ticket.get('isArchiving');
+const getTicketArchiveError = ({ ticket }) => ticket.get('archiveError');
+
+const getTicketIsRemoving = ({ ticket }) => ticket.get('isRemoving');
+const getTicketRemoveError = ({ ticket }) => ticket.get('removeError');
+
 const getFetchingContext = ({ ticket }) => ticket.get('fetching', fetchingObj).toJS();
 
 export const initialState = fromJS({
   createError: '',
   updateError: '',
+  archiveError: '',
+  removeError: '',
   tickets: {},
   totalRecord: 0,
   totalCount: 0,
@@ -216,6 +224,8 @@ export const initialState = fromJS({
   // processing value
   isCreating: false,
   isUpdating: false,
+  isArchiving: false,
+  isRemoving: false,
   isGetting: false,
   fetching: fetchingObj,
   isLoading: false,
@@ -252,6 +262,58 @@ function ticketReducer(state = initialState, action) {
     case GET_FAIL:
       return state.set('isGetting', false)
         .set('getError', action.payload.errorMessage);
+
+    case ARCHIVE:
+      return state.set('isArchiving', true)
+        .set('archiveError', '');
+
+    case ARCHIVE_SUCCESS: {
+      const { payload } = action;
+      const { ticketId, owner } = payload;
+      const visibleTicketIds = state.get('visibleTicketIds').toJS();
+      const newVisibleTicketIds = visibleTicketIds.filter(id => id !== `${ticketId}#${owner}`);
+      return state
+        .set('isArchiving', false)
+        .removeIn(['tickets', `${ticketId}#${owner}`])
+        .set('visibleTicketIds', fromJS(newVisibleTicketIds));
+    }
+
+    case ARCHIVE_FAIL:
+      return state.set('isArchiving', false)
+        .set('archiveError', action.payload.errorMessage);
+
+    case UPDATE:
+      return state.set('isUpdating', true)
+        .set('updateError', '');
+
+    case UPDATE_SUCCESS: {
+      const { payload } = action;
+      const { ticketId, owner } = payload;
+      return state.set('isUpdating', false)
+        .setIn(['tickets', `${ticketId}#${owner}`], fromJS(payload));
+    }
+    case UPDATE_FAIL:
+      return state.set('isUpdating', false)
+        .set('updateError', action.payload.errorMessage);
+
+    case REMOVE:
+      return state.set('isRemoving', true)
+        .set('removeError', '');
+
+    case REMOVE_SUCCESS: {
+      const { payload } = action;
+      const { ticketId, owner } = payload;
+      const visibleTicketIds = state.get('visibleTicketIds').toJS();
+      const newVisibleTicketIds = visibleTicketIds.filter(id => id !== `${ticketId}#${owner}`);
+      return state
+        .set('isRemoving', false)
+        .removeIn(['tickets', `${ticketId}#${owner}`])
+        .set('visibleTicketIds', fromJS(newVisibleTicketIds));
+    }
+    case REMOVE_FAIL:
+      return state.set('isRemoving', false)
+        .set('removeError', action.payload.errorMessage);
+
     case GET_ALL:
       return state.set('fetching', fromJS({ isFetching: true, errorMsg: '' }));
     case GET_ALL_SUCCESS: {
@@ -319,4 +381,10 @@ export const selectors = {
 
   getTicketsList,
   getFetchingContext,
+
+  getTicketIsArchiving,
+  getTicketArchiveError,
+
+  getTicketIsRemoving,
+  getTicketRemoveError,
 };

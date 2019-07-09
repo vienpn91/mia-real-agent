@@ -21,6 +21,10 @@ const ticketSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    archived: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     versionKey: false,

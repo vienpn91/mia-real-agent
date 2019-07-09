@@ -68,11 +68,12 @@ function* archiveTicket({ payload }) {
     const { response } = yield call(TicketApi.updateTicket, { ticketId, archived: true });
     const { data } = response;
     yield put(actions.archiveCompleteAction(data));
+    notification.success({ message: 'Ticket archived' });
   } catch (error) {
     const message = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE
     );
-    notification.error({ message: 'Ticket not found' });
+    notification.error({ message: 'Archive Ticket error' });
     yield put(actions.archiveFailAction(message));
   }
 }
@@ -80,7 +81,7 @@ function* archiveTicket({ payload }) {
 function* updateTicket({ payload }) {
   yield configAxiosForTicket();
   const { ticket } = payload;
-  const { error } = yield call(TicketApi.updateTicket, ticket);
+  const { response, error } = yield call(TicketApi.updateTicket, ticket);
   if (error) {
     const message = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE
@@ -88,21 +89,25 @@ function* updateTicket({ payload }) {
     yield put(actions.updateFailAction(message));
     return;
   }
-  yield put(actions.updateCompleteAction());
+  const { data } = response;
+  yield put(actions.updateCompleteAction(data));
 }
 
 function* removeTicket({ payload }) {
   yield configAxiosForTicket();
   const { ticketId } = payload;
-  const { error } = yield call(TicketApi.removeTicket, ticketId);
+  const { response, error } = yield call(TicketApi.removeTicket, ticketId);
   if (error) {
     const message = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE
     );
     yield put(actions.removeFailAction(message));
+    notification.error({ message: 'Remove Ticket error' });
     return;
   }
-  yield put(actions.removeCompleteAction());
+  const { data } = response;
+  yield put(actions.removeCompleteAction(data));
+  notification.success({ message: 'Ticket removed' });
 }
 
 export function* configAxiosForTicket() {

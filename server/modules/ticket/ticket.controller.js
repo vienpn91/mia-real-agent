@@ -20,7 +20,8 @@ class TicketController extends BaseController {
       const { model } = req;
       const { _doc } = model;
       const { assignee, owner: ticketOwner } = _doc;
-      const { profile, role: ownerRole } = await UserService.get(ticketOwner);
+      const user = await UserService.get(ticketOwner);
+      const { profile, role: ownerRole } = user;
       let assigneeProfile = null;
       if (assignee) {
         assigneeProfile = (await UserService.get(assignee)).profile;

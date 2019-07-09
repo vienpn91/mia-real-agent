@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes, { string, func } from 'prop-types';
+import PropTypes, { string, func, bool } from 'prop-types';
 import SpinnerLoading from 'components/PageLoading';
 import ShadowScrollbars from 'components/Scrollbar';
 import MediaQuery from 'react-responsive';
@@ -116,10 +116,10 @@ class Tickets extends React.PureComponent {
   )
 
   render() {
-    const { fetchingContext = {} } = this.props;
+    const { fetchingContext = {}, isArchiving, isRemoving } = this.props;
     const { isFetching } = fetchingContext;
-
-    if (isFetching) {
+    const loading = isFetching || isArchiving || isRemoving;
+    if (loading) {
       return <SpinnerLoading />;
     }
 
@@ -134,6 +134,8 @@ class Tickets extends React.PureComponent {
 }
 
 Tickets.propTypes = {
+  isArchiving: bool.isRequired,
+  isRemoving: bool.isRequired,
   tickets: PropTypes.array,
   getAllAction: PropTypes.func,
   fetchingContext: PropTypes.object,

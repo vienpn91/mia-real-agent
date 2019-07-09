@@ -25,8 +25,14 @@ class TicketService extends BaseService {
         { deleted: { $exists: true, $in: [false] } },
       ],
     };
+    const notArchivedCondition = {
+      $or: [
+        { archived: { $exists: false } },
+        { archived: { $exists: true, $in: [false] } },
+      ],
+    };
     const queryCondition = {
-      $and: [condition, notDeletedCondition],
+      $and: [condition, notDeletedCondition, notArchivedCondition],
     };
 
     const resultPromise = this.collection
