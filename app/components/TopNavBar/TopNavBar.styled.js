@@ -82,6 +82,11 @@ export const Logo = styled.div`
     .ant-avatar {
       width: 100%;
       height: 100%;
+      padding: 12px;
+      border-radius: 0;
+      img{
+        object-fit: contain;
+      }
     }
   }
 `;
@@ -102,7 +107,7 @@ export const Nav = styled.div`
   letter-spacing: 1px;
   cursor: pointer;
   a {
-    color: ${props => props.theme.textColorSecondary};
+    color: ${props => props.theme.textColorSecondary}};
   }
   &:hover {
     border-bottom: 2px solid ${props => props.theme.primaryColor};

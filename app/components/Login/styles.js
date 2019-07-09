@@ -64,14 +64,14 @@ export const LoginBtn = styled.button`
   border: 1px solid ${props => props.theme.textColor};
   transition: .3s ease;
   background: ${props => props.theme.textColor};
-  color: ${props => props.theme.secondaryColor}
+  color: ${props => props.theme.secondaryColor};
   cursor: pointer;
   margin-bottom: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
   &:hover {
-    background: ${props => props.theme.secondaryColor}
+    background: ${props => props.theme.secondaryColor};
     color: ${props => props.theme.textColor};
   }
 `;
@@ -79,13 +79,13 @@ export const LoginBtn = styled.button`
 export const LoginFBBtn = styled(LoginBtn)`
   border: 1px solid #3b5998;
   background: #3b5998;
-  color: ${props => props.theme.secondaryColor}
+  color: ${props => props.theme.secondaryColor};
   i {
     font-size: 16px;
     margin-right: 5px;
   }
   &:hover {
-    background: ${props => props.theme.secondaryColor}
+    background: ${props => props.theme.secondaryColor};
     color: #3b5998;
   }
 `;

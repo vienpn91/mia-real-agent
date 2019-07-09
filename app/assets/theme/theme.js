@@ -1,6 +1,6 @@
 const theme = {
   primaryColor: '#ff5402',
-  secondaryColor: '#fff',
+  secondaryColor: '#ffffff',
   submitColor: '#2697ea',
   cancelColor: '#898c8e',
   errorColor: '#b52d2d',
