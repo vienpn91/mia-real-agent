@@ -11,11 +11,11 @@ import {
 } from 'prop-types';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import { DefaultButton } from 'components/Generals/General.styled';
 import FormInput from '../../FormInput/FormInput';
 import { ActionBar } from './styles';
 import { CATEGORY_OPTIONS } from '../../../../common/enums';
 import LoadingSpin from '../../Loading';
-import { DefaultButton } from '../../Generals/general.styles';
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().trim().required('Required'),
