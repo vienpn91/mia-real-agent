@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TopNavBar from 'components/TopNavBar';
 import { PageWrapper } from './MainLayout.styled';
+import TopNavBarContainer from '../../containers/TopNavBar';
 
 const MainLayout = ({ children }) => (
   <PageWrapper>
-    <TopNavBar />
+    <TopNavBarContainer />
     {children}
   </PageWrapper>
 );

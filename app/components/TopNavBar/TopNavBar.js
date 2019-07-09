@@ -4,6 +4,7 @@ import {
   Layout, Avatar, Icon, Menu,
 } from 'antd';
 import { Link } from 'react-router-dom';
+import { func } from 'prop-types';
 import {
   TopNavBarWrapper,
   Logo,
@@ -16,6 +17,10 @@ import {
 const { Header } = Layout;
 
 export default class TopNavBar extends Component {
+  static propTypes = {
+    logout: func.isRequired,
+  }
+
   state = {
     isDropdownOpen: false,
   }
@@ -40,24 +45,29 @@ export default class TopNavBar extends Component {
     </Logo>
   )
 
+  handleLogout = () => {
+    const { logout } = this.props;
+    logout();
+  }
+
   renderDropdownProfile = () => (
     <Menu>
       <Menu.Item>
         <Link to="/profile">
           <Icon type="user" />
-            Profile
+          Profile
         </Link>
       </Menu.Item>
       <Menu.Item>
         <Link to="/help">
           <Icon type="question" />
-            Help
+          Help
         </Link>
       </Menu.Item>
       <Menu.Item>
-        <Link to="/logout">
+        <Link to="/#" onClick={this.handleLogout}>
           <Icon type="logout" />
-            Logout
+          Logout
         </Link>
       </Menu.Item>
     </Menu>
@@ -69,7 +79,7 @@ export default class TopNavBar extends Component {
       <UserProfile onClick={this.openDropdown} onMouseLeave={this.closeDropdown}>
         <Avatar src="https://modworkshop.net/mydownloads/previews/preview_698_1433195641_d29bf7dc71da094fc00de7f15b1280f1.jpg" />
         <UserName>Tri Dep Trai</UserName>
-        { isDropdownOpen && this.renderDropdownProfile() }
+        {isDropdownOpen && this.renderDropdownProfile()}
       </UserProfile>
     );
   }
