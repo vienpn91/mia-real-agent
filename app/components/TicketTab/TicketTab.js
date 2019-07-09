@@ -17,7 +17,6 @@ import {
   CreateItem,
   TicketPaginationWrapper,
 } from './TicketTab.styles';
-import { DefaultButton } from '../Generals/general.styles';
 import CreateTicketFormContainer from '../../containers/Chatbot/CreateTicket';
 import { PAGE_SIZE } from '../../../common/enums';
 
