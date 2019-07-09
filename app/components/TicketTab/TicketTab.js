@@ -6,17 +6,17 @@ import {
   Menu, Dropdown, Icon,
   Pagination,
 } from 'antd';
-import Ticket from 'containers/TicketPage/Ticket';
+import Ticket from 'containers/TicketTab/Ticket';
 import _isNumber from 'lodash/isNumber';
 import { DefaultButton } from 'components/Generals/General.styled';
 import {
-  TicketPageWrapper,
+  TicketTabWrapper,
   TicketFilterWrapper,
   FilterItem,
   Filter,
   CreateItem,
   TicketPaginationWrapper,
-} from './Ticket.styles';
+} from './TicketTab.styles';
 import CreateTicketFormContainer from '../../containers/Chatbot/CreateTicket';
 import { PAGE_SIZE } from '../../../common/enums';
 
@@ -32,7 +32,7 @@ const categories = [
   'Insurrance',
 ];
 
-class TicketPage extends PureComponent {
+class TicketTab extends PureComponent {
   state = {
     isOpenCreateModal: false,
   }
@@ -137,7 +137,7 @@ class TicketPage extends PureComponent {
     const { params } = match;
     const { page } = params;
     return (
-      <TicketPageWrapper>
+      <TicketTabWrapper>
         {this.renderFilterTicket()}
         <Ticket />
         <TicketPaginationWrapper>
@@ -154,16 +154,16 @@ class TicketPage extends PureComponent {
           isOpen={isOpenCreateModal}
           handleCancel={this.handleCloseCreateModal}
         />
-      </TicketPageWrapper>
+      </TicketTabWrapper>
     );
   }
 }
 
-TicketPage.propTypes = {
+TicketTab.propTypes = {
   getAllAction: PropTypes.func,
   totalRecord: number.isRequired,
   history: shape(),
   match: shape(),
 };
 
-export default TicketPage;
+export default TicketTab;

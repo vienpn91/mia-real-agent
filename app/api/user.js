@@ -1,12 +1,12 @@
 import axios from 'axios';
 
 export const getUserProfile = id => axios
-  .get(`users/profile/${id}`)
+  .get(`users/${id}`)
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
 export const updateUserProfile = (id, data) => axios
-  .put(`users/profile/${id}`, { data })
+  .put(`users/${id}`, { data })
   .then(response => ({ response }))
   .catch(error => ({ error }));
 

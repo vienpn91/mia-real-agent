@@ -8,7 +8,7 @@ export const ChatbotWrapper = styled.div`
 `;
 
 export const ChatbotTicketListWrapper = styled.div`
-  flex: 0 0 400px;
+  flex: 0 0 350px;
   color: #000;
   background-color: #fff;
   border-right: 1px solid #d9d9d9;

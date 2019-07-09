@@ -4,8 +4,8 @@ import {
 } from 'antd';
 import { shape } from 'prop-types';
 import ShadowScrollbars from 'components/Scrollbar';
-import Activity from 'components/Activity';
-import TicketPage from 'containers/TicketPage';
+import Activity from 'components/ActivityTab';
+import TicketTab from 'containers/TicketTab';
 import {
   DashboardContainer,
   DashboardItem,
@@ -38,7 +38,7 @@ export default class Dashboard extends Component {
     const { params } = match;
     const { tab } = params;
     if (!tab) {
-      history.push(`/dashboard/${TAB.Ticket}`);
+      history.push(`/dashboard/${TAB.Ticket}/1`);
     } else {
       this.setState({
         activeTab: tab,
@@ -65,7 +65,7 @@ export default class Dashboard extends Component {
 
   renderTicketItem = () => (
     <TabPane tab="Ticket" key={TAB.Ticket}>
-      <TicketPage />
+      <TicketTab />
     </TabPane>
   )
 
@@ -90,8 +90,8 @@ export default class Dashboard extends Component {
                   style={{ height: '100%' }}
                   onChange={this.handleChangeTab}
                 >
-                  {this.renderActivityItem()}
                   {this.renderTicketItem()}
+                  {this.renderActivityItem()}
                 </Tabs>
               </Col>
             </Row>

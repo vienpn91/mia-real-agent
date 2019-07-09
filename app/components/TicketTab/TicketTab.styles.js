@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const TicketPageWrapper = styled.div`
+export const TicketTabWrapper = styled.div`
   max-width: 980px;
   width: calc(100% - 30px);
   margin: 0 auto;

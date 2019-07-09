@@ -54,6 +54,10 @@ passport.use(
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
       secretOrKey: process.env.SECRET_KEY_JWT,
       passReqToCallback: true,
+      ignoreExpiration: true,
+      jsonWebTokenOptions: {
+        ignoreExpiration: true,
+      },
     },
     (req, payload, done) => {
       const tokenReq = getTokenFromReq(req);
