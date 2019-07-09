@@ -37,8 +37,8 @@ export const checkPassword = (userId, password) => axios
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
-export const changePassword = (oldPassword, newPassword) => axios
-  .post('users/changePassword', {
+export const changePassword = (userId, oldPassword, newPassword) => axios
+  .post(`users/${userId}/changePassword`, {
     oldPassword,
     newPassword,
   })

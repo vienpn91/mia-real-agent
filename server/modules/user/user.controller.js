@@ -103,7 +103,7 @@ class UserController extends BaseController {
 
   async changePassword(req, res) {
     try {
-      const { user } = req;
+      const { model: user } = req;
       const { oldPassword, newPassword } = req.body;
       await check(oldPassword, VALIDATION_TYPE.STRING);
       await check(newPassword, VALIDATION_TYPE.PASSWORD);

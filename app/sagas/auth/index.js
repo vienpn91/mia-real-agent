@@ -76,21 +76,6 @@ function* register({ payload }) {
   yield put(push('/greeting'));
 }
 
-// change password handler
-function* changePassword({ payload }) {
-  const { oldPassword, newPassword } = payload;
-  const { error } = yield call(AuthApi.changePassword, oldPassword, newPassword);
-
-  if (error) {
-    const message = _get(error, 'response.data.message', DEFAULT_ERROR_MESSAGE); // this line of code needs to refactor
-    yield put(authActions.changePasswordFail(message));
-    return;
-  }
-
-  yield put(authActions.changePasswordSuccess());
-  yield put(authActions.logout());
-}
-
 // create new password handler
 // this function will handle when user update his/her password
 function* createPassword({ payload }) {
@@ -135,7 +120,6 @@ function* authFlow() {
     configAxiosForAuthenticate,
   );
   yield takeLatest(AUTH_REGISTER, register);
-  yield takeLatest(AUTH_CHANGE_PASSWORD, changePassword);
   yield takeLatest(AUTH_CREATE_PASSWORD, createPassword);
   yield takeLatest(AUTH_SEND_VERICATION_EMAIL, sendVericationEmail);
 }
