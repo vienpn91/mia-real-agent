@@ -11,12 +11,12 @@ export const getAllTicket = params => axios
   .catch(error => ({ error }));
 
 export const getTicket = (id, owner) => axios
-  .get(`tickets/${id}?owner=${owner}`)
+  .get(`tickets/${id}${owner ? `?owner=${owner}` : ''}`)
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
-export const updateTicket = ({ _id, ...rest }) => axios
-  .put(`tickets/${_id}`, rest)
+export const updateTicket = ({ ticketId, ...rest }) => axios
+  .put(`tickets/${ticketId}`, rest)
   .then(response => ({ response }))
   .catch(error => ({ error }));
 

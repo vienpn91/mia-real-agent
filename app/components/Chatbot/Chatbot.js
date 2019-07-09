@@ -23,6 +23,7 @@ import {
 } from './styles';
 import CreateTicketFormContainer from '../../containers/Chatbot/CreateTicket';
 import { ROLES } from '../../../common/enums';
+import EditTicketContainer from '../../containers/Chatbot/EditTicket';
 
 const { Content } = Layout;
 const { Search } = Input;
@@ -31,6 +32,8 @@ const { TabPane } = Tabs;
 export default class ChatbotComponent extends Component {
   state = {
     isOpenCreateModal: false,
+    isOpenSettingModal: false,
+    settingChosenTicket: null,
   }
 
   static propTypes = {
@@ -84,6 +87,19 @@ export default class ChatbotComponent extends Component {
     });
   }
 
+  handleOpenSettingModal = (ticket) => {
+    this.setState({
+      isOpenSettingModal: true,
+      settingChosenTicket: ticket,
+    });
+  }
+
+  handleCloseSettingModal = () => {
+    this.setState({
+      isOpenSettingModal: false,
+    });
+  }
+
   goToDashboard = () => {
     history.push('/dashboard');
   }
@@ -109,19 +125,22 @@ export default class ChatbotComponent extends Component {
     </TicketHeaderWrapper>
   );
 
-  renderTabItem = () => (
-    <Tabs defaultActiveKey="1">
-      <TabPane tab="Detail" key="1">
-        <TicketDetail />
-      </TabPane>
-      <TabPane tab="List" key="2">
-        <Tickets />
-      </TabPane>
-    </Tabs>
-  )
+  renderTabItem = () => {
+    const { ticketDetail } = this.props;
+    return (
+      <Tabs defaultActiveKey="1">
+        <TabPane tab="Detail" key="1">
+          <TicketDetail ticket={ticketDetail} />
+        </TabPane>
+        <TabPane tab="List" key="2">
+          <Tickets openSetting={this.handleOpenSettingModal} />
+        </TabPane>
+      </Tabs>
+    );
+  }
 
   render() {
-    const { isOpenCreateModal } = this.state;
+    const { isOpenCreateModal, isOpenSettingModal, settingChosenTicket } = this.state;
     const { ticketDetail, getError } = this.props;
     return (
       <ChatbotWrapper>
@@ -138,6 +157,11 @@ export default class ChatbotComponent extends Component {
         <CreateTicketFormContainer
           isOpen={isOpenCreateModal}
           handleCancel={this.handleCloseCreateModal}
+        />
+        <EditTicketContainer
+          isOpen={isOpenSettingModal}
+          ticket={settingChosenTicket}
+          handleCancel={this.handleCloseSettingModal}
         />
       </ChatbotWrapper>
     );

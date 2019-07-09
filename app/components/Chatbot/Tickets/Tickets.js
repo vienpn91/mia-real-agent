@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes, { string } from 'prop-types';
+import PropTypes, { string, func, bool } from 'prop-types';
 import SpinnerLoading from 'components/PageLoading';
 import ShadowScrollbars from 'components/Scrollbar';
 import MediaQuery from 'react-responsive';
@@ -45,11 +45,28 @@ class Tickets extends React.PureComponent {
     history.push(`/ticket/${ticketId}${userRole === ROLES.AGENT ? `/${owner}` : ''}`);
   }
 
+  handleRemoveTicket = (ticketId) => {
+    const { removeTicket } = this.props;
+    removeTicket(ticketId);
+  }
+
+  handleArchiveTicket = (ticketId) => {
+    const { archiveTicket } = this.props;
+    archiveTicket(ticketId);
+  }
+
   renderTicketItem = (ticket) => {
-    const { _id } = ticket;
+    const { openSetting, userRole } = this.props;
+    const { _id, ticketId } = ticket;
     return (
       <Menu.Item key={_id} onClick={() => this.selectTicket(ticket)}>
-        <TicketItem ticket={ticket} />
+        <TicketItem
+          userRole={userRole}
+          ticket={ticket}
+          onRemove={() => this.handleRemoveTicket(ticketId)}
+          onArchive={() => this.handleArchiveTicket(ticketId)}
+          openSetting={openSetting}
+        />
       </Menu.Item>
     );
   }
@@ -99,10 +116,10 @@ class Tickets extends React.PureComponent {
   )
 
   render() {
-    const { fetchingContext = {} } = this.props;
+    const { fetchingContext = {}, isArchiving, isRemoving } = this.props;
     const { isFetching } = fetchingContext;
-
-    if (isFetching) {
+    const loading = isFetching || isArchiving || isRemoving;
+    if (loading) {
       return <SpinnerLoading />;
     }
 
@@ -117,10 +134,15 @@ class Tickets extends React.PureComponent {
 }
 
 Tickets.propTypes = {
+  isArchiving: bool.isRequired,
+  isRemoving: bool.isRequired,
   tickets: PropTypes.array,
   getAllAction: PropTypes.func,
   fetchingContext: PropTypes.object,
   userRole: string.isRequired,
+  openSetting: func.isRequired,
+  removeTicket: func.isRequired,
+  archiveTicket: func.isRequired,
 };
 
 export default Tickets;

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import ShadowScrollbars from 'components/Scrollbar';
 import { Descriptions, Timeline, Icon } from 'antd';
+import { shape } from 'prop-types';
 import {
   TicketDetailWrapper,
   TicketInfoWrapper,
   TicketTimelineWrapper,
 } from '../styles';
+import { ROLES } from '../../../../common/enums';
 
 const scrollStyle = {
   height: 'calc(100vh - 165px)',
@@ -13,16 +15,69 @@ const scrollStyle = {
 };
 
 export default class TicketDetail extends Component {
-  renderTicketInfo = () => (
-    <TicketInfoWrapper>
-      <Descriptions column={4}>
-        <Descriptions.Item label="Ticket">This is big issue</Descriptions.Item>
-        <Descriptions.Item label="User">Con Luong</Descriptions.Item>
-        <Descriptions.Item label="Assigne">Tri Nguyen</Descriptions.Item>
-        <Descriptions.Item label="Status">Processing</Descriptions.Item>
-      </Descriptions>
-    </TicketInfoWrapper>
-  );
+  static propTypes = {
+    ticket: shape().isRequired,
+  }
+
+  renderOwnerInfo = () => {
+    const { ticket } = this.props;
+    const { owner, ownerProfile } = ticket;
+    if (!owner) {
+      return 'No Owner';
+    }
+    if (!ownerProfile) {
+      return 'No Profile';
+    }
+    const { role, profile = {} } = ownerProfile;
+    const { firstName, lastName, company = 'N/A' } = profile;
+    switch (role) {
+      case ROLES.INDIVIDUAL:
+        return `${firstName} ${lastName} - ${company}`;
+      case ROLES.BUSINESS:
+        return company;
+      default: return 'No Role found';
+    }
+  }
+
+  renderAssigneeInfo = () => {
+    const { ticket } = this.props;
+    const { assignee, assigneeProfile } = ticket;
+    if (!assignee) {
+      return 'No Assignee';
+    }
+    if (!assigneeProfile) {
+      return 'No Profile';
+    }
+    const { firstName, lastName, company } = assigneeProfile;
+    return `${firstName} ${lastName} - ${company}`;
+  }
+
+  renderTicketInfo = () => {
+    const { ticket } = this.props;
+    if (!ticket) {
+      return (
+        <TicketInfoWrapper>
+          <Descriptions column={4}>
+            No ticketData
+          </Descriptions>
+        </TicketInfoWrapper>
+      );
+    }
+    const {
+      title, description,
+    } = ticket;
+    return (
+      <TicketInfoWrapper>
+        <Descriptions column={4}>
+          <Descriptions.Item label="Ticket">{title}</Descriptions.Item>
+          <Descriptions.Item label="Description">{description}</Descriptions.Item>
+          <Descriptions.Item label="Owner">{this.renderOwnerInfo()}</Descriptions.Item>
+          <Descriptions.Item label="Assigne">{this.renderAssigneeInfo()}</Descriptions.Item>
+          <Descriptions.Item label="Status">Processing</Descriptions.Item>
+        </Descriptions>
+      </TicketInfoWrapper>
+    );
+  }
 
   renderTicketTimeline = () => (
     <TicketTimelineWrapper>

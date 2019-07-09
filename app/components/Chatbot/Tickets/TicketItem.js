@@ -1,26 +1,36 @@
 import React from 'react';
 import moment from 'moment';
-import PropTypes from 'prop-types';
+import PropTypes, { func, string } from 'prop-types';
 import { DATE_TIME_FORMAT } from 'utils/constants';
 import {
-  Icon,
+  Icon, Menu,
 } from 'antd';
+import SubMenu from 'antd/lib/menu/SubMenu';
 import {
   TicketGroup,
   TicketName,
   TicketTime,
   TicketStatus,
 } from '../styles';
+import { MenuStyled } from './styles';
+import { ROLES } from '../../../../common/enums';
 
 class TicketItem extends React.PureComponent {
+  handleOpenSetting = () => {
+    const { openSetting, ticket } = this.props;
+    openSetting(ticket);
+  }
+
   render() {
-    const { ticket = {} } = this.props;
+    const {
+      ticket = {}, userRole,
+      onRemove, onArchive,
+    } = this.props;
     const {
       title, status, category, createdAt,
     } = ticket;
     const timeFormat = moment(createdAt).format(DATE_TIME_FORMAT.DATE);
     const categoryDisplay = Array.isArray(category) ? category[0] : category;
-
     return (
       <React.Fragment>
         <TicketGroup>
@@ -33,7 +43,19 @@ class TicketItem extends React.PureComponent {
         </TicketGroup>
         <TicketTime>
           <span>{timeFormat}</span>
-          <Icon type="setting" />
+          {!(userRole === ROLES.AGENT) && (
+            <MenuStyled>
+              <SubMenu
+                title={
+                  <Icon type="setting" />
+                }
+              >
+                <Menu.Item key="Archive" onClick={onArchive}>Archive</Menu.Item>
+                <Menu.Item key="Edit" onClick={this.handleOpenSetting}>Edit</Menu.Item>
+                <Menu.Item key="Remove" onClick={onRemove}>Remove</Menu.Item>
+              </SubMenu>
+            </MenuStyled>
+          )}
         </TicketTime>
 
       </React.Fragment>
@@ -43,6 +65,10 @@ class TicketItem extends React.PureComponent {
 
 TicketItem.propTypes = {
   ticket: PropTypes.object,
+  openSetting: func.isRequired,
+  onRemove: func.isRequired,
+  onArchive: func.isRequired,
+  userRole: string.isRequired,
 };
 
 export default TicketItem;
