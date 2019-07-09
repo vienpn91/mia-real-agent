@@ -60,7 +60,7 @@ export const IconToggle = styled.i`
   position: absolute;
   right: -32px;
   top: 14px;
-  background-color: #fff;
+  background-color: ${props => props.theme.secondaryColor}
   padding: 8px;
   box-shadow: 10px 0px 8px -8px #d9d9d9;
   border: 1px solid #d9d9d9;
@@ -90,7 +90,7 @@ export const SidebarToggleButton = styled.div`
       background-color: transparent;
       border: none;
       box-shadow: none;
-      color: #fff;
+      color: ${props => props.theme.secondaryColor}
     }
   `};
 `;
@@ -102,7 +102,7 @@ const SidebarItemOpen = css`
 
 
 export const SidebarItem = styled.li`
-  color: #fff;
+  color: ${props => props.theme.secondaryColor}
   height: 40px;
   width: 230px;
   position: relative;

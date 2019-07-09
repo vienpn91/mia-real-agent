@@ -19,7 +19,7 @@ const ControlCss = css`
   margin: 0px 4px;
   &:hover {
     background: #2fa3e6;
-    color: #fff;
+    color: ${props => props.theme.secondaryColor}
   }
 `;
 

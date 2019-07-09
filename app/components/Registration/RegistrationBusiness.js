@@ -96,7 +96,7 @@ class Registration extends Component {
                       name="username"
                       type="text"
                       label="Username"
-                      login
+                      login={1}
                     />
                   </Col>
                   <Col sm={12} xs={24}>
@@ -104,7 +104,7 @@ class Registration extends Component {
                       name="password"
                       type="password"
                       label="Password"
-                      login
+                      login={1}
                     />
                   </Col>
                 </Row>
@@ -114,7 +114,7 @@ class Registration extends Component {
                       name="email"
                       type="text"
                       label="Email"
-                      login
+                      login={1}
                     />
                   </Col>
                   <Col sm={12} xs={24}>
@@ -122,7 +122,7 @@ class Registration extends Component {
                       name="company"
                       type="text"
                       label="Company name"
-                      login
+                      login={1}
                     />
                   </Col>
                 </Row>
@@ -133,7 +133,7 @@ class Registration extends Component {
                       type="select"
                       options={SIZE_OPTIONS}
                       label="companySize"
-                      login
+                      login={1}
                     />
                   </Col>
                   <Col sm={12} xs={24}>
@@ -143,7 +143,7 @@ class Registration extends Component {
                       mode="multiple"
                       options={FIELD_OPTIONS}
                       label="Working fields"
-                      login
+                      login={1}
                     />
                   </Col>
                 </Row>
@@ -153,7 +153,7 @@ class Registration extends Component {
                       name="address"
                       type="text"
                       label="Address"
-                      login
+                      login={1}
                     />
                   </Col>
                   <Col sm={12} xs={24}>
@@ -161,7 +161,7 @@ class Registration extends Component {
                       name="phoneNumber"
                       type="text"
                       label="Phone No."
-                      login
+                      login={1}
                     />
                   </Col>
                 </Row>

@@ -9,23 +9,23 @@ export const ItemDetailWrapper = styled.div`
 
 export const ItemDetailListWrapper = styled.div`
   flex: 0 0 415px;
-  border-right: 1px solid #c7c6c7;
+  border-right: 1px solid ${props => props.theme.secondaryColor};
 `;
 
 export const ItemDetailListItem = styled.div`
   display: flex;
   align-items: center;
-  border-top: 1px solid #dedede;
+  border-top: 1px solid ${props => props.theme.secondaryColor};
   cursor: pointer;
   &:last-child {
-    border-bottom: 1px solid #dedede;
+    border-bottom: 1px solid ${props => props.theme.secondaryColor};
   }
   &:hover {
-    background-color: #f5f5f5;
+    background-color: ${props => props.theme.secondaryColor};
   }
   ${({ active }) => active
     && css`
-      background-color: #f0f0f0;
+      background-color: ${props => props.theme.secondaryColor};
     `};
 `;
 
@@ -54,9 +54,9 @@ export const ItemDetailInfoHeaderWrapper = styled.div`
   padding: 15px 20px;
   height: 60px;
   .receive-form {
-    background-color: #fff;
+    background-color: ${props => props.theme.secondaryColor};
     border-radius: 7px;
-    border: 1px solid #ddd;
+    border: 1px solid ${props => props.theme.secondaryColor};
     box-shadow: 0 3px 9px #00000080;
     position: fixed;
     top: 50px;
@@ -77,12 +77,12 @@ export const ItemDetailInfoActionGroup = styled.div`
   align-items: center;
   .icon-pencil {
     border-radius: 3px;
-    border: 1px solid #ddd;
+    border: 1px solid ${props => props.theme.secondaryColor};
     padding: 5px 10px;
     font-size: 18px;
     color: #222;
     &:hover {
-      border-color: #bfbfbf;
+      border-color: ${props => props.theme.secondaryColor};
       box-shadow: 0 1px 1px #0000001a;
     }
   }
@@ -112,7 +112,7 @@ export const MoreButton = styled.div`
   align-items: center;
   position: relative;
   height: 30px;
-  border: 1px solid #ddd;
+  border: 1px solid ${props => props.theme.secondaryColor};
   border-radius: 3px;
   margin-left: 10px;
   cursor: pointer;
@@ -132,8 +132,8 @@ export const MoreOptionWrapper = styled.div`
   min-width: 160px;
   padding: 5px 0;
   margin: 2px 0 0;
-  background-color: #fff;
-  border: 1px solid #ccc;
+  background-color: ${props => props.theme.secondaryColor};
+  border: 1px solid ${props => props.theme.secondaryColor};
   border-radius: 2px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 `;
@@ -142,8 +142,8 @@ export const MoreOptionItem = styled.div`
   padding: 3px 20px;
   line-height: 1.4;
   &:hover {
-    color: #fff;
-    background-color: #2e8fda;
+    color: ${props => props.theme.secondaryColor};
+    background-color: ${props => props.theme.submitColor};
   }
 `;
 
@@ -158,14 +158,14 @@ export const ItemTabListWrapper = styled.div`
     padding: 10px 15px;
     font-size: 11px;
     text-transform: uppercase;
-    color: #206ec5;
+    color: ${props => props.theme.submitColor};
     border: none;
     &:hover {
       color: #555;
     }
   }
   .react-tabs__tab-list {
-    border-color: #ddd;
+    border-color: ${props => props.theme.secondaryColor};
     margin: 0px;
   }
   .react-tabs__tab-panel {
@@ -173,8 +173,8 @@ export const ItemTabListWrapper = styled.div`
   }
   .react-tabs__tab--selected {
     border-radius: 0px;
-    border-color: #ddd;
-    border-bottom: 3px solid #2fa3e6;
+    border-color: ${props => props.theme.secondaryColor};
+    border-bottom: 3px solid ${props => props.theme.submitColor};
     color: #555;
   }
   ${({ isLarge }) => isLarge
@@ -229,11 +229,11 @@ export const OverviewProduct = styled.div`
 
   a {
     text-decoration: unset;
-    color: #206ec5;
+    color: ${props => props.theme.submitColor};
   }
   ${({ link }) => link
     && css`
-      color: #206ec5;
+      color: ${props => props.theme.submitColor};
       &:hover {
         color: #154983;
       }
@@ -244,7 +244,7 @@ export const OverviewImageWrapper = styled.div`
   position: relative;
   min-height: 160px;
   width: 237px;
-  border: 1px solid #d6d6d6;
+  border: 1px solid ${props => props.theme.secondaryColor};
   border-radius: 4px;
 `;
 
@@ -272,7 +272,7 @@ export const OverviewImageAction = styled.div`
   text-align: right;
   i {
     &:hover {
-      color: #41a0d9;
+      color: ${props => props.theme.submitColor};
     }
   }
 `;
@@ -287,7 +287,7 @@ export const OverviewImageListWrapper = styled.div`
 
 export const OverviewImage = styled.div`
   display: inline-block;
-  border: 1px solid #dedede;
+  border: 1px solid ${props => props.theme.secondaryColor};
   min-height: 43px;
   min-width: 42px;
   padding: 5px;
@@ -313,16 +313,16 @@ export const OverviewImage = styled.div`
     height: auto;
   }
   &:hover {
-    border: 1px solid #2fa3e7;
+    border: 1px solid ${props => props.theme.submitColor};
   }
   ${({ active }) => active
     && css`
-      border: 1px solid #2fa3e7;
+      border: 1px solid ${props => props.theme.submitColor};
     `};
 `;
 
 export const OverviewAddImage = styled.div`
-  border: 1px dashed #dedede;
+  border: 1px dashed ${props => props.theme.secondaryColor};
   min-height: 43px;
   min-width: 42px;
   padding: 5px;

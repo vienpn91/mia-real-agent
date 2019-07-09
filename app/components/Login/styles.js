@@ -32,7 +32,7 @@ export const LoginTitle = styled.div`
   font-size: 32px;
   font-family: Countryside, sans-serif;
   margin-bottom: 55px;
-  color: #000;
+  color: ${props => props.theme.textColor};
 `;
 
 export const LoginInputWrapper = styled.div`
@@ -47,45 +47,45 @@ export const LoginInput = styled.input`
   border: 0;
   outline: 0 none;
   transition: border-color .2s linear;
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid ${props => props.theme.textColor};
   -webkit-font-smoothing: antialiased;
   background-color: transparent;
 `;
 
 export const LoginLabel = styled.div`
   margin-bottom: 5px;
-  color: #000;
+  color: ${props => props.theme.textColor};
 `;
 
 export const LoginBtn = styled.button`
   height: 50px;
   width: 100%;
   border-radius: 50px;
-  border: 1px solid #000;
+  border: 1px solid ${props => props.theme.textColor};
   transition: .3s ease;
-  background: #000;
-  color: #fff;
+  background: ${props => props.theme.textColor};
+  color: ${props => props.theme.secondaryColor}
   cursor: pointer;
   margin-bottom: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
   &:hover {
-    background: #fff;
-    color: #000;
+    background: ${props => props.theme.secondaryColor}
+    color: ${props => props.theme.textColor};
   }
 `;
 
 export const LoginFBBtn = styled(LoginBtn)`
   border: 1px solid #3b5998;
   background: #3b5998;
-  color: #fff;
+  color: ${props => props.theme.secondaryColor}
   i {
     font-size: 16px;
     margin-right: 5px;
   }
   &:hover {
-    background: #fff;
+    background: ${props => props.theme.secondaryColor}
     color: #3b5998;
   }
 `;

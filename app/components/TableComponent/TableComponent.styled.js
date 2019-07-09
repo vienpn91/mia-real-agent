@@ -15,7 +15,7 @@ export const TableHeadWrapper = styled.div`
   ${({ bgTable }) => bgTable
     && css`
       background-color: #222;
-      color: #fff;
+      color: ${props => props.theme.secondaryColor}
       border: none;
       font-size: 13px;
       & > div {
@@ -49,7 +49,7 @@ export const TableContentWrapper = styled.div`
   border-bottom: 1px solid #d9d9d9;
   border-top: none;
   color: #263035;
-  background-color: #fff;
+  background-color: ${props => props.theme.secondaryColor}
   font-weight: 700;
   line-height: 1.4;
   ${({ bgTable }) => bgTable
@@ -163,7 +163,7 @@ export const MoreActionWrapper = styled.div`
   min-width: 160px;
   padding: 5px 0;
   margin: 2px 0 0;
-  background-color: #fff;
+  background-color: ${props => props.theme.secondaryColor}
   border: 1px solid #ccc;
   border-radius: 2px;
   box-shadow: 0 6px 12px #0000002d;
@@ -176,7 +176,7 @@ export const MoreActionItem = styled.div`
   line-height: 1.4;
   font-size: 13px;
   &:hover {
-    color: #fff;
+    color: ${props => props.theme.secondaryColor}
     background-color: #2e8fda;
   }
 `;
@@ -243,7 +243,7 @@ export const TableHead = styled.div`
 
 export const TableRow = styled(TableHead)`
   text-transform: none;
-  color: #000;
+  color: ${props => props.theme.textColor};
   .icon-dots {
     font-size: 10px;
     color: #eee;
@@ -287,7 +287,7 @@ export const TableRow = styled(TableHead)`
       }
     `};
   a {
-    color: #000;
+    color: ${props => props.theme.textColor};
   }
 `;
 

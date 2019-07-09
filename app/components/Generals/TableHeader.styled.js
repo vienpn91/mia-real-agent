@@ -46,27 +46,26 @@ export const TableHeaderLeftWrapper = styled.div`
   }
   .select__control--is-focused {
     box-shadow: none;
-    border-color: #ddd !important;
+    border-color: ${props => props.theme.secondaryColor} !important;
   }
   .select__option--is-focused {
-    background-color: #efefef;
+    background-color: ${props => props.theme.secondaryColor};
   }
 `;
 
 export const TableHeaderRightWrapper = styled.div`
   display: flex;
   align-items: center;
-  }
   a {
     text-decoration: none;
   }
 `;
 
 export const TableHeaderAddNewButton = styled.div`
-  background-color: #ff5402;
-  border-color: #ff5402;
+  background-color: ${props => props.theme.primaryColor};
+  border-color: ${props => props.theme.primaryColor};
   border-radius: 3px;
-  color: #fff;
+  color: ${props => props.theme.secondaryColor};
   padding: 5px 12px;
   margin-right: 10px;
   display: flex;
@@ -85,8 +84,8 @@ export const TableHeaderAddNewButton = styled.div`
 export const TableHeaderSortButton = styled.div`
   position: relative;
   border-radius: 3px;
-  border: 1px solid #ddd;
-  background-color: #fff;
+  border: 1px solid ${props => props.theme.secondaryColor};
+  background-color: ${props => props.theme.secondaryColor};
   padding: 5px 10px;
   font-size: 18px;
   cursor: pointer;
@@ -103,7 +102,7 @@ export const TableHeaderSortWrapper = styled.div`
   min-width: 260px;
   padding: 5px 0;
   margin: 2px 0 0;
-  background-color: #fff;
+  background-color: ${props => props.theme.secondaryColor};
   border: 1px solid #00000026;
   border-radius: 2px;
   box-shadow: 0 6px 12px #0000002d;
@@ -122,7 +121,7 @@ export const TableHeaderSortWrapper = styled.div`
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     border-bottom: 8px solid;
-    border-bottom-color: #fff;
+    border-bottom-color: ${props => props.theme.secondaryColor};
     top: -8px;
     content: '';
     right: 10px;
@@ -153,13 +152,13 @@ export const TableHeaderSortContent = styled.div`
   }
 
   &:hover {
-    color: #fff;
-    background-color: #2e8fda;
+    color: ${props => props.theme.secondaryColor};
+    background-color: ${props => props.theme.submitColor};
   }
   ${({ active }) => active
     && css`
-      color: #fff;
-      background-color: #206ec5;
+      color: ${props => props.theme.secondaryColor};
+      background-color: ${props => props.theme.submitColor};
     `};
 `;
 

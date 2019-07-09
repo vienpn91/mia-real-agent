@@ -2,8 +2,8 @@
 import styled, { css } from 'styled-components';
 
 export const DefaultButton = styled.button`
-  color: #fff;
-  background-color: #ff5402;
+  color: ${props => props.theme.secondaryColor};
+  background-color: ${props => props.theme.primaryColor};
   text-align: center;
   border: 1px solid transparent;
   border-radius: 3px;
@@ -15,13 +15,13 @@ export const DefaultButton = styled.button`
     opacity: 0.8;
   }
   ${({ submit }) => submit && css`
-    background-color: #2697ea;
+    background-color:  ${props => props.theme.submitColor};
   `};
   ${({ cancel }) => cancel && css`
-    background-color: #898c8e;
+    background-color:  ${props => props.theme.cancelColor};
   `};
   ${({ error }) => error && css`
-    background-color: #b52d2d;
+    background-color:  ${props => props.theme.errorColor};
   `};
 `;
 
@@ -43,7 +43,7 @@ export const PopupOverlayStyled = styled.div`
   z-index: 1;
   ${({ isOverlay }) => isOverlay
     && css`
-      background: #fff;
+      background: ${props => props.theme.secondaryColor};
       opacity: 0.5;
       z-index: 4;
     `};
@@ -53,43 +53,43 @@ export const IconStyled = styled.i`
   ${({ close }) => close
     && css`
       border-radius: 100%;
-      border: 1px solid #eb9388;
+      border: 1px solid ${props => props.theme.iconCloseColor};
       font-size: 14px;
-      color: #eb9388;
+      color: ${props => props.theme.iconCloseColor};
       margin: 0px 2px;
       &:hover {
-        border-color: #d50000;
-        color: #d50000;
+        border-color: ${props => props.theme.iconCloseHoverColor};
+        color: ${props => props.theme.iconCloseHoverColor};
       }
     `};
   ${({ add }) => add
     && css`
       border-radius: 100%;
-      border: 1px solid #2fa3e6;
+      border: 1px solid ${props => props.theme.iconAddColor};
       font-size: 14px;
-      color: #2fa3e6;
+      color: ${props => props.theme.iconAddColor};
       margin: 0px 2px;
       &:hover {
-        border-color: #036299;
-        color: #036299;
+        border-color: ${props => props.theme.iconAddHoverColor};
+        color: ${props => props.theme.iconAddHoverColor};
       }
     `};
   ${({ more }) => more
     && css`
       border-radius: 100%;
-      border: 1px solid #227fb5;
+      border: 1px solid ${props => props.theme.iconMoreColor};
       font-size: 14px;
-      color: #227fb5;
+      color: ${props => props.theme.iconMoreColor};
       margin: 0px 2px;
       &:hover {
-        border-color: #0f496b;
-        color: #0f496b;
+        border-color: ${props => props.theme.iconMoreHoverColor};
+        color: ${props => props.theme.iconMoreHoverColor};
       }
     `};
 
   ${({ active }) => active
     && css`
-      color: #0095d8 !important;
+      color: ${props => props.theme.submitColor} !important;
     `};
   ${({ shipping }) => shipping
     && css`
@@ -105,13 +105,13 @@ export const RadioButtonToggle = styled.div`
       appearance: none;
       width: 44px;
       height: 22px;
-      background-color: #e9e9e9;
+      background-color: ${props => props.theme.secondaryColor};
       position: relative;
       border-radius: 30px;
       box-shadow: none;
       transition: all 300ms ease-in-out;
       &:hover:after {
-        background-color: #fff;
+        background-color: ${props => props.theme.secondaryColor};
       }
       &:after {
         content: '';
@@ -119,7 +119,7 @@ export const RadioButtonToggle = styled.div`
         position: absolute;
         width: 18px;
         height: 18px;
-        background-color: #fff;
+        background-color: ${props => props.theme.secondaryColor};
         top: 2px;
         left: 2px;
         border-radius: 50%;
@@ -127,10 +127,10 @@ export const RadioButtonToggle = styled.div`
       }
     }
     &:checked.toggle {
-      box-shadow: inset 0 0 0 15px #158ec6;
+      box-shadow: inset 0 0 0 15px ${props => props.theme.submitColor};
       &:after {
         left: 23px;
-        background-color: #fafafa;
+        background-color: ${props => props.theme.secondaryColor};
       }
     }
   }
@@ -139,9 +139,9 @@ export const RadioButtonToggle = styled.div`
 export const HeaderTitleWrapper = styled.div`
   width: 100%;
   padding: 20px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid ${props => props.theme.secondaryColor};
   min-height: 21.43px;
-  background-color: #f5f5f5;
+  background-color: ${props => props.theme.secondaryColor};
   color: #222;
   display: flex;
   align-items: center;
@@ -154,7 +154,7 @@ export const ActionModalWrapper = styled.div`
   display: flex;
   align-items: center;
   padding: 20px;
-  border-top: 1px solid #eee;
+  border-top: 1px solid ${props => props.theme.secondaryColor};
 `;
 
 export const ActionGroupWrapper = styled.div`
@@ -163,10 +163,10 @@ export const ActionGroupWrapper = styled.div`
   left: 200px;
   padding: 15px;
   box-shadow: 0 -4px 5px -3px rgba(0, 0, 0, 0.1);
-  background: #fff;
+  background: ${props => props.theme.secondaryColor};
   width: 100%;
   z-index: 1;
-  border-top: 1px solid #ededed;
+  border-top: 1px solid ${props => props.theme.secondaryColor};
   height: 65px;
   max-height: 65px;
   @media (max-width: 1280px) {
@@ -175,8 +175,8 @@ export const ActionGroupWrapper = styled.div`
 `;
 
 export const SubmitButtonStyled = styled.button`
-  color: #fff;
-  background-color: #2fa3e6;
+  color: ${props => props.theme.secondaryColor};
+  background-color: ${props => props.theme.submitColor};
   text-align: center;
   border: 1px solid transparent;
   border-radius: 3px;
@@ -189,7 +189,7 @@ export const SubmitButtonStyled = styled.button`
 
 export const CancelButtonStyled = styled.button`
   text-align: center;
-  border: 1px solid #ddd;
+  border: 1px solid ${props => props.theme.secondaryColor};
   border-radius: 3px;
   padding: 6px 12px;
   margin-left: 10px;
@@ -200,7 +200,7 @@ export const CancelButtonStyled = styled.button`
 `;
 
 export const ErrorMessageStyled = styled.div`
-  color: #ea2745;
+  color: ${props => props.theme.errorColor};
   margin-left: 20px;
   margin-bottom: 20px;
 `;
@@ -212,8 +212,8 @@ export const ActionButton = styled.div`
     cursor: pointer;
     max-width: 200px;
     background-color: #556080;
-    color: #fff;
-    border: #fff;
+    color: ${props => props.theme.secondaryColor};
+    border: ${props => props.theme.secondaryColor};
     margin: 0px 5px;
     font-weight: 600;
     &:hover {
@@ -277,9 +277,9 @@ export const ButtonGroupWrapper = styled.div`
 `;
 
 export const ConfirmModalWrapper = styled.div`
-  background-color: #fff;
+  background-color: ${props => props.theme.secondaryColor};
   border-radius: 7px;
-  border: 1px solid #ddd;
+  border: 1px solid ${props => props.theme.secondaryColor};
   box-shadow: 0 3px 9px #00000080;
   position: fixed;
   top: 50px;
@@ -293,8 +293,8 @@ export const ConfirmModalWrapper = styled.div`
 
 export const HistoryWrapper = styled.div`
   padding: 20px;
-  background-color: #fbfafa;
-  border-bottom: 1px solid #ebebeb;
+  background-color: ${props => props.theme.secondaryColor};
+  border-bottom: 1px solid ${props => props.theme.secondaryColor};
 `;
 
 export const HistoryListWrapper = styled.div`
@@ -307,7 +307,7 @@ export const HistoryItem = styled.div`
   position: relative;
   &:before {
     content: '';
-    border-left: 1px solid #e4e4e4;
+    border-left: 1px solid ${props => props.theme.secondaryColor};
     position: absolute;
     left: 162px;
     top: 0;
@@ -344,8 +344,8 @@ export const HistoryContent = styled.div`
   }
   i {
     margin-right: 10px;
-    background: #f6fbff;
-    border: 1px solid #d3dce4;
+    background: ${props => props.theme.secondaryColor};
+    border: 1px solid ${props => props.theme.secondaryColor};
     border-radius: 50%;
     flex: 0 0 25px;
     height: 25px;
@@ -385,11 +385,11 @@ export const HistoryComment = styled.div`
     font-size: 13px;
     border: 1px solid #b0c0d6;
     border-radius: 3px;
-    background: #fff;
+    background: ${props => props.theme.secondaryColor};
     padding: 2px 8px;
     outline: none;
     &:hover {
-      border-color: #66afe9;
+      border-color: ${props => props.theme.submitColor};
     }
     &::placeholder {
       font-size: 13px;
@@ -402,16 +402,16 @@ export const HistoryComment = styled.div`
     padding: 5px 10px;
   }
   button {
-    background-color: #2fa3e6;
+    background-color: ${props => props.theme.submitColor};
     text-align: center;
     border: 1px solid transparent;
     border-radius: 3px;
-    color: #fff !important;
+    color: ${props => props.theme.secondaryColor} !important;
     padding: 6px 12px !important;
     margin-top: 10px;
     &:hover {
-      background-color: #1a6fa0;
-      border-color: #1a6fa0;
+      background-color: ${props => props.theme.iconMoreColor};
+      border-color: ${props => props.theme.iconMoreColor};
     }
   }
 `;
@@ -420,7 +420,7 @@ export const ViewMoreAction = styled.div`
   margin-bottom: 10px;
   button {
     font-size: 13px;
-    color: #206ec5;
+    color: ${props => props.theme.submitColor};
     padding: 0px;
   }
 `;

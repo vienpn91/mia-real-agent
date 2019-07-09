@@ -9,7 +9,7 @@ export const ProfileUserInfoWrapper = styled.div`
   width: 360px;
   min-height: 500px;
   z-index: 1;
-  background-color: #fff;
+  background-color: ${props => props.theme.secondaryColor}
 `;
 
 export const ProfileUserHead = styled.div`

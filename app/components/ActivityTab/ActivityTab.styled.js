@@ -2,13 +2,13 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 export const DashboardInfoUser = styled.div`
-  color: #000;
+  color: ${props => props.theme.textColor};
   font-size: 14px;
 `;
 
 export const DashboardLink = styled.a`
   font-weight: 600;
-  color: #000;
+  color: ${props => props.theme.textColor};
   margin:0 3px;
 `;
 
@@ -27,7 +27,7 @@ export const DashboardSubTitle = styled.h3`
 `;
 
 export const DashboardLinkTitle = styled(Link)`
-  color: #000;
+  color: ${props => props.theme.textColor};
   font-weight: 600;
   &:hover {
     color: #ff5402;
@@ -37,13 +37,13 @@ export const DashboardLinkTitle = styled(Link)`
 export const DashboardContent = styled.div`
   display: flex;
   padding: 16px;
-  background-color: #fff;
+  background-color: ${props => props.theme.secondaryColor}
   border: 1px solid #d1d5da;
   border-radius: 3px;
 `;
 
 export const DashboardTitle = styled.div`
-  color: #000;
+  color: ${props => props.theme.textColor};
 `;
 
 export const DashboardLeftBlock = styled.div`
@@ -55,7 +55,7 @@ export const DashboardRightBlock = styled.div`
 `;
 
 export const DashboardSubDesc = styled.span`
-  color: #000;
+  color: ${props => props.theme.textColor};
   margin-bottom: 15px;
 `;
 

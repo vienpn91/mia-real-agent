@@ -6,13 +6,13 @@ export const TopNavBarWrapper = styled.div`
     align-items: center;
     height: 64px;
     padding: 0px 15px;
-    background-color: #fff;
+    background-color: ${props => props.theme.secondaryColor}
     box-shadow: 0px 0px 6px -1px #d9d9d9;
     position: relative;
     z-index: 1;
   }
   .ant-dropdown-link {
-    color: #000;
+    color: ${props => props.theme.textColor};
   }
 `;
 
@@ -45,7 +45,7 @@ export const UserProfile = styled.div`
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
       border-bottom: 6px solid;
-      border-bottom-color: #fff;
+      border-bottom-color: ${props => props.theme.secondaryColor}
       top: -6px;
       content: '';
       left: 98%;
@@ -57,7 +57,7 @@ export const UserProfile = styled.div`
       &:hover {
         background-color: #fff7eb;
         a {
-          color: #000;
+          color: ${props => props.theme.textColor};
         }
       }
     }
@@ -100,7 +100,7 @@ export const Nav = styled.div`
   letter-spacing: 1px;
   cursor: pointer;
   a {
-    color: #000;
+    color: ${props => props.theme.textColor};
   }
   &:hover {
     border-bottom: 2px solid #ff5402;
