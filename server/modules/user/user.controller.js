@@ -2,8 +2,7 @@ import httpStatus from 'http-status';
 import jwt from 'jsonwebtoken';
 import BaseController from '../base/base.controller';
 import UserService from './user.service';
-import TicketService from '../ticket/ticket.service';
-import ChatlogService from '../chatlog/chatlog.service';
+
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import check from '../../utils/validate';
 import { VALIDATION_TYPE } from '../../../common/enums';
@@ -13,8 +12,6 @@ import {
   sendChangePasswordMail,
   sendUpdateProfileMail,
 } from '../../mail';
-import AgentQueue from '../queue/agentQueue';
-import { authenticateSocketIO } from '../../middlewares/authenticateMiddlewares';
 
 class UserController extends BaseController {
   constructor() {
@@ -160,81 +157,6 @@ class UserController extends BaseController {
         password,
       );
       return res.status(httpStatus.OK).send({ confirmed });
-    } catch (error) {
-      return super.handleError(res, error);
-    }
-  }
-
-  async findAgent(req, res) {
-    try {
-      const { ticketId } = req.body;
-      const ticket = await TicketService.get(ticketId);
-      const { categories: ticketCategories } = ticket;
-      // Get owner information
-      const queue = AgentQueue.get();
-      let agents = queue.filter(
-        ({ categories }) => {
-          if (!categories) {
-            return false;
-          }
-          return categories
-            .some(category => ticketCategories.includes(category));
-        }
-      );
-      if (agents.length === 0) {
-        agents = queue;
-      }
-      const agent = agents[Math.floor(Math.random() * agents.length)];
-      if (agent) {
-        const { socketId } = agent;
-        const { socketIO } = global.socketIOServer;
-        const { connected } = socketIO.sockets;
-        const socket = connected[socketId];
-        // Emit ticket infomation to agent
-        if (socket) {
-          const { _doc } = ticket;
-          socket.emit('REQUEST_AVAILABLE', _doc);
-        }
-      }
-      return res.status(httpStatus.OK).send({ agent });
-    } catch (error) {
-      return super.hticketandleError(res, error);
-    }
-  }
-
-  async acceptRequest(req, res) {
-    try {
-      const { model } = req;
-      const { ticketId, isConfirm } = req.body;
-      const ticket = await TicketService.get(ticketId);
-      const { owner } = ticket;
-      const { _id } = model;
-      if (isConfirm) {
-        AgentQueue.remove(_id);
-        // Update asignnee for ticket
-        TicketService.update(ticketId,
-          { assignee: _id });
-        // Create chat here
-        ChatlogService.insert({
-          ticketId,
-          from: owner,
-          to: _id,
-        });
-      }
-      const { socketIO } = global.socketIOServer;
-      const { connected } = socketIO.sockets;
-      const sockets = Object.keys(connected).map(i => connected[i]);
-      sockets.forEach(
-        async (socket) => {
-          const { data: user } = await authenticateSocketIO(socket);
-          const { _id: userId } = user;
-          if (userId.toString() === owner.toString()) {
-            const { _doc } = ticket;
-            socket.emit('REQUEST_CONFIRM', { ticketId: _doc.ticketId, isConfirm });
-          }
-        }
-      );
-      return res.status(httpStatus.OK).send({ agentId: _id });
     } catch (error) {
       return super.handleError(res, error);
     }

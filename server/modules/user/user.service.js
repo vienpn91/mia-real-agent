@@ -10,7 +10,6 @@ import {
   sendUserVerifyMail,
   sendUserRegisterSuccessMail,
 } from '../../mail';
-import { REQUEST_STATUS } from '../../../common/enums';
 
 const { SECRET_KEY_JWT } = process.env;
 const JWT_OPTIONS = {

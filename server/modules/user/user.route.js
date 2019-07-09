@@ -33,14 +33,6 @@ class UserRouter extends BaseRouter {
       '/checkPassword',
       UserController.checkPassword,
     );
-    this.router.post(
-      '/agent/findAvailable',
-      UserController.findAgent,
-    );
-    this.router.post(
-      '/agent/accept/:id',
-      UserController.acceptRequest,
-    );
   }
 }
 
