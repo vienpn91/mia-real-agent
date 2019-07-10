@@ -1,1 +1,1 @@
-export { default } from '../../containers/Registration';
+export { default } from './Registration';

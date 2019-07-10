@@ -16,7 +16,7 @@ import ChatbotComponent from './pages/Chatbot';
 import TicketManagement from './pages/TicketManagement';
 
 import AdminDashboard from './pages/AdminDashboard';
-
+import { RegistrationIndividual, RegistrationBusiness } from './containers/Registration';
 
 export default class App extends React.PureComponent {
   render() {
@@ -31,6 +31,8 @@ export default class App extends React.PureComponent {
         <UnauthRoute exact path="/" component={HomePage} />
         <UnauthRoute exact path="/login" component={Login} />
         <UnauthRoute exact path="/register" component={Registration} />
+        <UnauthRoute exact path="/register/individual" component={RegistrationIndividual} />
+        <UnauthRoute exact path="/register/business" component={RegistrationBusiness} />
         <UnauthRoute exact path="/greeting" component={ThankForRegistering} />
         <UnauthRoute
           path="/login/callback/:token/:userId/:email/:verifiedAt"
