@@ -45,11 +45,6 @@ class Tickets extends React.PureComponent {
     history.push(`/ticket/${ticketId}${userRole === ROLES.AGENT ? `/${owner}` : ''}`);
   }
 
-  handleRemoveTicket = (ticketId) => {
-    const { removeTicket } = this.props;
-    removeTicket(ticketId);
-  }
-
   handleArchiveTicket = (ticketId) => {
     const { archiveTicket } = this.props;
     archiveTicket(ticketId);
@@ -116,9 +111,9 @@ class Tickets extends React.PureComponent {
   )
 
   render() {
-    const { fetchingContext = {}, isArchiving, isRemoving } = this.props;
+    const { fetchingContext = {}, isArchiving } = this.props;
     const { isFetching } = fetchingContext;
-    const loading = isFetching || isArchiving || isRemoving;
+    const loading = isFetching || isArchiving;
     if (loading) {
       return <SpinnerLoading />;
     }
@@ -135,13 +130,11 @@ class Tickets extends React.PureComponent {
 
 Tickets.propTypes = {
   isArchiving: bool.isRequired,
-  isRemoving: bool.isRequired,
   tickets: PropTypes.array,
   getAllAction: PropTypes.func,
   fetchingContext: PropTypes.object,
   userRole: string.isRequired,
-  openSetting: func.isRequired,
-  removeTicket: func.isRequired,
+  openSetting: func,
   archiveTicket: func.isRequired,
 };
 

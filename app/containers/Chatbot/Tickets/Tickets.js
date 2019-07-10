@@ -8,14 +8,11 @@ const mapStateToProps = state => ({
   fetchingContext: selectors.getFetchingContext(state),
   isArchiving: selectors.getTicketIsArchiving(state),
   archiveError: selectors.getTicketArchiveError(state),
-  isRemoving: selectors.getTicketIsRemoving(state),
-  removeError: selectors.getTicketRemoveError(state),
   userRole: getUserRole(state),
 });
 
 const mapDispatchToProps = {
   getAllAction: actions.getAllAction,
-  removeTicket: actions.removeAction,
   archiveTicket: actions.archiveAction,
 };
 
