@@ -1,9 +1,15 @@
-import BaseRouter from '../base/base.route';
+import BaseRouter from '../../base/base.route';
 import UserController from './user.controller';
 
-class UserRouter extends BaseRouter {
+class AdminUserRouter extends BaseRouter {
   constructor() {
     super(UserController);
+    this.router.post('/', UserController.createUser);
+    this.router.put(
+      '/assign-role/:id',
+      UserController.assignRoles,
+    );
+
     this.router.get(
       '/:id',
       UserController.getUserProfile,
@@ -17,14 +23,10 @@ class UserRouter extends BaseRouter {
       UserController.changePassword,
     );
     this.router.post(
-      '/createPassword',
+      '/:id/createPassword',
       UserController.createPassword,
-    );
-    this.router.post(
-      '/checkPassword',
-      UserController.checkPassword,
     );
   }
 }
 
-export default new UserRouter();
+export default new AdminUserRouter();

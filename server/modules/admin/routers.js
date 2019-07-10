@@ -3,11 +3,13 @@ import { ROLES } from '../../../common/enums';
 import { allow } from '../../middlewares/verifyMiddlewares';
 
 /* routers */
-import AdminTicketRouter from './ticket/ticket.route';
+import TicketRouter from './ticket/ticket.route';
+import UserRouter from './user/user.route';
 
 const router = Router();
 
 router.use(allow(ROLES.ADMIN));
-router.use('/tickets', AdminTicketRouter.router);
+router.use('/tickets', TicketRouter.router);
+router.use('/users', UserRouter.router);
 
 export default { router };
