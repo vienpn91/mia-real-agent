@@ -22,7 +22,7 @@ const applicationSchema = new Schema(
     country: { type: String, trim: true },
     phone: { type: String, trim: true },
     email: { type: String, trim: true },
-    work_experience: [
+    workExperiences: [
       {
         title: { type: String, trim: true },
         company: { type: String, trim: true },
@@ -30,10 +30,10 @@ const applicationSchema = new Schema(
         from: Date,
         to: Date,
         isWorking: Boolean,
-        role_description: { type: String },
+        roleDescription: { type: String },
       },
     ],
-    education: [
+    educations: [
       {
         school: { type: String, trim: true },
         degree: { type: String, trim: true },
