@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Registration from '../../components/Registration/RegistrationBusiness';
+import { RegistrationBusiness } from '../../components/Registration';
 import { selectErrorMessage, getIsLoading, register } from '../../reducers/auth';
 
 const mapStateToProps = state => ({
@@ -11,4 +11,4 @@ const mapDispatchToProps = {
   register,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Registration);
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrationBusiness);
