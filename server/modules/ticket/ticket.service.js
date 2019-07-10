@@ -18,7 +18,7 @@ class TicketService extends BaseService {
   }
 
   async getAll(condition, options) {
-    const { skip = 0, limit, sort = { createdAt: -1 } } = options;
+    const { skip = 0, limit = 10, sort = { createdAt: -1 } } = options;
     const notDeletedCondition = {
       $or: [
         { deleted: { $exists: false } },
@@ -39,7 +39,7 @@ class TicketService extends BaseService {
       .find(queryCondition, null, options)
       .sort(sort)
       .skip(+skip)
-      .limit(+limit || 0)
+      .limit(+limit || 10)
       .exec();
 
     return {

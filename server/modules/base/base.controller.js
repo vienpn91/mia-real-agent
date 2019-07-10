@@ -74,7 +74,7 @@ export default class BaseController {
   getAll = async (req, res) => {
     try {
       const {
-        skip, limit, sort, ...params
+        skip = 0, limit = 10, sort, ...params
       } = req.query;
       const option = { skip, limit };
       if (sort) {
