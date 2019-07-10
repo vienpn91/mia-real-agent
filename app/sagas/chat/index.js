@@ -7,9 +7,9 @@ import { notification } from 'antd';
 import {
   actions, GET_CHAT, INSERT_MESSAGE, UPDATE_CHAT, FIND_AGENT, ACCEPT_AGENT, REQUEST_CONFIRM, selectors,
 } from '../../reducers/chat';
-import { actions as TicketActions } from '../../reducers/ticket';
 import * as ChatApi from '../../api/chat';
 import * as UserApi from '../../api/user';
+import * as AgentApi from '../../api/agent';
 import { configToken } from '../../api/config';
 import { getToken } from '../../reducers/auth';
 import { combineChat } from './utils';
@@ -69,7 +69,7 @@ export function* sendMessage({ payload }) {
 export function* findAvailableAgent({ payload }) {
   yield configAxiosForChat();
   const { ticketId } = payload;
-  const { response, error } = yield call(UserApi.findAvailableAgent, ticketId);
+  const { response, error } = yield call(AgentApi.findAvailableAgent, ticketId);
   if (error) {
     const errorMessage = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE
@@ -90,7 +90,7 @@ export function* findAvailableAgent({ payload }) {
 export function* acceptAgent({ payload }) {
   yield configAxiosForChat();
   const { agentId } = payload;
-  const { error } = yield call(UserApi.acceptAgent, agentId);
+  const { error } = yield call(AgentApi.acceptAgent, agentId);
   if (error) {
     const errorMessage = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE
@@ -107,7 +107,7 @@ export function* confirmRequest({ payload }) {
     agentId, ticketId: _id, isConfirm,
     redirectData,
   } = payload;
-  const { error } = yield call(UserApi.acceptAgent, agentId, _id, isConfirm);
+  const { error } = yield call(AgentApi.acceptAgent, agentId, _id, isConfirm);
   if (error) {
     const errorMessage = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE

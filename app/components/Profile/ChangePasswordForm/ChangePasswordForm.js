@@ -52,7 +52,7 @@ export default class ChangePasswordForm extends PureComponent {
                 <Col sm={24} xs={24}>
                   <FormInput
                     name="currentPassword"
-                    type="text"
+                    type="password"
                     label="Current Password"
                   />
                 </Col>
@@ -61,7 +61,7 @@ export default class ChangePasswordForm extends PureComponent {
                 <Col sm={24} xs={24}>
                   <FormInput
                     name="newPassword"
-                    type="text"
+                    type="password"
                     label="New Password"
                   />
                 </Col>
@@ -70,7 +70,7 @@ export default class ChangePasswordForm extends PureComponent {
                 <Col sm={24} xs={24}>
                   <FormInput
                     name="confirmNewPassword"
-                    type="text"
+                    type="password"
                     label="Confirm new Password"
                   />
                 </Col>

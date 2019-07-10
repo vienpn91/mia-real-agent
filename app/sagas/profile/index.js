@@ -64,8 +64,9 @@ function* updateProfile({ payload }) {
 
 function* changePassword({ payload }) {
   yield configAxiosForProfile();
+  const userId = yield select(getUserId);
   const { currentPassword, newPassword } = payload;
-  const { response, error } = yield call(UserApi.changePassword, currentPassword, newPassword);
+  const { response, error } = yield call(UserApi.changePassword, userId, currentPassword, newPassword);
   if (error) {
     const message = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE

@@ -12,19 +12,6 @@ class AuthRouter {
       AuthController.sendVericationEmail,
     );
     this.router.get('/verify/:token', AuthController.verifyAccount);
-    // Temporary disable google login
-    // this.router.get(
-    //   '/login/google',
-    //   passport.authenticate('google', {
-    //     scope: ['email'],
-    //     session: false,
-    //   }),
-    // );
-
-    // this.router.get(
-    //   '/login/google/callback',
-    //   AuthController.loginWithGoogleCallback,
-    // );
 
     this.router.get(
       '/login/facebook',

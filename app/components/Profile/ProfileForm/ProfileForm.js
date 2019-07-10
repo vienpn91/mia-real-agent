@@ -106,15 +106,17 @@ export default class ProfileForm extends Component {
         onCancel={this.handleCancel}
         footer={
           !passwordConfirmed
-            ? [
-              <Button key="back" onClick={this.handleCancel}>
+            ? (
+              <>
+                <Button key="back" onClick={this.handleCancel}>
                 Return
-              </Button>,
-              <Button key="submit" type="primary" onClick={this.handlePasswordSubmit}>
+                </Button>
+                <Button key="submit" type="primary" onClick={this.handlePasswordSubmit}>
                 Submit
-              </Button>,
-            ]
-            : []
+                </Button>
+              </>
+            )
+            : null
         }
       >
         <LoadingSpin loading={loading}>

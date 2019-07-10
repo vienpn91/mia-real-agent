@@ -22,7 +22,7 @@ class UserRouter extends BaseRouter {
       UserController.updateUserProfile,
     );
     this.router.post(
-      '/changePassword',
+      '/:id/changePassword',
       UserController.changePassword,
     );
     this.router.post(
@@ -32,14 +32,6 @@ class UserRouter extends BaseRouter {
     this.router.post(
       '/checkPassword',
       UserController.checkPassword,
-    );
-    this.router.post(
-      '/agent/findAvailable',
-      UserController.findAgent,
-    );
-    this.router.post(
-      '/agent/accept/:id',
-      UserController.acceptRequest,
     );
   }
 }

@@ -4,12 +4,14 @@ import ApplicationService from './application.service';
 import UserService from '../user/user.service';
 // import { randomPassword } from '../../utils/utils';
 import { hashFunc } from '../../utils/bcrypt';
-import { ROLES } from '../../../common/enums';
+import { ROLES, APPLICATION_STATUS } from '../../../common/enums';
 
 class ApplicationController extends BaseController {
   constructor(service) {
     super(service);
     this.approveApplication = this.approveApplication.bind(this);
+    this.rejectApplication = this.rejectApplication.bind(this);
+    this.reviewApplication = this.reviewApplication.bind(this);
     this.updateStatus = this.updateStatus.bind(this);
   }
 
@@ -29,23 +31,37 @@ class ApplicationController extends BaseController {
 
       const user = await UserService.insert(newUserPayload);
 
+      await this.updateStatus(application, APPLICATION_STATUS.APPROVED);
+
       return res.status(httpStatus.OK).send(user);
     } catch (error) {
       return this.handleError(res, error);
     }
   }
 
-  async updateStatus(req, res) {
+  async rejectApplication(req, res) {
     try {
-      const { model: application, params: { status } } = req;
-
-      application.set({ status });
-      await application.save();
-
-      return res.status(httpStatus.OK).send(application);
+      const { model: application } = req;
+      await this.updateStatus(application, APPLICATION_STATUS.REJECTED);
+      return res.status(httpStatus.OK).send();
     } catch (error) {
       return this.handleError(res, error);
     }
+  }
+
+  async reviewApplication(req, res) {
+    try {
+      const { model: application } = req;
+      await this.updateStatus(application, APPLICATION_STATUS.REVIEWING);
+      return res.status(httpStatus.OK).send();
+    } catch (error) {
+      return this.handleError(res, error);
+    }
+  }
+
+  async updateStatus(application, status) {
+    application.set({ status });
+    await application.save();
   }
 }
 
