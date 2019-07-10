@@ -4,7 +4,7 @@ import {
   Layout, Avatar, Icon, Menu,
 } from 'antd';
 import { Link } from 'react-router-dom';
-import { func } from 'prop-types';
+import { func, string } from 'prop-types';
 import {
   TopNavBarWrapper,
   Logo,
@@ -19,6 +19,7 @@ const { Header } = Layout;
 export default class TopNavBar extends Component {
   static propTypes = {
     logout: func.isRequired,
+    email: string.isRequired,
   }
 
   state = {
@@ -40,7 +41,7 @@ export default class TopNavBar extends Component {
   renderLogo = () => (
     <Logo>
       <Link to="/dashboard">
-        <Avatar src="../../assets/images/logo.png" />
+        <Avatar src="../../assets/images/logo-small-white.png" />
       </Link>
     </Logo>
   )
@@ -75,10 +76,11 @@ export default class TopNavBar extends Component {
 
   renderUserProfile = () => {
     const { isDropdownOpen } = this.state;
+    const { email } = this.props;
     return (
       <UserProfile onClick={this.openDropdown} onMouseLeave={this.closeDropdown}>
         <Avatar src="https://modworkshop.net/mydownloads/previews/preview_698_1433195641_d29bf7dc71da094fc00de7f15b1280f1.jpg" />
-        <UserName>Tri Dep Trai</UserName>
+        <UserName>{email}</UserName>
         {isDropdownOpen && this.renderDropdownProfile()}
       </UserProfile>
     );

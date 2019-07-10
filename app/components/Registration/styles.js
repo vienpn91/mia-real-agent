@@ -17,7 +17,7 @@ export const RegistrationItem = styled.div`
   width: 720px;
   display: flex;
   flex-direction: column;
-  background-color: #ffffffe0;
+  background-color: ${props => props.theme.secondaryColor};
   box-shadow: 0px 0px 12px -2px #2a3a51;
   padding: 50px;
   color: #6e6c83fa;
@@ -56,25 +56,25 @@ export const RegistrationInput = styled(Input)`
 
 export const RegistrationLabel = styled.div`
   margin-bottom: 7.5px;
-  color: #000;
+  color: ${props => props.theme.textColor};
 `;
 
 export const RegistrationBtn = styled.button`
   height: 50px;
   width: 100%;
   border-radius: 50px;
-  border: 1px solid #000;
+  border: 1px solid ${props => props.theme.textColor};
   transition: .3s ease;
-  background: #000;
-  color: #fff;
+  background: ${props => props.theme.textColor};
+  color: ${props => props.theme.secondaryColor};
   cursor: pointer;
   margin-bottom: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
   &:hover {
-    background: #fff;
-    color: #000;
+    background: ${props => props.theme.secondaryColor};
+    color: ${props => props.theme.textColor};
   }
 `;
 

@@ -8,9 +8,9 @@ export const ChatbotWrapper = styled.div`
 `;
 
 export const ChatbotTicketListWrapper = styled.div`
-  flex: 0 0 350px;
-  color: #000;
-  background-color: #fff;
+  flex: 0 0 400px;
+  color: ${props => props.theme.textColor};
+  background-color: ${props => props.theme.secondaryColor};
   border-right: 1px solid #d9d9d9;
   transition: all 300ms ease;
   .ant-input-search {
@@ -34,9 +34,9 @@ export const ChatbotTicketListWrapper = styled.div`
   }
   .ant-menu-item {
     line-height: normal;
-    color: #000;
+    color: ${props => props.theme.textColor};
     &:hover {
-      color: #000;
+      color: ${props => props.theme.textColor};
       background-color: #f5f6f7;
       border-bottom: 1px solid #d9d9d9;
       .anticon-setting {
@@ -56,7 +56,7 @@ export const ChatbotTicketListWrapper = styled.div`
     margin-right: 10px;
   }
   .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-    color: #000;
+    color: ${props => props.theme.textColor};
     background-color: #f5f6f7;
     border-bottom: 1px solid #d9d9d9;
   }
@@ -73,20 +73,20 @@ export const ChatbotTicketListWrapper = styled.div`
       flex: 1;
       text-align: center;
       margin: 0px;
-      color: #000;
+      color: ${props => props.theme.textColor};
       opacity: 0.6;
       &:hover {
-        color: #000;
+        color: ${props => props.theme.textColor};
         opacity: 1;
       }
     }
     .ant-tabs-tab-active {
-      color: #000;
+      color: ${props => props.theme.textColor};
       font-weight: bold;
       opacity: 1;
     }
     .ant-tabs-ink-bar {
-      background-color: #000;
+      background-color: ${props => props.theme.textColor};
     }
   }
   @media (max-width: 1024px) {
@@ -114,7 +114,7 @@ export const ChatbotTicketListWrapper = styled.div`
 export const ChatbotContentWrapper = styled.div`
   flex: 1;
   .ant-breadcrumb {
-    background-color: #fff;
+    background-color: ${props => props.theme.secondaryColor};
     height: 60px;
     display: flex;
     align-items: center;
@@ -212,7 +212,7 @@ export const TicketFilterWrapper = styled.div`
     border-radius: 4px;
   }
   .ant-select-selection--multiple {
-    color: #fff;
+    color: ${props => props.theme.secondaryColor};
     border: 1px solid #d9d9d9;
     &:hover {
       border-color: #b1b1b1;
@@ -231,7 +231,7 @@ export const TicketPaginationWrapper = styled.div`
   padding: 0 16px;
   text-align: center;
   .ant-pagination-item.ant-pagination-item-active a {
-    color: #000;
+    color: ${props => props.theme.textColor};
   }
   .ant-pagination-item-active {
     border-color: #d9d9d9;
@@ -250,13 +250,13 @@ export const TicketButton = styled.div`
   cursor: pointer;
   &:hover {
     background-color: #279cd4;
-    color: #fff;
+    color: ${props => props.theme.secondaryColor};
   }
 `;
 
 export const MessageBoxWrapper = styled.div`
   height: 100vh;
-  background: #fff;
+  background: ${props => props.theme.secondaryColor};
   position: relative;
 `;
 
@@ -297,7 +297,7 @@ export const MessageBoxItem = styled.div`
     }
     p {
       float: right;
-      color: #fff;
+      color: ${props => props.theme.secondaryColor};
       background-color: #ff5504;
     }
     > div{
@@ -313,7 +313,7 @@ export const MessageBoxHeaderWrapper = styled.div`
   display: flex;
   flex-direction: column;
   .ant-breadcrumb-link {
-    color: #000;
+    color: ${props => props.theme.textColor};
   }
 `;
 
@@ -334,7 +334,7 @@ export const MessageInputWrapper = styled.div`
   bottom: 0px;
   display: flex;
   align-items: center;
-  background-color: #fff;
+  background-color: ${props => props.theme.secondaryColor};
   border-top: 1px solid #ddd;
   height: 60px;
   width: 100%;
@@ -383,7 +383,7 @@ export const InputAction = styled.label`
   color: #b5b5b5;
   cursor: pointer;
   &:hover {
-    color: #000;
+    color: ${props => props.theme.textColor};
   }
 `;
 
@@ -435,7 +435,7 @@ export const TicketInfoWrapper = styled.div`
       }
       .ant-descriptions-item-content {
         font-size: 15px;
-        color: #000;
+        color: ${props => props.theme.textColor};
       }
     }
   }

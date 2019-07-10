@@ -12,6 +12,7 @@ import '@babel/polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { ThemeProvider } from 'styled-components';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ConnectedRouter } from 'connected-react-router';
 import FontFaceObserver from 'fontfaceobserver';
@@ -31,6 +32,7 @@ import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line import/e
 
 import configureStore from './store';
 import AgentAcceptRequestContainer from './containers/AgentAcceptRequest/AgentAcceptRequestContainer';
+import theme from './assets/theme';
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
@@ -51,12 +53,14 @@ const render = () => {
     <>
       <GlobalStyle />
       <Provider store={store}>
-        <PersistGate loading={<SpinnerLoading />} persistor={persistor}>
-          <ConnectedRouter history={history}>
-            <App history={history} />
-            <AgentAcceptRequestContainer />
-          </ConnectedRouter>
-        </PersistGate>
+        <ThemeProvider theme={theme}>
+          <PersistGate loading={<SpinnerLoading />} persistor={persistor}>
+            <ConnectedRouter history={history}>
+              <App history={history} />
+              <AgentAcceptRequestContainer />
+            </ConnectedRouter>
+          </PersistGate>
+        </ThemeProvider>
       </Provider>
     </>,
     MOUNT_NODE,

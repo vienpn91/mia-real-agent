@@ -24,10 +24,11 @@ export const FilterItem = styled.div`
   > * {
     height: 100%;
   }
+  background-color: ${props => props.theme.textColorSecondary};
   input {
     border: 1px solid #d9d9d9;
     border-left: none;
-    background-color: #fff;
+    background-color: ${props => props.theme.secondaryColor}
     box-shadow: inset 0 1px 2px rgba(27,31,35,.075);
     border-radius: 0px 3px 3px 0px;
     padding: 0px 8px;
@@ -40,7 +41,7 @@ export const FilterItem = styled.div`
     position: absolute;
     left: 0px;
     top: 35px;
-    background-color: #fff;
+    background-color: ${props => props.theme.secondaryColor};
     border-radius: 3px;
     border: 1px solid #d9d9d9;
     width: 220px;
@@ -60,13 +61,13 @@ export const FilterItem = styled.div`
       &:hover {
         background-color: #ff5402;
         border-bottom: 1px solid #ff5402;
-        color: #fff;
+        color: ${props => props.theme.secondaryColor};
       }
     }
     .ant-menu-item.ant-menu-item-selected {
       background-color: #ff5402;
       border-bottom: 1px solid #ff5402;
-      color: #fff;
+      color: ${props => props.theme.secondaryColor};
     }
   }
 `;
@@ -78,7 +79,7 @@ export const Filter = styled.div`
   display: flex;
   align-items: center;
   a {
-    background-color: #fff;
+    background-color: ${props => props.theme.secondaryColor};
     background-image: linear-gradient(-180deg,#fff,#eff3f6 90%);
     background-position: -1px -1px;
     background-repeat: repeat-x;
@@ -91,7 +92,7 @@ export const Filter = styled.div`
     padding: 8px 12px;
     height: 100%;
     &:hover {
-      color: #000;
+      color: ${props => props.theme.textColor};
     }
     &:first-child {
       border-right: 1px solid #d9d9d9;
@@ -117,7 +118,7 @@ export const TicketPaginationWrapper = styled.div`
   padding: 0 16px;
   text-align: center;
   .ant-pagination-item.ant-pagination-item-active a {
-    color: #000;
+    color: ${props => props.theme.textColor};
   }
   .ant-pagination-item-active {
     border-color: #d9d9d9;

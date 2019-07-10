@@ -16,10 +16,10 @@ export const ProfileCard = styled.div`
   width: 720px;
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background-color: ${props => props.theme.secondaryColor}
   box-shadow: 0 3px 10px 3px #e7e7e7;
   padding: 50px;
-  color: #000;
+  color: ${props => props.theme.textColor};
 `;
 
 export const ProfileTitle = styled.div`
@@ -46,7 +46,7 @@ export const InputStyled = styled.div`
 `;
 
 export const InputLabelStyled = styled.div`
-  color: #000;
+  color: ${props => props.theme.textColor};
   label{
     float: left;
     ::after{

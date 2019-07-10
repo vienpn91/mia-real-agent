@@ -91,7 +91,7 @@ class Login extends Component {
                       type="email"
                       name="email"
                       label="Email"
-                      login
+                      login={1}
                     />
                   </Col>
                 </Row>
@@ -101,7 +101,7 @@ class Login extends Component {
                       type="password"
                       name="password"
                       label="Password"
-                      login
+                      login={1}
                     />
                   </Col>
                 </Row>
@@ -117,12 +117,12 @@ class Login extends Component {
           </Formik>
           <LoginFBBtn href="api/auth/login/facebook">
             <i className="mia-facebook" />
-                  Login with Facebook
+            Login with Facebook
           </LoginFBBtn>
           <LoginFooter>
             <LoginFooterText>Don't have an account?</LoginFooterText>
             <LoginFooterLink href="/register">
-                    Register now!
+              Register now!
             </LoginFooterLink>
           </LoginFooter>
         </LoginItem>

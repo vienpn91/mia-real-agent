@@ -9,10 +9,10 @@ import { bool, func, string } from 'prop-types';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { DefaultButton } from 'components/Generals/General.styled';
-import FormInput from '../../FormInput/FormInput';
+import FormInput from '../FormInput/FormInput';
 import { ActionBar } from './styles';
-import { CATEGORY_OPTIONS } from '../../../../common/enums';
-import LoadingSpin from '../../Loading';
+import { CATEGORY_OPTIONS } from '../../../common/enums';
+import LoadingSpin from '../Loading';
 
 const initialValues = {
   title: '',

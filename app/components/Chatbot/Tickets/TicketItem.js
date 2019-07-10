@@ -24,7 +24,7 @@ class TicketItem extends React.PureComponent {
   render() {
     const {
       ticket = {}, userRole,
-      onRemove, onArchive,
+      onArchive,
     } = this.props;
     const {
       title, status, category, createdAt,
@@ -52,7 +52,6 @@ class TicketItem extends React.PureComponent {
               >
                 <Menu.Item key="Archive" onClick={onArchive}>Archive</Menu.Item>
                 <Menu.Item key="Edit" onClick={this.handleOpenSetting}>Edit</Menu.Item>
-                <Menu.Item key="Remove" onClick={onRemove}>Remove</Menu.Item>
               </SubMenu>
             </MenuStyled>
           )}
@@ -65,8 +64,7 @@ class TicketItem extends React.PureComponent {
 
 TicketItem.propTypes = {
   ticket: PropTypes.object,
-  openSetting: func.isRequired,
-  onRemove: func.isRequired,
+  openSetting: func,
   onArchive: func.isRequired,
   userRole: string.isRequired,
 };

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import CreateTicketForm from '../../../components/Chatbot/CreateTicket';
+import CreateTicketForm from 'components/CreateTicket';
 import { actions, selectors } from '../../../reducers/ticket';
 
 const mapStateToProps = state => ({

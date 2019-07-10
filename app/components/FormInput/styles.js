@@ -30,7 +30,7 @@ export const CheckMark = styled.span`
     left: 0;
     height: 20px;
     width: 20px;
-    background-color: #fff;
+    background-color: ${props => props.theme.secondaryColor}
     border: 1px solid var(--zigvy-col-border);
     border-radius: 4px;
 `;
@@ -128,7 +128,7 @@ export const InputStyled = styled(Input)`
 `;
 
 export const InputWrapperStyled = styled(Form.Item)`
-  color: #000;
+  color: ${props => props.theme.textColor};
   label{
     float: left;
     color: #000 !important;
@@ -150,10 +150,10 @@ export const InputWrapperStyled = styled(Form.Item)`
       border: 1px solid #000 !important;
     }
     &:hover {
-      border-color: #000;
+      border-color: ${props => props.theme.textColor};
     }
     .anticon-down {
-      color: #000;
+      color: ${props => props.theme.textColor};
     }
   }
   .ant-select-open .ant-select-selection {
