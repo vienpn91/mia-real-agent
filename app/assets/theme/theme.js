@@ -3,6 +3,7 @@ const theme = {
   secondaryColor: '#ffffff',
   submitColor: '#2697ea',
   cancelColor: '#898c8e',
+  borderColor: '#d9d9d9',
   errorColor: '#b52d2d',
   iconCloseColor: '#eb9388',
   iconCloseHoverColor: '#d50000',
