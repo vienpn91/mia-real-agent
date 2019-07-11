@@ -6,7 +6,10 @@ export const TableBorderWrapperStyled = styled.div`
 `;
 
 export const TableBorderTopHeader = styled.div`
+  box-shadow: 0px 0px 10px -6px #000;
   padding: 15px 20px;
+  position: relative;
+  z-index: 1;
 `;
 
 export const TableBorderContent = styled.div`
@@ -35,7 +38,7 @@ export const TableLoadingStyled = styled.div`
   position: absolute;
   width: 100%;
   height: calc(100% - 40px);
-  background: ${props => props.theme.secondaryColor}
+  background: ${props => props.theme.secondaryColor};
   z-index: 1;
   top: 40px;
 `;

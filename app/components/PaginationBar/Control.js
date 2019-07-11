@@ -15,10 +15,10 @@ class Control extends PureComponent {
     let className = '';
     switch (controlKey) {
       case 'prev':
-        className = 'icon-prev';
+        className = 'mia-chevron-left';
         break;
       case 'next':
-        className = 'icon-next';
+        className = 'mia-chevron-right';
         break;
       default:
         break;
