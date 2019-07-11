@@ -63,7 +63,7 @@ function* createTicket({ payload }) {
 
 function* getAllTicket({ payload }) {
   yield configAxiosForTicket();
-  const { response, error } = yield call(TicketApi.adminGetAllTicket, payload);
+  const { response, error } = yield call(TicketApi.getAllTicket, payload);
   if (error) {
     const message = _get(
       error, 'response.data.message', error.message
