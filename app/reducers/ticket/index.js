@@ -31,6 +31,8 @@ export const TICKET_FETCH = 'ticket/TICKET_FETCH';
 
 export const TICKET_CHANGE_PAGE = 'ticket/TICKET_CHANGE_PAGE';
 
+export const TICKET_ADMIN_GET_ALL = 'ticket/ADMIN_GET_ALL';
+
 // action creator
 
 const createAction = payload => ({
@@ -49,6 +51,11 @@ const createFailAction = errorMessage => ({
   payload: {
     errorMessage,
   },
+});
+
+const ticketAdminGetAll = payload => ({
+  type: TICKET_ADMIN_GET_ALL,
+  payload,
 });
 
 const getAllAction = payload => ({
@@ -146,11 +153,6 @@ const removeFailAction = errorMessage => ({
   },
 });
 
-export const fetchingObj = {
-  isFetching: false,
-  errorMsg: '',
-};
-
 const sortTicket = payload => ({
   type: TICKET_SORTING,
   payload,
@@ -167,20 +169,31 @@ const changePage = (pageIndex, sizePerPage) => ({
   sizePerPage,
 });
 
+export const fetchingObj = {
+  isFetching: false,
+  errorMsg: '',
+};
+
 export const initialState = fromJS({
+  // error value
   createError: '',
   updateError: '',
   archiveError: '',
   removeError: '',
+  getError: '',
+
   tickets: {},
   totalRecord: 0,
-  totalCount: 0,
   pagination: fromJS({
     selectedPage: 1,
     sizePerPage: 20,
   }),
   visibleTicketIds: [],
-  getError: '',
+  sorting: fromJS({
+    field: 'createdAt',
+    order: -1,
+  }),
+
   ticketDetail: null,
   // processing value
   isCreating: false,
@@ -274,6 +287,7 @@ function ticketReducer(state = initialState, action) {
       return state.set('isRemoving', false)
         .set('removeError', action.payload.errorMessage);
 
+    case TICKET_ADMIN_GET_ALL:
     case GET_ALL:
       return state.set('fetching', fromJS({ isFetching: true, errorMsg: '' }));
     case GET_ALL_SUCCESS: {
@@ -291,6 +305,10 @@ function ticketReducer(state = initialState, action) {
     }
     case GET_ALL_FAIL:
       return state.set('fetching', fromJS({ isFetching: false, errorMsg: action.errorMsg }));
+    case TICKET_CHANGE_PAGE:
+      return state
+        .set('fetching', fromJS({ isFetching: true, errorMsg: '' }))
+        .setIn(['pagination', 'selectedPage'], action.pageIndex);
     default: return state;
   }
 }
@@ -302,6 +320,7 @@ export const actions = {
   createCompleteAction,
   createFailAction,
 
+  ticketAdminGetAll,
   getAllAction,
   getAllCompleteAction,
   getAllFailAction,

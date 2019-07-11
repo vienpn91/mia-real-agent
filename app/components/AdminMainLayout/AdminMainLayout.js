@@ -4,8 +4,8 @@ import AdminTopNavBar from 'components/AdminTopNavBar';
 import LeftSideBar from 'containers/LeftSideBar';
 import { AdminPageWrapper } from './AdminMainLayout.styled';
 
-const AdminMainLayout = ({ children }) => (
-  <AdminPageWrapper>
+const AdminMainLayout = ({ children, toggleLeftSideBar }) => (
+  <AdminPageWrapper isToggle={toggleLeftSideBar}>
     <AdminTopNavBar />
     <LeftSideBar />
     {children}
@@ -14,6 +14,7 @@ const AdminMainLayout = ({ children }) => (
 
 AdminMainLayout.propTypes = {
   children: PropTypes.any,
+  toggleLeftSideBar: PropTypes.bool,
 };
 
 export default AdminMainLayout;

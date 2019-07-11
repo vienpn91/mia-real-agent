@@ -3,7 +3,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import AuthenticatedRoute from 'containers/Route/AuthenticatedRoute';
 import MainLayout from 'components/MainLayout';
-import AdminMainLayout from 'components/AdminMainLayout';
+import AdminMainLayout from 'containers/AdminMainLayout';
 import UserManagement from 'containers/UserManagement';
 import UnauthRoute from './containers/Route/UnauthenticateRoute';
 import HomePage from './pages/HomePage';

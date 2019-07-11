@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { actions } from 'reducers/ticket';
 import { createStructuredSelector } from 'reselect';
 import {
-  makeSelectTickets,
-  getIsLoading,
-  getTotalCount,
+  getTicketsList,
+  getIsFetching,
+  getTicketTotalRecord,
   getSelectedPage,
   getSizePerPage,
 } from 'selectors/ticket';
@@ -16,7 +16,7 @@ const ticketColumns = [
     type: COLUMN_TYPE.TEXT,
     dataKey: 'ticketId',
     columnAttr: {
-      value: 'Ticket',
+      value: 'TicketId',
     },
   },
   {
@@ -51,14 +51,14 @@ const ticketColumns = [
 ];
 
 const mapDispatchToProps = {
-  fetchList: actions.getAllAction,
+  fetchList: actions.ticketAdminGetAll,
   changePage: actions.changePage,
 };
 
 const structureSelectorFunc = createStructuredSelector({
-  items: makeSelectTickets(),
-  isLoading: getIsLoading,
-  totalCount: getTotalCount,
+  items: getTicketsList,
+  isLoading: getIsFetching,
+  totalCount: getTicketTotalRecord,
   selectedPage: getSelectedPage,
   sizePerPage: getSizePerPage,
 });

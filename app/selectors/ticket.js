@@ -34,6 +34,9 @@ const getSizePerPage = ({ ticket }) => ticket.getIn(['pagination', 'sizePerPage'
 const getSorting = ({ ticket }) => ticket.get('sorting', emptyMap);
 const reselectSorting = createSelector(getSorting, sorting => sorting.toJS());
 
+const getIsFetching = ({ ticket }) => ticket.getIn(['fetching', 'isFetching'], false);
+const getFetchingError = ({ ticket }) => ticket.getIn(['fetching', 'errorMsg'], '');
+
 export {
   reselectSorting,
   getSelectedPage,
@@ -50,4 +53,6 @@ export {
   getFetchingContext,
   getTicketIsArchiving,
   getTicketArchiveError,
+  getIsFetching,
+  getFetchingError,
 };
