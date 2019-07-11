@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { Steps, Tabs } from 'antd';
-import { ApplicationWrapper, ApplicationItem, ApplicationTitle } from './styles';
+import { Steps, Tabs, Icon } from 'antd';
+import {
+  ApplicationWrapper, ApplicationItem,
+  ApplicationTitle, RoleWrapper,
+} from './styles';
 import BasicInfoForm from './BasicInfoForm';
 import ExperienceForm from './ExperienceForm';
 import EducationForm from './EducationForm';
@@ -35,15 +38,37 @@ export class ApplicationForm extends Component {
     return (
       <Tabs activeKey={step.toString()}>
         <TabPane tab="" key="0">
-          <BasicInfoForm onSubmit={this.handleNextStep} onCancel={this.handlePreviousStep} />
+          <RoleWrapper>
+            <button
+              type="button"
+              onClick={this.handleNextStep}
+            >
+              <div>
+                <Icon type="user" />
+                Freelancer
+              </div>
+            </button>
+            <button
+              type="button"
+              onClick={this.handleNextStep}
+            >
+              <div>
+                <Icon type="usergroup-add" />
+                Full-time
+              </div>
+            </button>
+          </RoleWrapper>
         </TabPane>
         <TabPane tab="" key="1">
-          <ExperienceForm onSubmit={this.handleNextStep} onCancel={this.handlePreviousStep} />
+          <BasicInfoForm onSubmit={this.handleNextStep} onCancel={this.handlePreviousStep} />
         </TabPane>
         <TabPane tab="" key="2">
-          <EducationForm onSubmit={this.handleNextStep} onCancel={this.handlePreviousStep} />
+          <ExperienceForm onSubmit={this.handleNextStep} onCancel={this.handlePreviousStep} />
         </TabPane>
         <TabPane tab="" key="3">
+          <EducationForm onSubmit={this.handleNextStep} onCancel={this.handlePreviousStep} />
+        </TabPane>
+        <TabPane tab="" key="4">
           <AdditionalForm onSubmit={this.handleNextStep} onCancel={this.handlePreviousStep} />
         </TabPane>
       </Tabs>
@@ -57,6 +82,7 @@ export class ApplicationForm extends Component {
         <ApplicationItem>
           <ApplicationTitle>Mia Consult</ApplicationTitle>
           <Steps current={step}>
+            <Step title="Role" />
             <Step title="Basic Info" />
             <Step title="Experience" />
             <Step title="Education" />

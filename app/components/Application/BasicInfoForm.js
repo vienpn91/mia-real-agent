@@ -5,20 +5,38 @@ import {
 import { Formik } from 'formik';
 import { func } from 'prop-types';
 import FormInput from '../FormInput/FormInput';
-import { ApplicationBtn, ApplicationSpinner } from './styles';
+import { ApplicationBtn } from './styles';
 
 export class BasicInfoForm extends Component {
   static propTypes = {
     onSubmit: func.isRequired,
+    onCancel: func.isRequired,
   }
 
   renderRegisterBtn = () => (
-    <ApplicationBtn
-      type="submit"
-    >
-      Next
-    </ApplicationBtn>
+    <Row gutter={32}>
+      <Col sm={12} xs={24}>
+        <ApplicationBtn
+          type="button"
+          onClick={this.handleCancel}
+        >
+          Back
+        </ApplicationBtn>
+      </Col>
+      <Col sm={12} xs={24}>
+        <ApplicationBtn
+          type="submit"
+        >
+          Next
+        </ApplicationBtn>
+      </Col>
+    </Row>
   )
+
+  handleCancel = () => {
+    const { onCancel } = this.props;
+    onCancel();
+  }
 
   handleSubmit = () => {
     const { onSubmit } = this.props;

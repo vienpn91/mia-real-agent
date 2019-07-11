@@ -14,7 +14,7 @@ export const ApplicationWrapper = styled.div`
 `;
 
 export const ApplicationItem = styled.div`
-  width: 720px;
+  width: 850px;
   display: flex;
   flex-direction: column;
   background-color: ${props => props.theme.secondaryColor};
@@ -125,3 +125,72 @@ export const ApplicationErrorMessage = styled.div`
 `;
 
 export const SelectStyled = { width: '100%' };
+
+export const ArrayInputWrapper = styled.div`
+  overflow: hidden;
+  margin-bottom: 20px;
+  color: ${props => props.theme.textColor};
+`;
+
+export const ArrayTagWrapper = styled.div`
+  border: 1px solid;
+  width: fit-content;
+  padding: 5px 20px;
+  border-radius: 5px;
+  margin-right: 5px;
+  float: left;
+
+  i:first-child {
+    margin-left: 10px;
+  }
+  i {
+    margin-right: 5px;
+  }
+  i:last-child {
+    margin-right: 0;
+  }
+`;
+
+export const ArrayAddButton = styled.button`
+  border: 1px solid;
+  width: fit-content;
+  padding: 5px 20px;
+  border-radius: 5px;
+  background-color: ${props => props.theme.secondaryColor};
+  margin-right: 5px;
+  float: left;
+
+  :hover {
+    background-color: ${props => props.theme.cancelColor};
+    color: ${props => props.theme.secondaryColor};
+  }
+`;
+
+export const RoleWrapper = styled.div`
+  > button {
+    width: 50%;
+    float: left;
+    border: none;
+    background-color: ${props => props.theme.secondaryColor};
+    height: 200px;
+    div{
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      font-size: 2em;
+    i {
+      width: 100%;
+      height: 35px;
+      svg {
+        width: 40px;
+        height: 40px;
+      }
+    }
+    color: ${props => props.theme.cancelColor};
+    :hover {
+      color: ${props => props.theme.submitColor};
+    }
+    }
+  }
+`;

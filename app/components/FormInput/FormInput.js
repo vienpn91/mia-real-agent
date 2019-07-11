@@ -4,13 +4,14 @@ import { func, bool, shape } from 'prop-types';
 import _ from 'lodash';
 import {
   Input, Checkbox, Select,
-  DatePicker, Radio, InputNumber, Switch,
+  DatePicker, Radio, InputNumber, Switch, Slider,
 } from 'antd'; // eslint-disable-line import/named
 import { InputStyled, InputWrapperStyled } from './styles';
 
 export const INPUT_TYPES = {
   TEXT: 'text',
   NUMBER: 'number',
+  SLIDER: 'slider',
   CHECKBOX: 'checkbox',
   CHECKBOXGROUP: 'checkboxgroup',
   RADIOGROUP: 'radiogroup',
@@ -197,6 +198,59 @@ class FormInput extends React.Component {
           style={{ width: '100%' }}
           onChange={handleChange}
           size={inputSize}
+        />
+      </InputWrapperStyled>
+    );
+  };
+
+  renderSliderInput = ({
+    field, // { name, value, onChange, onBlur }
+    form: { touched, errors, setFieldValue },
+    ...props
+  }) => {
+    const {
+      inputSize,
+      label,
+      formLayout,
+      shouldRenderFeedback,
+      marks,
+      defaultValue,
+      min,
+      max,
+      ...rest
+    } = props;
+
+    const isTouched = getIn(touched, field.name);
+    let errorMessage = '';
+    let validateStatus = 'success';
+
+    if (isTouched) {
+      errorMessage = getIn(errors, field.name);
+      if (errorMessage) {
+        validateStatus = 'error';
+      }
+    }
+
+    const handleChange = value => setFieldValue(field.name, value);
+
+
+    return (
+      <InputWrapperStyled
+        label={label}
+        hasFeedback={shouldRenderFeedback && validateStatus === 'error'}
+        validateStatus={validateStatus}
+        help={errorMessage}
+        {...formLayout}
+      >
+        <Slider
+          {...field}
+          {...rest}
+          min={min}
+          max={max}
+          style={{ width: '100%' }}
+          onChange={handleChange}
+          marks={marks}
+          defaultValue={defaultValue}
         />
       </InputWrapperStyled>
     );
@@ -544,6 +598,8 @@ class FormInput extends React.Component {
         return this.renderTextArea(props);
       case INPUT_TYPES.SWITCH:
         return this.renderSwitch(props);
+      case INPUT_TYPES.SLIDER:
+        return this.renderSliderInput(props);
       default:
         return this.renderTextInput(props);
     }

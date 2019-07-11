@@ -1,16 +1,35 @@
 import React, { Component } from 'react';
 import {
-  Row, Col, Form,
+  Row, Col, Form, Icon, Modal,
 } from 'antd';
-import { Formik } from 'formik';
+import { Formik, FieldArray } from 'formik';
 import { func } from 'prop-types';
 import FormInput from '../FormInput/FormInput';
-import { ApplicationBtn, ApplicationSpinner } from './styles';
+import {
+  ApplicationBtn, ArrayTagWrapper,
+  ArrayAddButton, ArrayInputWrapper,
+} from './styles';
+import { POSITION_OPTIONS } from '../../../common/enums';
+
+const experienceInititalValues = {
+  title: '',
+  company: '',
+  location: '',
+  from: '',
+  to: '',
+  isWorking: false,
+  roleDescription: '',
+};
+
+const initialValues = {
+  categories: [],
+  workExperiences: [],
+};
 
 export class ExperienceForm extends Component {
   state = {
-    category: [],
-    workExperience: [],
+    isExperienceFormOpen: false,
+    editIndex: -1,
   }
 
   static propTypes = {
@@ -18,41 +37,181 @@ export class ExperienceForm extends Component {
     onCancel: func.isRequired,
   }
 
+  handleToggleExperienceModal = (isOpen, editExperience = experienceInititalValues, editIndex = -1) => {
+    this.setState({
+      isExperienceFormOpen: isOpen,
+      editIndex,
+    });
+    const { experienceformik } = this;
+    if (isOpen && experienceformik) {
+      experienceformik.getFormikContext().setValues(editExperience);
+    }
+    if (!isOpen) {
+      experienceformik.getFormikContext().resetForm();
+    }
+  };
+
+  handleAddExperience = (values) => {
+    const { editIndex } = this.state;
+    const { formik } = this;
+    const context = formik.getFormikContext();
+    const { workExperiences } = context.values;
+    if (editIndex >= 0) {
+      workExperiences[editIndex] = values;
+      context.setValues({
+        workExperiences,
+      });
+    } else {
+      context.setValues({
+        workExperiences: [...workExperiences, values],
+      });
+    }
+    this.handleToggleExperienceModal(false);
+  }
+
+  renderWorkExperienceModal = () => {
+    const { isExperienceFormOpen, editIndex } = this.state;
+    return (
+      <Modal
+        visible={isExperienceFormOpen}
+        footer={[]}
+      >
+        <Formik
+          ref={(formik) => { this.experienceformik = formik; }}
+          initialValues={experienceInititalValues}
+          // validationSchema={validationSchema}
+          onSubmit={this.handleAddExperience}
+        >
+          {({ handleSubmit }) => (
+            <Form onSubmit={handleSubmit}>
+              <Row gutter={32}>
+                <Col sm={8} xs={24}>
+                  <FormInput
+                    name="title"
+                    type="text"
+                    label="Title"
+                    login={1}
+                  />
+                </Col>
+                <Col sm={8} xs={24}>
+                  <FormInput
+                    name="company"
+                    type="text"
+                    label="Company"
+                    login={1}
+                  />
+                </Col>
+                <Col sm={8} xs={24}>
+                  <FormInput
+                    name="location"
+                    type="text"
+                    label="Location"
+                    login={1}
+                  />
+                </Col>
+              </Row>
+              <Row gutter={32}>
+                <Col sm={8} xs={24}>
+                  <FormInput
+                    name="from"
+                    type="date"
+                    label="From"
+                    login={1}
+                  />
+                </Col>
+                <Col sm={8} xs={24}>
+                  <FormInput
+                    name="to"
+                    type="date"
+                    label="To"
+                    login={1}
+                  />
+                </Col>
+                <Col sm={8} xs={24}>
+                  <FormInput
+                    name="isWorking"
+                    type="text"
+                    label="Is working"
+                    login={1}
+                  />
+                </Col>
+              </Row>
+              <Row gutter={32}>
+                <Col sm={12} xs={24}>
+                  <FormInput
+                    name="roleDescription"
+                    type="text"
+                    label="Role description"
+                    login={1}
+                  />
+                </Col>
+              </Row>
+              <Row gutter={32}>
+                <Col sm={12} xs={24}>
+                  <ApplicationBtn
+                    type="button"
+                    onClick={() => this.handleToggleExperienceModal(false)}
+                  >
+                    Cancel
+                  </ApplicationBtn>
+                </Col>
+                <Col sm={12} xs={24}>
+                  <ApplicationBtn
+                    type="submit"
+                  >
+                    {editIndex >= 0 ? 'Save' : 'Add'}
+                  </ApplicationBtn>
+                </Col>
+              </Row>
+            </Form>
+          )}
+        </Formik>
+      </Modal>
+    );
+  }
+
+  renderWorkExperience = (experience, arrayHelpers, index) => {
+    const { title, company } = experience;
+    return (
+      <ArrayTagWrapper>
+        {`${title} - ${company}`}
+        <Icon
+          onClick={() => arrayHelpers.remove(index)}
+          type="close"
+        />
+        <Icon
+          onClick={() => this.handleToggleExperienceModal(true, experience, index)}
+          type="edit"
+        />
+      </ArrayTagWrapper>
+    );
+  };
+
+
   handleCancel = () => {
     const { onCancel } = this.props;
     onCancel();
   }
 
-  renderRegisterBtn = () => {
-    // const { isLoading } = this.props;
-    // if (isLoading) {
-    //   return (
-    //     <ApplicationBtn>
-    //       <ApplicationSpinner />
-    //       Registering business
-    //     </ApplicationBtn>
-    //   );
-    // }
-    return (
-      <Row gutter={32}>
-        <Col sm={12} xs={24}>
-          <ApplicationBtn
-            type="button"
-            onClick={this.handleCancel}
-          >
-            Back
-          </ApplicationBtn>
-        </Col>
-        <Col sm={12} xs={24}>
-          <ApplicationBtn
-            type="submit"
-          >
-            Next
-          </ApplicationBtn>
-        </Col>
-      </Row>
-    );
-  }
+  renderRegisterBtn = () => (
+    <Row gutter={32}>
+      <Col sm={12} xs={24}>
+        <ApplicationBtn
+          type="button"
+          onClick={this.handleCancel}
+        >
+          Back
+        </ApplicationBtn>
+      </Col>
+      <Col sm={12} xs={24}>
+        <ApplicationBtn
+          type="submit"
+        >
+          Next
+        </ApplicationBtn>
+      </Col>
+    </Row>
+  )
 
   handleSubmit = () => {
     const { onSubmit } = this.props;
@@ -61,39 +220,53 @@ export class ExperienceForm extends Component {
 
   render() {
     return (
-      <Formik
-        // initialValues={initialValues}
-        // validationSchema={validationSchema}
-        onSubmit={this.handleSubmit}
-      >
-        {({ handleSubmit }) => (
-          <Form onSubmit={handleSubmit}>
-            <Row gutter={32}>
-              <Col sm={12} xs={24}>
-                <FormInput
-                  name="category"
-                  type="text"
-                  label="Category"
-                  login={1}
-                />
-              </Col>
-              <Col sm={12} xs={24}>
-                <FormInput
-                  name="workExperience"
-                  type="password"
-                  label="Password"
-                  login={1}
-                />
-              </Col>
-            </Row>
-            <Row gutter={32}>
-              <Col sm={24} xs={24}>
-                {this.renderRegisterBtn()}
-              </Col>
-            </Row>
-          </Form>
-        )}
-      </Formik>
+      <div>
+        <Formik
+          ref={(formik) => { this.formik = formik; }}
+          initialValues={initialValues}
+          // validationSchema={validationSchema}
+          onSubmit={this.handleSubmit}
+        >
+          {({ handleSubmit, values }) => (
+            <Form onSubmit={handleSubmit}>
+              <Row gutter={32}>
+                <Col sm={24} xs={24}>
+                  <FormInput
+                    name="categories"
+                    type="select"
+                    mode="multiple"
+                    options={POSITION_OPTIONS}
+                    label="Category"
+                    login={1}
+                  />
+                </Col>
+              </Row>
+              <FieldArray
+                name="workExperiences"
+                render={arrayHelpers => (
+                  <ArrayInputWrapper>
+                    <p>Experiences:</p>
+                    {
+                      values.workExperiences.map((
+                        experience, index
+                      ) => this.renderWorkExperience(experience, arrayHelpers, index))
+                    }
+                    <ArrayAddButton type="button" onClick={() => this.handleToggleExperienceModal(true)}>
+                      Add Experience
+                    </ArrayAddButton>
+                  </ArrayInputWrapper>
+                )}
+              />
+              <Row gutter={32}>
+                <Col sm={24} xs={24}>
+                  {this.renderRegisterBtn()}
+                </Col>
+              </Row>
+            </Form>
+          )}
+        </Formik>
+        {this.renderWorkExperienceModal()}
+      </div>
     );
   }
 }
