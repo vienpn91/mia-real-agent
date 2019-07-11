@@ -17,7 +17,7 @@ const userColumns = [
     dataKey: 'username',
     columnAttr: {
       value: 'Username',
-      percent: '15',
+      percent: '20',
     },
   },
   {

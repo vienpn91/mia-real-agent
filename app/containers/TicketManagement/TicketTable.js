@@ -17,6 +17,14 @@ const ticketColumns = [
     dataKey: 'ticketId',
     columnAttr: {
       value: 'TicketId',
+      percent: 10,
+    },
+  },
+  {
+    type: COLUMN_TYPE.TEXT,
+    dataKey: 'title',
+    columnAttr: {
+      value: 'Title',
     },
   },
   {
@@ -24,20 +32,23 @@ const ticketColumns = [
     dataKey: 'category',
     columnAttr: {
       value: 'Category',
+      percent: 10,
     },
   },
   {
     type: COLUMN_TYPE.TEXT,
-    dataKey: 'owner',
+    dataKey: 'owner.username',
     columnAttr: {
       value: 'Owner',
+      percent: 15,
     },
   },
   {
     type: COLUMN_TYPE.TEXT,
-    dataKey: 'assignee',
+    dataKey: 'assignee.username',
     columnAttr: {
       value: 'Assignee',
+      percent: 15,
     },
   },
   {
@@ -46,6 +57,7 @@ const ticketColumns = [
     columnAttr: {
       value: 'Status',
       textCenter: true,
+      percent: 10,
     },
   },
 ];

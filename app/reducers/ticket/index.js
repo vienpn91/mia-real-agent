@@ -1,5 +1,6 @@
 import { fromJS } from 'immutable';
 import _keyBy from 'lodash/keyBy';
+import _get from 'lodash/get';
 
 export const CREATE = 'ticket/CREATE';
 export const CREATE_SUCCESS = 'ticket/CREATE_SUCCESS';
@@ -294,8 +295,14 @@ function ticketReducer(state = initialState, action) {
       const { data, totalRecord } = action;
       const newTickets = state
         .get('tickets')
-        .merge(fromJS(_keyBy(data, ({ ticketId, owner }) => `${ticketId}#${owner}`)));
-      const visibleTicketIds = data.map(({ ticketId, owner }) => `${ticketId}#${owner}`);
+        .merge(fromJS(_keyBy(data, ({ ticketId, owner }) => {
+          const ownerId = _get(owner, '_id', owner); // for admin site, owner is object
+          return `${ticketId}#${ownerId}`;
+        })));
+      const visibleTicketIds = data.map(({ ticketId, owner }) => {
+        const ownerId = _get(owner, '_id', owner); // for admin site, owner is object
+        return `${ticketId}#${ownerId}`;
+      });
 
       return state
         .set('visibleTicketIds', fromJS(visibleTicketIds))

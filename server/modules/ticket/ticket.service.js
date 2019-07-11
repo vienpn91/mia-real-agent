@@ -17,6 +17,39 @@ class TicketService extends BaseService {
     return this.collection.countDocuments(filter);
   }
 
+  async getAllWithUserData(condition, options) {
+    const { skip = 0, limit = 10, sort = { createdAt: -1 } } = options;
+    const notDeletedCondition = {
+      $or: [
+        { deleted: { $exists: false } },
+        { deleted: { $exists: true, $in: [false] } },
+      ],
+    };
+    const notArchivedCondition = {
+      $or: [
+        { archived: { $exists: false } },
+        { archived: { $exists: true, $in: [false] } },
+      ],
+    };
+    const queryCondition = {
+      $and: [condition, notDeletedCondition, notArchivedCondition],
+    };
+
+    const resultPromise = this.collection
+      .find(queryCondition, null, options)
+      .populate({ path: 'owner', select: ['_id', 'username'] }) // only get _id and username of owner
+      .populate({ path: 'assignee', select: ['_id', 'username'] }) // only get _id and username of assignee
+      .sort(sort)
+      .skip(+skip)
+      .limit(+limit || 10)
+      .exec();
+
+    return {
+      result: await resultPromise,
+      totalRecord: await this.countDocument(queryCondition),
+    };
+  }
+
   async getAll(condition, options) {
     const { skip = 0, limit = 10, sort = { createdAt: -1 } } = options;
     const notDeletedCondition = {
