@@ -22,7 +22,6 @@ const ItemManagementHoc = (ItemsManagementTable) => {
         currentFiltering,
         shouldRenderFilter,
         errorMsg,
-        toggleLeftSideBar,
       } = this.props;
 
       if (errorMsg) {
@@ -34,7 +33,7 @@ const ItemManagementHoc = (ItemsManagementTable) => {
       }
 
       return (
-        <DashboardWrapperStyled isToggle={toggleLeftSideBar}>
+        <DashboardWrapperStyled>
           <HeaderContainer
             sortItem={sortItems}
             url={createEndpoint}
@@ -56,7 +55,6 @@ const ItemManagementHoc = (ItemsManagementTable) => {
   }
 
   ItemManagementWrapper.propTypes = {
-    toggleLeftSideBar: PropTypes.bool.isRequired,
     handleSort: PropTypes.func.isRequired,
     currentSorting: PropTypes.object.isRequired,
     sortItems: PropTypes.array.isRequired,

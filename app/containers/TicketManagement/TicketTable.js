@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { actions } from 'reducers/ticket';
 import { createStructuredSelector } from 'reselect';
 import {
-  makeSelectTickets,
-  getIsLoading,
-  getTotalCount,
+  getTicketsList,
+  getIsFetching,
+  getTicketTotalRecord,
   getSelectedPage,
   getSizePerPage,
 } from 'selectors/ticket';
@@ -16,7 +16,15 @@ const ticketColumns = [
     type: COLUMN_TYPE.TEXT,
     dataKey: 'ticketId',
     columnAttr: {
-      value: 'Ticket',
+      value: 'TicketId',
+      percent: 10,
+    },
+  },
+  {
+    type: COLUMN_TYPE.TEXT,
+    dataKey: 'title',
+    columnAttr: {
+      value: 'Title',
     },
   },
   {
@@ -24,20 +32,23 @@ const ticketColumns = [
     dataKey: 'category',
     columnAttr: {
       value: 'Category',
+      percent: 10,
     },
   },
   {
     type: COLUMN_TYPE.TEXT,
-    dataKey: 'owner',
+    dataKey: 'owner.username',
     columnAttr: {
       value: 'Owner',
+      percent: 15,
     },
   },
   {
     type: COLUMN_TYPE.TEXT,
-    dataKey: 'assignee',
+    dataKey: 'assignee.username',
     columnAttr: {
       value: 'Assignee',
+      percent: 15,
     },
   },
   {
@@ -46,19 +57,20 @@ const ticketColumns = [
     columnAttr: {
       value: 'Status',
       textCenter: true,
+      percent: 10,
     },
   },
 ];
 
 const mapDispatchToProps = {
-  fetchList: actions.getAllAction,
+  fetchList: actions.ticketAdminGetAll,
   changePage: actions.changePage,
 };
 
 const structureSelectorFunc = createStructuredSelector({
-  items: makeSelectTickets(),
-  isLoading: getIsLoading,
-  totalCount: getTotalCount,
+  items: getTicketsList,
+  isLoading: getIsFetching,
+  totalCount: getTicketTotalRecord,
   selectedPage: getSelectedPage,
   sizePerPage: getSizePerPage,
 });

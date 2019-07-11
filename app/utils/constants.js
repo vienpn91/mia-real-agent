@@ -45,24 +45,12 @@ export const SORT = {
       value: 'createdAt',
     },
     {
-      title: 'SKU',
-      value: 'sku',
+      title: 'Category',
+      value: 'category',
     },
     {
-      title: 'Price',
-      value: 'price',
-    },
-    {
-      title: 'Size',
-      value: 'size',
-    },
-    {
-      title: 'Package',
-      value: 'package',
-    },
-    {
-      title: 'Quantity',
-      value: 'quantity',
+      title: 'Title',
+      value: 'title',
     },
   ],
   USER_SORT: [

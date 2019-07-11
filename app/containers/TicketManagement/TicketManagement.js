@@ -1,41 +1,25 @@
 import itemManagementHoc from 'hoc/ItemManagementHoc';
 import { connect } from 'react-redux';
-import { actions as ticketActions } from 'reducers/ticket';
-import { createStructuredSelector } from 'reselect';
+import { actions } from 'reducers/ticket';
 import {
-  makeSelectSorting,
-  makeSelectFiltering,
-  getErrorMsg,
+  reselectSorting,
+  getFetchingError,
 } from 'selectors/ticket';
-import { toggleLeftSideBar } from 'selectors/admin';
-import { SORT, FILTER } from 'utils/constants';
+import { SORT } from 'utils/constants';
 import TicketTable from './TicketTable';
 
 const { TICKET_SORT } = SORT;
-const { TICKET_FILTER } = FILTER;
 
-const structureSelectorFunc = createStructuredSelector({
-  currentSorting: makeSelectSorting,
-  currentFiltering: makeSelectFiltering,
-  errorMsg: getErrorMsg,
+const mapStateToProps = state => ({
+  errorMsg: getFetchingError(state),
+  currentSorting: reselectSorting(state),
+  createEndpoint: 'admin/ticket/create',
+  title: 'All Tickets',
+  sortItems: TICKET_SORT,
 });
 
-const mapStateToProps = (state) => {
-  const structureSelector = structureSelectorFunc(state);
-
-  return {
-    ...structureSelector,
-    createEndpoint: '/ticket/create',
-    sortItems: TICKET_SORT,
-    filterItems: TICKET_FILTER,
-    shouldRenderFilter: true,
-    toggleLeftSideBar: toggleLeftSideBar(state),
-  };
-};
-
 const mapDispatchToProps = {
-  handleSort: ticketActions.sortVariant,
-  handleFilter: ticketActions.filterVariant,
+  handleSort: actions.sortTicket,
 };
 
 export default connect(

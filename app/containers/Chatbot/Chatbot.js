@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 import _get from 'lodash/get';
+import { getTicketGetTicketDetail, getTicketGetTicketIsGetting, getTicketGetTicketError } from 'selectors/ticket';
 import Chatbot from '../../components/Chatbot';
-import { actions, selectors } from '../../reducers/ticket';
+import { actions } from '../../reducers/ticket';
 import { getUserId, getUserRole } from '../../reducers/auth';
 
 const mapStateToProps = (state, ownProps) => {
@@ -12,10 +13,10 @@ const mapStateToProps = (state, ownProps) => {
     owner = getUserId(state);
   }
   return {
-    isGetting: selectors.getTicketGetTicketIsGetting(state),
+    isGetting: getTicketGetTicketIsGetting(state),
     userRole: getUserRole(state),
-    ticketDetail: selectors.getTicketGetTicketDetail(state, id, owner),
-    getError: selectors.getTicketGetTicketError(state),
+    ticketDetail: getTicketGetTicketDetail(state, id, owner),
+    getError: getTicketGetTicketError(state),
   };
 };
 

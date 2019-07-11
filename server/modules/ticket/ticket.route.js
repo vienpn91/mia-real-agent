@@ -1,9 +1,9 @@
 import BaseRouter from '../base/base.route';
 import TicketController from './ticket.controller';
 
-class ConversationRouter extends BaseRouter {
+class TicketRouter extends BaseRouter {
   constructor() {
     super(TicketController);
   }
 }
-export default new ConversationRouter(TicketController);
+export default new TicketRouter(TicketController);

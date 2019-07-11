@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 import CreateTicketForm from 'components/CreateTicket';
-import { actions, selectors } from '../../../reducers/ticket';
+import { getTicketIsCreating, getTicketCreateError } from 'selectors/ticket';
+import { actions } from '../../../reducers/ticket';
 
 const mapStateToProps = state => ({
-  isCreating: selectors.getTicketIsCreating(state),
-  createError: selectors.getTicketCreateError(state),
+  isCreating: getTicketIsCreating(state),
+  createError: getTicketCreateError(state),
 });
 
 const mapDispatchToProps = {

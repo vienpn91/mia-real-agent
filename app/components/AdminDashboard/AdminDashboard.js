@@ -1,5 +1,4 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import ShadowScrollbars from 'components/Scrollbar';
 import TicketActivity from './TicketActivity/TicketActivity';
 import TicketStatistic from './TicketStatistic/TicketStatistic';
@@ -12,23 +11,15 @@ const scrollStyle = {
   height: 'calc(100vh - 60px)',
   width: '100%',
 };
+const AdminDashboard = () => (
+  <DashboardWrapperStyled>
+    <ShadowScrollbars autoHide style={scrollStyle}>
+      <TicketActivity />
+      <DashboardStatisticWarpper>
+        <TicketStatistic />
+      </DashboardStatisticWarpper>
+    </ShadowScrollbars>
+  </DashboardWrapperStyled>
+);
 
-export default class AdminDashboard extends PureComponent {
-  render() {
-    const { toggleLeftSideBar } = this.props;
-    return (
-      <DashboardWrapperStyled isToggle={toggleLeftSideBar}>
-        <ShadowScrollbars autoHide style={scrollStyle}>
-          <TicketActivity />
-          <DashboardStatisticWarpper>
-            <TicketStatistic />
-          </DashboardStatisticWarpper>
-        </ShadowScrollbars>
-      </DashboardWrapperStyled>
-    );
-  }
-}
-
-AdminDashboard.propTypes = {
-  toggleLeftSideBar: PropTypes.bool.isRequired,
-};
+export default AdminDashboard;
