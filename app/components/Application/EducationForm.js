@@ -3,6 +3,7 @@ import {
   Row, Col, Form, Icon, Modal,
 } from 'antd';
 import { Formik, FieldArray } from 'formik';
+import * as Yup from 'yup';
 import { func } from 'prop-types';
 import FormInput from '../FormInput/FormInput';
 import {
@@ -22,6 +23,21 @@ const initialValues = {
   educations: [],
 };
 
+const educationValidationSchema = Yup.object().shape({
+  school: Yup.string().trim().required('Required'),
+  degree: Yup.string().trim().required('Required'),
+  fieldOfStudies: Yup.array().of(Yup.string()),
+  gpa: Yup.number(),
+});
+
+const validationSchema = Yup.object().shape({
+  educations: Yup.array().of(Yup.object().shape({
+    school: Yup.string().trim().required('Required'),
+    degree: Yup.string().trim().required('Required'),
+    fieldOfStudies: Yup.array().of(Yup.string()),
+    gpa: Yup.number(),
+  })),
+});
 export class EducationForm extends Component {
   state = {
     isEducationFormOpen: false,
@@ -76,7 +92,7 @@ export class EducationForm extends Component {
         <Formik
           ref={(formik) => { this.educationformik = formik; }}
           initialValues={educationInititalValues}
-          // validationSchema={validationSchema}
+          validationSchema={educationValidationSchema}
           onSubmit={this.handleAddExperience}
         >
           {({ handleSubmit }) => (
@@ -197,7 +213,7 @@ export class EducationForm extends Component {
         <Formik
           ref={(formik) => { this.formik = formik; }}
           initialValues={initialValues}
-          // validationSchema={validationSchema}
+          validationSchema={validationSchema}
           onSubmit={this.handleSubmit}
         >
           {({ handleSubmit, values }) => (

@@ -2,10 +2,29 @@ import React, { Component } from 'react';
 import {
   Row, Col, Form,
 } from 'antd';
+import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { func } from 'prop-types';
 import FormInput from '../FormInput/FormInput';
 import { ApplicationBtn } from './styles';
+
+const initialValues = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  country: '',
+  address: '',
+  phoneNumber: '',
+};
+
+const validationSchema = Yup.object().shape({
+  firstName: Yup.string().trim().required('Required'),
+  lastName: Yup.string().trim().required('Required'),
+  email: Yup.string().email('Invalid Email').trim().required('Required'),
+  country: Yup.string().trim().required('Required'),
+  address: Yup.string().trim().required('Required'),
+  phoneNumber: Yup.string().trim().required('Required'),
+});
 
 export class BasicInfoForm extends Component {
   static propTypes = {
@@ -46,8 +65,8 @@ export class BasicInfoForm extends Component {
   render() {
     return (
       <Formik
-        // initialValues={initialValues}
-        // validationSchema={validationSchema}
+        initialValues={initialValues}
+        validationSchema={validationSchema}
         onSubmit={this.handleSubmit}
       >
         {({ handleSubmit }) => (
@@ -63,7 +82,7 @@ export class BasicInfoForm extends Component {
               </Col>
               <Col sm={12} xs={24}>
                 <FormInput
-                  name="firstName"
+                  name="lastName"
                   type="password"
                   label="Last name"
                   login={1}

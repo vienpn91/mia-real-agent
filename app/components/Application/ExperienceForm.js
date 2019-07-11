@@ -4,6 +4,7 @@ import {
 } from 'antd';
 import { Formik, FieldArray } from 'formik';
 import { func } from 'prop-types';
+import * as Yup from 'yup';
 import FormInput from '../FormInput/FormInput';
 import {
   ApplicationBtn, ArrayTagWrapper,
@@ -25,6 +26,30 @@ const initialValues = {
   categories: [],
   workExperiences: [],
 };
+
+
+const experienceValidationSchema = Yup.object().shape({
+  title: Yup.string().trim().required('Required'),
+  company: Yup.string().trim().required('Required'),
+  location: Yup.string().trim(),
+  from: Yup.date().required('Required').max(Yup.ref('to'), 'From cannot exceed To'),
+  to: Yup.date().required('Required').min(Yup.ref('from'), 'To cannot lower Form'),
+  isWorking: Yup.boolean(),
+  roleDescription: Yup.string().trim(),
+});
+
+const validationSchema = Yup.object().shape({
+  categories: Yup.array().of(Yup.string()).required('Required'),
+  workExperiences: Yup.array().of(Yup.object().shape({
+    title: Yup.string().trim().required('Required'),
+    company: Yup.string().trim().required('Required'),
+    location: Yup.string().trim(),
+    from: Yup.date().required('Required').max(Yup.ref('to'), 'From cannot exceed To'),
+    to: Yup.date().required('Required').min(Yup.ref('from'), 'To cannot lower Form'),
+    isWorking: Yup.boolean(),
+    roleDescription: Yup.string().trim(),
+  })),
+});
 
 export class ExperienceForm extends Component {
   state = {
@@ -51,19 +76,22 @@ export class ExperienceForm extends Component {
     }
   };
 
-  handleAddExperience = (values) => {
+  handleAddExperience = (experience) => {
     const { editIndex } = this.state;
     const { formik } = this;
     const context = formik.getFormikContext();
-    const { workExperiences } = context.values;
+    const { values } = context;
+    const { workExperiences } = values;
     if (editIndex >= 0) {
       workExperiences[editIndex] = values;
       context.setValues({
+        ...values,
         workExperiences,
       });
     } else {
       context.setValues({
-        workExperiences: [...workExperiences, values],
+        ...values,
+        workExperiences: [...workExperiences, experience],
       });
     }
     this.handleToggleExperienceModal(false);
@@ -79,7 +107,7 @@ export class ExperienceForm extends Component {
         <Formik
           ref={(formik) => { this.experienceformik = formik; }}
           initialValues={experienceInititalValues}
-          // validationSchema={validationSchema}
+          validationSchema={experienceValidationSchema}
           onSubmit={this.handleAddExperience}
         >
           {({ handleSubmit }) => (
@@ -111,7 +139,7 @@ export class ExperienceForm extends Component {
                 </Col>
               </Row>
               <Row gutter={32}>
-                <Col sm={8} xs={24}>
+                <Col sm={12} xs={24}>
                   <FormInput
                     name="from"
                     type="date"
@@ -119,7 +147,7 @@ export class ExperienceForm extends Component {
                     login={1}
                   />
                 </Col>
-                <Col sm={8} xs={24}>
+                <Col sm={12} xs={24}>
                   <FormInput
                     name="to"
                     type="date"
@@ -127,16 +155,16 @@ export class ExperienceForm extends Component {
                     login={1}
                   />
                 </Col>
-                <Col sm={8} xs={24}>
+              </Row>
+              <Row gutter={32}>
+                <Col sm={12} xs={24}>
                   <FormInput
                     name="isWorking"
-                    type="text"
+                    type="checkbox"
                     label="Is working"
                     login={1}
                   />
                 </Col>
-              </Row>
-              <Row gutter={32}>
                 <Col sm={12} xs={24}>
                   <FormInput
                     name="roleDescription"
@@ -224,7 +252,7 @@ export class ExperienceForm extends Component {
         <Formik
           ref={(formik) => { this.formik = formik; }}
           initialValues={initialValues}
-          // validationSchema={validationSchema}
+          validationSchema={validationSchema}
           onSubmit={this.handleSubmit}
         >
           {({ handleSubmit, values }) => (
