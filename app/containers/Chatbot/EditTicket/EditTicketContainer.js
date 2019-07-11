@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 import EditTicketForm from 'components/Chatbot/EditTicket';
-import { actions, selectors } from '../../../reducers/ticket';
+import { getTicketIsUpdating, getTicketUpdateError } from 'selectors/ticket';
+import { actions } from '../../../reducers/ticket';
 
 const mapStateToProps = state => ({
-  isUpdating: selectors.getTicketIsUpdating(state),
-  updateError: selectors.getTicketUpdateError(state),
+  isUpdating: getTicketIsUpdating(state),
+  updateError: getTicketUpdateError(state),
 });
 
 const mapDispatchToProps = {

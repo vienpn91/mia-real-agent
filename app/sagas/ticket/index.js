@@ -2,21 +2,20 @@ import {
   takeEvery, call, put, select, takeLatest,
 } from 'redux-saga/effects';
 import _get from 'lodash/get';
-import { DEFAULT_ERROR_MESSAGE } from 'utils/constants';
+import { notification } from 'antd';
 import {
   actions, CREATE, GET_ALL, GET, UPDATE, REMOVE, ARCHIVE,
 } from '../../reducers/ticket';
 import * as TicketApi from '../../api/ticket';
 import { configToken } from '../../api/config';
 import { getToken } from '../../reducers/auth';
-import { notification } from 'antd';
 
 function* createTicket({ payload }) {
   yield configAxiosForTicket();
   const { error, response } = yield call(TicketApi.createTicket, payload);
   if (error) {
     const message = _get(
-      error, 'response.data.message', DEFAULT_ERROR_MESSAGE
+      error, 'response.data.message', error.message
     );
     yield put(actions.createFailAction(message));
     return;
@@ -32,7 +31,7 @@ function* getAllTicket({ payload }) {
   const { response, error } = yield call(TicketApi.getAllTicket, payload);
   if (error) {
     const message = _get(
-      error, 'response.data.message', DEFAULT_ERROR_MESSAGE
+      error, 'response.data.message', error.message
     );
     yield put(actions.getAllFailAction(message));
     return;
@@ -54,9 +53,9 @@ function* getTicket({ payload }) {
     yield put(actions.getCompleteAction(_doc));
   } catch (error) {
     const message = _get(
-      error, 'response.data.message', DEFAULT_ERROR_MESSAGE
+      error, 'response.data.message', error.message
     );
-    notification.error({ message: 'Ticket not found' });
+    notification.error({ message });
     yield put(actions.getFailAction(message));
   }
 }
@@ -71,9 +70,9 @@ function* archiveTicket({ payload }) {
     notification.success({ message: 'Ticket archived' });
   } catch (error) {
     const message = _get(
-      error, 'response.data.message', DEFAULT_ERROR_MESSAGE
+      error, 'response.data.message', error.message
     );
-    notification.error({ message: 'Archive Ticket error' });
+    notification.error({ message });
     yield put(actions.archiveFailAction(message));
   }
 }
@@ -84,7 +83,7 @@ function* updateTicket({ payload }) {
   const { response, error } = yield call(TicketApi.updateTicket, ticket);
   if (error) {
     const message = _get(
-      error, 'response.data.message', DEFAULT_ERROR_MESSAGE
+      error, 'response.data.message', error.message
     );
     yield put(actions.updateFailAction(message));
     return;
@@ -99,10 +98,10 @@ function* removeTicket({ payload }) {
   const { response, error } = yield call(TicketApi.removeTicket, ticketId);
   if (error) {
     const message = _get(
-      error, 'response.data.message', DEFAULT_ERROR_MESSAGE
+      error, 'response.data.message', error.message
     );
     yield put(actions.removeFailAction(message));
-    notification.error({ message: 'Remove Ticket error' });
+    notification.error({ message });
     return;
   }
   const { data } = response;

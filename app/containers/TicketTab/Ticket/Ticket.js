@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 import Ticket from 'components/TicketTab/Ticket';
-import { selectors } from 'reducers/ticket';
+import { getTicketsList, getFetchingContext } from 'selectors/ticket';
 import { getUserRole } from 'reducers/auth';
 
 const mapStateToProps = state => ({
-  tickets: selectors.getTicketsList(state),
-  fetchingContext: selectors.getFetchingContext(state),
+  tickets: getTicketsList(state),
+  fetchingContext: getFetchingContext(state),
   userRole: getUserRole(state),
 });
 

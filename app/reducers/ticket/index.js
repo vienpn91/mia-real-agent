@@ -1,6 +1,5 @@
 import { fromJS } from 'immutable';
 import _keyBy from 'lodash/keyBy';
-import { createSelector } from 'reselect';
 
 export const CREATE = 'ticket/CREATE';
 export const CREATE_SUCCESS = 'ticket/CREATE_SUCCESS';
@@ -33,14 +32,6 @@ export const TICKET_FETCH = 'ticket/TICKET_FETCH';
 export const TICKET_CHANGE_PAGE = 'ticket/TICKET_CHANGE_PAGE';
 
 // action creator
-
-// payload: {
-//   title: { type: String },
-//   description: { type: String },
-//   category: { type: Array[String] },
-// }
-
-const emptyMap = fromJS({});
 
 const createAction = payload => ({
   type: CREATE,
@@ -143,7 +134,6 @@ const removeAction = ticketId => ({
   },
 });
 
-
 const removeCompleteAction = ticket => ({
   type: REMOVE_SUCCESS,
   payload: ticket,
@@ -156,7 +146,7 @@ const removeFailAction = errorMessage => ({
   },
 });
 
-const fetchingObj = {
+export const fetchingObj = {
   isFetching: false,
   errorMsg: '',
 };
@@ -176,35 +166,6 @@ const changePage = (pageIndex, sizePerPage) => ({
   pageIndex,
   sizePerPage,
 });
-
-// selector
-const getTicketIsCreating = ({ ticket }) => ticket.get('isCreating');
-const getTicketCreateError = ({ ticket }) => ticket.get('createError');
-
-const getTicketIsUpdating = ({ ticket }) => ticket.get('isUpdating');
-const getTicketUpdateError = ({ ticket }) => ticket.get('updateError');
-
-const getTicketTotalRecord = ({ ticket }) => ticket.get('totalRecord');
-const getTicketGetTicketDetail = ({ ticket }, id, owner) => ticket.getIn(['tickets', `${id}#${owner}`], emptyMap).toJS();
-const getTicketGetTicketIsGetting = ({ ticket }) => ticket.get('isGetting');
-const getTicketGetTicketError = ({ ticket }) => ticket.get('getError');
-const getTicketsById = ({ ticket }) => ticket.get('tickets');
-const getVisibleTicketIds = ({ ticket }) => ticket.get('visibleTicketIds');
-const getTicketsList = createSelector(getTicketsById, getVisibleTicketIds, (ticketByIds, visibleTicketIds) => {
-  const plainTicketById = ticketByIds.toJS();
-  const plainVisibleTicketIds = visibleTicketIds.toJS();
-  const sortTickets = plainVisibleTicketIds.map(itemId => plainTicketById[itemId]);
-
-  return sortTickets;
-});
-
-const getTicketIsArchiving = ({ ticket }) => ticket.get('isArchiving');
-const getTicketArchiveError = ({ ticket }) => ticket.get('archiveError');
-
-const getTicketIsRemoving = ({ ticket }) => ticket.get('isRemoving');
-const getTicketRemoveError = ({ ticket }) => ticket.get('removeError');
-
-const getFetchingContext = ({ ticket }) => ticket.get('fetching', fetchingObj).toJS();
 
 export const initialState = fromJS({
   createError: '',
@@ -228,7 +189,6 @@ export const initialState = fromJS({
   isRemoving: false,
   isGetting: false,
   fetching: fetchingObj,
-  isLoading: false,
 });
 
 function ticketReducer(state = initialState, action) {
@@ -365,26 +325,4 @@ export const actions = {
   archiveAction,
   archiveCompleteAction,
   archiveFailAction,
-};
-
-export const selectors = {
-  getTicketIsCreating,
-  getTicketCreateError,
-
-  getTicketIsUpdating,
-  getTicketUpdateError,
-
-  getTicketTotalRecord,
-  getTicketGetTicketDetail,
-  getTicketGetTicketIsGetting,
-  getTicketGetTicketError,
-
-  getTicketsList,
-  getFetchingContext,
-
-  getTicketIsArchiving,
-  getTicketArchiveError,
-
-  getTicketIsRemoving,
-  getTicketRemoveError,
 };

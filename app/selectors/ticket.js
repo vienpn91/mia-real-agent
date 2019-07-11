@@ -1,52 +1,53 @@
-import _get from 'lodash/get';
-import _values from 'lodash/values';
-import _pick from 'lodash/pick';
 import { createSelector } from 'reselect';
 import { fromJS } from 'immutable';
-import { initialState as ticketInitialState } from 'reducers/ticket';
+import { fetchingObj } from 'reducers/ticket';
 
 const emptyMap = fromJS({});
 const emptyList = fromJS([]);
 
-const getTicketState = state => _get(state, 'ticket', ticketInitialState);
+const getTicketIsCreating = ({ ticket }) => ticket.get('isCreating');
+const getTicketCreateError = ({ ticket }) => ticket.get('createError');
+const getTicketIsUpdating = ({ ticket }) => ticket.get('isUpdating');
+const getTicketUpdateError = ({ ticket }) => ticket.get('updateError');
+const getTicketTotalRecord = ({ ticket }) => ticket.get('totalRecord');
+const getTicketGetTicketDetail = ({ ticket }, id, owner) => ticket.getIn(['tickets', `${id}#${owner}`], emptyMap).toJS();
+const getTicketGetTicketIsGetting = ({ ticket }) => ticket.get('isGetting');
+const getTicketGetTicketError = ({ ticket }) => ticket.get('getError');
+const getTicketsById = ({ ticket }) => ticket.get('tickets');
+const getVisibleTicketIds = ({ ticket }) => ticket.get('visibleTicketIds', emptyList);
+const getTicketsList = createSelector(getTicketsById, getVisibleTicketIds, (ticketByIds, visibleTicketIds) => {
+  const plainTicketById = ticketByIds.toJS();
+  const plainVisibleTicketIds = visibleTicketIds.toJS();
+  const sortTickets = plainVisibleTicketIds.map(itemId => plainTicketById[itemId]);
 
-const getTickets = state => getTicketState(state).get('tickets', emptyMap);
+  return sortTickets;
+});
 
-const getVisibleTicketIds = state => getTicketState(state).get('visibleTicketIds', emptyList);
+const getTicketIsArchiving = ({ ticket }) => ticket.get('isArchiving');
+const getTicketArchiveError = ({ ticket }) => ticket.get('archiveError');
 
-const getTotalCount = state => getTicketState(state).get('totalCount', 0);
+const getFetchingContext = ({ ticket }) => ticket.get('fetching', fetchingObj).toJS();
 
-const getSelectedPage = state => getTicketState(state).getIn(['pagination', 'selectedPage'], 1);
-const getSizePerPage = state => getTicketState(state).getIn(['pagination', 'sizePerPage']);
+const getSelectedPage = ({ ticket }) => ticket.getIn(['pagination', 'selectedPage'], 1);
+const getSizePerPage = ({ ticket }) => ticket.getIn(['pagination', 'sizePerPage']);
 
-const getSorting = state => getTicketState(state).get('sorting', emptyMap);
-const makeSelectSorting = createSelector(getSorting, sorting => sorting.toJS());
-
-const getFiltering = state => getTicketState(state).get('filtering', emptyMap);
-const makeSelectFiltering = createSelector(getFiltering, filtering => filtering.toJS(),);
-
-const makeSelectTickets = () => createSelector(
-  getTickets,
-  getVisibleTicketIds,
-  (tickets, visibleTicketIds) => {
-    const plainTickets = tickets.toJS();
-    const plainVisibleTicketIds = visibleTicketIds.toJS();
-
-    const visibleTicket = _pick(plainTickets, plainVisibleTicketIds);
-    return _values(visibleTicket);
-  },
-);
-
-const getIsLoading = state => getTicketState(state).get('isLoading', false);
-const getErrorMsg = createSelector(getTicketState, ticketState => ticketState.get('message', ''),);
+const getSorting = ({ ticket }) => ticket.get('sorting', emptyMap);
+const reselectSorting = createSelector(getSorting, sorting => sorting.toJS());
 
 export {
-  makeSelectSorting,
-  makeSelectFiltering,
-  makeSelectTickets,
-  getTotalCount,
+  reselectSorting,
   getSelectedPage,
   getSizePerPage,
-  getIsLoading,
-  getErrorMsg,
+  getTicketIsCreating,
+  getTicketCreateError,
+  getTicketIsUpdating,
+  getTicketUpdateError,
+  getTicketTotalRecord,
+  getTicketGetTicketDetail,
+  getTicketGetTicketIsGetting,
+  getTicketGetTicketError,
+  getTicketsList,
+  getFetchingContext,
+  getTicketIsArchiving,
+  getTicketArchiveError,
 };

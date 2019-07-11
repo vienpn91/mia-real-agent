@@ -1,13 +1,16 @@
 import { connect } from 'react-redux';
 import Tickets from 'components/Chatbot/Tickets';
-import { selectors, actions } from 'reducers/ticket';
+import {
+  getTicketsList, getFetchingContext, getTicketIsArchiving, getTicketArchiveError,
+} from 'selectors/ticket';
+import { actions } from 'reducers/ticket';
 import { getUserRole } from 'reducers/auth';
 
 const mapStateToProps = state => ({
-  tickets: selectors.getTicketsList(state),
-  fetchingContext: selectors.getFetchingContext(state),
-  isArchiving: selectors.getTicketIsArchiving(state),
-  archiveError: selectors.getTicketArchiveError(state),
+  tickets: getTicketsList(state),
+  fetchingContext: getFetchingContext(state),
+  isArchiving: getTicketIsArchiving(state),
+  archiveError: getTicketArchiveError(state),
   userRole: getUserRole(state),
 });
 
