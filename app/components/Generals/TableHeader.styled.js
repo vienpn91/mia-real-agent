@@ -84,13 +84,13 @@ export const TableHeaderAddNewButton = styled.div`
 export const TableHeaderSortButton = styled.div`
   position: relative;
   border-radius: 3px;
-  border: 1px solid ${props => props.theme.secondaryColor};
+  border: 1px solid #bfbfbf;
   background-color: ${props => props.theme.secondaryColor};
   padding: 5px 10px;
   font-size: 18px;
   cursor: pointer;
   &:hover {
-    border-color: #bfbfbf;
+    border-color: #7d7d7d;
     box-shadow: 0 1px 1px #0000001a;
   }
 `;

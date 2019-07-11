@@ -11,8 +11,8 @@ import {
   TicketName,
   TicketTime,
   TicketStatus,
-} from '../styles';
-import { MenuStyled } from './styles';
+} from '../Chatbot.styled';
+import { MenuStyled } from './Tickets.styled';
 import { ROLES } from '../../../../common/enums';
 
 class TicketItem extends React.PureComponent {

@@ -16,7 +16,7 @@ import {
   TicketPaginationWrapper,
   TicketGroupAction,
   TicketButton,
-} from '../styles';
+} from '../Chatbot.styled';
 
 const scrollStyle = {
   height: 'calc(100vh - 310px)',

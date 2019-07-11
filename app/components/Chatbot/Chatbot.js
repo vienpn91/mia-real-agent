@@ -12,7 +12,6 @@ import _isEmpty from 'lodash/isEmpty';
 import Tickets from 'containers/Chatbot/Tickets';
 import history from 'utils/history';
 import { Return } from 'components/Generals/General.styled';
-import TicketDetail from './TicketDetail/TicketDetail';
 import MessageBoxContainer from '../../containers/Chatbot/MessageBox';
 import {
   ChatbotWrapper,
@@ -20,7 +19,7 @@ import {
   ChatbotContentWrapper,
   TicketHeaderWrapper,
   TicketEmpty,
-} from './styles';
+} from './Chatbot.styled';
 import CreateTicketFormContainer from '../../containers/Chatbot/CreateTicket';
 import { ROLES } from '../../../common/enums';
 import EditTicketContainer from '../../containers/Chatbot/EditTicket';
@@ -151,9 +150,6 @@ export default class ChatbotComponent extends Component {
             {(!_isEmpty(ticketDetail) && !getError) ? <MessageBoxContainer ticket={ticketDetail} /> : <TicketEmpty>Please select a ticket</TicketEmpty>}
           </Content>
         </ChatbotContentWrapper>
-        <ChatbotTicketListWrapper>
-          <TicketDetail ticket={ticketDetail} />
-        </ChatbotTicketListWrapper>
         <CreateTicketFormContainer
           isOpen={isOpenCreateModal}
           handleCancel={this.handleCloseCreateModal}

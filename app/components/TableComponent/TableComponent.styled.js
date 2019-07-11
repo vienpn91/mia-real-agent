@@ -71,7 +71,7 @@ export const TableContentItem = styled.div`
   display: flex;
   flex: 1;
   border: none;
-  min-height: 80px;
+  min-height: 68px;
   background-color: ${props => props.theme.secondaryColor};
   border-radius: 3px;
   &:hover {

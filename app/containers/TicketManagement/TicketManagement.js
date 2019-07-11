@@ -1,12 +1,13 @@
 import itemManagementHoc from 'hoc/ItemManagementHoc';
 import { connect } from 'react-redux';
-import { actions } from 'reducers/ticket';
+import { actions as ticketActions } from 'reducers/ticket';
 import { createStructuredSelector } from 'reselect';
 import {
   makeSelectSorting,
   makeSelectFiltering,
   getErrorMsg,
 } from 'selectors/ticket';
+import { toggleLeftSideBar } from 'selectors/admin';
 import { SORT, FILTER } from 'utils/constants';
 import TicketTable from './TicketTable';
 
@@ -28,12 +29,13 @@ const mapStateToProps = (state) => {
     sortItems: TICKET_SORT,
     filterItems: TICKET_FILTER,
     shouldRenderFilter: true,
+    toggleLeftSideBar: toggleLeftSideBar(state),
   };
 };
 
 const mapDispatchToProps = {
-  handleSort: actions.sortVariant,
-  handleFilter: actions.filterVariant,
+  handleSort: ticketActions.sortVariant,
+  handleFilter: ticketActions.filterVariant,
 };
 
 export default connect(

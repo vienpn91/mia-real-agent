@@ -111,6 +111,10 @@ export const ChatbotTicketListWrapper = styled.div`
   }
 `;
 
+export const ChatbotTicketDetailWrapper = styled(ChatbotTicketListWrapper)`
+  border-left: 1px solid #d9d9d9;
+`;
+
 export const ChatbotContentWrapper = styled.div`
   flex: 1;
   .ant-breadcrumb {
@@ -255,13 +259,15 @@ export const TicketButton = styled.div`
 `;
 
 export const MessageBoxWrapper = styled.div`
-  height: 100vh;
+  display: flex;
+  height: calc(100vh - 60px);
   background: ${props => props.theme.secondaryColor};
   position: relative;
 `;
 
 export const MessageBoxContent = styled.div`
-  height: calc(100% - 60px);
+  flex: 1;
+  height: 100%;
   background-color: #f5f6f7;
 `;
 
