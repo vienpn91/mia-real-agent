@@ -28,7 +28,7 @@ export const FilterItem = styled.div`
   input {
     border: 1px solid #d9d9d9;
     border-left: none;
-    background-color: ${props => props.theme.secondaryColor}
+    background-color: ${props => props.theme.secondaryColor};
     box-shadow: inset 0 1px 2px rgba(27,31,35,.075);
     border-radius: 0px 3px 3px 0px;
     padding: 0px 8px;
