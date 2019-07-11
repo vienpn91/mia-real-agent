@@ -56,3 +56,22 @@ export const acceptAgent = (id, ticketId, isConfirm) => axios
   .post(`agents/${id}/accept`, { ticketId, isConfirm })
   .then(response => ({ response }))
   .catch(error => ({ error }));
+
+export const list = params => axios
+  .get('users/', { params })
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
+
+export const get = id => axios
+  .get(`users/${id}`)
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
+
+export const update = (id, data) => axios
+  .put(`users/${id}`, { data })
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
+export const insert = data => axios
+  .post('users/', { data })
+  .then(response => ({ response }))
+  .catch(error => ({ error }));

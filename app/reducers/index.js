@@ -10,6 +10,7 @@ import ticket from './ticket';
 import chat from './chat';
 import modal from './modal';
 import history from '../utils/history';
+import user from './user';
 
 export const REHYDRATE_COMPLETE = 'root/REHYDRATE_COMPLETE';
 export const CLEAR_TRANSACTION = 'root/CLEAR_TRANSACTION';
@@ -24,6 +25,7 @@ export default function createReducer(injectedReducers = {}) {
     ticket,
     chat,
     modal,
+    user,
     router: connectRouter(history),
     ...injectedReducers,
   });

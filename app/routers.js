@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import AuthenticatedRoute from 'containers/Route/AuthenticatedRoute';
 import MainLayout from 'components/MainLayout';
 import AdminMainLayout from 'components/AdminMainLayout';
+import UserManagement from 'containers/UserManagement';
 import UnauthRoute from './containers/Route/UnauthenticateRoute';
 import HomePage from './pages/HomePage';
 import Dashboard from './pages/Dashboard';
@@ -26,6 +27,7 @@ export default class App extends React.PureComponent {
           <AdminMainLayout>
             <AuthenticatedRoute exact path="/admin/dashboard" component={AdminDashboard} />
             <AuthenticatedRoute exact path="/admin/tickets" component={TicketManagement} />
+            <AuthenticatedRoute exact path="/admin/user" component={UserManagement} />
           </AdminMainLayout>
         </Route>
         <UnauthRoute exact path="/" component={HomePage} />

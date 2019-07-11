@@ -14,14 +14,13 @@ export const DATE_TIME_FORMAT = {
 export const COLUMN_TYPE = {
   TEXT: 'text',
   IMAGE: 'image',
-  CURRENCY: 'currency',
   DATE: 'date',
   ACTIVE: 'active',
   ROLE: 'role',
   TOTAL: 'total',
   STATUS: 'status',
-  PROMO_TYPE: 'promo-type',
   ROLE_BUTTON_GROUP: 'role-button-group',
+  UPPERCASE: 'uppercase',
 };
 
 export const FILTER = {
@@ -64,6 +63,20 @@ export const SORT = {
     {
       title: 'Quantity',
       value: 'quantity',
+    },
+  ],
+  USER_SORT: [
+    {
+      title: 'Username',
+      value: 'username',
+    },
+    {
+      title: 'Email',
+      value: 'email',
+    },
+    {
+      title: 'Role',
+      value: 'role',
     },
   ],
 };

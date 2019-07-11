@@ -14,7 +14,7 @@ import {
 import { IconStyled } from 'components/Generals/General.styled';
 import { COLUMN_TYPE } from 'utils/constants';
 import history from 'utils/history';
-import { ButtonGroupWrapper, ButtonElement } from './TableManagement.styled';
+import { ButtonGroupWrapper, ButtonElement, UppercaseText } from './TableManagement.styled';
 
 class TableRow extends React.PureComponent {
   onClick = () => {
@@ -98,6 +98,15 @@ class TableRow extends React.PureComponent {
     </ButtonGroupWrapper>
   );
 
+  renderUppercaseColumn = (column) => {
+    const { dataKey } = column;
+    const { item } = this.props;
+
+    const value = _get(item, dataKey);
+
+    return <UppercaseText>{value}</UppercaseText>;
+  }
+
   renderColumnContent = (column) => {
     const { type } = column;
     switch (type) {
@@ -115,6 +124,8 @@ class TableRow extends React.PureComponent {
         return this.renderStatusColumn(column);
       case COLUMN_TYPE.ROLE_BUTTON_GROUP:
         return this.renderRoleButtonGroupColumn(column);
+      case COLUMN_TYPE.UPPERCASE:
+        return this.renderUppercaseColumn(column);
       case COLUMN_TYPE.TEXT:
       default:
         return this.renderTextColumn(column);

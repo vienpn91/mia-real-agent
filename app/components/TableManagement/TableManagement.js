@@ -49,6 +49,7 @@ class TableManagement extends React.PureComponent {
       sizePerPage,
       changePage,
     } = this.props;
+
     const size = items.length;
     return (
       <TableBorder

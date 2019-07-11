@@ -33,7 +33,7 @@ const TABS_MENU = [
     type: 'container',
     label: 'Users',
     icon: 'mia-user',
-    link: '/admin/users',
+    link: '/admin/user',
   },
 ];
 
