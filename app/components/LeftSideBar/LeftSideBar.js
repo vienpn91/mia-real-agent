@@ -59,7 +59,6 @@ const paths = _reduce(
 class LeftSideBar extends PureComponent {
   state = {
     activeItem: '',
-    isSidebarOpen: false,
   };
 
   componentDidMount() {
@@ -76,12 +75,6 @@ class LeftSideBar extends PureComponent {
     }
   }
 
-  onToggleSidebar = () => {
-    this.setState(prevState => ({
-      isSidebarOpen: !prevState.isSidebarOpen,
-    }));
-  };
-
   selectTab = () => {
     const { pathname } = this.props;
     const pathItem = _find(paths, path => _startsWith(pathname, path.link));
@@ -93,11 +86,6 @@ class LeftSideBar extends PureComponent {
       });
     }
   };
-
-  // onLogoClick = () => {
-  //   const { history } = this.props;
-  //   history.push('/');
-  // };
 
   toggleContainer = (key) => {
     this.setState((prevState) => {
@@ -115,18 +103,18 @@ class LeftSideBar extends PureComponent {
   );
 
   renderTabItem = (tabItem) => {
-    const { pathname } = this.props;
+    const { pathname, toggleLeftSideBar } = this.props;
     const {
       key, label, icon, link,
     } = tabItem;
-    const { activeItem, isSidebarOpen } = this.state;
+    const { activeItem } = this.state;
     return (
       <SidebarItem
         icon={icon}
         text={label}
         link={link}
         currentUrl={pathname}
-        isToggle={isSidebarOpen}
+        isToggle={toggleLeftSideBar}
         isActive={activeItem === key}
         key={key}
       />
@@ -134,15 +122,15 @@ class LeftSideBar extends PureComponent {
   };
 
   render() {
-    const { isSidebarOpen } = this.state;
+    const { toggleLeftSideBar, handleToggle } = this.props;
     return (
       <LeftSideBarWrapper
-        isToggle={isSidebarOpen}
+        isToggle={toggleLeftSideBar}
       >
         <SidebarBlock>
-          <SidebarToggleButton isToggle={isSidebarOpen}>
+          <SidebarToggleButton isToggle={toggleLeftSideBar}>
             {this.renderLogo()}
-            <IconToggle onClick={this.onToggleSidebar} className="mia-chevron-right" />
+            <IconToggle onClick={handleToggle} className="mia-chevron-right" />
           </SidebarToggleButton>
           {TABS_MENU.map(this.renderTabItem)}
         </SidebarBlock>
@@ -153,6 +141,8 @@ class LeftSideBar extends PureComponent {
 
 LeftSideBar.propTypes = {
   pathname: PropTypes.string,
+  toggleLeftSideBar: PropTypes.bool,
+  handleToggle: PropTypes.func,
 };
 
 export default LeftSideBar;

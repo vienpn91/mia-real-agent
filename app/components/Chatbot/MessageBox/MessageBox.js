@@ -10,6 +10,7 @@ import {
   object, func, shape,
   bool, string,
 } from 'prop-types';
+import TicketDetail from '../TicketDetail/TicketDetail';
 import {
   MessageBoxWrapper,
   MessageBoxContent,
@@ -21,14 +22,13 @@ import {
   MessageInput,
   MessageEmpty,
   InputAction,
-  InputUpload,
   UserMessage,
-} from '../styles';
+} from '../Chatbot.styled';
 import LoadingSpin from '../../Loading';
 import { InfoNotification } from './styles';
 
 const scrollStyle = {
-  height: 'calc(100% - 60px)',
+  height: '100%',
   width: '100%',
 };
 
@@ -262,28 +262,27 @@ export default class MessageBox extends Component {
   }
 
   render() {
-    const { isGetting, chatData } = this.props;
+    const { isGetting, chatData, ticket } = this.props;
     return (
       <LoadingSpin loading={isGetting}>
+        {this.renderMessageHeader()}
         <MessageBoxWrapper>
-          {this.renderMessageHeader()}
           <MessageBoxContent>
             <ShadowScrollbars
               autoHide
               style={scrollStyle}
             >
-              {!chatData
-                ? <MessageEmpty>No Chat Data</MessageEmpty>
-                : (
-                  <React.Fragment>
-                    {this.renderMessageContent()}
-                  </React.Fragment>
-                )
-              }
+              <React.Fragment>
+                {!chatData
+                  ? <MessageEmpty>No Chat Data</MessageEmpty>
+                  : this.renderMessageContent()
+                }
+                {this.renderMessageInput()}
+              </React.Fragment>
               <div ref={this.messagesEndRef} />
             </ShadowScrollbars>
           </MessageBoxContent>
-          {this.renderMessageInput()}
+          <TicketDetail ticket={ticket} />
         </MessageBoxWrapper>
       </LoadingSpin>
     );

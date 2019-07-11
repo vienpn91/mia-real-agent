@@ -11,6 +11,7 @@ import chat from './chat';
 import modal from './modal';
 import history from '../utils/history';
 import user from './user';
+import admin from './admin';
 
 export const REHYDRATE_COMPLETE = 'root/REHYDRATE_COMPLETE';
 export const CLEAR_TRANSACTION = 'root/CLEAR_TRANSACTION';
@@ -26,6 +27,7 @@ export default function createReducer(injectedReducers = {}) {
     chat,
     modal,
     user,
+    admin,
     router: connectRouter(history),
     ...injectedReducers,
   });

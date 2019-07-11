@@ -6,11 +6,12 @@ import {
   TicketDetailWrapper,
   TicketInfoWrapper,
   TicketTimelineWrapper,
-} from '../styles';
+  ChatbotTicketDetailWrapper,
+} from '../Chatbot.styled';
 import { ROLES } from '../../../../common/enums';
 
 const scrollStyle = {
-  height: 'calc(100vh - 165px)',
+  height: 'calc(100vh - 60px)',
   width: '100%',
 };
 
@@ -68,7 +69,7 @@ export default class TicketDetail extends Component {
     } = ticket;
     return (
       <TicketInfoWrapper>
-        <Descriptions column={4}>
+        <Descriptions column={5}>
           <Descriptions.Item label="Ticket">{title}</Descriptions.Item>
           <Descriptions.Item label="Description">{description}</Descriptions.Item>
           <Descriptions.Item label="Owner">{this.renderOwnerInfo()}</Descriptions.Item>
@@ -97,12 +98,14 @@ export default class TicketDetail extends Component {
 
   render() {
     return (
-      <ShadowScrollbars autoHide style={scrollStyle}>
-        <TicketDetailWrapper>
-          {this.renderTicketInfo()}
-          {this.renderTicketTimeline()}
-        </TicketDetailWrapper>
-      </ShadowScrollbars>
+      <ChatbotTicketDetailWrapper>
+        <ShadowScrollbars autoHide style={scrollStyle}>
+          <TicketDetailWrapper>
+            {this.renderTicketInfo()}
+            {this.renderTicketTimeline()}
+          </TicketDetailWrapper>
+        </ShadowScrollbars>
+      </ChatbotTicketDetailWrapper>
     );
   }
 }

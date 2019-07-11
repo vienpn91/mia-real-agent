@@ -12,7 +12,7 @@ import {
   TicketItemWrapper,
   TicketFilterWrapper,
   TicketPaginationWrapper,
-} from '../styles';
+} from '../Chatbot.styled';
 import { ROLES } from '../../../../common/enums';
 
 const categories = [
@@ -23,7 +23,7 @@ const categories = [
 
 const widthBreakpoint = 768;
 const scrollStyle = {
-  height: 'calc(100vh - 324px)',
+  height: 'calc(100vh - 250px)',
   width: '100%',
 };
 

@@ -16,7 +16,7 @@ import {
   TicketPaginationWrapper,
   TicketGroupAction,
   TicketButton,
-} from '../styles';
+} from '../Chatbot.styled';
 
 const scrollStyle = {
   height: 'calc(100vh - 310px)',
@@ -93,7 +93,7 @@ export default class TicketItem extends Component {
     const { current, visible } = this.state;
     const { ticketData } = this.props;
     return (
-      <MediaQuery maxWidth={768}>
+      <MediaQuery maxWidth={840}>
         {matches => (
           <ShadowScrollbars autoHide style={matches ? scrollStyleMobile : scrollStyle}>
             <Menu>

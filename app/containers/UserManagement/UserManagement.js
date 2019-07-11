@@ -1,7 +1,8 @@
 import itemManagementHoc from 'hoc/ItemManagementHoc';
 import { connect } from 'react-redux';
-import { actions } from 'reducers/user';
+import { actions as userActions } from 'reducers/user';
 import { reselectSorting } from 'selectors/user';
+import { toggleLeftSideBar } from 'selectors/admin';
 import { SORT } from 'utils/constants';
 import UserTable from './UserTable';
 
@@ -12,10 +13,11 @@ const mapStateToProps = state => ({
   createEndpoint: 'admin/user/create',
   title: 'All Users',
   currentSorting: reselectSorting(state),
+  toggleLeftSideBar: toggleLeftSideBar(state),
 });
 
 const mapDispatchToProps = {
-  handleSort: actions.userSorting,
+  handleSort: userActions.userSorting,
 };
 
 export default connect(

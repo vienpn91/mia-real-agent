@@ -6,7 +6,7 @@ export const TopNavBarWrapper = styled.div`
     align-items: center;
     height: 64px;
     padding: 0px 15px;
-    /* background-color: ${props => props.theme.secondaryColor}; */
+    background-color: ${props => props.theme.textColor};
     box-shadow: 0px 0px 6px -1px ${props => props.theme.textColorSecondary};
     position: relative;
     z-index: 1;
@@ -107,12 +107,9 @@ export const Nav = styled.div`
   letter-spacing: 1px;
   cursor: pointer;
   a {
-    color: ${props => props.theme.textColorSecondary}};
-  }
-  &:hover {
-    border-bottom: 2px solid ${props => props.theme.primaryColor};
-    a {
+    color: ${props => props.theme.textColorSecondary};
+    &:hover {
       color: ${props => props.theme.primaryColor};
-    } 
+    }
   }
 `;

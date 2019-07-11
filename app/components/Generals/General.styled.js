@@ -29,6 +29,9 @@ export const Return = styled.div`
   cursor: pointer;
   i {
     margin-right: 10px;
+    @media (max-width: 840px) {
+      margin-right: 0px;
+    }
   }
 `;
 

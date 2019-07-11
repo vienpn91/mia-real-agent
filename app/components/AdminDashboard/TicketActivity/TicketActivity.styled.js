@@ -46,7 +46,7 @@ export const TicketActivityItem = styled.div`
   height: 120px;
   border: 1px solid #dae1e4;
   border-radius: 7px;
-  background-color: ${props => props.theme.secondaryColor}
+  background-color: ${props => props.theme.secondaryColor};
   cursor: pointer;
   &:hover {
     border: 1px solid #ff5402;
@@ -108,7 +108,7 @@ export const TicketActivityQuantityItem = styled.div`
   justify-content: space-between;
   border: 1px solid #dae1e4;
   border-radius: 7px;
-  background-color: ${props => props.theme.secondaryColor}
+  background-color: ${props => props.theme.secondaryColor};
   margin-bottom: 15px;
   padding: 15px 18px;
   height: 50px;
