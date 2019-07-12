@@ -37,7 +37,7 @@ function applicationReducer(state = initialState, action) {
   switch (action.type) {
     case SUBMIT:
       return state.set('isSubmitting', true)
-        .set('fetchError', '');
+        .set('submitError', '');
     case SUBMIT_SUCCESS:
       return state.set('isSubmitting', false);
     case SUBMIT_FAIL:

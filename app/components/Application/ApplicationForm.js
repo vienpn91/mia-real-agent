@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Steps, Tabs, Icon, notification } from 'antd';
+import {
+  Steps, Tabs, Icon,
+  notification,
+} from 'antd';
 import { func, bool, string } from 'prop-types';
 import {
   ApplicationWrapper, ApplicationItem,
