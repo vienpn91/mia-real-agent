@@ -7,6 +7,7 @@ import { func } from 'prop-types';
 import * as Yup from 'yup';
 import FormInput from '../FormInput/FormInput';
 import {
+  ApplicationBtnWrap,
   ApplicationBtn, ArrayTagWrapper,
   ArrayAddButton, ArrayInputWrapper,
 } from './styles';
@@ -175,21 +176,20 @@ export class ExperienceForm extends Component {
                 </Col>
               </Row>
               <Row gutter={32}>
-                <Col sm={12} xs={24}>
+                <ApplicationBtnWrap>
                   <ApplicationBtn
                     type="button"
                     onClick={() => this.handleToggleExperienceModal(false)}
                   >
-                    Cancel
+                      Cancel
                   </ApplicationBtn>
-                </Col>
-                <Col sm={12} xs={24}>
                   <ApplicationBtn
                     type="submit"
+                    submit
                   >
                     {editIndex >= 0 ? 'Save' : 'Add'}
                   </ApplicationBtn>
-                </Col>
+                </ApplicationBtnWrap>
               </Row>
             </Form>
           )}
@@ -228,14 +228,17 @@ export class ExperienceForm extends Component {
           type="button"
           onClick={this.handleCancel}
         >
+          <i className="mia-chevron-left" />
           Back
         </ApplicationBtn>
       </Col>
       <Col sm={12} xs={24}>
         <ApplicationBtn
           type="submit"
+          submit
         >
           Next
+          <i className="mia-chevron-right" />
         </ApplicationBtn>
       </Col>
     </Row>
@@ -280,6 +283,7 @@ export class ExperienceForm extends Component {
                       ) => this.renderWorkExperience(experience, arrayHelpers, index))
                     }
                     <ArrayAddButton type="button" onClick={() => this.handleToggleExperienceModal(true)}>
+                      <i className="mia-add" />
                       Add Experience
                     </ArrayAddButton>
                   </ArrayInputWrapper>

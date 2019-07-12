@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { Input } from 'antd';
 
 export const ApplicationWrapper = styled.div`
@@ -26,6 +26,87 @@ export const ApplicationItem = styled.div`
   .ant-tabs-nav-wrap{
     display: none;
   }
+  .ant-steps {
+    margin-bottom: 35px;
+  }
+  .ant-steps-item {
+    height: 38px;
+    display: flex;
+    align-items: center;
+    overflow: unset;
+    margin-right: 8px !important;
+    &:before {
+      position: absolute;
+      content: '';
+      left: 3px;
+      top: 0;
+      width: 100%;
+      height: 50.5%;
+      z-index: 1;
+      transform: skew(20deg);
+      border-radius: 2px 2px 0 0;
+      background-color: #eee;
+    }
+    &:after {
+      position: absolute;
+      content: '';
+      left: 3px;
+      bottom: 0;
+      width: 100%;
+      height: 50.5%;
+      z-index: 1;
+      background-color: #eee;
+      transform: skew(-20deg);
+      border-radius: 0 0 2px 2px;
+    }
+    &:last-child {
+      margin-right: 8px !important;
+      .ant-steps-item-title {
+        padding-right: 16px !important;
+      }
+    }
+  }
+  .ant-steps-item-icon {
+    position: relative;
+    z-index: 2;
+    background: transparent !important;
+    border: none !important;
+    margin-right: 0px;
+    margin-left: 8px;
+    span {
+      color: #aaa !important;
+      font-size: 14px;
+    }
+  }
+  .ant-steps-item-content {
+    position: relative;
+    z-index: 2;
+  }
+  .ant-steps-item-title {
+    color: #aaa !important;
+    font-size: 14px;
+    &:after {
+      content: none;
+    }
+  }
+  .ant-steps-item.ant-steps-item-process,
+  .ant-steps-item.ant-steps-item-finish {
+    &:before,
+    &:after {
+      background-color: ${props => props.theme.primaryColor} !important;
+    }
+    .ant-steps-item-icon {
+      span {
+        color: ${props => props.theme.secondaryColor} !important;
+      }
+    }
+    .ant-steps-item-title {
+      color: ${props => props.theme.secondaryColor} !important;
+    }
+  }
+  .ant-tabs-bar {
+    display: none;
+  }
 `;
 
 export const ApplicationTitle = styled.div`
@@ -33,6 +114,7 @@ export const ApplicationTitle = styled.div`
   font-size: 32px;
   font-family: Countryside, sans-serif;
   margin-bottom: 55px;
+  color: #000;
 `;
 
 export const ApplicationInputWrapper = styled.div`
@@ -62,23 +144,46 @@ export const ApplicationLabel = styled.div`
   color: ${props => props.theme.textColor};
 `;
 
+export const ApplicationBtnWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  button {
+    margin-left: 10px;
+  }
+`;
+
 export const ApplicationBtn = styled.button`
-  height: 50px;
-  width: 100%;
-  border-radius: 50px;
-  border: 1px solid ${props => props.theme.textColor};
+  min-width: 100px;
+  margin-top: 20px;
+  padding: 8px 25px;
+  border-radius: 5px;
+  border: 1px solid #eee;
   transition: .3s ease;
-  background: ${props => props.theme.textColor};
-  color: ${props => props.theme.secondaryColor};
+  background: #eee;
+  color: #aaa;
   cursor: pointer;
-  margin-bottom: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
-  &:hover {
-    background: ${props => props.theme.secondaryColor};
-    color: ${props => props.theme.textColor};
+  i {
+    font-size: 12px;
+    font-weight: 700;
+    margin-right: 5px;
   }
+  &:hover {
+    opacity: 0.7;
+  }
+  ${({ submit }) => submit && css`
+    margin-left: auto;
+    border: 1px solid ${props => props.theme.primaryColor};
+    background: ${props => props.theme.primaryColor};
+    color: ${props => props.theme.secondaryColor};
+    i {
+      margin-left: 5px;
+      margin-right: 0px;
+    }
+  `}
 `;
 
 
@@ -133,11 +238,10 @@ export const ArrayInputWrapper = styled.div`
 `;
 
 export const ArrayTagWrapper = styled.div`
-  border: 1px solid;
+  border-bottom: 1px solid #000;
   width: fit-content;
-  padding: 5px 20px;
-  border-radius: 5px;
-  margin-right: 5px;
+  padding: 5px 10px;
+  margin-right: 15px;
   float: left;
 
   i:first-child {
@@ -152,45 +256,72 @@ export const ArrayTagWrapper = styled.div`
 `;
 
 export const ArrayAddButton = styled.button`
-  border: 1px solid;
-  width: fit-content;
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
   padding: 5px 20px;
   border-radius: 5px;
+  border: 1px solid ${props => props.theme.textColor};
   background-color: ${props => props.theme.secondaryColor};
-  margin-right: 5px;
-  float: left;
-
-  :hover {
-    background-color: ${props => props.theme.cancelColor};
-    color: ${props => props.theme.secondaryColor};
+  i {
+    margin-right: 5px;
+  }
+  &:hover {
+    border-color: ${props => props.theme.primaryColor};
+    color: ${props => props.theme.primaryColor};
   }
 `;
 
 export const RoleWrapper = styled.div`
   > button {
-    width: 50%;
-    float: left;
-    border: none;
+    width: calc(50% - 10px);
+    border-radius: 3px;
+    border: 1px solid ${props => props.theme.borderColor};
     background-color: ${props => props.theme.secondaryColor};
     height: 200px;
-    div{
+    &:first-child {
+      margin-right: 10px;
+    }
+    &:last-child {
+      margin-left: 10px;
+    }
+    &:hover {
+      border-color: ${props => props.theme.primaryColor};
+      div {
+        color: ${props => props.theme.primaryColor};
+      }
+    }
+    div {
       width: 100%;
       display: flex;
       flex-direction: column;
       text-align: center;
       font-size: 2em;
-    i {
-      width: 100%;
-      height: 35px;
-      svg {
-        width: 40px;
-        height: 40px;
+      color: ${props => props.theme.cancelColor};
+      i {
+        width: 100%;
+        height: 35px;
+        svg {
+          width: 100%;
+          height: 100%;
+        }
       }
     }
-    color: ${props => props.theme.cancelColor};
-    :hover {
-      color: ${props => props.theme.submitColor};
-    }
-    }
+  }
+`;
+
+export const SubmitSuccess = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  min-height: 120px;
+  color: #28a745;
+  i {
+    margin-right: 10px;
+    font-size: 18px;
+    border: 1px solid #28a745;
+    border-radius: 100%;
+    padding: 5px;
   }
 `;

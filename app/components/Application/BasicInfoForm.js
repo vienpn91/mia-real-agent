@@ -39,14 +39,17 @@ export class BasicInfoForm extends Component {
           type="button"
           onClick={this.handleCancel}
         >
+          <i className="mia-chevron-left" />
           Back
         </ApplicationBtn>
       </Col>
       <Col sm={12} xs={24}>
         <ApplicationBtn
           type="submit"
+          submit
         >
           Next
+          <i className="mia-chevron-right" />
         </ApplicationBtn>
       </Col>
     </Row>

@@ -171,6 +171,18 @@ export const InputWrapperStyled = styled(Form.Item)`
     background-color: #fafafa;
     padding-left: 10px;
   }
+  .ant-slider-track {
+    background-color: #ec976e !important;
+  }
+  .ant-slider-dot-active {
+    border-color: #ec976e !important;
+  }
+  .ant-slider-handle {
+    border: solid 2px #ec976e !important;
+    &:focus {
+      box-shadow: 0 0 0 5px #ffb01833 !important;
+    }
+  }
   ${({ login }) => login && css`
     .ant-select-selection {
       border: none !important;

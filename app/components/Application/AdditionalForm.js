@@ -197,6 +197,7 @@ export class AdditionalForm extends Component {
                 <Col sm={12} xs={24}>
                   <ApplicationBtn
                     type="submit"
+                    submit
                   >
                     {editIndex >= 0 ? 'Save' : 'Add'}
                   </ApplicationBtn>
@@ -242,14 +243,17 @@ export class AdditionalForm extends Component {
           onClick={this.handleCancel}
           type="button"
         >
+          <i className="mia-chevron-left" />
           Back
         </ApplicationBtn>
       </Col>
       <Col sm={12} xs={24}>
         <ApplicationBtn
           type="submit"
+          submit
         >
           Submit
+          <i className="mia-chevron-right" />
         </ApplicationBtn>
       </Col>
     </Row>
@@ -304,6 +308,7 @@ export class AdditionalForm extends Component {
                           ) => this.renderLanguage(language, arrayHelpers, index))
                         }
                         <ArrayAddButton type="button" onClick={() => this.handleToggleEducationModal(true)}>
+                          <i className="mia-add" />
                           Add language
                         </ArrayAddButton>
                       </ArrayInputWrapper>
