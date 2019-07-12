@@ -12,7 +12,7 @@ export const ChatbotTicketListWrapper = styled.div`
   color: ${props => props.theme.textColor};
   background-color: ${props => props.theme.secondaryColor};
   border-right: 1px solid #d9d9d9;
-  transition: all 300ms ease;
+  transition: all 200ms ease;
   .ant-input-search {
     .ant-input {
       background-color: #f5f6f7;
@@ -37,7 +37,7 @@ export const ChatbotTicketListWrapper = styled.div`
     color: ${props => props.theme.textColor};
     &:hover {
       color: ${props => props.theme.textColor};
-      background-color: #f5f6f7;
+      background-color: #f5f6f7 !important;
       border-bottom: 1px solid #d9d9d9;
       .anticon-setting {
         visibility: visible;

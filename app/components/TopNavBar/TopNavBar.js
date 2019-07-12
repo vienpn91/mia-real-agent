@@ -93,7 +93,7 @@ export default class TopNavBar extends Component {
           {this.renderLogo()}
           <NavBar>
             <Nav>
-              <Link to="/dashboard">Dashboard</Link>
+              <Link to="/dashboard/ticket">Dashboard</Link>
             </Nav>
             <Nav key="2">
               <Link to="/ticket">Ticket</Link>
