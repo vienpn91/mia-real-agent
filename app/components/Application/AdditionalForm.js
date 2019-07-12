@@ -7,7 +7,7 @@ import { Formik, FieldArray } from 'formik';
 import { func } from 'prop-types';
 import FormInput from '../FormInput/FormInput';
 import {
-  ApplicationBtn, ApplicationSpinner,
+  ApplicationBtn,
   ArrayTagWrapper, ArrayInputWrapper, ArrayAddButton,
 } from './styles';
 import { POSITION_OPTIONS } from '../../../common/enums';
@@ -98,7 +98,7 @@ export class AdditionalForm extends Component {
     const { values } = context;
     const { languages } = values;
     if (editIndex >= 0) {
-      languages[editIndex] = values;
+      languages[editIndex] = language;
       context.setValues({
         ...values,
         languages,
@@ -235,36 +235,25 @@ export class AdditionalForm extends Component {
     onCancel();
   }
 
-  renderRegisterBtn = () => {
-    // const { isLoading } = this.props;
-    // if (isLoading) {
-    //   return (
-    //     <ApplicationBtn>
-    //       <ApplicationSpinner />
-    //       Registering business
-    //     </ApplicationBtn>
-    //   );
-    // }
-    return (
-      <Row gutter={32}>
-        <Col sm={12} xs={24}>
-          <ApplicationBtn
-            onClick={this.handleCancel}
-            type="button"
-          >
-            Back
-          </ApplicationBtn>
-        </Col>
-        <Col sm={12} xs={24}>
-          <ApplicationBtn
-            type="submit"
-          >
-            Submit
-          </ApplicationBtn>
-        </Col>
-      </Row>
-    );
-  }
+  renderRegisterBtn = () => (
+    <Row gutter={32}>
+      <Col sm={12} xs={24}>
+        <ApplicationBtn
+          onClick={this.handleCancel}
+          type="button"
+        >
+          Back
+        </ApplicationBtn>
+      </Col>
+      <Col sm={12} xs={24}>
+        <ApplicationBtn
+          type="submit"
+        >
+          Submit
+        </ApplicationBtn>
+      </Col>
+    </Row>
+  )
 
   handleSubmit = (values) => {
     const { onSubmit } = this.props;

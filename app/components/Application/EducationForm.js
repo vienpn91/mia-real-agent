@@ -64,19 +64,19 @@ export class EducationForm extends Component {
     }
   };
 
-  handleAddExperience = (values) => {
+  handleAddExperience = (experience) => {
     const { editIndex } = this.state;
     const { formik } = this;
     const context = formik.getFormikContext();
     const { educations } = context.values;
     if (editIndex >= 0) {
-      educations[editIndex] = values;
+      educations[editIndex] = experience;
       context.setValues({
         educations,
       });
     } else {
       context.setValues({
-        educations: [...educations, values],
+        educations: [...educations, experience],
       });
     }
     this.handleToggleEducationModal(false);

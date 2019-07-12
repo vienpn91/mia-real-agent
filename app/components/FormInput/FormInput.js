@@ -250,6 +250,7 @@ class FormInput extends React.Component {
           style={{ width: '100%' }}
           onChange={handleChange}
           marks={marks}
+          onBlur={() => { }}
           defaultValue={defaultValue}
         />
       </InputWrapperStyled>

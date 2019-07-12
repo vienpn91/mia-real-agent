@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Steps, Tabs, Icon } from 'antd';
-import { func } from 'prop-types';
+import { Steps, Tabs, Icon, notification } from 'antd';
+import { func, bool, string } from 'prop-types';
 import {
   ApplicationWrapper, ApplicationItem,
   ApplicationTitle, RoleWrapper,
@@ -9,6 +9,7 @@ import BasicInfoForm from './BasicInfoForm';
 import ExperienceForm from './ExperienceForm';
 import EducationForm from './EducationForm';
 import AdditionalForm from './AdditionalForm';
+import LoadingSpin from '../Loading';
 
 const { Step } = Steps;
 const { TabPane } = Tabs;
@@ -16,6 +17,8 @@ const { TabPane } = Tabs;
 export class ApplicationForm extends Component {
   static propTypes = {
     onSubmit: func.isRequired,
+    isSubmitting: bool.isRequired,
+    submitError: string.isRequired,
   }
 
   state = {
@@ -24,6 +27,19 @@ export class ApplicationForm extends Component {
     basicData: null,
     experienceData: null,
     educationData: null,
+  }
+
+  componentDidUpdate = (prevProps) => {
+    const { isSubmitting, submitError } = this.props;
+    if (prevProps.isSubmitting && !isSubmitting) {
+      if (submitError) {
+        notification.error({ message: submitError });
+      } else {
+        this.setState({
+          step: 5,
+        });
+      }
+    }
   }
 
   handleNextStep = (data) => {
@@ -118,11 +134,17 @@ export class ApplicationForm extends Component {
         <TabPane tab="" key="4">
           <AdditionalForm onSubmit={this.handleSubmit} onCancel={this.handlePreviousStep} />
         </TabPane>
+        <TabPane tab="" key="5">
+          <h2>
+            Submit Application Success
+          </h2>
+        </TabPane>
       </Tabs>
     );
   }
 
   render() {
+    const { isSubmitting } = this.props;
     const { step } = this.state;
     return (
       <ApplicationWrapper>
@@ -136,7 +158,9 @@ export class ApplicationForm extends Component {
             <Step title="Additional" />
           </Steps>
           <br />
-          {this.handleRenderForm()}
+          <LoadingSpin loading={isSubmitting}>
+            {this.handleRenderForm()}
+          </LoadingSpin>
         </ApplicationItem>
       </ApplicationWrapper>
     );

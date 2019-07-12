@@ -83,7 +83,7 @@ export class ExperienceForm extends Component {
     const { values } = context;
     const { workExperiences } = values;
     if (editIndex >= 0) {
-      workExperiences[editIndex] = values;
+      workExperiences[editIndex] = experience;
       context.setValues({
         ...values,
         workExperiences,
