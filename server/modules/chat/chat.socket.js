@@ -14,14 +14,14 @@ export const listen = (socket) => {
    * payload: {
    *  from
    *  to
-   *  ticket
+   *  conversation
    *  message
    * }
    */
-  socket.on('reply', (payload) => {
+  socket.on('REPLY_MESSAGE', (payload) => {
     const { to } = payload;
     const toUser = UserQueue.getUser(to);
     if (!toUser) return;
-    toUser.emit('new_message', payload);
+    toUser.emit('NEW_MESSAGE', payload);
   });
 };

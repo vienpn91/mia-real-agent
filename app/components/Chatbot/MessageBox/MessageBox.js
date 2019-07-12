@@ -228,7 +228,7 @@ export default class MessageBox extends Component {
               {this.renderGroupAction()}
               <InputAction onClick={handleSubmit} className="mia-enter" />
               <Button
-                disabled={assignee}
+                // disabled={assignee}
                 loading={isFindingAgent}
                 key="button"
                 type="primary"

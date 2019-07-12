@@ -19,7 +19,6 @@ class ChatLogService extends BaseService {
       ticketId,
       to: agentId,
     }).exec();
-    console.log(chat);
     return chat;
   }
 }

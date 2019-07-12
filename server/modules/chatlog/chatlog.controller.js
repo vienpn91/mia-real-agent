@@ -1,7 +1,6 @@
 import httpStatus from 'http-status';
 import BaseController from '../base/base.controller';
 import ChatLogService from './chatlog.service';
-import { authenticateSocketIO } from '../../middlewares/authenticateMiddlewares';
 
 class ChatLogController extends BaseController {
   constructor() {

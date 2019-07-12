@@ -5,10 +5,10 @@ import _get from 'lodash/get';
 import { DEFAULT_ERROR_MESSAGE } from 'utils/constants';
 import { notification } from 'antd';
 import {
-  actions, GET_CHAT, INSERT_MESSAGE, UPDATE_CHAT, FIND_AGENT, ACCEPT_AGENT, REQUEST_CONFIRM, selectors,
+  actions, GET_CHAT, INSERT_MESSAGE, UPDATE_CHAT,
+  FIND_AGENT, ACCEPT_AGENT, REQUEST_CONFIRM, selectors,
 } from '../../reducers/chat';
 import * as ChatApi from '../../api/chat';
-import * as UserApi from '../../api/user';
 import * as AgentApi from '../../api/agent';
 import { configToken } from '../../api/config';
 import { getToken } from '../../reducers/auth';
@@ -32,7 +32,7 @@ export function* getChat({ payload }) {
   }
   const { data } = response;
   const { messages } = data;
-  yield put(actions.getChatCompleteAction({ ...data, messages: combineChat(messages) }));
+  yield put(actions.getChatCompleteAction({ ...data, messages: [] }));
 }
 
 export function* updateChat() {

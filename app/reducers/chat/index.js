@@ -226,6 +226,9 @@ const initialState = fromJS({
   isConfirming: false,
   confirmError: '',
   confirmRedirectData: null,
+
+  byId: {},
+  allIds: [],
 });
 
 function profileReducer(state = initialState, action) {

@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const chatLogSchema = new Schema(
   {
-    ticketId: {
+    conversationId: {
       type: Schema.Types.ObjectId,
       required: true,
     },
@@ -12,32 +12,20 @@ const chatLogSchema = new Schema(
       type: Schema.Types.ObjectId,
       required: true,
     },
-    to: {
-      type: Schema.Types.ObjectId,
+    messages: {
+      type: String,
       required: true,
     },
-    messages: {
-      type: [
-        {
-          messageOwner: {
-            type: Schema.Types.ObjectId,
-            required: true,
-          },
-          content: {
-            type: String,
-            required: true,
-          },
-          timestamp: Date,
-        },
-      ],
-      required: true,
+    createdAt: {
+      type: Date,
+      default: () => new Date(),
     },
     type: String,
     status: String,
   },
   {
     versionKey: false,
-    collection: 'chatlog',
+    collection: 'chat_log',
   },
 );
 

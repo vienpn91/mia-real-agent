@@ -2,6 +2,7 @@ import createSocketIO from 'socket.io';
 import socketioJwt from 'socketio-jwt';
 import Logger from '../logger';
 import AgentQueue from '../modules/queue/agentQueue';
+import UserQueue from '../modules/queue/userQueue';
 import { ROLES } from '../../common/enums';
 
 const ACTION_MESSAGE = 'ACTION_MESSAGE';
@@ -23,16 +24,21 @@ class SocketIOServer {
         }))
       .on('authenticated', async (socket) => {
         const { data: user } = await this.authenticate(socket);
-        const { email, role } = user;
-        Logger.info(`[Socket.io]: The foul [${email}] has join the fray`);
-        socket.on('disconnect', async () => {
-          Logger.info('[Socket.io]: The foul has exit the fray');
-          AgentQueue.remove(user);
-        });
+        const { email, role, _id: id } = user;
         const { connected } = socketIO.sockets;
         const { id: socketId } = socket.conn;
+
+        socket.on('disconnect', async () => {
+          Logger.info('[Socket.io]: The foul has exit the fray');
+          UserQueue.removeUser(id.toString(), socket);
+          AgentQueue.remove(user);
+        });
+
+        Logger.info(`[Socket.io]: The foul [${email}] has join the fray`);
+        UserQueue.addUser(id.toString(), socket);
         connected[socketId] = socket;
         if (role === ROLES.AGENT) {
+          Logger.info(`[Socket.io]: The foul [${email}] has upgraded to a magical agent`);
           AgentQueue.add({ user, socketId });
         }
       });

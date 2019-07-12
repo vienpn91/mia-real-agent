@@ -12,9 +12,6 @@ import {
 } from '../../mail';
 
 const { SECRET_KEY_JWT } = process.env;
-const JWT_OPTIONS = {
-  expiresIn: '1d',
-};
 
 class UserService extends BaseService {
   constructor() {
@@ -63,7 +60,7 @@ class UserService extends BaseService {
         throw new Error('User does not exists');
       }
       const { _id: userId } = user;
-      const token = jwt.sign({ userId }, SECRET_KEY_JWT, JWT_OPTIONS);
+      const token = jwt.sign({ userId }, SECRET_KEY_JWT);
       const vericationLink = `${DOMAIN}/api/users/verify/${token}`;
       sendUserVerifyMail(user, vericationLink);
     }
