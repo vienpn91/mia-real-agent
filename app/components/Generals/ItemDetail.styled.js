@@ -5,6 +5,7 @@ export const ItemDetailWrapper = styled.div`
   height: calc(100vh - 50px);
   overflow: hidden;
   display: flex;
+  width: 100%;
 `;
 
 export const ItemDetailListWrapper = styled.div`

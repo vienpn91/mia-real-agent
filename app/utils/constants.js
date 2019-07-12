@@ -23,21 +23,6 @@ export const COLUMN_TYPE = {
   UPPERCASE: 'uppercase',
 };
 
-export const FILTER = {
-  TICKET_FILTER: [
-    {
-      title: 'All SKU',
-      value: 'all',
-      query: {},
-    },
-    {
-      title: 'Low Stock SKU',
-      value: 'low-stock',
-      query: { quantity: { $lt: 10 } },
-    },
-  ],
-};
-
 export const SORT = {
   TICKET_SORT: [
     {
@@ -67,4 +52,9 @@ export const SORT = {
       value: 'role',
     },
   ],
+};
+
+
+export const ROUTE_DETAIL = {
+  USER_DETAIL_ROUTER: '/admin/user/:id',
 };

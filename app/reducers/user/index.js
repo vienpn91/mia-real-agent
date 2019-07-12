@@ -53,10 +53,11 @@ function fetchUserSingle(id) {
   };
 }
 
-function fetchUserSingleFail(payload) {
+function fetchUserSingleFail(id, errorMsg) {
   return {
     type: USER_FETCH_SINGLE_FAIL,
-    payload,
+    errorMsg,
+    id,
   };
 }
 
@@ -227,9 +228,8 @@ function userReducer(state = initialState, action) {
       return state.setIn(['user', _id], fromJS(payload));
     }
     case USER_FETCH_SINGLE_FAIL: {
-      const { payload } = action;
-      const { id, message } = payload;
-      return state.setIn(['user', id], fromJS({ error: message }));
+      const { id, errorMsg } = action;
+      return state.setIn(['user', id], fromJS({ error: errorMsg }));
     }
     case USER_UPDATE: {
       return state

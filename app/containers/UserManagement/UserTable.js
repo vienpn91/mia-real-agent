@@ -72,7 +72,7 @@ const mapStateToProps = (state) => {
   return {
     ...structureSelector,
     columns: userColumns,
-    endpoint: 'admin/user',
+    endpoint: '/admin/user',
   };
 };
 
