@@ -73,12 +73,11 @@ export const FilterItem = styled.div`
 `;
 
 export const Filter = styled.div`
-  border: 1px solid #d9d9d9;
-  border-radius: 3px 0px 0px 3px;
   overflow: hidden;
   display: flex;
   align-items: center;
   a {
+    border: 1px solid #d9d9d9;
     background-color: ${props => props.theme.secondaryColor};
     background-image: linear-gradient(-180deg,#fff,#eff3f6 90%);
     background-position: -1px -1px;
@@ -91,19 +90,18 @@ export const Filter = styled.div`
     justify-content: center;
     padding: 8px 12px;
     height: 100%;
+    &:first-child {
+      border-right: 1px solid transparent;
+      border-radius: 3px 0px 0px 3px;
+    }
     &:hover {
       color: ${props => props.theme.textColor};
-    }
-    &:first-child {
-      border-right: 1px solid #d9d9d9;
+      border-color: #1b1f2359;
     }
   }
   i {
     margin-left: 5px;
     font-size: 12px;
-  }
-  &:hover {
-    border-color: #1b1f2359;
   }
 `;
 

@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 export const PageWrapper = styled.div`
-  min-height: 400px;
+  width: 100%;
+  height: 400px;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
 `;
