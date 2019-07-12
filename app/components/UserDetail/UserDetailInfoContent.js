@@ -3,6 +3,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import _get from 'lodash/get';
 import {
   OverviewLeftSectionWrapper,
   OverviewTitle,
@@ -84,16 +85,20 @@ class UserDetailInfoContent extends PureComponent {
 
   renderAgentProfile = () => {
     const { userDetail = {} } = this.props;
-    const { application = {} } = userDetail;
+    const { application } = userDetail;
     const {
-      firstName, lastName, address, country, phone,
-    } = application;
+      firstName = '', lastName = '', address = '', country = '', phone = '',
+      skills = [],
+    } = application || {};
+
+    const skillsFormat = skills.join(', ');
 
     return (
       <OverviewLeftSectionWrapper>
         <OverviewTitle>Profile</OverviewTitle>
         {this.renderOverviewInfo('First Name', firstName)}
         {this.renderOverviewInfo('Last Name', lastName)}
+        {this.renderOverviewInfo('Skills', skillsFormat)}
         {this.renderOverviewInfo('Phone', phone)}
         {this.renderOverviewInfo('Address', address)}
         {this.renderOverviewInfo('Country', country)}
