@@ -179,7 +179,7 @@ function userReducer(state = initialState, action) {
     case USER_FETCH_LIST_SUCCESS: {
       const { data, totalCount } = action;
       const visibleUserIds = data.map(({ _id }) => _id);
-      const newUsers = state.get('user').merge(fromJS(_keyBy(data, '_id')));
+      const newUsers = state.get('user').mergeDeep(fromJS(_keyBy(data, '_id')));
       return state
         .set('isLoading', false)
         .set('user', newUsers)
