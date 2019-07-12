@@ -7,6 +7,10 @@ const conversationSchema = new Schema(
       type: Schema.Types.ObjectId,
       required: true,
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      required: true,
+    },
     members: {
       type: [Schema.Types.ObjectId],
       required: true,

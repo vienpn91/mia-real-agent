@@ -7,15 +7,15 @@ import {
 } from 'antd';
 import SubMenu from 'antd/lib/menu/SubMenu';
 import {
-  TicketGroup,
-  TicketName,
-  TicketTime,
-  TicketStatus,
+  ConversationGroup,
+  ConversationName,
+  ConversationTime,
+  ConversationStatus,
 } from '../Chatbot.styled';
-import { MenuStyled } from './Tickets.styled';
+import { MenuStyled } from './ConversationList.styled';
 import { ROLES } from '../../../../common/enums';
 
-class TicketItem extends React.PureComponent {
+class ConversationItem extends React.PureComponent {
   handleOpenSetting = () => {
     const { openSetting, ticket } = this.props;
     openSetting(ticket);
@@ -33,15 +33,15 @@ class TicketItem extends React.PureComponent {
     const categoryDisplay = Array.isArray(category) ? category[0] : category;
     return (
       <React.Fragment>
-        <TicketGroup>
-          <TicketName>{title}</TicketName>
-          <TicketStatus status={status}>
+        <ConversationGroup>
+          <ConversationName>{title}</ConversationName>
+          <ConversationStatus status={status}>
             <span>{categoryDisplay}</span>
             <span>-</span>
             <span>{ticket.status}</span>
-          </TicketStatus>
-        </TicketGroup>
-        <TicketTime>
+          </ConversationStatus>
+        </ConversationGroup>
+        <ConversationTime>
           <span>{timeFormat}</span>
           {!(userRole === ROLES.AGENT) && (
             <MenuStyled>
@@ -55,18 +55,18 @@ class TicketItem extends React.PureComponent {
               </SubMenu>
             </MenuStyled>
           )}
-        </TicketTime>
+        </ConversationTime>
 
       </React.Fragment>
     );
   }
 }
 
-TicketItem.propTypes = {
+ConversationItem.propTypes = {
   ticket: PropTypes.object,
   openSetting: func,
   onArchive: func.isRequired,
   userRole: string.isRequired,
 };
 
-export default TicketItem;
+export default ConversationItem;

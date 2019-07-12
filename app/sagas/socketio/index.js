@@ -113,11 +113,11 @@ function* socketIOFlow() {
   yield takeEvery(AUTH_LOGOUT, disconnectFlow);
 }
 
-export function emitReply(from, to, ticket, message) {
+export function emitReply(from, to, conversation, message) {
   socketConnection.emit(REPLY_MESSAGE, {
     from,
     to,
-    ticket,
+    conversation,
     message,
   });
 }

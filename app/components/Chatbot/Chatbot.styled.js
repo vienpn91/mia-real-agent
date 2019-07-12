@@ -7,7 +7,7 @@ export const ChatbotWrapper = styled.div`
   height: 100vh;
 `;
 
-export const ChatbotTicketListWrapper = styled.div`
+export const ChatbotConversationListWrapper = styled.div`
   flex: 0 0 400px;
   color: ${props => props.theme.textColor};
   background-color: ${props => props.theme.secondaryColor};
@@ -114,7 +114,7 @@ export const ChatbotTicketListWrapper = styled.div`
   }
 `;
 
-export const ChatbotTicketDetailWrapper = styled(ChatbotTicketListWrapper)`
+export const ChatbotConversationDetailWrapper = styled(ChatbotConversationListWrapper)`
   border-left: 1px solid #d9d9d9;
   @media (max-width: 1500px) {
     flex: 0 0 30%;
@@ -137,7 +137,7 @@ export const ChatbotContentWrapper = styled.div`
   }
 `;
 
-export const TicketHeaderWrapper = styled.div`
+export const ConversationHeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -164,11 +164,11 @@ export const TicketHeaderWrapper = styled.div`
   }
 `;
 
-export const TicketItemWrapper = styled.div`
+export const ConversationItemWrapper = styled.div`
   height: calc(100% - 120px);
 `;
 
-export const TicketGroup = styled.div`
+export const ConversationGroup = styled.div`
   flex: 1;
   line-height: normal;
   @media (max-width: 768px) {
@@ -176,7 +176,7 @@ export const TicketGroup = styled.div`
   }
 `;
 
-export const TicketName = styled.div`
+export const ConversationName = styled.div`
   font-size: 15px;
   font-weight: 700;
   margin-bottom: 5px;
@@ -186,7 +186,7 @@ export const TicketName = styled.div`
   text-overflow: ellipsis;
 `;
 
-export const TicketTime = styled.div`
+export const ConversationTime = styled.div`
   margin-left: 10px;
   display: flex;
   flex-direction: column;
@@ -202,7 +202,7 @@ export const TicketTime = styled.div`
   }
 `;
 
-export const TicketStatus = styled.div`
+export const ConversationStatus = styled.div`
   span {
     font-size: 13px;
     &:first-child {
@@ -221,7 +221,7 @@ export const TicketStatus = styled.div`
 
 `;
 
-export const TicketFilterWrapper = styled.div`
+export const ConversationFilterWrapper = styled.div`
   padding: 15px 24px;
   border-top: 1px solid #d9d9d9;
   .ant-select {
@@ -247,7 +247,7 @@ export const TicketFilterWrapper = styled.div`
   }
 `;
 
-export const TicketPaginationWrapper = styled.div`
+export const ConversationPaginationWrapper = styled.div`
   padding: 0 16px;
   text-align: center;
   .ant-pagination-item,
@@ -280,9 +280,9 @@ export const TicketPaginationWrapper = styled.div`
 
 export const TickerActionWrapper = styled.div``;
 
-export const TicketGroupAction = styled.div``;
+export const ConversationGroupAction = styled.div``;
 
-export const TicketButton = styled.div`
+export const ConversationButton = styled.div`
   padding: 6px 15px;
   cursor: pointer;
   &:hover {
@@ -430,16 +430,16 @@ export const InputUpload = styled.input`
   display: none;
 `;
 
-export const TicketEmpty = styled.div`
+export const ConversationEmpty = styled.div`
   padding: 15px;
   width: 100%;
   text-align: center;
   text-transform: uppercase;
 `;
 
-export const TicketDetailWrapper = styled.div``;
+export const ConversationDetailWrapper = styled.div``;
 
-export const TicketDetailAvatar = styled.div`
+export const ConversationDetailAvatar = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -450,7 +450,7 @@ export const TicketDetailAvatar = styled.div`
   }
 `;
 
-export const TicketInfoWrapper = styled.div`
+export const ConversationInfoWrapper = styled.div`
   .ant-descriptions-row {
     display: flex;
     flex-direction: column;
@@ -483,7 +483,7 @@ export const TicketInfoWrapper = styled.div`
   }
 `;
 
-export const TicketTimelineWrapper = styled.div`
+export const ConversationTimelineWrapper = styled.div`
   padding: 20px 25px;
   .ant-timeline-item-content {
     margin: 0px 0x 0px 25px;

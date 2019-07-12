@@ -68,7 +68,7 @@ class Router extends React.PureComponent {
           path="/login/callback/:token/:userId/:email/:verifiedAt"
           component={LoginCallBackPage}
         />
-        <AuthenticatedRoute exact path="/ticket/:id?/:owner?" component={ChatbotComponent} />
+        <AuthenticatedRoute exact path="/conversation/:id?/:ticketId?" component={ChatbotComponent} />
         <MainLayout>
           <Switch>
             <AuthenticatedRoute exact path="/profile" component={Profile} />

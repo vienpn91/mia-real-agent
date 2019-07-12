@@ -42,7 +42,7 @@ class TicketItem extends Component {
   renderTicketContent = () => {
     const { ticket, isRealAgent } = this.props;
     const { ticketId, owner } = ticket;
-    const url = isRealAgent ? `/ticket/${ticketId}/${owner}` : `/ticket/${ticketId}`;
+    const url = isRealAgent ? `/conversation/${ticketId}/${owner}` : `/conversation/${ticketId}`;
     return (
       <DashboardTitle>
         <DashboardRightBlock>

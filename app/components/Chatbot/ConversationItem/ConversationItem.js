@@ -7,15 +7,15 @@ import {
   Menu, Select, Pagination, Popover, Icon,
 } from 'antd';
 import {
-  TicketItemWrapper,
-  TicketGroup,
-  TicketName,
-  TicketTime,
-  TicketStatus,
-  TicketFilterWrapper,
-  TicketPaginationWrapper,
-  TicketGroupAction,
-  TicketButton,
+  ConversationItemWrapper,
+  ConversationGroup,
+  ConversationName,
+  ConversationTime,
+  ConversationStatus,
+  ConversationFilterWrapper,
+  ConversationPaginationWrapper,
+  ConversationGroupAction,
+  ConversationButton,
 } from '../Chatbot.styled';
 
 const scrollStyle = {
@@ -28,9 +28,9 @@ const scrollStyleMobile = {
   width: '100%',
 };
 
-export default class TicketItem extends Component {
+export default class ConversationItem extends Component {
   static propTypes = {
-    handleSelectTicket: func.isRequired,
+    handleSelectConversation: func.isRequired,
     categories: array.isRequired,
     ticketData: array.isRequired,
   }
@@ -75,21 +75,21 @@ export default class TicketItem extends Component {
   }
 
   handleSelect = (ticket) => {
-    const { handleSelectTicket } = this.props;
-    handleSelectTicket(ticket);
+    const { handleSelectConversation } = this.props;
+    handleSelectConversation(ticket);
   }
 
   renderGroupAction = () => (
-    <TicketGroupAction>
-      <TicketButton>Remove</TicketButton>
-      <TicketButton>Archive</TicketButton>
-      <TicketButton>Mark as</TicketButton>
-      <TicketButton>Rate</TicketButton>
-    </TicketGroupAction>
+    <ConversationGroupAction>
+      <ConversationButton>Remove</ConversationButton>
+      <ConversationButton>Archive</ConversationButton>
+      <ConversationButton>Mark as</ConversationButton>
+      <ConversationButton>Rate</ConversationButton>
+    </ConversationGroupAction>
 
   )
 
-  renderTicketList = () => {
+  renderConversationList = () => {
     const { current, visible } = this.state;
     const { ticketData } = this.props;
     return (
@@ -99,15 +99,15 @@ export default class TicketItem extends Component {
             <Menu>
               {ticketData.slice((current - 1) * 10, current * 10).map((ticket, index) => (
                 <Menu.Item key={index} onClick={() => this.handleSelect(ticket)}>
-                  <TicketGroup>
-                    <TicketName>{ticket.title}</TicketName>
-                    <TicketStatus status={ticket.status}>
+                  <ConversationGroup>
+                    <ConversationName>{ticket.title}</ConversationName>
+                    <ConversationStatus status={ticket.status}>
                       <span>{ticket.category}</span>
                       <span>-</span>
                       <span>{ticket.status}</span>
-                    </TicketStatus>
-                  </TicketGroup>
-                  <TicketTime>
+                    </ConversationStatus>
+                  </ConversationGroup>
+                  <ConversationTime>
                     <span>{ticket.lastestTime}</span>
                     <Popover
                       content={this.renderGroupAction()}
@@ -119,7 +119,7 @@ export default class TicketItem extends Component {
                     >
                       <Icon type="setting" />
                     </Popover>
-                  </TicketTime>
+                  </ConversationTime>
 
                 </Menu.Item>
               ))}
@@ -142,10 +142,10 @@ export default class TicketItem extends Component {
     });
   }
 
-  renderTicketFilter = () => {
+  renderConversationFilter = () => {
     const { categories } = this.props;
     return (
-      <TicketFilterWrapper>
+      <ConversationFilterWrapper>
         <span>Filter by categories:</span>
         <Select
           mode="multiple"
@@ -156,14 +156,14 @@ export default class TicketItem extends Component {
             <Select.Option key={index} value={cat}>{cat}</Select.Option>
           ))}
         </Select>
-      </TicketFilterWrapper>
+      </ConversationFilterWrapper>
     );
   }
 
-  renderTicketPagination = () => {
+  renderConversationPagination = () => {
     const { current } = this.state;
     return (
-      <TicketPaginationWrapper>
+      <ConversationPaginationWrapper>
         <Pagination
           onChange={this.handleChangePage}
           current={current}
@@ -172,17 +172,17 @@ export default class TicketItem extends Component {
           pageSize={5}
           total={this.getFilteredList().length}
         />
-      </TicketPaginationWrapper>
+      </ConversationPaginationWrapper>
     );
   }
 
   render() {
     return (
-      <TicketItemWrapper>
-        {this.renderTicketList()}
-        {this.renderTicketFilter()}
-        {this.renderTicketPagination()}
-      </TicketItemWrapper>
+      <ConversationItemWrapper>
+        {this.renderConversationList()}
+        {this.renderConversationFilter()}
+        {this.renderConversationPagination()}
+      </ConversationItemWrapper>
     );
   }
 }

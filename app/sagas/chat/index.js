@@ -13,6 +13,7 @@ import * as AgentApi from '../../api/agent';
 import { configToken } from '../../api/config';
 import { getToken } from '../../reducers/auth';
 import { combineChat } from './utils';
+import { emitReply } from '../socketio';
 
 export function* configAxiosForChat() {
   const token = yield select(getToken);
@@ -31,7 +32,6 @@ export function* getChat({ payload }) {
     return;
   }
   const { data } = response;
-  const { messages } = data;
   yield put(actions.getChatCompleteAction({ ...data, messages: [] }));
 }
 
@@ -52,18 +52,11 @@ export function* updateChat() {
 }
 
 export function* sendMessage({ payload }) {
-  yield configAxiosForChat();
-  const { message } = payload;
-  const { _id } = yield select(selectors.getChatData);
-  const { error } = yield call(ChatApi.sendMessage, _id, message);
-  if (error) {
-    const errorMessage = _get(
-      error, 'response.data.message', DEFAULT_ERROR_MESSAGE
-    );
-    yield put(actions.insertMessageFailAction(errorMessage));
-    return;
-  }
-  yield put(actions.insertMessageCompleteAction());
+  const {
+    message,
+  } = payload;
+  console.log(message);
+  // emitReply(from, to, conversation, message);
 }
 
 export function* findAvailableAgent({ payload }) {

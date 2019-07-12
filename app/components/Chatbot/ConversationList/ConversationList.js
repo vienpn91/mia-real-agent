@@ -7,13 +7,12 @@ import history from 'utils/history';
 import {
   Menu, Select, Pagination,
 } from 'antd';
-import TicketItem from './TicketItem';
+import ConversationItem from './ConversationItem';
 import {
-  TicketItemWrapper,
-  TicketFilterWrapper,
-  TicketPaginationWrapper,
+  ConversationItemWrapper,
+  ConversationFilterWrapper,
+  ConversationPaginationWrapper,
 } from '../Chatbot.styled';
-import { ROLES } from '../../../../common/enums';
 
 const categories = [
   'Finance',
@@ -32,41 +31,42 @@ const scrollStyleMobile = {
   width: '100%',
 };
 
-class Tickets extends React.PureComponent {
+class Conversations extends React.PureComponent {
   componentDidMount() {
     const { getAllAction } = this.props;
 
     getAllAction();
   }
 
-  selectTicket = (ticket) => {
-    const { ticketId, owner } = ticket;
-    const { userRole } = this.props;
-    history.push(`/ticket/${ticketId}${userRole === ROLES.AGENT ? `/${owner}` : ''}`);
+  selectConversation = (conversationId) => {
+    const { selectConversation } = this.props;
+
+    selectConversation(conversationId);
+    history.push(`/conversation/${conversationId}`);
   }
 
-  handleArchiveTicket = (ticketId) => {
-    const { archiveTicket } = this.props;
-    archiveTicket(ticketId);
+  handleArchiveConversation = (conversationId) => {
+    const { archiveConversation } = this.props;
+    archiveConversation(conversationId);
   }
 
-  renderTicketItem = (ticket) => {
+  renderConversationItem = (ticket) => {
     const { openSetting, userRole } = this.props;
-    const { _id, ticketId } = ticket;
+    const { _id, conversationId } = ticket;
     return (
-      <Menu.Item key={_id} onClick={() => this.selectTicket(ticket)}>
-        <TicketItem
+      <Menu.Item key={_id} onClick={() => this.selectConversation(conversationId)}>
+        <ConversationItem
           userRole={userRole}
           ticket={ticket}
-          onRemove={() => this.handleRemoveTicket(ticketId)}
-          onArchive={() => this.handleArchiveTicket(ticketId)}
+          onRemove={() => this.handleRemoveConversation(conversationId)}
+          onArchive={() => this.handleArchiveConversation(conversationId)}
           openSetting={openSetting}
         />
       </Menu.Item>
     );
   }
 
-  renderTicketList = () => {
+  renderConversationList = () => {
     const { tickets } = this.props;
     return (
 
@@ -74,7 +74,7 @@ class Tickets extends React.PureComponent {
         {matches => (
           <ShadowScrollbars autoHide style={matches ? scrollStyleMobile : scrollStyle}>
             <Menu>
-              {tickets.map(this.renderTicketItem)}
+              {tickets.map(this.renderConversationItem)}
             </Menu>
           </ShadowScrollbars>
         )}
@@ -82,8 +82,8 @@ class Tickets extends React.PureComponent {
     );
   }
 
-  renderTicketFilter = () => (
-    <TicketFilterWrapper>
+  renderConversationFilter = () => (
+    <ConversationFilterWrapper>
       <span>Filter by categories:</span>
       <Select
         mode="multiple"
@@ -94,12 +94,12 @@ class Tickets extends React.PureComponent {
           <Select.Option key={index} value={cat}>{cat}</Select.Option> // eslint-disable-line
         ))}
       </Select>
-    </TicketFilterWrapper>
+    </ConversationFilterWrapper>
   )
 
   // should apply later
-  renderTicketPagination = () => (
-    <TicketPaginationWrapper>
+  renderConversationPagination = () => (
+    <ConversationPaginationWrapper>
       <Pagination
         current={1}
         showLessItems
@@ -107,7 +107,7 @@ class Tickets extends React.PureComponent {
         pageSize={5}
         total={15}
       />
-    </TicketPaginationWrapper>
+    </ConversationPaginationWrapper>
   )
 
   render() {
@@ -119,23 +119,24 @@ class Tickets extends React.PureComponent {
     }
 
     return (
-      <TicketItemWrapper>
-        {this.renderTicketList()}
-        {this.renderTicketFilter()}
-        {this.renderTicketPagination()}
-      </TicketItemWrapper>
+      <ConversationItemWrapper>
+        {this.renderConversationList()}
+        {this.renderConversationFilter()}
+        {this.renderConversationPagination()}
+      </ConversationItemWrapper>
     );
   }
 }
 
-Tickets.propTypes = {
+Conversations.propTypes = {
   isArchiving: bool.isRequired,
   tickets: PropTypes.array,
   getAllAction: PropTypes.func,
   fetchingContext: PropTypes.object,
   userRole: string.isRequired,
   openSetting: func,
-  archiveTicket: func.isRequired,
+  archiveConversation: func.isRequired,
+  selectConversation: func.isRequired,
 };
 
-export default Tickets;
+export default Conversations;

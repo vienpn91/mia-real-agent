@@ -71,11 +71,13 @@ class AgentController {
         // Create chat here
 
         const userConversationPromise = ConversationService.insert({
-          members: [owner, agentId],
+          owner,
+          members: [agentId],
           ticketId,
         });
         // const agentConversationPromise = ConversationService.insert({
-        //   members: [owner, agentId],
+        //   owner: agentId,
+        //   members: [owner],
         //   ticketId,
         // });
 

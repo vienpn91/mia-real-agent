@@ -1,27 +1,29 @@
 import { connect } from 'react-redux';
-import _get from 'lodash/get';
-import { getTicketGetTicketDetail, getTicketGetTicketIsGetting, getTicketGetTicketError } from 'selectors/ticket';
 import Chatbot from '../../components/Chatbot';
-import { actions } from '../../reducers/ticket';
-import { getUserId, getUserRole } from '../../reducers/auth';
+import {
+  getConversationDetail,
+  isFetchingList,
+  isFetchingSingleItem,
+  getTotalConverations,
+  getErrorMessage,
+  getCurrentConverationId,
+  getCurrentConveration,
+} from '../../reducers/conversations';
+import { getUserRole } from '../../reducers/auth';
+import { getChatLogByConversationId } from '../../reducers/chatlog';
 
-const mapStateToProps = (state, ownProps) => {
-  const { match } = ownProps;
-  const id = _get(match, 'params.id', null);
-  let owner = _get(match, 'params.owner', null);
-  if (!owner) {
-    owner = getUserId(state);
-  }
-  return {
-    isGetting: getTicketGetTicketIsGetting(state),
-    userRole: getUserRole(state),
-    ticketDetail: getTicketGetTicketDetail(state, id, owner),
-    getError: getTicketGetTicketError(state),
-  };
-};
+const mapStateToProps = state => ({
+  userRole: getUserRole(state),
+  isFetchingList: isFetchingList(state),
+  isFetchingConversation: isFetchingSingleItem(state),
+  total: getTotalConverations(state),
+  errorMsg: getErrorMessage(state),
+  currentConversation: getCurrentConveration(state),
+  chatLog: getChatLogByConversationId(state, getCurrentConverationId(state)),
+});
 
 const mapDispatchToProps = {
-  getTicket: actions.getAction,
+  getConversationDetail,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chatbot);

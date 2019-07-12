@@ -1,9 +1,47 @@
+import httpStatus from 'http-status';
+import _get from 'lodash/get';
+import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import BaseController from '../base/base.controller';
 import ConversationService from './conversation.service';
 
 class ConversationController extends BaseController {
   constructor() {
     super(ConversationService);
+  }
+
+
+  getAll = async (req, res) => {
+    try {
+      const {
+        user,
+        query: {
+          skip, limit, sort, ...params
+        },
+      } = req;
+
+      if (!user) {
+        throw new APIError(ERROR_MESSAGE.UNAUTHORIZED, httpStatus.UNAUTHORIZED);
+      }
+      const { _id } = user;
+      const condition = { owner: _id };
+
+      const option = { skip, limit };
+      if (sort) {
+        const sortObj = JSON.parse(sort);
+        option.sort = sortObj;
+      }
+
+      const query = JSON.parse(_get(params, 'query', '{}'));
+      const newQuery = {
+        ...query,
+        ...condition,
+      };
+
+      const result = await this.service.getAll(newQuery, option);
+      return res.status(httpStatus.OK).send(result);
+    } catch (error) {
+      return this.handleError(res, error);
+    }
   }
 }
 
