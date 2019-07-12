@@ -17,7 +17,7 @@ class UserController extends BaseController {
 
       if (role === ROLES.AGENT) {
         const applicationDoc = await ApplicationService.get(applicationId);
-        userObj.application = applicationDoc;
+        userObj.applicationInfo = applicationDoc;
       }
 
       return res.status(httpStatus.OK).send(userObj);

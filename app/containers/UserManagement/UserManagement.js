@@ -9,7 +9,7 @@ const { USER_SORT } = SORT;
 
 const mapStateToProps = state => ({
   sortItems: USER_SORT,
-  createEndpoint: 'admin/user/create',
+  createEndpoint: '/admin/user/create',
   title: 'All Users',
   currentSorting: reselectSorting(state),
 });

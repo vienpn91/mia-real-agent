@@ -85,11 +85,11 @@ class UserDetailInfoContent extends PureComponent {
 
   renderAgentProfile = () => {
     const { userDetail = {} } = this.props;
-    const { application } = userDetail;
+    const { applicationInfo } = userDetail;
     const {
       firstName = '', lastName = '', address = '', country = '', phone = '',
       skills = [],
-    } = application || {};
+    } = applicationInfo || {};
 
     const skillsFormat = skills.join(', ');
 
