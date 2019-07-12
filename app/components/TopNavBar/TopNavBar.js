@@ -49,7 +49,7 @@ export default class TopNavBar extends Component {
               <Link to="/dashboard/ticket">Dashboard</Link>
             </Nav>
             <Nav key="2">
-              <Link to="/ticket">Ticket</Link>
+              <Link to="/conversation">Ticket</Link>
             </Nav>
           </NavBar>
           <TopbarRight>

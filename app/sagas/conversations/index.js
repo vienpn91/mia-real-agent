@@ -21,8 +21,10 @@ function* fetchConversation() {
   try {
     const { response, error } = yield call(ConversationApi.getAllConversation);
     if (error) throw new Error(error);
-    const data = get(response, 'data', []);
-    yield put(actions.fetchConversationSuccess(data));
+    const data = get(response, 'data', {});
+    const { result = [], total = 0 } = data;
+
+    yield put(actions.fetchConversationSuccess(result, total));
   } catch (error) {
     console.log('[CONVERSATION SAGA] OH NO! AN ERROR', error);
     yield put(actions.fetchConversationFailed(error.message || error));

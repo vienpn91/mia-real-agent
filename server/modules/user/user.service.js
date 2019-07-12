@@ -18,6 +18,10 @@ class UserService extends BaseService {
     super(userCollection);
   }
 
+  getByUsername(username) {
+    return userCollection.findOne({ username }).exec();
+  }
+
   getByEmail(email) {
     return userCollection.findOne({ email }).exec();
   }
@@ -67,7 +71,7 @@ class UserService extends BaseService {
   }
 
   async verifyAccount(token) {
-    const data = jwt.verify(token, SECRET_KEY_JWT, JWT_OPTIONS);
+    const data = jwt.verify(token, SECRET_KEY_JWT);
     const { userId } = data;
     const user = await this.collection.findOne({ _id: userId }).exec();
     const { verifiedAt } = user;

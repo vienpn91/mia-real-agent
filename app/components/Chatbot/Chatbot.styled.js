@@ -164,9 +164,7 @@ export const ConversationHeaderWrapper = styled.div`
   }
 `;
 
-export const ConversationItemWrapper = styled.div`
-  height: calc(100% - 120px);
-`;
+
 
 export const ConversationGroup = styled.div`
   flex: 1;
@@ -219,63 +217,6 @@ export const ConversationStatus = styled.div`
     } 
   }
 
-`;
-
-export const ConversationFilterWrapper = styled.div`
-  padding: 15px 24px;
-  border-top: 1px solid #d9d9d9;
-  .ant-select {
-    margin-top: 5px;
-    border-radius: 4px;
-  }
-  .ant-select-selection--multiple {
-    color: ${props => props.theme.secondaryColor};
-    border: 1px solid #d9d9d9;
-    &:hover {
-      border-color: #b1b1b1;
-    }
-  }
-  .ant-select-open .ant-select-selection {
-    border-color: #b1b1b1;
-    box-shadow: none;
-  }
-  @media (max-width: 1024px) {
-    padding: 15px;
-  }
-  @media (max-width: 840px) {
-    display: none;
-  }
-`;
-
-export const ConversationPaginationWrapper = styled.div`
-  padding: 0 16px;
-  text-align: center;
-  .ant-pagination-item,
-  .ant-pagination-prev,
-  .ant-pagination-next {
-    height: auto !important;
-    line-height: normal !important;
-    &:hover {
-      a {
-        color: ${props => props.theme.primaryColor};
-      }
-    }
-  }
-  .ant-pagination-item.ant-pagination-item-active a {
-    color: ${props => props.theme.textColor};
-  }
-  .ant-pagination-item-active {
-    border: none;
-    a {
-      color: ${props => props.theme.primaryColor} !important;
-    }
-    &:hover {
-      color: ${props => props.theme.primaryColor};
-    }
-  }
-  @media (max-width: 840px) {
-    display: none;
-  }
 `;
 
 export const TickerActionWrapper = styled.div``;

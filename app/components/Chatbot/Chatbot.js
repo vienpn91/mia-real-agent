@@ -6,7 +6,7 @@ import {
 } from 'antd';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
-import ConversationList from 'containers/Chatbot/ConversationList';
+import ConversationList from 'containers/ConversationList';
 import history from 'utils/history';
 import { Return } from 'components/Generals/General.styled';
 import MessageBoxContainer from '../../containers/Chatbot/MessageBox';
@@ -39,6 +39,7 @@ export default class ChatbotComponent extends Component {
     errorMsg: PropTypes.string,
     chatLog: PropTypes.arrayOf(PropTypes.object),
     currentConversation: PropTypes.objectOf(PropTypes.any),
+    selectConversation: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -51,30 +52,18 @@ export default class ChatbotComponent extends Component {
   }
 
   componentDidMount = () => {
-    // const { getConversation } = this.props;
+    const { currentConversation, selectConversation } = this.props;
+    if (!currentConversation) {
+      selectConversation(id);
+      return;
+    }
     const id = _get(this.props, 'match.params.id', null);
-    const ticketId = _get(this.props, 'match.params.ticketId', null);
-    // if (id) {
-    //   getConversation(id, owner);
-    // }
-  }
+    // const ticketId = _get(this.props, 'match.params.ticketId', null);
 
-  componentDidUpdate(prevProps) {
-    // const {
-    //   getConversation, getError, userRole, isGetting,
-    // } = this.props;
-    // const prevId = _get(prevProps, 'match.params.id', null);
-    // const prevOwner = _get(prevProps, 'match.params.owner', null);
-    // const id = _get(this.props, 'match.params.id', null);
-    // const owner = _get(this.props, 'match.params.owner', null);
-    // // Redirect when ticket not found
-    // if (!isGetting && prevProps.isGetting && getError) {
-    //   history.push((userRole === ROLES.AGENT) ? '/dashboard' : '/ticket');
-    // }
-
-    // if (id && (prevId !== id || prevOwner !== owner)) {
-    //   getConversation(id, owner);
-    // }
+    // eslint-disable-next-line no-underscore-dangle
+    if (id !== currentConversation._id) {
+      selectConversation(id);
+    }
   }
 
   handleOpenCreateModal = () => {
@@ -137,6 +126,7 @@ export default class ChatbotComponent extends Component {
   render() {
     const { isOpenCreateModal, isOpenSettingModal, settingChosenConversation } = this.state;
     const { currentConversation, errorMsg } = this.props;
+
     return (
       <ChatbotWrapper>
         <ChatbotConversationListWrapper>

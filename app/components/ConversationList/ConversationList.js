@@ -12,7 +12,7 @@ import {
   ConversationItemWrapper,
   ConversationFilterWrapper,
   ConversationPaginationWrapper,
-} from '../Chatbot.styled';
+} from './ConversationList.styled';
 
 const categories = [
   'Finance',
@@ -32,12 +32,6 @@ const scrollStyleMobile = {
 };
 
 class Conversations extends React.PureComponent {
-  componentDidMount() {
-    const { getAllAction } = this.props;
-
-    getAllAction();
-  }
-
   selectConversation = (conversationId) => {
     const { selectConversation } = this.props;
 
@@ -45,19 +39,15 @@ class Conversations extends React.PureComponent {
     history.push(`/conversation/${conversationId}`);
   }
 
-  handleArchiveConversation = (conversationId) => {
-    const { archiveConversation } = this.props;
-    archiveConversation(conversationId);
-  }
-
-  renderConversationItem = (ticket) => {
+  renderConversationItem = (conversation, index) => {
     const { openSetting, userRole } = this.props;
-    const { _id, conversationId } = ticket;
+    const { _id: conversationId } = conversation;
     return (
-      <Menu.Item key={_id} onClick={() => this.selectConversation(conversationId)}>
+      <Menu.Item key={conversationId} onClick={() => this.selectConversation(conversationId)}>
         <ConversationItem
+          number={index + 1}
           userRole={userRole}
-          ticket={ticket}
+          conversation={conversation}
           onRemove={() => this.handleRemoveConversation(conversationId)}
           onArchive={() => this.handleArchiveConversation(conversationId)}
           openSetting={openSetting}
@@ -67,14 +57,15 @@ class Conversations extends React.PureComponent {
   }
 
   renderConversationList = () => {
-    const { tickets } = this.props;
+    const { conversationList } = this.props;
+
     return (
 
       <MediaQuery maxWidth={widthBreakpoint}>
         {matches => (
           <ShadowScrollbars autoHide style={matches ? scrollStyleMobile : scrollStyle}>
             <Menu>
-              {tickets.map(this.renderConversationItem)}
+              {conversationList.map(this.renderConversationItem)}
             </Menu>
           </ShadowScrollbars>
         )}
@@ -105,16 +96,14 @@ class Conversations extends React.PureComponent {
         showLessItems
         size="small"
         pageSize={5}
-        total={15}
+        total={this.props.total}
       />
     </ConversationPaginationWrapper>
   )
 
   render() {
-    const { fetchingContext = {}, isArchiving } = this.props;
-    const { isFetching } = fetchingContext;
-    const loading = isFetching || isArchiving;
-    if (loading) {
+    const { isFetchingList = {} } = this.props;
+    if (isFetchingList) {
       return <SpinnerLoading />;
     }
 
@@ -129,14 +118,12 @@ class Conversations extends React.PureComponent {
 }
 
 Conversations.propTypes = {
-  isArchiving: bool.isRequired,
-  tickets: PropTypes.array,
-  getAllAction: PropTypes.func,
-  fetchingContext: PropTypes.object,
-  userRole: string.isRequired,
-  openSetting: func,
-  archiveConversation: func.isRequired,
-  selectConversation: func.isRequired,
+  userRole: PropTypes.string.isRequired,
+  isFetchingList: PropTypes.bool,
+  total: PropTypes.number,
+  selectConversation: PropTypes.func.isRequired,
+  openSetting: PropTypes.func.isRequired,
+  conversationList: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default Conversations;

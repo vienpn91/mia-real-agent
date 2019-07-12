@@ -22,8 +22,8 @@ class ConversationController extends BaseController {
       if (!user) {
         throw new APIError(ERROR_MESSAGE.UNAUTHORIZED, httpStatus.UNAUTHORIZED);
       }
-      const { _id } = user;
-      const condition = { owner: _id };
+      const { _id: owner } = user;
+      const condition = { owner };
 
       const option = { skip, limit };
       if (sort) {
@@ -37,8 +37,13 @@ class ConversationController extends BaseController {
         ...condition,
       };
 
-      const result = await this.service.getAll(newQuery, option);
-      return res.status(httpStatus.OK).send(result);
+      const { result } = await this.service.getAll(newQuery, option);
+      const total = await this.service.countDocument(condition);
+
+      return res.status(httpStatus.OK).send({
+        result,
+        total,
+      });
     } catch (error) {
       return this.handleError(res, error);
     }

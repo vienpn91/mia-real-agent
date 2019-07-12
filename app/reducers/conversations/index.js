@@ -56,6 +56,11 @@ export const selectConversation = id => ({
 });
 
 // selector
+export const getConverationList = ({ conversations }) => {
+  const byId = conversations.get('byId').toJS();
+  const allIds = conversations.get('allIds').toJS();
+  return allIds.map(id => byId[id]);
+};
 export const getCurrentConveration = ({ conversations }) => conversations.get('currentConversation');
 export const getCurrentConverationId = ({ conversations }) => (conversations.get('currentConversation') || {})._id;
 export const getTotalConverations = ({ conversations }) => conversations.get('total');
@@ -82,19 +87,19 @@ function profileReducer(state = initialState, action) {
     case CONVERSATION_FETCH_SUCCESS: {
       const { conversationList, total } = action.payload;
       let newState = state;
+      let allIds = newState.get('allIds');
 
       for (let i = 0; i < conversationList.length; i += 1) {
         const conversation = conversationList[i];
-        const allIds = newState.get('allIds');
 
         newState = newState.setIn(['byId', conversation._id], conversation);
-        allIds.push(conversation._id);
-        newState = newState.set('allIds', allIds);
+        allIds = allIds.push(conversation._id);
       }
 
       return newState
         .set('isFetchingAll', false)
         .set('isFetchingSingleItem', false)
+        .set('allIds', allIds)
         .set('total', total);
     }
 
@@ -112,7 +117,7 @@ function profileReducer(state = initialState, action) {
     }
 
     case CONVERSATION_SET_CURRENT: {
-      const { id } = action.paylaod;
+      const { id } = action.payload;
       const conversation = state.get('byId').get(id);
       return state.set('currentConversation', conversation);
     }

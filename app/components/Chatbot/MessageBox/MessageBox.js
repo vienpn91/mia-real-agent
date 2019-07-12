@@ -10,7 +10,7 @@ import {
   object, func, shape,
   bool, string,
 } from 'prop-types';
-import TicketDetail from '../TicketDetail/TicketDetail';
+import ConversationDetail from '../ConversationDetail/ConversationDetail';
 import {
   MessageBoxWrapper,
   MessageBoxContent,
@@ -282,7 +282,7 @@ export default class MessageBox extends Component {
               <div ref={this.messagesEndRef} />
             </ShadowScrollbars>
           </MessageBoxContent>
-          <TicketDetail ticket={ticket} />
+          <ConversationDetail ticket={ticket} />
         </MessageBoxWrapper>
       </LoadingSpin>
     );

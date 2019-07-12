@@ -23,6 +23,7 @@ const ROLES = {
   FREELANCER: 'freelancer',
   FULLTIME: 'fulltime',
   EMPLOYEE: 'employee',
+  MIA_AGENT: 'mia_agent',
 };
 
 const TICKET_STATUS = {

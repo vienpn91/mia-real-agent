@@ -8,6 +8,7 @@ import {
   getErrorMessage,
   getCurrentConverationId,
   getCurrentConveration,
+  selectConversation,
 } from '../../reducers/conversations';
 import { getUserRole } from '../../reducers/auth';
 import { getChatLogByConversationId } from '../../reducers/chatlog';
@@ -24,6 +25,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   getConversationDetail,
+  selectConversation,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chatbot);
