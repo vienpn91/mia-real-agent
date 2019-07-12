@@ -57,9 +57,9 @@ export class BasicInfoForm extends Component {
     onCancel();
   }
 
-  handleSubmit = () => {
+  handleSubmit = (values) => {
     const { onSubmit } = this.props;
-    onSubmit();
+    onSubmit(values);
   }
 
   render() {
@@ -83,7 +83,7 @@ export class BasicInfoForm extends Component {
               <Col sm={12} xs={24}>
                 <FormInput
                   name="lastName"
-                  type="password"
+                  type="text"
                   label="Last name"
                   login={1}
                 />

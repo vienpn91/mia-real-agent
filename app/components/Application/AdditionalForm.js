@@ -215,7 +215,7 @@ export class AdditionalForm extends Component {
       reading, speaking, overall,
     } = education;
     return (
-      <ArrayTagWrapper>
+      <ArrayTagWrapper key={index}>
         {`${name} - W(${writing}) R(${reading}) S(${speaking}) O(${overall})`}
         <Icon
           onClick={() => arrayHelpers.remove(index)}
@@ -266,9 +266,9 @@ export class AdditionalForm extends Component {
     );
   }
 
-  handleSubmit = () => {
+  handleSubmit = (values) => {
     const { onSubmit } = this.props;
-    onSubmit();
+    onSubmit(values);
   }
 
   render() {

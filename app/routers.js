@@ -18,7 +18,7 @@ import TicketManagement from './pages/TicketManagement';
 
 import AdminDashboard from './pages/AdminDashboard';
 import { RegistrationIndividual, RegistrationBusiness } from './containers/Registration';
-import ApplicationForm from './components/Application';
+import ApplicationForm from './pages/Application';
 
 export default class App extends React.PureComponent {
   render() {

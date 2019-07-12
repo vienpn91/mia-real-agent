@@ -27,7 +27,7 @@ const educationValidationSchema = Yup.object().shape({
   school: Yup.string().trim().required('Required'),
   degree: Yup.string().trim().required('Required'),
   fieldOfStudies: Yup.array().of(Yup.string()),
-  gpa: Yup.number(),
+  gpa: Yup.number().min(0).max(5),
 });
 
 const validationSchema = Yup.object().shape({
@@ -130,7 +130,7 @@ export class EducationForm extends Component {
                   <FormInput
                     name="gpa"
                     type="number"
-                    label="Gpa"
+                    label="Gpa (5 based)"
                     login={1}
                   />
                 </Col>
@@ -162,7 +162,7 @@ export class EducationForm extends Component {
   renderEducation = (education, arrayHelpers, index) => {
     const { school, degree } = education;
     return (
-      <ArrayTagWrapper>
+      <ArrayTagWrapper key={index}>
         {`${school} - ${degree}`}
         <Icon
           onClick={() => arrayHelpers.remove(index)}
@@ -202,9 +202,9 @@ export class EducationForm extends Component {
     </Row>
   )
 
-  handleSubmit = () => {
+  handleSubmit = (values) => {
     const { onSubmit } = this.props;
-    onSubmit();
+    onSubmit(values);
   }
 
   render() {

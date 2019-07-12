@@ -201,7 +201,7 @@ export class ExperienceForm extends Component {
   renderWorkExperience = (experience, arrayHelpers, index) => {
     const { title, company } = experience;
     return (
-      <ArrayTagWrapper>
+      <ArrayTagWrapper key={index}>
         {`${title} - ${company}`}
         <Icon
           onClick={() => arrayHelpers.remove(index)}
@@ -241,9 +241,9 @@ export class ExperienceForm extends Component {
     </Row>
   )
 
-  handleSubmit = () => {
+  handleSubmit = (values) => {
     const { onSubmit } = this.props;
-    onSubmit();
+    onSubmit(values);
   }
 
   render() {

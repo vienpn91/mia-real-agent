@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Steps, Tabs, Icon } from 'antd';
+import { func } from 'prop-types';
 import {
   ApplicationWrapper, ApplicationItem,
   ApplicationTitle, RoleWrapper,
@@ -13,13 +14,43 @@ const { Step } = Steps;
 const { TabPane } = Tabs;
 
 export class ApplicationForm extends Component {
-  state = {
-    step: 0,
+  static propTypes = {
+    onSubmit: func.isRequired,
   }
 
-  handleNextStep = () => {
-    const { step } = this.state;
+  state = {
+    step: 0,
+    role: '',
+    basicData: null,
+    experienceData: null,
+    educationData: null,
+  }
 
+  handleNextStep = (data) => {
+    const { step } = this.state;
+    switch (step) {
+      case 0:
+        this.setState({
+          role: data,
+        });
+        break;
+      case 1:
+        this.setState({
+          basicData: data,
+        });
+        break;
+      case 2:
+        this.setState({
+          experienceData: data,
+        });
+        break;
+      case 3:
+        this.setState({
+          educationData: data,
+        });
+        break;
+      default: break;
+    }
     this.setState({
       step: step + 1,
     });
@@ -33,6 +64,22 @@ export class ApplicationForm extends Component {
     });
   }
 
+  handleSubmit = (values) => {
+    const {
+      role, basicData,
+      experienceData, educationData,
+    } = this.state;
+    const { onSubmit } = this.props;
+    const data = {
+      role,
+      ...basicData,
+      ...experienceData,
+      ...educationData,
+      ...values,
+    };
+    onSubmit(data);
+  }
+
   handleRenderForm = () => {
     const { step } = this.state;
     return (
@@ -41,7 +88,7 @@ export class ApplicationForm extends Component {
           <RoleWrapper>
             <button
               type="button"
-              onClick={this.handleNextStep}
+              onClick={() => this.handleNextStep('freelancer')}
             >
               <div>
                 <Icon type="user" />
@@ -50,7 +97,7 @@ export class ApplicationForm extends Component {
             </button>
             <button
               type="button"
-              onClick={this.handleNextStep}
+              onClick={() => this.handleNextStep('fullTime')}
             >
               <div>
                 <Icon type="usergroup-add" />
@@ -69,7 +116,7 @@ export class ApplicationForm extends Component {
           <EducationForm onSubmit={this.handleNextStep} onCancel={this.handlePreviousStep} />
         </TabPane>
         <TabPane tab="" key="4">
-          <AdditionalForm onSubmit={this.handleNextStep} onCancel={this.handlePreviousStep} />
+          <AdditionalForm onSubmit={this.handleSubmit} onCancel={this.handlePreviousStep} />
         </TabPane>
       </Tabs>
     );
