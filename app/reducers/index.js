@@ -9,6 +9,7 @@ import profile from './profile';
 import ticket from './ticket';
 import chat from './chat';
 import modal from './modal';
+import application from './application';
 import history from '../utils/history';
 import user from './user';
 import admin from './admin';
@@ -28,6 +29,7 @@ export default function createReducer(injectedReducers = {}) {
     modal,
     user,
     admin,
+    application,
     router: connectRouter(history),
     ...injectedReducers,
   });

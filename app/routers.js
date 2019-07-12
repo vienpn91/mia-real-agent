@@ -18,6 +18,7 @@ import TicketManagement from './pages/TicketManagement';
 
 import AdminDashboard from './pages/AdminDashboard';
 import { RegistrationIndividual, RegistrationBusiness } from './containers/Registration';
+import ApplicationForm from './pages/Application';
 
 export default class App extends React.PureComponent {
   render() {
@@ -36,6 +37,7 @@ export default class App extends React.PureComponent {
         <UnauthRoute exact path="/register/individual" component={RegistrationIndividual} />
         <UnauthRoute exact path="/register/business" component={RegistrationBusiness} />
         <UnauthRoute exact path="/greeting" component={ThankForRegistering} />
+        <UnauthRoute exact path="/application" component={ApplicationForm} />
         <UnauthRoute
           path="/login/callback/:token/:userId/:email/:verifiedAt"
           component={LoginCallBackPage}
