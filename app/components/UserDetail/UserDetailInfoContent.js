@@ -29,8 +29,8 @@ class UserDetailInfoContent extends PureComponent {
     switch (role) {
       case ROLES.BUSINESS:
         return this.renderBusinessProfile();
-      case ROLES.FREELANCER:
-        return this.renderBusinessProfile();
+      case ROLES.AGENT:
+        return this.renderAgentProfile();
       case ROLES.INDIVIDUAL:
       default:
         return this.renderIndividualProfile();
