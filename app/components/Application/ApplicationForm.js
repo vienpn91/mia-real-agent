@@ -7,6 +7,7 @@ import { func, bool, string } from 'prop-types';
 import {
   ApplicationWrapper, ApplicationItem,
   ApplicationTitle, RoleWrapper,
+  SubmitSuccess,
 } from './styles';
 import BasicInfoForm from './BasicInfoForm';
 import ExperienceForm from './ExperienceForm';
@@ -138,9 +139,10 @@ export class ApplicationForm extends Component {
           <AdditionalForm onSubmit={this.handleSubmit} onCancel={this.handlePreviousStep} />
         </TabPane>
         <TabPane tab="" key="5">
-          <h2>
+          <SubmitSuccess>
+            <i className="mia-check" />
             Submit Application Success
-          </h2>
+          </SubmitSuccess>
         </TabPane>
       </Tabs>
     );
@@ -153,14 +155,16 @@ export class ApplicationForm extends Component {
       <ApplicationWrapper>
         <ApplicationItem>
           <ApplicationTitle>Mia Consult</ApplicationTitle>
-          <Steps current={step}>
-            <Step title="Role" />
-            <Step title="Basic Info" />
-            <Step title="Experience" />
-            <Step title="Education" />
-            <Step title="Additional" />
-          </Steps>
-          <br />
+          {step !== 5
+          && (
+            <Steps current={step}>
+              <Step title="Role" />
+              <Step title="Basic Info" />
+              <Step title="Experience" />
+              <Step title="Education" />
+              <Step title="Additional" />
+            </Steps>
+          )}
           <LoadingSpin loading={isSubmitting}>
             {this.handleRenderForm()}
           </LoadingSpin>

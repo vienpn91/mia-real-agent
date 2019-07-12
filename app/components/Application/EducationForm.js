@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import { func } from 'prop-types';
 import FormInput from '../FormInput/FormInput';
 import {
+  ApplicationBtnWrap,
   ApplicationBtn, ArrayTagWrapper,
   ArrayInputWrapper, ArrayAddButton,
 } from './styles';
@@ -21,6 +22,14 @@ const educationInititalValues = {
 
 const initialValues = {
   educations: [],
+};
+
+const marks = {
+  1: '1',
+  2: '2',
+  3: '3',
+  4: '4',
+  5: '5',
 };
 
 const educationValidationSchema = Yup.object().shape({
@@ -129,28 +138,30 @@ export class EducationForm extends Component {
                 <Col sm={12} xs={24}>
                   <FormInput
                     name="gpa"
-                    type="number"
+                    type="slider"
                     label="Gpa (5 based)"
                     login={1}
+                    marks={marks}
+                    min={1}
+                    max={5}
                   />
                 </Col>
               </Row>
               <Row gutter={32}>
-                <Col sm={12} xs={24}>
+                <ApplicationBtnWrap>
                   <ApplicationBtn
                     type="button"
                     onClick={() => this.handleToggleEducationModal(false)}
                   >
-                    Cancel
+                      Cancel
                   </ApplicationBtn>
-                </Col>
-                <Col sm={12} xs={24}>
                   <ApplicationBtn
                     type="submit"
+                    submit
                   >
                     {editIndex >= 0 ? 'Save' : 'Add'}
                   </ApplicationBtn>
-                </Col>
+                </ApplicationBtnWrap>
               </Row>
             </Form>
           )}
@@ -189,14 +200,17 @@ export class EducationForm extends Component {
           type="button"
           onClick={this.handleCancel}
         >
+          <i className="mia-chevron-left" />
           Back
         </ApplicationBtn>
       </Col>
       <Col sm={12} xs={24}>
         <ApplicationBtn
           type="submit"
+          submit
         >
           Next
+          <i className="mia-chevron-right" />
         </ApplicationBtn>
       </Col>
     </Row>
@@ -231,6 +245,7 @@ export class EducationForm extends Component {
                           ) => this.renderEducation(education, arrayHelpers, index))
                         }
                         <ArrayAddButton type="button" onClick={() => this.handleToggleEducationModal(true)}>
+                          <i className="mia-add" />
                           Add Education
                         </ArrayAddButton>
                       </ArrayInputWrapper>
