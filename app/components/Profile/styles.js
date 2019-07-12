@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Row } from 'antd';
 
 export const ProfileWrapper = styled.div`
-  height: 100vh;
+  height: calc(100vh - 200px);
   width: 100%;
   display: flex;
   justify-content: center;

@@ -119,6 +119,9 @@ const getProfilePasswordIsConfirmed = ({ profile }) => profile.get('checkPasswor
 
 const getProfileIsUpdating = ({ profile }) => profile.get('isUpdating');
 
+const getProfilePasswordIsChanging = ({ profile }) => profile.get('isChangingPassword');
+const getProfilePasswordChangeError = ({ profile }) => profile.get('changePasswordError');
+
 const initialState = fromJS({
   isFetching: false,
   fetchError: '',
@@ -212,4 +215,7 @@ export const selectors = {
   getProfilePasswordIsConfirmed,
 
   getProfileIsUpdating,
+
+  getProfilePasswordIsChanging,
+  getProfilePasswordChangeError,
 };

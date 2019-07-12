@@ -8,7 +8,10 @@ import {
   UPDATE_PROFILE,
   CHANGE_PASSWORD,
 } from '../../reducers/profile';
-import { getUserId, getToken, updateToken } from '../../reducers/auth';
+import {
+  getUserId, getToken,
+  updateToken,
+} from '../../reducers/auth';
 import * as UserApi from '../../api/user';
 import { configToken } from '../../api/config';
 import { handleEmailCensor } from './utils';

@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
 import ChangePasswordForm from '../../../components/Profile/ChangePasswordForm';
-import { actions } from '../../../reducers/profile';
+import { actions, selectors } from '../../../reducers/profile';
 
 const mapStateToProps = state => ({
-
+  isChangingPassword: selectors.getProfilePasswordIsChanging(state),
+  changePasswordError: selectors.getProfilePasswordChangeError(state),
 });
 
 const mapDispatchToProps = {
