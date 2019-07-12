@@ -30,6 +30,9 @@ import {
 } from 'reducers/user';
 import * as UserAPI from 'api/user';
 
+import { configToken } from '../../api/config';
+import { getToken } from '../../reducers/auth';
+
 function* queryUsers(action) {
   const userPayload = {};
   const { type } = action;
@@ -57,6 +60,7 @@ function* queryUsers(action) {
 }
 
 function* fetchList({ payload }) {
+  yield configAxios();
   const selectedPage = yield select(getSelectedPage);
   const sizePerPage = yield select(getSizePerPage);
   const { skip, limit } = getSkipLimit(selectedPage, sizePerPage);
@@ -90,6 +94,7 @@ function* fetchList({ payload }) {
 }
 
 function* addNewUser({ payload }) {
+  yield configAxios();
   const userResult = yield call(UserAPI.insert, payload);
   const response = _get(userResult, 'response', {});
   const error = _get(userResult, 'error');
@@ -107,13 +112,14 @@ function* addNewUser({ payload }) {
 }
 
 function* userFetchSingle({ id }) {
+  yield configAxios();
   const userResult = yield call(UserAPI.get, id);
   const response = _get(userResult, 'response', {});
   const error = _get(userResult, 'error');
   const data = _get(response, 'data', {});
   if (error) {
     const errMsg = _get(error, 'response.data.message', error.message);
-    yield put(userActions.fetchUserSingleFail(errMsg));
+    yield put(userActions.fetchUserSingleFail(id, errMsg));
     notification.error({ message: errMsg });
   } else {
     yield put(userActions.fetchUserSingleSuccess(data));
@@ -121,6 +127,7 @@ function* userFetchSingle({ id }) {
 }
 
 function* userUpdate({ payload }) {
+  yield configAxios();
   const { _id: id } = payload;
   const userResult = yield call(UserAPI.update, id, payload);
   const response = _get(userResult, 'response', {});
@@ -135,6 +142,11 @@ function* userUpdate({ payload }) {
     notification.success({ message: 'User update success' });
     yield put(push(`/user/${id}`));
   }
+}
+
+export function* configAxios() {
+  const token = yield select(getToken);
+  configToken(token);
 }
 
 function* userFlow() {

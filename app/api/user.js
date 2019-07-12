@@ -58,20 +58,20 @@ export const acceptAgent = (id, ticketId, isConfirm) => axios
   .catch(error => ({ error }));
 
 export const list = params => axios
-  .get('users/', { params })
+  .get('admin/users/', { params })
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
 export const get = id => axios
-  .get(`users/${id}`)
+  .get(`admin/users/${id}`)
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
 export const update = (id, data) => axios
-  .put(`users/${id}`, { data })
+  .put(`admin/users/${id}`, { data })
   .then(response => ({ response }))
   .catch(error => ({ error }));
 export const insert = data => axios
-  .post('users/', { data })
+  .post('admin/users/', { data })
   .then(response => ({ response }))
   .catch(error => ({ error }));

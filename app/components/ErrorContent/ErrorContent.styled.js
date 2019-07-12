@@ -6,6 +6,7 @@ export const ContentWrapper = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  height: 100%;
 `;
 
 export const ErrorTitle = styled.h3`

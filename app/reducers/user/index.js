@@ -53,10 +53,11 @@ function fetchUserSingle(id) {
   };
 }
 
-function fetchUserSingleFail(payload) {
+function fetchUserSingleFail(id, errorMsg) {
   return {
     type: USER_FETCH_SINGLE_FAIL,
-    payload,
+    errorMsg,
+    id,
   };
 }
 
@@ -178,7 +179,7 @@ function userReducer(state = initialState, action) {
     case USER_FETCH_LIST_SUCCESS: {
       const { data, totalCount } = action;
       const visibleUserIds = data.map(({ _id }) => _id);
-      const newUsers = state.get('user').merge(fromJS(_keyBy(data, '_id')));
+      const newUsers = state.get('user').mergeDeep(fromJS(_keyBy(data, '_id')));
       return state
         .set('isLoading', false)
         .set('user', newUsers)
@@ -227,9 +228,8 @@ function userReducer(state = initialState, action) {
       return state.setIn(['user', _id], fromJS(payload));
     }
     case USER_FETCH_SINGLE_FAIL: {
-      const { payload } = action;
-      const { id, message } = payload;
-      return state.setIn(['user', id], fromJS({ error: message }));
+      const { id, errorMsg } = action;
+      return state.setIn(['user', id], fromJS({ error: errorMsg }));
     }
     case USER_UPDATE: {
       return state

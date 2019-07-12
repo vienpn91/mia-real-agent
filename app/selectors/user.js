@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { fromJS } from 'immutable';
+import { ROUTE_DETAIL } from 'utils/constants';
 // lodash
 import _get from 'lodash/get';
 
@@ -8,10 +9,6 @@ import { getRouteMatch } from './router';
 
 const emptyMap = fromJS({});
 const emptyList = fromJS([]);
-
-const UserDetailRoute = {
-  path: 'admin/user/:id',
-};
 
 const getUserState = state => _get(state, 'user', userInitialState);
 
@@ -50,7 +47,7 @@ const reselectUsers = createSelector(
 );
 
 const getUserIdFromRoute = createSelector(
-  getRouteMatch(UserDetailRoute),
+  getRouteMatch(ROUTE_DETAIL.USER_DETAIL_ROUTER),
   match => _get(match, 'params.id', null),
 );
 
