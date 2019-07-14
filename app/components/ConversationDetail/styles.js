@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
 import { COLOR_BY_STATUS } from '../../../common/enums';
-import FormInput from '../FormInput/FormInput';
 
 export const ChatbotWrapper = styled.div`
   display: flex;
@@ -219,8 +218,6 @@ export const ConversationStatus = styled.div`
 
 `;
 
-export const TickerActionWrapper = styled.div``;
-
 export const ConversationGroupAction = styled.div``;
 
 export const ConversationButton = styled.div`
@@ -230,20 +227,6 @@ export const ConversationButton = styled.div`
     background-color: #279cd4;
     color: ${props => props.theme.secondaryColor};
   }
-`;
-
-export const InputAction = styled.label`
-  margin-left: 15px;
-  font-size: 22px !important;
-  color: #b5b5b5;
-  cursor: pointer;
-  &:hover {
-    color: ${props => props.theme.textColor};
-  }
-`;
-
-export const InputUpload = styled.input`
-  display: none;
 `;
 
 export const ConversationEmpty = styled.div`

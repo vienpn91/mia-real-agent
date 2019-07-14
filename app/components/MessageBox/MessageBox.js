@@ -10,7 +10,7 @@ import {
   object, func, shape,
   bool, string,
 } from 'prop-types';
-import ConversationDetail from '../ConversationDetail/ConversationDetail';
+import ConversationDetail from '../ConversationDetail';
 import {
   MessageBoxWrapper,
   MessageBoxContent,
@@ -23,9 +23,9 @@ import {
   MessageEmpty,
   InputAction,
   UserMessage,
-} from '../Chatbot.styled';
-import LoadingSpin from '../../Loading';
-import { InfoNotification } from './styles';
+  InfoNotification,
+} from './styles';
+import LoadingSpin from '../Loading';
 
 const scrollStyle = {
   height: '100%',

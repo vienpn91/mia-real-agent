@@ -9,7 +9,7 @@ import _isEmpty from 'lodash/isEmpty';
 import ConversationList from 'containers/ConversationList';
 import history from 'utils/history';
 import { Return } from 'components/Generals/General.styled';
-import MessageBoxContainer from '../../containers/Chatbot/MessageBox';
+import MessageBoxContainer from '../../containers/MessageBox';
 import {
   ChatbotWrapper,
   ChatbotConversationListWrapper,

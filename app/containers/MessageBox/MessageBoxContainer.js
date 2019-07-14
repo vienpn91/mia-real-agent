@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import MessageBox from 'components/Chatbot/MessageBox/MessageBox';
+import MessageBox from 'components/MessageBox';
 import { actions, selectors } from 'reducers/chat';
 import { getUserId } from 'reducers/auth';
 

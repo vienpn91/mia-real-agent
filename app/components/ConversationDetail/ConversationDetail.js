@@ -7,8 +7,8 @@ import {
   ConversationInfoWrapper,
   ConversationTimelineWrapper,
   ChatbotConversationDetailWrapper,
-} from '../Chatbot.styled';
-import { ROLES } from '../../../../common/enums';
+} from './styles';
+import { ROLES } from '../../../common/enums';
 
 const scrollStyle = {
   height: 'calc(100vh - 60px)',
