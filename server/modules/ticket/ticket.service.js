@@ -13,6 +13,10 @@ class TicketService extends BaseService {
     return this.collection.findOne(condition);
   }
 
+  getAllByConditionWithPopulationInfo(condition, population) {
+    return this.collection.find(condition).populate(population);
+  }
+
   countDocument(filter) {
     return this.collection.countDocuments(filter);
   }
