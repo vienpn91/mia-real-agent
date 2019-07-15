@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _get from 'lodash/get';
+import moment from 'moment';
 import {
   TableContentItem,
+  TableStatusContent,
 } from 'components/TableComponent/TableComponent.styled';
 import { TableContent } from 'components/TableComponent/TableComponent';
 import { COLUMN_TYPE } from 'utils/constants';
@@ -15,10 +17,32 @@ class TableDetailRow extends React.PureComponent {
     return _get(item, dataKey);
   }
 
+  renderStatusColumn = (column) => {
+    const { item } = this.props;
+    const { dataKey } = column;
+
+    const status = _get(item, dataKey);
+
+    return <TableStatusContent status={status}>{status}</TableStatusContent>;
+  }
+
+  renderDateColumn = (column) => {
+    const { item } = this.props;
+    const { dataKey, format } = column;
+
+    const value = _get(item, dataKey);
+
+    return moment(value).format(format);
+  };
+
   renderColumnContent = (column) => {
     const { type } = column;
 
     switch (type) {
+      case COLUMN_TYPE.DATE:
+        return this.renderDateColumn(column);
+      case COLUMN_TYPE.STATUS:
+        return this.renderStatusColumn(column);
       case COLUMN_TYPE.TEXT:
       default:
         return this.renderTextColumn(column);
@@ -40,7 +64,7 @@ class TableDetailRow extends React.PureComponent {
 
     return (
       <TableContentItem>
-        {columns.map(this.renderColumnContent)}
+        {columns.map(this.renderColumn)}
       </TableContentItem>
     );
   }

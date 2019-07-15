@@ -24,12 +24,12 @@ class UserController extends BaseController {
       if (role === ROLES.AGENT) {
         const ticketCondition = { assignee: _id };
         const populateCondition = { path: 'owner', select: ['_id', 'username'] };
-        const tickets = await TicketService.getByConditionWithPopulationInfo(ticketCondition, populateCondition);
+        const tickets = await TicketService.getAllByConditionWithPopulationInfo(ticketCondition, populateCondition);
         userObj.tickets = tickets;
       } else if (role === ROLES.INDIVIDUAL) {
         const ticketCondition = { owner: _id };
         const populateCondition = { path: 'assignee', select: ['_id', 'username'] };
-        const tickets = await TicketService.getByConditionWithPopulationInfo(ticketCondition, populateCondition);
+        const tickets = await TicketService.getAllByConditionWithPopulationInfo(ticketCondition, populateCondition);
         userObj.tickets = tickets;
       }
 

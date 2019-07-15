@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   TableHeadWrapper,
   TableContentWrapper,
+  TableEmptyContent,
 } from 'components/TableComponent/TableComponent.styled';
 import {
   TableHeader,
@@ -13,8 +14,8 @@ import {
 import TableDetailRow from './TableDetailRow';
 
 class TableDetail extends Component {
-  renderColumnItem = column => (
-    <TableHeader {...column.headerPropertise} />
+  renderColumnItem = (column, index) => (
+    <TableHeader {...column.headerPropertise} key={index} />
   )
 
   renderTableHeader = () => {
@@ -27,18 +28,24 @@ class TableDetail extends Component {
     );
   }
 
-  renderItem = (item, index) => (
-    <TableDetailRow item={item} key={index} index={index} />
-  );
+  renderItem = (item, index) => {
+    const { columns } = this.props;
+
+    return (
+      <TableDetailRow item={item} key={index} index={index} columns={columns} />
+    );
+  }
 
   render() {
-    const { items } = this.props;
+    const { items, emptyMsg } = this.props;
+    const isEmpty = items.length === 0;
 
     return (
       <TableDetailWrapper>
         {this.renderTableHeader()}
         <TableContentWrapper bgTable>
-          {items.map(this.renderItem)}
+          {isEmpty && <TableEmptyContent>{emptyMsg}</TableEmptyContent>}
+          {!isEmpty && items.map(this.renderItem)}
         </TableContentWrapper>
       </TableDetailWrapper>
     );
@@ -48,6 +55,7 @@ class TableDetail extends Component {
 TableDetail.propTypes = {
   columns: PropTypes.array,
   items: PropTypes.array,
+  emptyMsg: PropTypes.string,
 };
 
 export default TableDetail;

@@ -10,8 +10,54 @@ import {
   OverviewProduct,
   InfoContentBlock,
 } from 'components/Generals/ItemDetail.styled';
-import { DATE_TIME_FORMAT } from 'utils/constants';
+import { DATE_TIME_FORMAT, COLUMN_TYPE } from 'utils/constants';
+import TableDetail from 'components/Generals/TableDetail';
 import { ROLES } from '../../../common/enums';
+
+const defaultColumns = [
+  {
+    headerPropertise: {
+      value: 'Ticket Id',
+      size: '100',
+    },
+    contentPropertise: {
+      size: '100',
+    },
+    dataKey: 'ticketId',
+    type: COLUMN_TYPE.TEXT,
+  },
+  {
+    headerPropertise: {
+      value: 'Created At',
+      size: '200',
+    },
+    contentPropertise: {
+      size: '200',
+    },
+    dataKey: 'createdAt',
+    type: COLUMN_TYPE.DATE,
+    format: DATE_TIME_FORMAT.DATE_TIME,
+  },
+  {
+    headerPropertise: {
+      value: 'Category',
+      size: '200',
+    },
+    contentPropertise: {
+      size: '200',
+    },
+    dataKey: 'category',
+    type: COLUMN_TYPE.TEXT,
+  },
+  {
+    headerPropertise: {
+      value: 'Title',
+    },
+    contentPropertise: {},
+    dataKey: 'title',
+    type: COLUMN_TYPE.TEXT,
+  },
+];
 
 class UserDetailInfoContent extends PureComponent {
   renderOverviewInfo = (label, value, isLink = false) => (
@@ -119,11 +165,75 @@ class UserDetailInfoContent extends PureComponent {
     );
   };
 
+  renderTicketsTable = () => {
+    const { userDetail = {} } = this.props;
+    const { role = ROLES.INDIVIDUAL } = userDetail;
+    const tickets = _get(userDetail, 'tickets', []);
+    let columns = [];
+
+    if (role === ROLES.INDIVIDUAL || role === ROLES.BUSINESS) {
+      columns = [
+        ...defaultColumns,
+        {
+          headerPropertise: {
+            value: 'Assignee',
+            size: '150',
+          },
+          contentPropertise: {
+            size: '150',
+          },
+          dataKey: 'assignee.username',
+          type: COLUMN_TYPE.TEXT,
+        },
+        {
+          headerPropertise: {
+            value: 'Status',
+            size: '100',
+          },
+          contentPropertise: {
+            size: '100',
+          },
+          dataKey: 'status',
+          type: COLUMN_TYPE.STATUS,
+        },
+      ];
+    } else if (role === ROLES.AGENT || role === ROLES.FREELANCER) {
+      columns = [
+        ...defaultColumns,
+        {
+          headerPropertise: {
+            value: 'Owner',
+            size: '150',
+          },
+          contentPropertise: {
+            size: '150',
+          },
+          dataKey: 'owner.username',
+          type: COLUMN_TYPE.TEXT,
+        },
+        {
+          headerPropertise: {
+            value: 'Status',
+            size: '100',
+          },
+          contentPropertise: {
+            size: '100',
+          },
+          dataKey: 'status',
+          type: COLUMN_TYPE.STATUS,
+        },
+      ];
+    }
+
+    return <TableDetail columns={columns} items={tickets} emptyMsg="No tickets available" />;
+  }
+
   render() {
     return (
       <InfoContentBlock>
         {this.renderItemOverview()}
         {this.renderItemProfile()}
+        {this.renderTicketsTable()}
       </InfoContentBlock>
     );
   }

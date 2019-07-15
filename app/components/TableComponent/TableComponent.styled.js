@@ -15,12 +15,13 @@ export const TableHeadWrapper = styled.div`
   ${({ bgTable }) => bgTable
     && css`
       background-color: #222;
-      color: ${props => props.theme.secondaryColor};
+      color: #fff;
       border: none;
       font-size: 13px;
       & > div {
         border: none;
         text-transform: capitalize;
+        color: #fff;
       }
     `};
   ${({ textLarger }) => textLarger
