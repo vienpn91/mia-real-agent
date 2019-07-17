@@ -15,6 +15,8 @@ export const RegistrationWrapper = styled.div`
 
 export const RegistrationItem = styled.div`
   width: 720px;
+  max-height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   background-color: ${props => props.theme.secondaryColor};
@@ -122,3 +124,7 @@ export const RegistrationErrorMessage = styled.div`
 `;
 
 export const SelectStyled = { width: '100%' };
+
+export const InputWrapper = styled.div`
+  margin: 0 20px 20px 10px;
+`;
