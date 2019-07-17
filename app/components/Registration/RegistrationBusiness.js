@@ -20,6 +20,7 @@ import { FIELD_OPTIONS, SIZE_OPTIONS, ROLES } from '../../../common/enums';
 const initialValues = {
   email: '',
   password: '',
+  rePassword: '',
   username: '',
   company: '',
   companySize: '',
@@ -32,6 +33,8 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email('Invalid Email').trim().required('Required'),
   username: Yup.string().trim().required('Required'),
   password: Yup.string().trim().required('Required'),
+  rePassword: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'Passwords must match').trim().required('Required'),
   company: Yup.string().trim().required('Required'),
   companySize: Yup.string().trim().required('Required'),
   companyFields: Yup.array().of(Yup.string()).required('Required'),
@@ -101,9 +104,9 @@ class Registration extends Component {
                   </Col>
                   <Col sm={12} xs={24}>
                     <FormInput
-                      name="password"
-                      type="password"
-                      label="Password"
+                      name="email"
+                      type="text"
+                      label="Email"
                       login={1}
                     />
                   </Col>
@@ -111,12 +114,22 @@ class Registration extends Component {
                 <Row gutter={32}>
                   <Col sm={12} xs={24}>
                     <FormInput
-                      name="email"
-                      type="text"
-                      label="Email"
+                      name="password"
+                      type="password"
+                      label="Password"
                       login={1}
                     />
                   </Col>
+                  <Col sm={12} xs={24}>
+                    <FormInput
+                      name="rePassword"
+                      type="text"
+                      label="Re-password"
+                      login={1}
+                    />
+                  </Col>
+                </Row>
+                <Row gutter={32}>
                   <Col sm={12} xs={24}>
                     <FormInput
                       name="company"
@@ -125,17 +138,17 @@ class Registration extends Component {
                       login={1}
                     />
                   </Col>
-                </Row>
-                <Row gutter={32}>
                   <Col sm={12} xs={24}>
                     <FormInput
                       name="companySize"
                       type="select"
                       options={SIZE_OPTIONS}
-                      label="companySize"
+                      label="Company size"
                       login={1}
                     />
                   </Col>
+                </Row>
+                <Row gutter={32}>
                   <Col sm={12} xs={24}>
                     <FormInput
                       name="companyFields"
@@ -146,21 +159,21 @@ class Registration extends Component {
                       login={1}
                     />
                   </Col>
-                </Row>
-                <Row gutter={32}>
-                  <Col sm={12} xs={24}>
-                    <FormInput
-                      name="address"
-                      type="text"
-                      label="Address"
-                      login={1}
-                    />
-                  </Col>
                   <Col sm={12} xs={24}>
                     <FormInput
                       name="phoneNumber"
                       type="text"
                       label="Phone No."
+                      login={1}
+                    />
+                  </Col>
+                </Row>
+                <Row gutter={32}>
+                  <Col sm={24} xs={24}>
+                    <FormInput
+                      name="address"
+                      type="text"
+                      label="Address"
                       login={1}
                     />
                   </Col>

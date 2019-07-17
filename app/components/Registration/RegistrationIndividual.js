@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 import {
   Row, Col, Form,
 } from 'antd';
+import ShadowScrollbars from 'components/Scrollbar';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import {
-  LoginWrapper,
-  LoginItem,
-  LoginTitle,
   LoginBtn,
   LoginFooter,
   LoginFooterText,
@@ -18,10 +16,20 @@ import {
 } from '../Login/styles';
 import FormInput from '../FormInput/FormInput';
 import { POSITION_OPTIONS } from '../../../common/enums';
+import {
+  RegistrationTitle, RegistrationWrapper, RegistrationItem,
+  InputWrapper,
+} from './styles';
+
+const scrollStyle = {
+  height: 'calc(100vh - 300px)',
+  margin: '0 -20px 10px -10px',
+};
 
 const initialValues = {
   email: '',
   password: '',
+  rePassword: '',
   username: '',
   firstName: '',
   lastName: '',
@@ -36,11 +44,13 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email('Invalid Email').trim().required('Required'),
   username: Yup.string().trim().required('Required'),
   password: Yup.string().trim().required('Required'),
+  rePassword: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'Passwords must match').trim().required('Required'),
   firstName: Yup.string().trim().required('Required'),
   lastName: Yup.string().trim().required('Required'),
   dateOfBirth: Yup.date().required('Required'),
   company: Yup.string().trim().required('Required'),
-  position: Yup.string().trim().required('Required'),
+  position: Yup.string().trim(),
   address: Yup.string().trim(),
   phone: Yup.string().trim(),
 });
@@ -88,9 +98,9 @@ class Registration extends Component {
   render() {
     const { errorMessage } = this.props;
     return (
-      <LoginWrapper>
-        <LoginItem register>
-          <LoginTitle>Mia Consult</LoginTitle>
+      <RegistrationWrapper>
+        <RegistrationItem>
+          <RegistrationTitle>Mia Consult</RegistrationTitle>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -98,97 +108,111 @@ class Registration extends Component {
           >
             {({ handleSubmit }) => (
               <Form onSubmit={handleSubmit}>
-                <Row gutter={32}>
-                  <Col sm={12} xs={24}>
-                    <FormInput
-                      name="username"
-                      type="text"
-                      label="Username"
-                      login={1}
-                    />
-                  </Col>
-                  <Col sm={12} xs={24}>
-                    <FormInput
-                      name="password"
-                      type="password"
-                      label="Password"
-                      login={1}
-                    />
-                  </Col>
-                </Row>
-                <Row gutter={32}>
-                  <Col sm={12} xs={24}>
-                    <FormInput
-                      name="firstName"
-                      type="text"
-                      label="First name"
-                      login={1}
-                    />
-                  </Col>
-                  <Col sm={12} xs={24}>
-                    <FormInput
-                      name="lastName"
-                      type="text"
-                      label="Last name"
-                      login={1}
-                    />
-                  </Col>
-                </Row>
-                <Row gutter={32}>
-                  <Col sm={12} xs={24}>
-                    <FormInput
-                      name="email"
-                      type="text"
-                      label="Email"
-                      login={1}
-                    />
-                  </Col>
-                  <Col sm={12} xs={24}>
-                    <FormInput
-                      name="dateOfBirth"
-                      type="text"
-                      label="Date of birth"
-                      login={1}
-                    />
-                  </Col>
-                </Row>
-                <Row gutter={32}>
-                  <Col sm={12} xs={24}>
-                    <FormInput
-                      name="company"
-                      type="text"
-                      label="Company"
-                      login={1}
-                    />
-                  </Col>
-                  <Col sm={12} xs={24}>
-                    <FormInput
-                      name="position"
-                      type="select"
-                      options={POSITION_OPTIONS}
-                      label="Position"
-                      login={1}
-                    />
-                  </Col>
-                </Row>
-                <Row gutter={32}>
-                  <Col sm={12} xs={24}>
-                    <FormInput
-                      name="address"
-                      type="text"
-                      label="Address"
-                      login={1}
-                    />
-                  </Col>
-                  <Col sm={12} xs={24}>
-                    <FormInput
-                      name="phone"
-                      type="text"
-                      label="Phone No."
-                      login={1}
-                    />
-                  </Col>
-                </Row>
+                <ShadowScrollbars autoHide style={scrollStyle}>
+                  <InputWrapper>
+                    <Row gutter={32}>
+                      <Col sm={12} xs={24}>
+                        <FormInput
+                          name="username"
+                          type="text"
+                          label="Username"
+                          login={1}
+                        />
+                      </Col>
+                      <Col sm={12} xs={24}>
+                        <FormInput
+                          name="email"
+                          type="text"
+                          label="Email"
+                          login={1}
+                        />
+                      </Col>
+                    </Row>
+                    <Row gutter={32}>
+                      <Col sm={12} xs={24}>
+                        <FormInput
+                          name="firstName"
+                          type="text"
+                          label="First name"
+                          login={1}
+                        />
+                      </Col>
+                      <Col sm={12} xs={24}>
+                        <FormInput
+                          name="lastName"
+                          type="text"
+                          label="Last name"
+                          login={1}
+                        />
+                      </Col>
+                    </Row>
+                    <Row gutter={32}>
+                      <Col sm={12} xs={24}>
+                        <FormInput
+                          name="password"
+                          type="password"
+                          label="Password"
+                          login={1}
+                        />
+                      </Col>
+                      <Col sm={12} xs={24}>
+                        <FormInput
+                          name="rePassword"
+                          type="text"
+                          label="Re-password"
+                          login={1}
+                        />
+                      </Col>
+                    </Row>
+                    <Row gutter={32}>
+                      <Col sm={12} xs={24}>
+                        <FormInput
+                          name="dateOfBirth"
+                          type="date"
+                          label="Date of birth"
+                          login={1}
+                        />
+                      </Col>
+                      <Col sm={12} xs={24}>
+                        <FormInput
+                          name="phone"
+                          type="text"
+                          label="Phone No."
+                          login={1}
+                        />
+                      </Col>
+                    </Row>
+                    <Row gutter={32}>
+                      <Col sm={12} xs={24}>
+                        <FormInput
+                          name="company"
+                          type="text"
+                          label="Company"
+                          login={1}
+                        />
+                      </Col>
+                      <Col sm={12} xs={24}>
+                        <FormInput
+                          name="position"
+                          type="select"
+                          options={POSITION_OPTIONS}
+                          label="Position"
+                          login={1}
+                        />
+                      </Col>
+                    </Row>
+                    <Row gutter={32}>
+                      <Col sm={24} xs={24}>
+                        <FormInput
+                          name="address"
+                          type="text"
+                          label="Address"
+                          login={1}
+                        />
+                      </Col>
+                    </Row>
+                  </InputWrapper>
+                </ShadowScrollbars>
                 <Row gutter={32}>
                   <Col sm={24} xs={24}>
                     {this.renderRegisterBtn()}
@@ -208,8 +232,8 @@ class Registration extends Component {
               Login now!
             </LoginFooterLink>
           </LoginFooter>
-        </LoginItem>
-      </LoginWrapper>
+        </RegistrationItem>
+      </RegistrationWrapper>
     );
   }
 }
