@@ -4,9 +4,9 @@ import axios from 'axios';
    * login method
    * @param params: email, password
    */
-export const login = (email, password) => axios
+export const login = (usernameOrEmail, password) => axios
   .post('auth/login', {
-    email,
+    usernameOrEmail,
     password,
   })
   .then(response => ({ response }))
