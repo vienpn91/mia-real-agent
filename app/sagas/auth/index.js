@@ -22,7 +22,7 @@ import {
 
 // login handler
 function* login({ payload }) {
-  const { email: loginEmail, password } = payload;
+  const { usernameOrEmail: loginEmail, password } = payload;
   const { response, error } = yield call(AuthApi.login, loginEmail, password);
 
   // login error

@@ -25,7 +25,7 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid Email').trim().required('Required'),
+  usernameOrEmail: Yup.string().trim().required('Required'),
   password: Yup.string().trim().required('Required'),
 });
 
@@ -88,9 +88,9 @@ class Login extends Component {
                 <Row gutter={32}>
                   <Col>
                     <FormInput
-                      type="email"
-                      name="email"
-                      label="Email"
+                      type="text"
+                      name="usernameOrEmail"
+                      label="Username or Email"
                       login={1}
                     />
                   </Col>

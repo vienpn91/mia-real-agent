@@ -13,17 +13,17 @@ const ExtractJWT = passportJWT.ExtractJwt;
 passport.use(
   new LocalStrategy(
     {
-      usernameField: 'email',
+      usernameField: 'usernameOrEmail',
       passwordField: 'password',
     },
-    (email, password, cb) => {
-      UserModel.findOne({ email }).exec(async (err, user) => {
+    (usernameOrEmail, password, cb) => {
+      UserModel.findOne({ $or: [{ email: usernameOrEmail }, { username: usernameOrEmail }] }).exec(async (err, user) => {
         if (err) {
           return cb(err, false, { message: 'Something is wrong' });
         }
 
         if (!user) {
-          return cb(false, false, { message: 'User with email not found' });
+          return cb(false, false, { message: 'User not found' });
         }
 
         if (!user.password) {

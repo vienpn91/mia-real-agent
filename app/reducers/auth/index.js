@@ -48,11 +48,11 @@ export const updateToken = token => ({
 });
 
 // login/logout action creators
-export function login({ email, password }) {
+export function login({ usernameOrEmail, password }) {
   return {
     type: AUTH_LOGIN,
     payload: {
-      email,
+      usernameOrEmail,
       password,
     },
   };

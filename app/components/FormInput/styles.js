@@ -113,8 +113,6 @@ export const InputStyled = styled(Input)`
   color: #000 !important;
   &:focus {
     box-shadow: none !important;
-    border-radius: 3px !important;
-    border: 1px solid #000 !important;
   }
   &:hover {
     transition: all 300ms ease;
