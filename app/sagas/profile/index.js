@@ -3,6 +3,7 @@ import {
 } from 'redux-saga/effects';
 import _get from 'lodash/get';
 import { DEFAULT_ERROR_MESSAGE } from 'utils/constants';
+import { notification } from 'antd';
 import {
   FETCH_DETAIL, actions, CHECK_PASSWORD,
   UPDATE_PROFILE,
@@ -67,19 +68,17 @@ function* updateProfile({ payload }) {
 
 function* changePassword({ payload }) {
   yield configAxiosForProfile();
-  const userId = yield select(getUserId);
-  const { currentPassword, newPassword } = payload;
-  const { response, error } = yield call(UserApi.changePassword, userId, currentPassword, newPassword);
-  if (error) {
-    const message = _get(
-      error, 'response.data.message', DEFAULT_ERROR_MESSAGE
-    );
-    yield put(actions.changePasswordFailAction(message));
+  try {
+    const userId = yield select(getUserId);
+    const { currentPassword, newPassword } = payload;
+    const { response } = yield call(UserApi.changePassword, userId, currentPassword, newPassword);
+    const { data } = response;
+    const { token } = data;
+    yield put(actions.changePasswordCompleteAction());
+    yield put(updateToken(token));
+  } catch (error) {
+    yield put(actions.changePasswordFailAction(error));
   }
-  const { data } = response;
-  const { token } = data;
-  yield put(actions.changePasswordCompleteAction());
-  yield put(updateToken(token));
 }
 
 export function* configAxiosForProfile() {

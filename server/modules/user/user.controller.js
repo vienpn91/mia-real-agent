@@ -106,14 +106,12 @@ class UserController extends BaseController {
       const { model: user } = req;
       const { oldPassword, newPassword } = req.body;
       await check(oldPassword, VALIDATION_TYPE.STRING);
-      await check(newPassword, VALIDATION_TYPE.PASSWORD);
+      await check(newPassword, VALIDATION_TYPE.STRING);
 
       if (!user.password) {
         return this.createPassword(req, res);
       }
-
       const checkPassword = await compareFunc(oldPassword, user.password);
-
       if (!checkPassword) {
         const { PASSWORD_INCORRECT } = ERROR_MESSAGE;
         throw new APIError(PASSWORD_INCORRECT, httpStatus.FORBIDDEN);
