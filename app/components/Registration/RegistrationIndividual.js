@@ -23,7 +23,7 @@ import {
 
 const scrollStyle = {
   height: 'calc(100vh - 300px)',
-  margin: '0 -20px 10px -10px',
+  margin: '0 -20px 0 -10px',
 };
 
 const initialValues = {
@@ -49,7 +49,7 @@ const validationSchema = Yup.object().shape({
   firstName: Yup.string().trim().required('Required'),
   lastName: Yup.string().trim().required('Required'),
   dateOfBirth: Yup.date().required('Required'),
-  company: Yup.string().trim().required('Required'),
+  company: Yup.string().trim(),
   position: Yup.string().trim(),
   address: Yup.string().trim(),
   phone: Yup.string().trim(),
@@ -211,18 +211,19 @@ class Registration extends Component {
                         />
                       </Col>
                     </Row>
+
+                    <Row gutter={32}>
+                      <Col sm={24} xs={24}>
+                        {this.renderRegisterBtn()}
+                      </Col>
+                    </Row>
+                    {errorMessage && (
+                      <LoginErrorMessage>
+                        {errorMessage}
+                      </LoginErrorMessage>
+                    )}
                   </InputWrapper>
                 </ShadowScrollbars>
-                <Row gutter={32}>
-                  <Col sm={24} xs={24}>
-                    {this.renderRegisterBtn()}
-                  </Col>
-                </Row>
-                {errorMessage && (
-                  <LoginErrorMessage>
-                    {errorMessage}
-                  </LoginErrorMessage>
-                )}
               </Form>
             )}
           </Formik>
