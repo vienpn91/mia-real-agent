@@ -104,9 +104,7 @@ const changePasswordCompleteAction = () => ({
 
 const changePasswordFailAction = errorMessage => ({
   type: CHANGE_PASSWORD_FAIL,
-  payload: {
-    errorMessage,
-  },
+  errorMessage,
 });
 
 

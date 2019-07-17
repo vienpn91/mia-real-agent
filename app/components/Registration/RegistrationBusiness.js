@@ -99,8 +99,9 @@ class Registration extends Component {
             onSubmit={this.register}
           >
             {({ handleSubmit }) => (
-              <Form onSubmit={handleSubmit}>
-                <ShadowScrollbars autoHide style={scrollStyle}>
+              <ShadowScrollbars autoHide style={scrollStyle}>
+
+                <Form onSubmit={handleSubmit}>
                   <InputWrapper>
                     <Row gutter={32}>
                       <Col sm={12} xs={24}>
@@ -198,8 +199,8 @@ class Registration extends Component {
                       </RegistrationErrorMessage>
                     )}
                   </InputWrapper>
-                </ShadowScrollbars>
-              </Form>
+                </Form>
+              </ShadowScrollbars>
             )}
           </Formik>
           <RegistrationFooter>
