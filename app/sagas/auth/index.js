@@ -6,17 +6,18 @@ import _get from 'lodash/get';
 import { push } from 'connected-react-router';
 import { DEFAULT_ERROR_MESSAGE } from 'utils/constants';
 import * as AuthApi from '../../api/auth';
+import { getUserProfile } from '../../api/user';
 import { configToken } from '../../api/config';
 import {
   AUTH_LOGIN,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
   AUTH_REGISTER,
-  AUTH_CHANGE_PASSWORD,
   AUTH_CREATE_PASSWORD,
   AUTH_SEND_VERICATION_EMAIL,
   actions as authActions,
   getToken,
+  getUserId,
   getVerifyingEmail,
 } from '../../reducers/auth';
 
@@ -113,7 +114,29 @@ export function* configAxiosForAuthenticate() {
   configToken(token);
 }
 
+export function* checkToken() {
+  const token = yield select(getToken);
+  if (!token) {
+    yield put(authActions.logout());
+    return;
+  }
+  const userId = yield select(getUserId);
+  if (!userId) {
+    yield put(authActions.logout());
+    return;
+  }
+  const { response, error } = yield call(getUserProfile, userId);
+  if (error || !response) {
+    yield put(authActions.logout());
+    return;
+  }
+  const { data } = response;
+  console.log(data);
+  // yield put(authActions.loginSuccess(token));
+}
+
 function* authFlow() {
+  checkToken();
   yield takeLatest(AUTH_LOGIN, login);
   yield takeLatest(
     [AUTH_LOGIN_SUCCESS, AUTH_LOGOUT],
