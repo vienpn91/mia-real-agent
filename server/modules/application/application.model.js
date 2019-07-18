@@ -20,6 +20,7 @@ const applicationSchema = new Schema(
     lastName: { type: String, trim: true },
     address: { type: String, trim: true },
     country: { type: String, trim: true },
+    postcode: { type: String, trim: true },
     phone: { type: String, trim: true },
     email: { type: String, trim: true },
     workExperiences: [
@@ -39,6 +40,7 @@ const applicationSchema = new Schema(
         degree: { type: String, trim: true },
         fieldOfStudy: [String],
         gpa: Number,
+        certificate: { type: String, trim: true },
       },
     ],
     skills: [String],

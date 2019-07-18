@@ -13,6 +13,7 @@ const initialValues = {
   lastName: '',
   email: '',
   country: '',
+  postcode: '',
   address: '',
   phoneNumber: '',
 };
@@ -22,6 +23,7 @@ const validationSchema = Yup.object().shape({
   lastName: Yup.string().trim().required('Required'),
   email: Yup.string().email('Invalid Email').trim().required('Required'),
   country: Yup.string().trim().required('Required'),
+  postcode: Yup.string().trim().required('Required'),
   address: Yup.string().trim().required('Required'),
   phoneNumber: Yup.string().trim().required('Required'),
 });
@@ -103,9 +105,9 @@ export class BasicInfoForm extends Component {
               </Col>
               <Col sm={12} xs={24}>
                 <FormInput
-                  name="country"
+                  name="phoneNumber"
                   type="text"
-                  label="Country"
+                  label="Phone No."
                   login={1}
                 />
               </Col>
@@ -113,17 +115,27 @@ export class BasicInfoForm extends Component {
             <Row gutter={32}>
               <Col sm={12} xs={24}>
                 <FormInput
-                  name="address"
+                  name="country"
                   type="text"
-                  label="Address"
+                  label="Country"
                   login={1}
                 />
               </Col>
               <Col sm={12} xs={24}>
                 <FormInput
-                  name="phoneNumber"
+                  name="postcode"
                   type="text"
-                  label="Phone No."
+                  label="Postcode"
+                  login={1}
+                />
+              </Col>
+            </Row>
+            <Row gutter={32}>
+              <Col sm={24} xs={24}>
+                <FormInput
+                  name="address"
+                  type="text"
+                  label="Address"
                   login={1}
                 />
               </Col>

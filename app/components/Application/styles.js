@@ -11,6 +11,10 @@ export const ApplicationWrapper = styled.div`
   background-position: left center;
   background-size: cover;
   background-repeat: no-repeat;
+
+  textarea.ant-input {
+    resize: none;
+  }
 `;
 
 export const ApplicationItem = styled.div`
@@ -235,14 +239,41 @@ export const ArrayInputWrapper = styled.div`
   overflow: hidden;
   margin-bottom: 20px;
   color: ${props => props.theme.textColor};
+
+  p{
+    margin-top: 3px;
+    margin-bottom: 1em;
+    width: fit-content;
+    margin-right: 10px;
+    float: left;
+  }
+`;
+
+export const ArrayWrapper = styled.div`
+  float: left;
+  width: 100%;
+  padding: 10px 0;
+  margin: 0 -10px;
 `;
 
 export const ArrayTagWrapper = styled.div`
-  border-bottom: 1px solid #000;
-  width: fit-content;
-  padding: 5px 10px;
-  margin-right: 15px;
+  width: 240px;
+  padding: 15px 20px;
+  margin: 10px;
   float: left;
+  box-shadow: 4px 4px 10px #d8d8d8;
+  border: 1px solid #efeaea;
+  position: relative;
+  color: ${props => props.theme.textColorTertiary};
+
+  h2 {
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: calc(100% - 40px);
+    font-weight: 600;
+    font-size: 1.1em;
+  }
 
   i:first-child {
     margin-left: 10px;
@@ -253,6 +284,34 @@ export const ArrayTagWrapper = styled.div`
   i:last-child {
     margin-right: 0;
   }
+`;
+
+export const DescriptionWrapper = styled.div`
+  width: 100%;
+  position: relative;
+  p {
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5em;
+    width: calc(100% - 40px);
+    float: unset !important;
+  }
+`;
+
+export const DescriptionNumber = styled.p`
+  position: absolute;
+  top: -8px;
+  font-size: 1.6em;
+  right: 0;
+  text-align: right;
+  margin-top: 0 !important;
+`;
+
+export const TagAction = styled.div`
+  position: absolute;
+  top: 15px;
+    right: 15px;
 `;
 
 export const ArrayAddButton = styled.button`

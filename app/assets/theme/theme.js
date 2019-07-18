@@ -13,6 +13,7 @@ const theme = {
   iconMoreHoverColor: '#0f496b',
   textColor: '#000',
   textColorSecondary: '#dfdfdf',
+  textColorTertiary: '#4a4a4a',
 };
 
 export default theme;

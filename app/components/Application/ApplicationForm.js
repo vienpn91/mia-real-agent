@@ -3,6 +3,7 @@ import {
   Steps, Tabs, Icon,
   notification,
 } from 'antd';
+import ShadowScrollbars from 'components/Scrollbar';
 import { func, bool, string } from 'prop-types';
 import {
   ApplicationWrapper, ApplicationItem,
@@ -18,6 +19,11 @@ import LoadingSpin from '../Loading';
 const { Step } = Steps;
 const { TabPane } = Tabs;
 
+const scrollStyle = {
+  height: 'calc(100vh - 275px)',
+  margin: '0 -20px 0 -10px',
+};
+
 export class ApplicationForm extends Component {
   static propTypes = {
     onSubmit: func.isRequired,
@@ -26,7 +32,7 @@ export class ApplicationForm extends Component {
   }
 
   state = {
-    step: 0,
+    step: 4,
     role: '',
     basicData: null,
     experienceData: null,
@@ -156,17 +162,19 @@ export class ApplicationForm extends Component {
         <ApplicationItem>
           <ApplicationTitle>Mia Consult</ApplicationTitle>
           {step !== 5
-          && (
-            <Steps current={step}>
-              <Step title="Role" />
-              <Step title="Basic Info" />
-              <Step title="Experience" />
-              <Step title="Education" />
-              <Step title="Additional" />
-            </Steps>
-          )}
+            && (
+              <Steps current={step}>
+                <Step title="Role" />
+                <Step title="Basic Info" />
+                <Step title="Experience" />
+                <Step title="Education" />
+                <Step title="Additional" />
+              </Steps>
+            )}
           <LoadingSpin loading={isSubmitting}>
-            {this.handleRenderForm()}
+            <ShadowScrollbars autoHide style={scrollStyle}>
+              {this.handleRenderForm()}
+            </ShadowScrollbars>
           </LoadingSpin>
         </ApplicationItem>
       </ApplicationWrapper>
