@@ -9,7 +9,7 @@ import FormInput from '../FormInput/FormInput';
 import {
   ApplicationBtnWrap,
   ApplicationBtn, ArrayTagWrapper,
-  ArrayAddButton, ArrayInputWrapper,
+  ArrayAddButton, ArrayInputWrapper, ArrayWrapper, TagAction,
 } from './styles';
 import { POSITION_OPTIONS } from '../../../common/enums';
 
@@ -33,9 +33,19 @@ const experienceValidationSchema = Yup.object().shape({
   title: Yup.string().trim().required('Required'),
   company: Yup.string().trim().required('Required'),
   location: Yup.string().trim(),
-  from: Yup.date().required('Required').max(Yup.ref('to'), 'From cannot exceed To'),
-  to: Yup.date().required('Required').min(Yup.ref('from'), 'To cannot lower Form'),
   isWorking: Yup.boolean(),
+  from: Yup.date()
+    .when('isWorking', {
+      is: true,
+      then: Yup.date().required('Required'),
+      otherwise: Yup.date().required('Required').max(Yup.ref('to'), 'From cannot exceed To'),
+    }),
+  to: Yup.date()
+    .when('isWorking', {
+      is: true,
+      then: Yup.date(),
+      otherwise: Yup.date().required('Required').min(Yup.ref('from'), 'To cannot lower Form'),
+    }),
   roleDescription: Yup.string().trim(),
 });
 
@@ -45,9 +55,9 @@ const validationSchema = Yup.object().shape({
     title: Yup.string().trim().required('Required'),
     company: Yup.string().trim().required('Required'),
     location: Yup.string().trim(),
-    from: Yup.date().required('Required').max(Yup.ref('to'), 'From cannot exceed To'),
-    to: Yup.date().required('Required').min(Yup.ref('from'), 'To cannot lower Form'),
     isWorking: Yup.boolean(),
+    from: Yup.date(),
+    to: Yup.date(),
     roleDescription: Yup.string().trim(),
   })),
 });
@@ -103,6 +113,7 @@ export class ExperienceForm extends Component {
     return (
       <Modal
         visible={isExperienceFormOpen}
+        onClick={() => this.handleToggleExperienceModal(false)}
         footer={[]}
       >
         <Formik
@@ -111,10 +122,10 @@ export class ExperienceForm extends Component {
           validationSchema={experienceValidationSchema}
           onSubmit={this.handleAddExperience}
         >
-          {({ handleSubmit }) => (
+          {({ handleSubmit, values }) => (
             <Form onSubmit={handleSubmit}>
               <Row gutter={32}>
-                <Col sm={8} xs={24}>
+                <Col sm={12} xs={24}>
                   <FormInput
                     name="title"
                     type="text"
@@ -122,7 +133,7 @@ export class ExperienceForm extends Component {
                     login={1}
                   />
                 </Col>
-                <Col sm={8} xs={24}>
+                <Col sm={12} xs={24}>
                   <FormInput
                     name="company"
                     type="text"
@@ -130,7 +141,9 @@ export class ExperienceForm extends Component {
                     login={1}
                   />
                 </Col>
-                <Col sm={8} xs={24}>
+              </Row>
+              <Row gutter={32}>
+                <Col sm={24} xs={24}>
                   <FormInput
                     name="location"
                     type="text"
@@ -140,7 +153,17 @@ export class ExperienceForm extends Component {
                 </Col>
               </Row>
               <Row gutter={32}>
-                <Col sm={12} xs={24}>
+                <Col sm={24} xs={24}>
+                  <FormInput
+                    name="isWorking"
+                    type="checkbox"
+                    label="Current working"
+                    login={1}
+                  />
+                </Col>
+              </Row>
+              <Row gutter={32}>
+                <Col sm={values.isWorking ? 24 : 12} xs={24}>
                   <FormInput
                     name="from"
                     type="date"
@@ -148,28 +171,22 @@ export class ExperienceForm extends Component {
                     login={1}
                   />
                 </Col>
-                <Col sm={12} xs={24}>
-                  <FormInput
-                    name="to"
-                    type="date"
-                    label="To"
-                    login={1}
-                  />
-                </Col>
+                {!values.isWorking && (
+                  <Col sm={12} xs={24}>
+                    <FormInput
+                      name="to"
+                      type="date"
+                      label="To"
+                      login={1}
+                    />
+                  </Col>
+                )}
               </Row>
               <Row gutter={32}>
-                <Col sm={12} xs={24}>
-                  <FormInput
-                    name="isWorking"
-                    type="checkbox"
-                    label="Is working"
-                    login={1}
-                  />
-                </Col>
-                <Col sm={12} xs={24}>
+                <Col sm={24} xs={24}>
                   <FormInput
                     name="roleDescription"
-                    type="text"
+                    type="textarea"
                     label="Role description"
                     login={1}
                   />
@@ -181,7 +198,7 @@ export class ExperienceForm extends Component {
                     type="button"
                     onClick={() => this.handleToggleExperienceModal(false)}
                   >
-                      Cancel
+                    Cancel
                   </ApplicationBtn>
                   <ApplicationBtn
                     type="submit"
@@ -202,15 +219,22 @@ export class ExperienceForm extends Component {
     const { title, company } = experience;
     return (
       <ArrayTagWrapper key={index}>
-        {`${title} - ${company}`}
-        <Icon
-          onClick={() => arrayHelpers.remove(index)}
-          type="close"
-        />
-        <Icon
-          onClick={() => this.handleToggleExperienceModal(true, experience, index)}
-          type="edit"
-        />
+        <h2>
+          {title}
+        </h2>
+        <TagAction>
+          <Icon
+            onClick={() => arrayHelpers.remove(index)}
+            type="close"
+          />
+          <Icon
+            onClick={() => this.handleToggleExperienceModal(true, experience, index)}
+            type="edit"
+          />
+        </TagAction>
+        <p>
+          {company}
+        </p>
       </ArrayTagWrapper>
     );
   };
@@ -277,15 +301,17 @@ export class ExperienceForm extends Component {
                 render={arrayHelpers => (
                   <ArrayInputWrapper>
                     <p>Experiences:</p>
-                    {
-                      values.workExperiences.map((
-                        experience, index
-                      ) => this.renderWorkExperience(experience, arrayHelpers, index))
-                    }
                     <ArrayAddButton type="button" onClick={() => this.handleToggleExperienceModal(true)}>
                       <i className="mia-add" />
                       Add Experience
                     </ArrayAddButton>
+                    <ArrayWrapper>
+                      {
+                        values.workExperiences.map((
+                          experience, index
+                        ) => this.renderWorkExperience(experience, arrayHelpers, index))
+                      }
+                    </ArrayWrapper>
                   </ArrayInputWrapper>
                 )}
               />

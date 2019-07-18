@@ -9,7 +9,7 @@ import FormInput from '../FormInput/FormInput';
 import {
   ApplicationBtnWrap,
   ApplicationBtn, ArrayTagWrapper,
-  ArrayInputWrapper, ArrayAddButton,
+  ArrayInputWrapper, ArrayAddButton, TagAction, DescriptionWrapper, DescriptionNumber, ArrayWrapper,
 } from './styles';
 import { POSITION_OPTIONS } from '../../../common/enums';
 
@@ -24,28 +24,16 @@ const initialValues = {
   educations: [],
 };
 
-const marks = {
-  1: '1',
-  2: '2',
-  3: '3',
-  4: '4',
-  5: '5',
-};
-
 const educationValidationSchema = Yup.object().shape({
   school: Yup.string().trim().required('Required'),
   degree: Yup.string().trim().required('Required'),
+  certificate: Yup.string().trim().required('Required'),
   fieldOfStudies: Yup.array().of(Yup.string()),
   gpa: Yup.number().min(0).max(5),
 });
 
 const validationSchema = Yup.object().shape({
-  educations: Yup.array().of(Yup.object().shape({
-    school: Yup.string().trim().required('Required'),
-    degree: Yup.string().trim().required('Required'),
-    fieldOfStudies: Yup.array().of(Yup.string()),
-    gpa: Yup.number(),
-  })),
+  educations: Yup.array().of(educationValidationSchema),
 });
 export class EducationForm extends Component {
   state = {
@@ -96,6 +84,7 @@ export class EducationForm extends Component {
     return (
       <Modal
         visible={isEducationFormOpen}
+        onClick={() => this.handleToggleEducationModal(false)}
         footer={[]}
       >
         <Formik
@@ -107,7 +96,7 @@ export class EducationForm extends Component {
           {({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
               <Row gutter={32}>
-                <Col sm={12} xs={24}>
+                <Col sm={24} xs={24}>
                   <FormInput
                     name="school"
                     type="text"
@@ -115,7 +104,9 @@ export class EducationForm extends Component {
                     login={1}
                   />
                 </Col>
-                <Col sm={12} xs={24}>
+              </Row>
+              <Row gutter={32}>
+                <Col sm={24} xs={24}>
                   <FormInput
                     name="degree"
                     type="text"
@@ -125,7 +116,7 @@ export class EducationForm extends Component {
                 </Col>
               </Row>
               <Row gutter={32}>
-                <Col sm={12} xs={24}>
+                <Col sm={24} xs={24}>
                   <FormInput
                     name="fieldOfStudies"
                     type="select"
@@ -135,15 +126,24 @@ export class EducationForm extends Component {
                     login={1}
                   />
                 </Col>
-                <Col sm={12} xs={24}>
+              </Row>
+              <Row gutter={32}>
+                <Col sm={24} xs={24}>
                   <FormInput
                     name="gpa"
-                    type="slider"
-                    label="Gpa (5 based)"
+                    type="text"
+                    label="GPA (5 based)"
                     login={1}
-                    marks={marks}
-                    min={1}
-                    max={5}
+                  />
+                </Col>
+              </Row>
+              <Row gutter={32}>
+                <Col sm={24} xs={24}>
+                  <FormInput
+                    name="certificate"
+                    type="text"
+                    label="Certificate"
+                    login={1}
                   />
                 </Col>
               </Row>
@@ -153,7 +153,7 @@ export class EducationForm extends Component {
                     type="button"
                     onClick={() => this.handleToggleEducationModal(false)}
                   >
-                      Cancel
+                    Cancel
                   </ApplicationBtn>
                   <ApplicationBtn
                     type="submit"
@@ -171,18 +171,33 @@ export class EducationForm extends Component {
   }
 
   renderEducation = (education, arrayHelpers, index) => {
-    const { school, degree } = education;
+    const { school, degree, gpa } = education;
     return (
       <ArrayTagWrapper key={index}>
-        {`${school} - ${degree}`}
-        <Icon
-          onClick={() => arrayHelpers.remove(index)}
-          type="close"
-        />
-        <Icon
-          onClick={() => this.handleToggleEducationModal(true, education, index)}
-          type="edit"
-        />
+        <h2>
+          {school}
+        </h2>
+        <TagAction>
+          <Icon
+            onClick={() => arrayHelpers.remove(index)}
+            type="close"
+          />
+          <Icon
+            onClick={() => this.handleToggleEducationModal(true, education, index)}
+            type="edit"
+          />
+        </TagAction>
+        <DescriptionWrapper>
+          <p>
+            {degree}
+          </p>
+        </DescriptionWrapper>
+        <DescriptionWrapper>
+          <p>
+            GPA:
+          </p>
+          <DescriptionNumber>{gpa}</DescriptionNumber>
+        </DescriptionWrapper>
       </ArrayTagWrapper>
     );
   };
@@ -239,15 +254,17 @@ export class EducationForm extends Component {
                     render={arrayHelpers => (
                       <ArrayInputWrapper>
                         <p>Educations:</p>
-                        {
-                          values.educations.map((
-                            education, index
-                          ) => this.renderEducation(education, arrayHelpers, index))
-                        }
                         <ArrayAddButton type="button" onClick={() => this.handleToggleEducationModal(true)}>
                           <i className="mia-add" />
                           Add Education
                         </ArrayAddButton>
+                        <ArrayWrapper>
+                          {
+                            values.educations.map((
+                              education, index
+                            ) => this.renderEducation(education, arrayHelpers, index))
+                          }
+                        </ArrayWrapper>
                       </ArrayInputWrapper>
                     )}
                   />

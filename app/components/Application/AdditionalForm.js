@@ -8,9 +8,9 @@ import { func } from 'prop-types';
 import FormInput from '../FormInput/FormInput';
 import {
   ApplicationBtn,
-  ArrayTagWrapper, ArrayInputWrapper, ArrayAddButton,
+  ArrayTagWrapper, ArrayInputWrapper, ArrayAddButton, ArrayWrapper, TagAction, DescriptionWrapper, DescriptionNumber,
 } from './styles';
-import { POSITION_OPTIONS } from '../../../common/enums';
+import { POSITION_OPTIONS, APPLICATION_LANGUAGE } from '../../../common/enums';
 
 const languageInititalValues = {
   name: '',
@@ -34,6 +34,25 @@ const marks = {
   4: '4',
   5: '5',
 };
+
+const LANGUAGE_OPTIONS = [
+  {
+    label: APPLICATION_LANGUAGE.CHINESE,
+    value: APPLICATION_LANGUAGE.CHINESE,
+  },
+  {
+    label: APPLICATION_LANGUAGE.ENGLISH,
+    value: APPLICATION_LANGUAGE.ENGLISH,
+  },
+  {
+    label: APPLICATION_LANGUAGE.JANPANESE,
+    value: APPLICATION_LANGUAGE.JANPANESE,
+  },
+  {
+    label: APPLICATION_LANGUAGE.VIETNAMESE,
+    value: APPLICATION_LANGUAGE.VIETNAMESE,
+  },
+];
 
 const languageValidationSchema = Yup.object().shape({
   name: Yup.string().trim().required('Required'),
@@ -77,7 +96,7 @@ export class AdditionalForm extends Component {
   }
 
 
-  handleToggleEducationModal = (isOpen, editEducation = languageInititalValues, editIndex = -1) => {
+  handleToggleLanguageModal = (isOpen, editEducation = languageInititalValues, editIndex = -1) => {
     this.setState({
       isLanguageFormOpen: isOpen,
       editIndex,
@@ -109,7 +128,7 @@ export class AdditionalForm extends Component {
         languages: [...languages, language],
       });
     }
-    this.handleToggleEducationModal(false);
+    this.handleToggleLanguageModal(false);
   }
 
   renderLanguageModal = () => {
@@ -117,6 +136,7 @@ export class AdditionalForm extends Component {
     return (
       <Modal
         visible={isLanguageFormOpen}
+        onCancel={() => this.handleToggleLanguageModal(false)}
         footer={[]}
       >
         <Formik
@@ -131,7 +151,8 @@ export class AdditionalForm extends Component {
                 <Col sm={24} xs={24}>
                   <FormInput
                     name="name"
-                    type="text"
+                    type="select"
+                    options={LANGUAGE_OPTIONS}
                     label="Name"
                     login={1}
                   />
@@ -189,7 +210,7 @@ export class AdditionalForm extends Component {
                 <Col sm={12} xs={24}>
                   <ApplicationBtn
                     type="button"
-                    onClick={() => this.handleToggleEducationModal(false)}
+                    onClick={() => this.handleToggleLanguageModal(false)}
                   >
                     Cancel
                   </ApplicationBtn>
@@ -217,15 +238,43 @@ export class AdditionalForm extends Component {
     } = education;
     return (
       <ArrayTagWrapper key={index}>
-        {`${name} - W(${writing}) R(${reading}) S(${speaking}) O(${overall})`}
-        <Icon
-          onClick={() => arrayHelpers.remove(index)}
-          type="close"
-        />
-        <Icon
-          onClick={() => this.handleToggleEducationModal(true, education, index)}
-          type="edit"
-        />
+        <h2>
+          {name}
+        </h2>
+        <TagAction>
+          <Icon
+            onClick={() => arrayHelpers.remove(index)}
+            type="close"
+          />
+          <Icon
+            onClick={() => this.handleToggleLanguageModal(true, education, index)}
+            type="edit"
+          />
+        </TagAction>
+        <DescriptionWrapper>
+          <p>
+            Writing:
+          </p>
+          <DescriptionNumber>{writing}</DescriptionNumber>
+        </DescriptionWrapper>
+        <DescriptionWrapper>
+          <p>
+            Reading:
+          </p>
+          <DescriptionNumber>{reading}</DescriptionNumber>
+        </DescriptionWrapper>
+        <DescriptionWrapper>
+          <p>
+            Speaking:
+          </p>
+          <DescriptionNumber>{speaking}</DescriptionNumber>
+        </DescriptionWrapper>
+        <DescriptionWrapper>
+          <p>
+            Overall:
+          </p>
+          <DescriptionNumber>{overall}</DescriptionNumber>
+        </DescriptionWrapper>
       </ArrayTagWrapper>
     );
   };
@@ -280,7 +329,7 @@ export class AdditionalForm extends Component {
                   <FormInput
                     name="cv"
                     type="text"
-                    label="Cv"
+                    label="CV"
                     login={1}
                   />
                 </Col>
@@ -292,27 +341,6 @@ export class AdditionalForm extends Component {
                     options={POSITION_OPTIONS}
                     label="Skills"
                     login={1}
-                  />
-                </Col>
-              </Row>
-              <Row gutter={32}>
-                <Col sm={24} xs={24}>
-                  <FieldArray
-                    name="languages"
-                    render={arrayHelpers => (
-                      <ArrayInputWrapper>
-                        <p>Languages:</p>
-                        {
-                          values.languages.map((
-                            language, index
-                          ) => this.renderLanguage(language, arrayHelpers, index))
-                        }
-                        <ArrayAddButton type="button" onClick={() => this.handleToggleEducationModal(true)}>
-                          <i className="mia-add" />
-                          Add language
-                        </ArrayAddButton>
-                      </ArrayInputWrapper>
-                    )}
                   />
                 </Col>
               </Row>
@@ -331,6 +359,29 @@ export class AdditionalForm extends Component {
                     type="text"
                     label="Social"
                     login={1}
+                  />
+                </Col>
+              </Row>
+              <Row gutter={32}>
+                <Col sm={24} xs={24}>
+                  <FieldArray
+                    name="languages"
+                    render={arrayHelpers => (
+                      <ArrayInputWrapper>
+                        <p>Languages:</p>
+                        <ArrayAddButton type="button" onClick={() => this.handleToggleLanguageModal(true)}>
+                          <i className="mia-add" />
+                          Add language
+                        </ArrayAddButton>
+                        <ArrayWrapper>
+                          {
+                            values.languages.map((
+                              language, index
+                            ) => this.renderLanguage(language, arrayHelpers, index))
+                          }
+                        </ArrayWrapper>
+                      </ArrayInputWrapper>
+                    )}
                   />
                 </Col>
               </Row>
