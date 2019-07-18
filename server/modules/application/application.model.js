@@ -23,6 +23,7 @@ const applicationSchema = new Schema(
     postcode: { type: String, trim: true },
     phone: { type: String, trim: true },
     email: { type: String, trim: true },
+    categories: [String],
     workExperiences: [
       {
         title: { type: String, trim: true },

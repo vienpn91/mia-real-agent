@@ -329,7 +329,7 @@ export class AdditionalForm extends Component {
                   <FormInput
                     name="cv"
                     type="text"
-                    label="Cv"
+                    label="CV"
                     login={1}
                   />
                 </Col>

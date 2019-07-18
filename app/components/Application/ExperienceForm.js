@@ -157,7 +157,7 @@ export class ExperienceForm extends Component {
                   <FormInput
                     name="isWorking"
                     type="checkbox"
-                    label="Is working"
+                    label="Current working"
                     login={1}
                   />
                 </Col>

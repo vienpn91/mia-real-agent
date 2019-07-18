@@ -32,7 +32,7 @@ export class ApplicationForm extends Component {
   }
 
   state = {
-    step: 4,
+    step: 0,
     role: '',
     basicData: null,
     experienceData: null,
@@ -103,6 +103,8 @@ export class ApplicationForm extends Component {
       ...educationData,
       ...values,
     };
+    console.log(data);
+
     onSubmit(data);
   }
 
