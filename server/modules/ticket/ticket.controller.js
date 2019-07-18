@@ -129,7 +129,11 @@ class TicketController extends BaseController {
       const option = { skip, limit };
       if (sort) {
         const sortObj = JSON.parse(sort);
-        option.sort = sortObj;
+        option.sort = {
+          status: 1,
+          createdAt: -1,
+          ...sortObj,
+        };
       }
 
       const query = JSON.parse(_get(params, 'query', emptyObjString));
