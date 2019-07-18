@@ -63,7 +63,7 @@ function* login({ payload }) {
 
 // registration handler
 function* register({ payload }) {
-  const { email } = payload;
+  const { email, password } = payload;
   const { error } = yield call(AuthApi.register, payload);
 
   if (error) {
@@ -73,7 +73,7 @@ function* register({ payload }) {
   }
   yield put(authActions.registerSucces());
   yield put(authActions.setVerifyingEmail(email));
-  yield put(push('/greeting'));
+  yield put(authActions.login({ usernameOrEmail: email, password }));
 }
 
 // create new password handler

@@ -158,7 +158,7 @@ class Registration extends Component {
                       <Col sm={12} xs={24}>
                         <FormInput
                           name="rePassword"
-                          type="text"
+                          type="password"
                           label="Re-password"
                           login={1}
                         />
