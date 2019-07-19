@@ -1,12 +1,19 @@
 /* eslint-disable react/prefer-stateless-function */
 import React from 'react';
+import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
-import AuthenticatedRoute from 'containers/Route/AuthenticatedRoute';
-import MainLayout from 'components/MainLayout';
-import AdminMainLayout from 'containers/AdminMainLayout';
-import UserManagement from 'containers/UserManagement';
-import UserDetail from 'containers/UserDetail';
+import PropTypes from 'prop-types';
+import { isPageLoading } from './reducers/system';
+import MainLayout from './components/MainLayout';
+import LoadingScreen from './components/LoadingScreen';
+
+import AuthenticatedRoute from './containers/Route/AuthenticatedRoute';
+import AdminMainLayout from './containers/AdminMainLayout';
+import UserManagement from './containers/UserManagement';
+import UserDetail from './containers/UserDetail';
 import UnauthRoute from './containers/Route/UnauthenticateRoute';
+import { RegistrationIndividual, RegistrationBusiness } from './containers/Registration';
+
 import HomePage from './pages/HomePage';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
@@ -16,13 +23,23 @@ import ThankForRegistering from './pages/ThankForRegistering';
 import Profile from './pages/Profile';
 import ChatbotComponent from './pages/Chatbot';
 import TicketManagement from './pages/TicketManagement';
-
 import AdminDashboard from './pages/AdminDashboard';
-import { RegistrationIndividual, RegistrationBusiness } from './containers/Registration';
 import ApplicationForm from './pages/Application';
 
-export default class App extends React.PureComponent {
+class Router extends React.PureComponent {
+  static propTypes = {
+    isPageLoading: PropTypes.bool.isRequired,
+  }
+
   render() {
+    const { isPageLoading: isLoading } = this.props;
+
+    if (isLoading) {
+      return (
+        <LoadingScreen />
+      );
+    }
+
     return (
       <Switch>
         <Route path="/admin">
@@ -55,3 +72,9 @@ export default class App extends React.PureComponent {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  isPageLoading: isPageLoading(state),
+});
+
+export default connect(mapStateToProps)(Router);

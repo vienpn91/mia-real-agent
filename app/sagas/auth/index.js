@@ -1,6 +1,6 @@
 import {
   call, put, select,
-  takeLatest,
+  takeLatest, all,
 } from 'redux-saga/effects';
 import _get from 'lodash/get';
 import { push } from 'connected-react-router';
@@ -131,20 +131,25 @@ export function* checkToken() {
     return;
   }
   const { data } = response;
-  console.log(data);
-  // yield put(authActions.loginSuccess(token));
+  yield put(authActions.loginSuccess({
+    ...data,
+    /* eslint-disable no-underscore-dangle */
+    userId: data._id,
+  }));
 }
 
 function* authFlow() {
-  checkToken();
-  yield takeLatest(AUTH_LOGIN, login);
-  yield takeLatest(
-    [AUTH_LOGIN_SUCCESS, AUTH_LOGOUT],
-    configAxiosForAuthenticate,
-  );
-  yield takeLatest(AUTH_REGISTER, register);
-  yield takeLatest(AUTH_CREATE_PASSWORD, createPassword);
-  yield takeLatest(AUTH_SEND_VERICATION_EMAIL, sendVericationEmail);
+  yield all([
+    call(checkToken),
+    takeLatest(AUTH_LOGIN, login),
+    takeLatest(
+      [AUTH_LOGIN_SUCCESS, AUTH_LOGOUT],
+      configAxiosForAuthenticate,
+    ),
+    takeLatest(AUTH_REGISTER, register),
+    takeLatest(AUTH_CREATE_PASSWORD, createPassword),
+    takeLatest(AUTH_SEND_VERICATION_EMAIL, sendVericationEmail),
+  ]);
 }
 
 export default authFlow;

@@ -13,6 +13,7 @@ import application from './application';
 import history from '../utils/history';
 import user from './user';
 import admin from './admin';
+import system from './system';
 
 export const REHYDRATE_COMPLETE = 'root/REHYDRATE_COMPLETE';
 export const CLEAR_TRANSACTION = 'root/CLEAR_TRANSACTION';
@@ -30,6 +31,7 @@ export default function createReducer(injectedReducers = {}) {
     user,
     admin,
     application,
+    system,
     router: connectRouter(history),
     ...injectedReducers,
   });
