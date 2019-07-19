@@ -13,6 +13,7 @@ export const DATE_TIME_FORMAT = {
 
 export const COLUMN_TYPE = {
   TEXT: 'text',
+  LINK: 'link',
   IMAGE: 'image',
   DATE: 'date',
   ACTIVE: 'active',
@@ -21,6 +22,8 @@ export const COLUMN_TYPE = {
   STATUS: 'status',
   ROLE_BUTTON_GROUP: 'role-button-group',
   UPPERCASE: 'uppercase',
+  ARRAY: 'array',
+  ACTIONS: 'actions',
 };
 
 export const SORT = {

@@ -10,22 +10,15 @@ import {
   getSizePerPage,
 } from 'selectors/application';
 import { COLUMN_TYPE } from 'utils/constants';
+import { APPLICATION_STATUS } from '../../../common/enums';
 
 const applicationColumns = [
   {
     type: COLUMN_TYPE.TEXT,
-    dataKey: 'firstName',
+    dataKey: ['firstName', 'lastName'],
     columnAttr: {
-      value: 'First name',
-      percent: 7,
-    },
-  },
-  {
-    type: COLUMN_TYPE.TEXT,
-    dataKey: 'lastName',
-    columnAttr: {
-      value: 'Last name',
-      percent: 8,
+      value: 'Full name',
+      percent: 15,
     },
   },
   {
@@ -33,31 +26,32 @@ const applicationColumns = [
     dataKey: 'categories',
     columnAttr: {
       value: 'Category',
-      percent: 20,
+      percent: 25,
     },
   },
   {
     type: COLUMN_TYPE.TEXT,
-    dataKey: 'lastName',
+    dataKey: 'yearsOfExp',
     columnAttr: {
       value: 'Years of EXP',
       percent: 10,
     },
   },
   {
-    type: COLUMN_TYPE.TEXT,
-    dataKey: 'lastName',
+    type: COLUMN_TYPE.ARRAY,
+    dataKey: 'languages',
+    key: 'name',
     columnAttr: {
       value: 'Language',
-      percent: 20,
+      percent: 25,
     },
   },
   {
-    type: COLUMN_TYPE.TEXT,
+    type: COLUMN_TYPE.LINK,
     dataKey: 'cv',
     columnAttr: {
       value: 'CV',
-      percent: 20,
+      percent: 5,
     },
   },
   {
@@ -65,17 +59,33 @@ const applicationColumns = [
     dataKey: 'status',
     columnAttr: {
       value: 'Status',
+      percent: 5,
+    },
+  },
+  {
+    type: COLUMN_TYPE.ACTIONS,
+    actions: [
+      {
+        dataKey: 'status',
+        oneOf: [APPLICATION_STATUS.REVIEWING],
+        type: 'check',
+      },
+      {
+        dataKey: 'status',
+        oneOf: [APPLICATION_STATUS.REVIEWING],
+        type: 'close',
+      },
+      {
+        dataKey: 'status',
+        oneOf: [APPLICATION_STATUS.PENDING],
+        type: 'audit',
+      },
+    ],
+    columnAttr: {
+      value: 'Actions',
       percent: 10,
     },
   },
-  // {
-  //   type: COLUMN_TYPE.TEXT,
-  //   dataKey: 'lastName',
-  //   columnAttr: {
-  //     value: 'Last name',
-  //     percent: 10,
-  //   },
-  // },
 ];
 
 const mapDispatchToProps = {

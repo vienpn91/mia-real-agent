@@ -1,3 +1,4 @@
+import moment from 'moment';
 import applicationCollection from './application.model';
 import BaseService from '../base/base.service';
 
@@ -34,9 +35,18 @@ class ApplicationService extends BaseService {
       .skip(+skip)
       .limit(+limit || 10)
       .exec();
-
+    const result = await resultPromise;
     return {
-      result: await resultPromise,
+      result: result.map(({ workExperiences, _doc }) => {
+        let experience = 0;
+        workExperiences.forEach(({ from, to, isWorking }) => {
+          const f = moment(from);
+          const t = moment(to);
+          experience += (t.diff(isWorking ? moment() : f));
+        });
+        const yearsOfExp = moment().subtract(experience).toNow(true);
+        return { ..._doc, yearsOfExp: yearsOfExp === 'a few seconds' ? '' : yearsOfExp };
+      }),
       totalRecord: await this.countDocument(queryCondition),
     };
   }

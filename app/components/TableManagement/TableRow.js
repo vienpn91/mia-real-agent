@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import _get from 'lodash/get';
+import _includes from 'lodash/includes';
+import { Icon } from 'antd';
 import _reducer from 'lodash/reduce';
 import { TableContent } from 'components/TableComponent/TableComponent';
 import { CurrencyFormat } from 'components/Generals/CurrencyFormat';
@@ -15,6 +17,7 @@ import { IconStyled } from 'components/Generals/General.styled';
 import { COLUMN_TYPE } from 'utils/constants';
 import history from 'utils/history';
 import { ButtonGroupWrapper, ButtonElement, UppercaseText } from './TableManagement.styled';
+import { ActionBarStyled } from './styles';
 
 class TableRow extends React.PureComponent {
   onClick = () => {
@@ -50,9 +53,61 @@ class TableRow extends React.PureComponent {
     return moment(value).format(format);
   };
 
+  renderLinkColumn = (column) => {
+    const { item } = this.props;
+    const { dataKey } = column;
+
+    const value = _get(item, dataKey);
+
+    return (<a href={value}>Link</a>);
+  };
+
+  renderArrayColumn = (column) => {
+    const { item } = this.props;
+    const { dataKey, key } = column;
+
+    const values = _get(item, dataKey);
+
+    return values.map(value => value[key]);
+  };
+
+  handleActionBarOnClick = (e) => {
+    e.stopPropagation();
+  }
+
+  renderActionsColumn = (column) => {
+    const { item } = this.props;
+    const { actions } = column;
+    let icons = [];
+    actions.forEach(({ dataKey, oneOf, ...rest }) => {
+      const value = _get(item, dataKey);
+      if (_includes(oneOf, value)) {
+        icons = icons.concat({
+          ...rest,
+        });
+      }
+    });
+    return (
+      <ActionBarStyled onClick={this.handleActionBarOnClick}>
+        {icons.map(({ type }) => (
+          <Icon type={type} />
+        ))}
+      </ActionBarStyled>
+    );
+  };
+
   renderTextColumn = (column) => {
     const { item } = this.props;
     const { dataKey } = column;
+    if (dataKey instanceof (Array)) {
+      return dataKey.map((key) => {
+        const value = _get(item, key);
+        if (Array.isArray(value)) {
+          return value.length > 1 ? value.join(' , ') : value;
+        }
+        return `${value} ` || '-';
+      });
+    }
     const value = _get(item, dataKey);
     if (Array.isArray(value)) {
       return value.length > 1 ? value.join(' , ') : value;
@@ -112,6 +167,12 @@ class TableRow extends React.PureComponent {
     switch (type) {
       case COLUMN_TYPE.DATE:
         return this.renderDateColumn(column);
+      case COLUMN_TYPE.LINK:
+        return this.renderLinkColumn(column);
+      case COLUMN_TYPE.ARRAY:
+        return this.renderArrayColumn(column);
+      case COLUMN_TYPE.ACTIONS:
+        return this.renderActionsColumn(column);
       case COLUMN_TYPE.ACTIVE:
         return this.renderActiveColumn(column);
       case COLUMN_TYPE.CONSTANT:
