@@ -52,6 +52,12 @@ export const SORT = {
       value: 'role',
     },
   ],
+  APPLICATION_SORT: [
+    {
+      title: 'Email',
+      value: 'email',
+    },
+  ],
 };
 
 
