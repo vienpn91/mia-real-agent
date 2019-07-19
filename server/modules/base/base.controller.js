@@ -92,7 +92,7 @@ export default class BaseController {
   delete = async (req, res) => {
     try {
       const { model } = req;
-      model.deleted = true;
+      model.deletedAt = new Date();
       const deleteModel = await model.save();
       return res.status(httpStatus.OK).send(deleteModel);
     } catch (error) {

@@ -10,18 +10,9 @@ import {
 } from '../../reducers/chat';
 import * as ChatApi from '../../api/chat';
 import * as AgentApi from '../../api/agent';
-import { configToken } from '../../api/config';
-import { getToken } from '../../reducers/auth';
 import { combineChat } from './utils';
-import { emitReply } from '../socketio';
-
-export function* configAxiosForChat() {
-  const token = yield select(getToken);
-  configToken(token);
-}
 
 export function* getChat({ payload }) {
-  yield configAxiosForChat();
   const { ticketId, agentId } = payload;
   const { response, error } = yield call(ChatApi.getChatByTicketAndAgent, ticketId, agentId);
   if (error) {
@@ -36,7 +27,6 @@ export function* getChat({ payload }) {
 }
 
 export function* updateChat() {
-  yield configAxiosForChat();
   const { _id } = yield select(selectors.getChatData);
   const { response, error } = yield call(ChatApi.getChat, _id);
   if (error) {
@@ -60,7 +50,6 @@ export function* sendMessage({ payload }) {
 }
 
 export function* findAvailableAgent({ payload }) {
-  yield configAxiosForChat();
   const { ticketId } = payload;
   const { response, error } = yield call(AgentApi.findAvailableAgent, ticketId);
   if (error) {
@@ -81,7 +70,6 @@ export function* findAvailableAgent({ payload }) {
 }
 
 export function* acceptAgent({ payload }) {
-  yield configAxiosForChat();
   const { agentId } = payload;
   const { error } = yield call(AgentApi.acceptAgent, agentId);
   if (error) {
@@ -95,7 +83,6 @@ export function* acceptAgent({ payload }) {
 }
 
 export function* confirmRequest({ payload }) {
-  yield configAxiosForChat();
   const {
     agentId, ticketId: _id, isConfirm,
     redirectData,

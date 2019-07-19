@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-const chatLogSchema = new Schema(
+const ReplySchema = new Schema(
   {
     conversationId: {
       type: Schema.Types.ObjectId,
@@ -25,8 +25,8 @@ const chatLogSchema = new Schema(
   },
   {
     versionKey: false,
-    collection: 'chat_log',
+    collection: 'reply',
   },
 );
 
-export default mongoose.model('ChatLog', chatLogSchema);
+export default mongoose.model('Reply', ReplySchema);

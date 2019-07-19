@@ -1,6 +1,5 @@
 import httpStatus from 'http-status';
 import TicketService from '../ticket/ticket.service';
-import ChatlogService from '../chatlog/chatlog.service';
 import ConversationService from '../conversation/conversation.service';
 import AgentQueue from '../queue/agentQueue';
 import UserQueue from '../queue/userQueue';

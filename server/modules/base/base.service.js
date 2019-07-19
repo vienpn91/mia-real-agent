@@ -15,7 +15,7 @@ export default class BaseService {
   }
 
   delete(id) {
-    return this.collection.updateOne({ _id: id }, { deleted: true }).exec();
+    return this.collection.updateOne({ _id: id }, { deletedAt: true }).exec();
   }
 
   get(id) {
@@ -23,19 +23,19 @@ export default class BaseService {
       .findOne({
         _id: id,
         $or: [
-          { deleted: { $exists: false } },
-          { deleted: { $exists: true, $in: [false] } },
+          { deletedAt: { $exists: false } },
+          { deletedAt: { $exists: true, $in: [null] } },
         ],
       })
       .exec();
   }
 
-  async getAll(condition, options) {
+  async getAll(condition, options = {}) {
     const { skip = 0, limit, sort = { updatedAt: -1 } } = options;
     const notDeletedCondition = {
       $or: [
-        { deleted: { $exists: false } },
-        { deleted: { $exists: true, $in: [false] } },
+        { deletedAt: { $exists: false } },
+        { deletedAt: { $exists: true, $in: [null] } },
       ],
     };
     const queryCondition = {

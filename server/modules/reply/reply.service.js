@@ -1,13 +1,13 @@
 import _ from 'lodash';
-import chatLogCollection from './chatlog.model';
+import ReplyCollection from './reply.model';
 import BaseService from '../base/base.service';
 
-class ChatLogService extends BaseService {
+class ReplyService extends BaseService {
   constructor() {
-    super(chatLogCollection);
+    super(ReplyCollection);
   }
 
-  async insertMessage(model, msg) {
+  async insertReply(model, msg) {
     const { messages } = model;
     _.assign(model, { messages: messages.concat(msg) });
     const saved = await model.save();
@@ -23,4 +23,4 @@ class ChatLogService extends BaseService {
   }
 }
 
-export default new ChatLogService();
+export default new ReplyService();

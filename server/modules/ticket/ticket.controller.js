@@ -16,6 +16,14 @@ class TicketController extends BaseController {
     super(TicketService);
   }
 
+  getAllConversations = async (req, res) => {
+    const { id } = req.params;
+    const result = await ConversationService.getAll({
+      ticketId: id,
+    });
+    return res.status(httpStatus.OK).send(result);
+  }
+
   get = async (req, res) => {
     try {
       const { model } = req;
@@ -102,8 +110,9 @@ class TicketController extends BaseController {
         });
       } catch (error) {
         this.service.delete(ticketId);
-        throw new Error('Unable to create ticket');
+        throw new APIError('Unable to create ticket', httpStatus.INTERNAL_SERVER_ERROR);
       }
+
       return res.status(httpStatus.OK).send(result);
     } catch (error) {
       return this.handleError(res, error);
@@ -143,6 +152,7 @@ class TicketController extends BaseController {
       };
 
       const result = await this.service.getAll(newQuery, option);
+
       return res.status(httpStatus.OK).send(result);
     } catch (error) {
       return this.handleError(res, error);

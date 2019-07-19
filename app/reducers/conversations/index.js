@@ -11,8 +11,11 @@ export const CONVERSATION_SET_CURRENT = 'conversations/CONVERSATION_SET_CURRENT'
 
 
 // action creator
-export const fetchConversation = () => ({
+export const fetchConversation = ticketId => ({
   type: CONVERSATION_FETCH,
+  payload: {
+    ticketId,
+  },
 });
 
 export const fetchConversationSuccess = (conversationList, total) => ({
@@ -30,8 +33,11 @@ export const fetchConversationFailed = error => ({
   },
 });
 
-export const getConversationDetail = () => ({
+export const getConversationDetail = id => ({
   type: CONVERSATION_GET_DETAIL,
+  payload: {
+    id,
+  },
 });
 
 export const getConversationDetailSuccess = conversation => ({

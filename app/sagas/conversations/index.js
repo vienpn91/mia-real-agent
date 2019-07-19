@@ -1,28 +1,28 @@
 import {
-  takeEvery, call, put, select,
+  takeLatest, call, put,
+  take,
 } from 'redux-saga/effects';
 import get from 'lodash/get';
-import * as ConversationApi from '../../api/conversation';
+import { getConversationByTicketId } from '../../api/ticket';
 import {
-  AUTH_LOGIN_SUCCESS,
-  getToken,
-} from '../../reducers/auth';
-import { actions } from '../../reducers/conversations';
-import { configToken } from '../../api/config';
+  CONVERSATION_FETCH,
+  CONVERSATION_FETCH_FAILED,
+  CONVERSATION_FETCH_SUCCESS,
+  actions,
+} from '../../reducers/conversations';
+import {
+  TICKET_GET_ALL_SUCCESS,
+} from '../../reducers/ticket';
 
-export function* configAxiosForTicket() {
-  const token = yield select(getToken);
-  configToken(token);
-}
-
-function* fetchConversation() {
-  yield call(configAxiosForTicket);
-  yield put(actions.fetchConversation());
+function* fetchConversation({ payload }) {
+  const { ticketId } = payload;
   try {
-    const { response, error } = yield call(ConversationApi.getAllConversation);
+    const { response, error } = yield call(getConversationByTicketId, ticketId);
     if (error) throw new Error(error);
     const data = get(response, 'data', {});
     const { result = [], total = 0 } = data;
+
+    console.log(data);
 
     yield put(actions.fetchConversationSuccess(result, total));
   } catch (error) {
@@ -30,11 +30,25 @@ function* fetchConversation() {
     yield put(actions.fetchConversationFailed(error.message || error));
   }
 }
+
+function* fetchAllConversations({
+  data: ticketList,
+}) {
+  for (let i = 0; i < ticketList.length; i += 1) {
+    const currentTicket = ticketList[i];
+    const { _id: ticketId } = currentTicket;
+
+    yield put(actions.fetchConversation(ticketId));
+    yield take([
+      CONVERSATION_FETCH_FAILED,
+      CONVERSATION_FETCH_SUCCESS,
+    ]);
+  }
+}
+
 function* conversationFlow() {
-  yield takeEvery([
-    AUTH_LOGIN_SUCCESS,
-    'persist/REHYDRATE',
-  ], fetchConversation);
+  yield takeLatest(TICKET_GET_ALL_SUCCESS, fetchAllConversations);
+  yield takeLatest(CONVERSATION_FETCH, fetchConversation);
 }
 
 export default conversationFlow;

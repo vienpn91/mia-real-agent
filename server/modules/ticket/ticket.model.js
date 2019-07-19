@@ -16,9 +16,9 @@ const ticketSchema = new Schema(
     category: [String],
     owner: { type: Schema.Types.ObjectId, ref: 'User' },
     assignee: { type: Schema.Types.ObjectId, ref: 'User' },
-    deleted: {
-      type: Boolean,
-      default: false,
+    deletedAt: {
+      type: Date,
+      default: null,
     },
     archived: {
       type: Boolean,

@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import ticketCollection from './ticket.model';
 import BaseService from '../base/base.service';
 
@@ -25,14 +24,14 @@ class TicketService extends BaseService {
     const { skip = 0, limit = 10, sort = { createdAt: -1 } } = options;
     const notDeletedCondition = {
       $or: [
-        { deleted: { $exists: false } },
-        { deleted: { $exists: true, $in: [false] } },
+        { deletedAt: { $exists: false } },
+        { deletedAt: { $exists: true, $in: [null] } },
       ],
     };
     const notArchivedCondition = {
       $or: [
         { archived: { $exists: false } },
-        { archived: { $exists: true, $in: [false] } },
+        { archived: { $exists: true, $in: [null] } },
       ],
     };
     const queryCondition = {
@@ -58,14 +57,14 @@ class TicketService extends BaseService {
     const { skip = 0, limit = 10, sort = { createdAt: -1 } } = options;
     const notDeletedCondition = {
       $or: [
-        { deleted: { $exists: false } },
-        { deleted: { $exists: true, $in: [false] } },
+        { deletedAt: { $exists: false } },
+        { deletedAt: { $exists: true, $in: [null] } },
       ],
     };
     const notArchivedCondition = {
       $or: [
         { archived: { $exists: false } },
-        { archived: { $exists: true, $in: [false] } },
+        { archived: { $exists: true, $in: [null] } },
       ],
     };
     const queryCondition = {

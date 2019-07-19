@@ -3,7 +3,6 @@ import {
   takeLatest, all,
 } from 'redux-saga/effects';
 import _get from 'lodash/get';
-import { push } from 'connected-react-router';
 import { DEFAULT_ERROR_MESSAGE } from 'utils/constants';
 import * as AuthApi from '../../api/auth';
 import { getUserProfile } from '../../api/user';

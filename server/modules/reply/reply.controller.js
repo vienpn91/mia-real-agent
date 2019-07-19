@@ -1,27 +1,27 @@
 import httpStatus from 'http-status';
 import BaseController from '../base/base.controller';
-import ChatLogService from './chatlog.service';
+import ReplyService from './reply.service';
 
-class ChatLogController extends BaseController {
+class ReplyController extends BaseController {
   constructor() {
-    super(ChatLogService);
+    super(ReplyService);
   }
 
-  async getChatByTicketAndAgent(req, res) {
+  async getReplyByTicketAndAgent(req, res) {
     try {
       const { ticketId, agentId } = req.query;
-      const chat = await ChatLogService.getByTicketAndAgent(ticketId, agentId);
+      const chat = await ReplyService.getByTicketAndAgent(ticketId, agentId);
       return res.status(httpStatus.OK).send(chat);
     } catch (error) {
       return super.handleError(res, error);
     }
   }
 
-  async insertMessage(req, res) {
+  async insertReply(req, res) {
     try {
       const data = req.body;
       const { model } = req;
-      const ticket = await ChatLogService.insertMessage(model, data);
+      const ticket = await ReplyService.insertReply(model, data);
       return res.status(httpStatus.OK).send({ ticket });
     } catch (error) {
       return super.handleError(res, error);
@@ -29,4 +29,4 @@ class ChatLogController extends BaseController {
   }
 }
 
-export default new ChatLogController();
+export default new ReplyController();

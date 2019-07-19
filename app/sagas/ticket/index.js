@@ -1,5 +1,6 @@
 import {
-  takeEvery, call, put, select, takeLatest,
+  call, put, select,
+  takeLatest, take,
 } from 'redux-saga/effects';
 // lodash
 import _get from 'lodash/get';
@@ -12,12 +13,14 @@ import { getSkipLimit } from 'utils/func-utils';
 import { notification } from 'antd';
 import { getSelectedPage, getSizePerPage, reselectSorting } from 'selectors/ticket';
 import {
-  actions, CREATE, GET_ALL, GET, UPDATE, REMOVE, ARCHIVE,
+  actions, TICKET_CREATE, TICKET_GET_ALL,
+  TICKET_GET_DETAIL, TICKET_UPDATE, TICKET_REMOVE, TICKET_ARCHIVE,
   TICKET_ADMIN_GET_ALL, TICKET_SORTING, TICKET_CHANGE_PAGE, TICKET_FETCH_SINGLE,
 } from '../../reducers/ticket';
+import {
+  AUTH_LOGIN_SUCCESS,
+} from '../../reducers/auth';
 import * as TicketApi from '../../api/ticket';
-import { configToken } from '../../api/config';
-import { getToken } from '../../reducers/auth';
 
 function* queryTickets(action) {
   const ticketPayload = {};
@@ -46,7 +49,6 @@ function* queryTickets(action) {
 }
 
 function* createTicket({ payload }) {
-  yield configAxiosForTicket();
   const { error, response } = yield call(TicketApi.createTicket, payload);
   if (error) {
     const message = _get(
@@ -62,7 +64,6 @@ function* createTicket({ payload }) {
 }
 
 function* getAllTicket({ payload }) {
-  yield configAxiosForTicket();
   const { response, error } = yield call(TicketApi.getAllTicket, payload);
   if (error) {
     const message = _get(
@@ -79,7 +80,6 @@ function* getAllTicket({ payload }) {
 }
 
 function* adminGetAllTicket({ payload }) {
-  yield configAxiosForTicket();
   const selectedPage = yield select(getSelectedPage);
   const sizePerPage = yield select(getSizePerPage);
   const sorting = yield select(reselectSorting);
@@ -116,7 +116,6 @@ function* adminGetAllTicket({ payload }) {
 }
 
 function* getTicket({ payload }) {
-  yield configAxiosForTicket();
   const { ticketId, owner } = payload;
   try {
     const { response } = yield call(TicketApi.getTicket, ticketId, owner);
@@ -133,7 +132,6 @@ function* getTicket({ payload }) {
 }
 
 function* archiveTicket({ payload }) {
-  yield configAxiosForTicket();
   const { ticketId } = payload;
   try {
     const { response } = yield call(TicketApi.updateTicket, { ticketId, archived: true });
@@ -150,7 +148,6 @@ function* archiveTicket({ payload }) {
 }
 
 function* updateTicket({ payload }) {
-  yield configAxiosForTicket();
   const { ticket } = payload;
   const { response, error } = yield call(TicketApi.updateTicket, ticket);
   if (error) {
@@ -165,7 +162,6 @@ function* updateTicket({ payload }) {
 }
 
 function* removeTicket({ payload }) {
-  yield configAxiosForTicket();
   const { ticketId } = payload;
   const { response, error } = yield call(TicketApi.removeTicket, ticketId);
   if (error) {
@@ -182,7 +178,6 @@ function* removeTicket({ payload }) {
 }
 
 function* ticketFetchSingle({ id }) {
-  yield configAxiosForTicket();
   const { response } = yield call(TicketApi.get, id);
   const error = _get(response, 'error');
   const data = _get(response, 'data', {});
@@ -195,19 +190,13 @@ function* ticketFetchSingle({ id }) {
   }
 }
 
-
-export function* configAxiosForTicket() {
-  const token = yield select(getToken);
-  configToken(token);
-}
-
 function* ticketFlow() {
-  yield takeEvery(CREATE, createTicket);
-  yield takeLatest(GET_ALL, getAllTicket);
-  yield takeLatest(GET, getTicket);
-  yield takeLatest(UPDATE, updateTicket);
-  yield takeLatest(REMOVE, removeTicket);
-  yield takeLatest(ARCHIVE, archiveTicket);
+  yield takeLatest(TICKET_CREATE, createTicket);
+  yield takeLatest(TICKET_GET_ALL, getAllTicket);
+  yield takeLatest(TICKET_GET_DETAIL, getTicket);
+  yield takeLatest(TICKET_UPDATE, updateTicket);
+  yield takeLatest(TICKET_REMOVE, removeTicket);
+  yield takeLatest(TICKET_ARCHIVE, archiveTicket);
   yield takeLatest([TICKET_CHANGE_PAGE, TICKET_SORTING], queryTickets);
   yield takeLatest(TICKET_ADMIN_GET_ALL, adminGetAllTicket);
   yield takeLatest(TICKET_FETCH_SINGLE, ticketFetchSingle);
