@@ -17,6 +17,18 @@ export const GET_ALL = 'application/GET_ALL';
 export const GET_ALL_SUCCESS = 'application/GET_ALL_SUCCESS';
 export const GET_ALL_FAIL = 'application/GET_ALL_FAIL';
 
+export const APPLICATION_APPROVE = 'application/APPLICATION_APPROVE';
+export const APPLICATION_APPROVE_COMPLETE = 'application/APPLICATION_APPROVE_COMPLETE';
+export const APPLICATION_APPROVE_FAIL = 'application/APPLICATION_APPROVE_FAIL';
+
+export const APPLICATION_REJECT = 'application/APPLICATION_REJECT';
+export const APPLICATION_REJECT_COMPLETE = 'application/APPLICATION_REJECT_COMPLETE';
+export const APPLICATION_REJECT_FAIL = 'application/APPLICATION_REJECT_FAIL';
+
+export const APPLICATION_REVIEW = 'application/APPLICATION_REVIEW';
+export const APPLICATION_REVIEW_COMPLETE = 'application/APPLICATION_REVIEW_COMPLETE';
+export const APPLICATION_REVIEW_FAIL = 'application/APPLICATION_REVIEW_FAIL';
+
 // action creator
 const submitAction = application => ({
   type: SUBMIT,
@@ -75,6 +87,47 @@ const changePage = (pageIndex, sizePerPage) => ({
   sizePerPage,
 });
 
+const applicationApprove = ({ _id }) => ({
+  type: APPLICATION_APPROVE,
+  applicationId: _id,
+});
+
+const applicationApproveComplete = () => ({
+  type: APPLICATION_APPROVE_COMPLETE,
+});
+
+const applicationApproveFail = errorMsg => ({
+  type: APPLICATION_APPROVE_FAIL,
+  errorMsg,
+});
+
+const applicationReject = ({ _id }) => ({
+  type: APPLICATION_REJECT,
+  applicationId: _id,
+});
+
+const applicationRejectComplete = () => ({
+  type: APPLICATION_REJECT_COMPLETE,
+});
+
+const applicationRejectFail = errorMsg => ({
+  type: APPLICATION_REJECT_FAIL,
+  errorMsg,
+});
+
+const applicationReview = ({ _id }) => ({
+  type: APPLICATION_REVIEW,
+  applicationId: _id,
+});
+
+const applicationReviewComplete = () => ({
+  type: APPLICATION_REVIEW_COMPLETE,
+});
+
+const applicationReviewFail = errorMsg => ({
+  type: APPLICATION_REVIEW_FAIL,
+  errorMsg,
+});
 
 // selector
 const getApplicationIsSubmitting = ({ application }) => application.get('isSubmitting');
@@ -155,6 +208,18 @@ export const actions = {
   getAllAction,
   getAllCompleteAction,
   getAllFailAction,
+
+  applicationApprove,
+  applicationApproveComplete,
+  applicationApproveFail,
+
+  applicationReject,
+  applicationRejectComplete,
+  applicationRejectFail,
+
+  applicationReview,
+  applicationReviewComplete,
+  applicationReviewFail,
 };
 
 export const selectors = {
