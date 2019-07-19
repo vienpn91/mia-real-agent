@@ -9,6 +9,7 @@ import { DEFAULT_ERROR_MESSAGE } from 'utils/constants';
 import {
   SUBMIT, actions, APPLICATION_CHANGE_PAGE,
   APPLICATION_ADMIN_GET_ALL, APPLICATION_SORTING,
+  APPLICATION_APPROVE, APPLICATION_REJECT, APPLICATION_REVIEW,
 } from 'reducers/application';
 import { getSkipLimit } from 'utils/func-utils';
 import { getSelectedPage, getSizePerPage, reselectSorting } from 'selectors/application';
@@ -94,6 +95,49 @@ function* adminGetAllApplication({ payload }) {
   yield put(actions.getAllCompleteAction(result, totalRecord));
 }
 
+
+function* approveApplication(action) {
+  yield configAxiosForApplication();
+  const { applicationId } = action;
+  const { error } = yield call(ApplicationApi.approveApplication, applicationId);
+  if (error) {
+    const message = _get(
+      error, 'response.data.message', DEFAULT_ERROR_MESSAGE
+    );
+    yield put(actions.applicationApproveFail(message));
+    return;
+  }
+  yield put(actions.applicationApproveComplete());
+}
+
+function* rejectApplication(action) {
+  yield configAxiosForApplication();
+  const { applicationId } = action;
+  const { error } = yield call(ApplicationApi.rejectApplication, applicationId);
+  if (error) {
+    const message = _get(
+      error, 'response.data.message', DEFAULT_ERROR_MESSAGE
+    );
+    yield put(actions.applicationRejectFail(message));
+    return;
+  }
+  yield put(actions.applicationRejectComplete());
+}
+
+function* reviewApplication(action) {
+  yield configAxiosForApplication();
+  const { applicationId } = action;
+  const { error } = yield call(ApplicationApi.reviewApplication, applicationId);
+  if (error) {
+    const message = _get(
+      error, 'response.data.message', DEFAULT_ERROR_MESSAGE
+    );
+    yield put(actions.applicationReviewFail(message));
+    return;
+  }
+  yield put(actions.applicationReviewComplete());
+}
+
 export function* configAxiosForApplication() {
   const token = yield select(getToken);
   configToken(token);
@@ -103,6 +147,9 @@ function* ticketFlow() {
   yield takeEvery(SUBMIT, submitApplication);
   yield takeLatest([APPLICATION_CHANGE_PAGE, APPLICATION_SORTING], queryTickets);
   yield takeLatest(APPLICATION_ADMIN_GET_ALL, adminGetAllApplication);
+  yield takeEvery(APPLICATION_APPROVE, approveApplication);
+  yield takeEvery(APPLICATION_REJECT, rejectApplication);
+  yield takeEvery(APPLICATION_REVIEW, reviewApplication);
 }
 
 export default ticketFlow;

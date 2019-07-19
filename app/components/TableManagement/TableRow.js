@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { shape } from 'prop-types';
 import moment from 'moment';
 import _get from 'lodash/get';
 import _includes from 'lodash/includes';
@@ -76,21 +76,25 @@ class TableRow extends React.PureComponent {
   }
 
   renderActionsColumn = (column) => {
-    const { item } = this.props;
+    const { item, rest: parentProps } = this.props;
     const { actions } = column;
     let icons = [];
-    actions.forEach(({ dataKey, oneOf, ...rest }) => {
+    actions.forEach(({
+      dataKey, oneOf, action, ...rest
+    }) => {
       const value = _get(item, dataKey);
+      const func = parentProps[action];
       if (_includes(oneOf, value)) {
         icons = icons.concat({
+          func,
           ...rest,
         });
       }
     });
     return (
       <ActionBarStyled onClick={this.handleActionBarOnClick}>
-        {icons.map(({ type }) => (
-          <Icon type={type} />
+        {icons.map(({ type, func = () => { } }) => (
+          <Icon type={type} onClick={() => func(item)} />
         ))}
       </ActionBarStyled>
     );
@@ -226,6 +230,7 @@ TableRow.propTypes = {
   item: PropTypes.object.isRequired,
   onClick: PropTypes.func.isRequired,
   isPointer: PropTypes.bool,
+  rest: shape(),
 };
 
 export default TableRow;

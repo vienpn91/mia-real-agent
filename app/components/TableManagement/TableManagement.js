@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { shape } from 'prop-types';
 import history from 'utils/history';
 import ShadowScrollbars from 'components/Scrollbar';
 import TableBorder from 'components/TableBorder';
@@ -24,12 +24,12 @@ class TableManagement extends React.PureComponent {
   };
 
   renderTableItem = (item) => {
-    const { columns, shouldOpenDetail = true } = this.props;
+    const { columns, shouldOpenDetail = true, ...rest } = this.props;
     const { _id } = item;
-
     return (
       <TableRow
         columns={columns}
+        rest={rest}
         item={item}
         key={_id}
         onClick={this.goToDetail}
@@ -80,6 +80,7 @@ TableManagement.propTypes = {
   selectedPage: PropTypes.number.isRequired,
   sizePerPage: PropTypes.number.isRequired,
   shouldOpenDetail: PropTypes.bool,
+  actions: shape(),
 };
 
 export default TableManagement;

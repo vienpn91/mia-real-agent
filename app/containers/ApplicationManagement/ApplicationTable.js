@@ -68,16 +68,19 @@ const applicationColumns = [
       {
         dataKey: 'status',
         oneOf: [APPLICATION_STATUS.REVIEWING],
+        action: 'applicationApprove',
         type: 'check',
       },
       {
         dataKey: 'status',
         oneOf: [APPLICATION_STATUS.REVIEWING],
+        action: 'applicationReject',
         type: 'close',
       },
       {
         dataKey: 'status',
         oneOf: [APPLICATION_STATUS.PENDING],
+        action: 'applicationReview',
         type: 'audit',
       },
     ],
@@ -91,6 +94,9 @@ const applicationColumns = [
 const mapDispatchToProps = {
   fetchList: actions.applicationAdminGetAll,
   changePage: actions.changePage,
+  applicationApprove: actions.applicationApprove,
+  applicationReject: actions.applicationReject,
+  applicationReview: actions.applicationReview,
 };
 
 const structureSelectorFunc = createStructuredSelector({
