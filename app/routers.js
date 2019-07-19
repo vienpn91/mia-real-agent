@@ -23,6 +23,8 @@ import ThankForRegistering from './pages/ThankForRegistering';
 import Profile from './pages/Profile';
 import ChatbotComponent from './pages/Chatbot';
 import TicketManagement from './pages/TicketManagement';
+import ApplicationManagement from './pages/ApplicationManagement';
+
 import AdminDashboard from './pages/AdminDashboard';
 import ApplicationForm from './pages/Application';
 
@@ -46,6 +48,7 @@ class Router extends React.PureComponent {
           <AdminMainLayout>
             <AuthenticatedRoute exact path="/admin/dashboard" component={AdminDashboard} />
             <AuthenticatedRoute exact path="/admin/tickets" component={TicketManagement} />
+            <AuthenticatedRoute exact path="/admin/applications" component={ApplicationManagement} />
             <AuthenticatedRoute exact path="/admin/user" component={UserManagement} />
             <AuthenticatedRoute path="/admin/user/:id" component={UserDetail} />
           </AdminMainLayout>

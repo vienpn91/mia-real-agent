@@ -29,6 +29,13 @@ const TABS_MENU = [
     link: '/admin/tickets',
   },
   {
+    key: 'applications',
+    type: 'container',
+    label: 'Applications',
+    icon: 'mia-ticket',
+    link: '/admin/applications',
+  },
+  {
     key: 'users',
     type: 'container',
     label: 'Users',
