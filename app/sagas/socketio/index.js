@@ -10,7 +10,6 @@ import {
   AUTH_LOGOUT,
 } from '../../reducers/auth';
 import { actions } from '../../reducers/chat';
-import { actions as TicketActions } from '../../reducers/ticket';
 
 /* events */
 const UPDATE_CHAT = 'UPDATE_CHAT';
@@ -105,13 +104,11 @@ function* connectFlow() {
 }
 
 function* disconnectFlow() {
-  socketConnection.disconnect();
+  if (socketConnection) socketConnection.disconnect();
 }
 
 function* socketIOFlow() {
-  yield takeEvery([AUTH_LOGIN_SUCCESS,
-    'persist/REHYDRATE',
-  ], connectFlow);
+  yield takeEvery([AUTH_LOGIN_SUCCESS], connectFlow);
   yield takeEvery(AUTH_LOGOUT, disconnectFlow);
 }
 

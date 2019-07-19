@@ -1,6 +1,6 @@
-import { all, put } from 'redux-saga/effects';
+import { all, put, take } from 'redux-saga/effects';
 import { configAxios } from '../api/config';
-import { CLEAR_TRANSACTION } from '../reducers';
+import { CLEAR_TRANSACTION, REHYDRATE_COMPLETE } from '../reducers';
 import authSaga from './auth';
 import socketioSaga from './socketio';
 import profileSaga from './profile';
@@ -11,9 +11,13 @@ import applicationSaga from './application';
 
 export default function* rootSagas() {
   configAxios();
-  yield put({
-    type: CLEAR_TRANSACTION,
-  });
+  yield all([
+    put({
+      type: CLEAR_TRANSACTION,
+    }),
+    take(REHYDRATE_COMPLETE),
+  ]);
+
   yield all([
     authSaga(),
     socketioSaga(),

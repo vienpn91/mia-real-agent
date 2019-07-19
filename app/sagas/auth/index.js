@@ -1,22 +1,23 @@
 import {
   call, put, select,
-  takeLatest,
+  takeLatest, all,
 } from 'redux-saga/effects';
 import _get from 'lodash/get';
 import { push } from 'connected-react-router';
 import { DEFAULT_ERROR_MESSAGE } from 'utils/constants';
 import * as AuthApi from '../../api/auth';
+import { getUserProfile } from '../../api/user';
 import { configToken } from '../../api/config';
 import {
   AUTH_LOGIN,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
   AUTH_REGISTER,
-  AUTH_CHANGE_PASSWORD,
   AUTH_CREATE_PASSWORD,
   AUTH_SEND_VERICATION_EMAIL,
   actions as authActions,
   getToken,
+  getUserId,
   getVerifyingEmail,
 } from '../../reducers/auth';
 
@@ -113,15 +114,42 @@ export function* configAxiosForAuthenticate() {
   configToken(token);
 }
 
+export function* checkToken() {
+  const token = yield select(getToken);
+  if (!token) {
+    yield put(authActions.logout());
+    return;
+  }
+  const userId = yield select(getUserId);
+  if (!userId) {
+    yield put(authActions.logout());
+    return;
+  }
+  const { response, error } = yield call(getUserProfile, userId);
+  if (error || !response) {
+    yield put(authActions.logout());
+    return;
+  }
+  const { data } = response;
+  yield put(authActions.loginSuccess({
+    ...data,
+    /* eslint-disable no-underscore-dangle */
+    userId: data._id,
+  }));
+}
+
 function* authFlow() {
-  yield takeLatest(AUTH_LOGIN, login);
-  yield takeLatest(
-    [AUTH_LOGIN_SUCCESS, AUTH_LOGOUT],
-    configAxiosForAuthenticate,
-  );
-  yield takeLatest(AUTH_REGISTER, register);
-  yield takeLatest(AUTH_CREATE_PASSWORD, createPassword);
-  yield takeLatest(AUTH_SEND_VERICATION_EMAIL, sendVericationEmail);
+  yield all([
+    call(checkToken),
+    takeLatest(AUTH_LOGIN, login),
+    takeLatest(
+      [AUTH_LOGIN_SUCCESS, AUTH_LOGOUT],
+      configAxiosForAuthenticate,
+    ),
+    takeLatest(AUTH_REGISTER, register),
+    takeLatest(AUTH_CREATE_PASSWORD, createPassword),
+    takeLatest(AUTH_SEND_VERICATION_EMAIL, sendVericationEmail),
+  ]);
 }
 
 export default authFlow;
