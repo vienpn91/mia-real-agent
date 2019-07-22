@@ -18,9 +18,7 @@
     "start:prod": "cross-env NODE_ENV=production node build_server"
   },
   "dependencies": {
-    "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/polyfill": "7.4.3",
-    "@babel/runtime": "^7.5.5",
     "antd": "^3.19.3",
     "axios": "^0.19.0",
     "bcrypt": "^3.0.5",
@@ -99,6 +97,7 @@
     "circular-dependency-plugin": "^5.0.2",
     "compare-versions": "^3.4.0",
     "compression-webpack-plugin": "^2.0.0",
+    "copy-webpack-plugin": "^5.0.3",
     "css-loader": "^2.1.1",
     "dotenv-webpack": "^1.7.0",
     "eslint": "^5.16.0",
