@@ -7,14 +7,20 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack --config internals/webpack/webpack.prod.babel.js --color -p --progress --hide-modules --display-optimization-bailout",
-    "start": "cross-env NODE_ENV=development babel-node server",
+    "build": "yarn build:client && yarn build:server",
+    "build:client": "cross-env NODE_ENV=production webpack --config internals/webpack/webpack.prod.babel.js --color -p --progress --hide-modules --display-optimization-bailout",
+    "build:server": "cross-env NODE_ENV=production webpack --config internals/webpack_server/webpack.prod.babel.js --color -p --progress",
+    "babel": "babel",
+    "dev": "cross-env NODE_ENV=development babel-node server",
+    "start": "cross-env NODE_ENV=production node build_server",
     "start:tunnel": "cross-env NODE_ENV=development ENABLE_TUNNEL=true babel-node server",
     "start:production": "npm run build && npm run start:prod",
-    "start:prod": "cross-env NODE_ENV=production node server"
+    "start:prod": "cross-env NODE_ENV=production node build_server"
   },
   "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/polyfill": "7.4.3",
+    "@babel/runtime": "^7.5.5",
     "antd": "^3.19.3",
     "axios": "^0.19.0",
     "bcrypt": "^3.0.5",
@@ -94,6 +100,7 @@
     "compare-versions": "^3.4.0",
     "compression-webpack-plugin": "^2.0.0",
     "css-loader": "^2.1.1",
+    "dotenv-webpack": "^1.7.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-airbnb-base": "^13.1.0",
@@ -118,6 +125,7 @@
     "webpack-cli": "^3.3.0",
     "webpack-dev-middleware": "^3.6.2",
     "webpack-hot-middleware": "^2.24.3",
+    "webpack-node-externals": "^1.7.2",
     "webpack-pwa-manifest": "^4.0.0",
     "whatwg-fetch": "^3.0.0"
   }
