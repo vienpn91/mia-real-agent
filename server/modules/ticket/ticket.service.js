@@ -23,16 +23,10 @@ class TicketService extends BaseService {
   async getAllWithUserData(condition, options) {
     const { skip = 0, limit = 10, sort = { createdAt: -1 } } = options;
     const notDeletedCondition = {
-      $or: [
-        { deletedAt: { $exists: false } },
-        { deletedAt: { $exists: true, $in: [null] } },
-      ],
+      deletedAt: null,
     };
     const notArchivedCondition = {
-      $or: [
-        { archived: { $exists: false } },
-        { archived: { $exists: true, $in: [null] } },
-      ],
+      archivedAt: null,
     };
     const queryCondition = {
       $and: [condition, notDeletedCondition, notArchivedCondition],
@@ -56,16 +50,10 @@ class TicketService extends BaseService {
   async getAll(condition, options) {
     const { skip = 0, limit = 10, sort = { createdAt: -1 } } = options;
     const notDeletedCondition = {
-      $or: [
-        { deletedAt: { $exists: false } },
-        { deletedAt: { $exists: true, $in: [null] } },
-      ],
+      deletedAt: null,
     };
     const notArchivedCondition = {
-      $or: [
-        { archived: { $exists: false } },
-        { archived: { $exists: true, $in: [null] } },
-      ],
+      archivedAt: null,
     };
     const queryCondition = {
       $and: [condition, notDeletedCondition, notArchivedCondition],

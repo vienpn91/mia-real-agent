@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { REPLY_TYPE } from '../../../common/enums';
 
 const { Schema } = mongoose;
 
@@ -20,7 +21,10 @@ const ReplySchema = new Schema(
       type: Date,
       default: () => new Date(),
     },
-    type: String,
+    type: {
+      type: String,
+      default: REPLY_TYPE.USER_NORMAL,
+    },
     status: String,
   },
   {

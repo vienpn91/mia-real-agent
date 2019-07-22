@@ -20,9 +20,9 @@ const ticketSchema = new Schema(
       type: Date,
       default: null,
     },
-    archived: {
-      type: Boolean,
-      default: false,
+    archivedAt: {
+      type: Date,
+      default: null,
     },
     createdAt: {
       type: Date,

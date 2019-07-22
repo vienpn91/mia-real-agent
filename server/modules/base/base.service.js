@@ -22,10 +22,7 @@ export default class BaseService {
     return this.collection
       .findOne({
         _id: id,
-        $or: [
-          { deletedAt: { $exists: false } },
-          { deletedAt: { $exists: true, $in: [null] } },
-        ],
+        deletedAt: null,
       })
       .exec();
   }
@@ -33,10 +30,7 @@ export default class BaseService {
   async getAll(condition, options = {}) {
     const { skip = 0, limit, sort = { updatedAt: -1 } } = options;
     const notDeletedCondition = {
-      $or: [
-        { deletedAt: { $exists: false } },
-        { deletedAt: { $exists: true, $in: [null] } },
-      ],
+      deletedAt: null,
     };
     const queryCondition = {
       $and: [condition, notDeletedCondition],
