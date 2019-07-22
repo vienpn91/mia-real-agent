@@ -12,17 +12,17 @@ import {
 } from 'components/Generals/ItemDetail.styled';
 import { IconStyled } from 'components/Generals/General.styled';
 
-class UserDetailInfoHeader extends PureComponent {
+class ApplicationDetailInfoHeader extends PureComponent {
   goToEditPage = () => {
-    const { userId } = this.props;
-    history.push(`/admin/users/${userId}/edit`);
+    const { applicationId } = this.props;
+    history.push(`/admin/users/${applicationId}/edit`);
   };
 
   render() {
-    const { username } = this.props;
+    const { firstName, lastName } = this.props;
     return (
       <ItemDetailInfoHeaderWrapper>
-        <ItemDetailInfoHeadTitle>{username}</ItemDetailInfoHeadTitle>
+        <ItemDetailInfoHeadTitle>{`${firstName} ${lastName}`}</ItemDetailInfoHeadTitle>
         <ItemDetailInfoActionGroup noTitle>
           <IconStyled className="icon-pencil" onClick={this.goToEditPage} />
           <Link to="/admin/users" className="close-action">
@@ -34,9 +34,10 @@ class UserDetailInfoHeader extends PureComponent {
   }
 }
 
-UserDetailInfoHeader.propTypes = {
-  userId: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
+ApplicationDetailInfoHeader.propTypes = {
+  applicationId: PropTypes.string.isRequired,
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
 };
 
-export default UserDetailInfoHeader;
+export default ApplicationDetailInfoHeader;

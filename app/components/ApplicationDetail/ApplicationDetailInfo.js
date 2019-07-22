@@ -49,11 +49,11 @@ class applicationDetailInfo extends PureComponent {
       );
     }
 
-    const { _id, username } = applicationDetail;
+    const { _id, firstName, lastName } = applicationDetail;
 
     return (
       <ItemDetailInfoWrapper>
-        <ApplicationDetailInfoHeader applicationId={_id} username={username} />
+        <ApplicationDetailInfoHeader applicationId={_id} firstName={firstName} lastName={lastName} />
         <Scrollbar autoHide style={scrollStyle}>
           <ApplicationDetailInfoContent applicationDetail={applicationDetail} />
         </Scrollbar>
