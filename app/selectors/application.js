@@ -56,7 +56,7 @@ const getApplicationDetailFromRoute = createSelector(
 );
 
 
-const getTotalCount = ({ application }) => application.get('totalCount', 0);
+const getTotalCount = ({ application }) => application.get('totalRecord', 0);
 
 
 export {
