@@ -5,11 +5,13 @@ import _get from 'lodash/get';
 import _assign from 'lodash/assign';
 import _pick from 'lodash/pick';
 import _pickBy from 'lodash/pickBy';
+import { notification } from 'antd';
 import { DEFAULT_ERROR_MESSAGE } from 'utils/constants';
 import {
   SUBMIT, actions, APPLICATION_CHANGE_PAGE,
   APPLICATION_ADMIN_GET_ALL, APPLICATION_SORTING,
   APPLICATION_APPROVE, APPLICATION_REJECT, APPLICATION_REVIEW,
+  APPLICATION_FETCH_SINGLE,
 } from 'reducers/application';
 import { getSkipLimit } from 'utils/func-utils';
 import { getSelectedPage, getSizePerPage, reselectSorting } from 'selectors/application';
@@ -138,6 +140,21 @@ function* reviewApplication(action) {
   yield put(actions.applicationReviewComplete());
 }
 
+function* applicationFetchSingle({ id }) {
+  yield configAxiosForApplication();
+  const { response } = yield call(ApplicationApi.get, id);
+  const error = _get(response, 'error');
+  const data = _get(response, 'data', {});
+  if (error) {
+    const errMsg = _get(error, 'response.data.message', error.message);
+    yield put(actions.fetchApplicationSingleFail(id, errMsg));
+    notification.error({ message: errMsg });
+  } else {
+    yield put(actions.fetchApplicationSingleComplete(data));
+  }
+}
+
+
 export function* configAxiosForApplication() {
   const token = yield select(getToken);
   configToken(token);
@@ -150,6 +167,7 @@ function* ticketFlow() {
   yield takeEvery(APPLICATION_APPROVE, approveApplication);
   yield takeEvery(APPLICATION_REJECT, rejectApplication);
   yield takeEvery(APPLICATION_REVIEW, reviewApplication);
+  yield takeEvery(APPLICATION_FETCH_SINGLE, applicationFetchSingle);
 }
 
 export default ticketFlow;

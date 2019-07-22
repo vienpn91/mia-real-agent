@@ -66,4 +66,5 @@ export const SORT = {
 
 export const ROUTE_DETAIL = {
   USER_DETAIL_ROUTER: '/admin/user/:id',
+  APPLICATION_DETAIL_ROUTER: '/admin/applications/:id',
 };
