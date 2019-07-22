@@ -96,8 +96,9 @@ const applicationApprove = ({ _id }) => ({
   applicationId: _id,
 });
 
-const applicationApproveComplete = () => ({
+const applicationApproveComplete = application => ({
   type: APPLICATION_APPROVE_COMPLETE,
+  application,
 });
 
 const applicationApproveFail = errorMsg => ({
@@ -110,8 +111,9 @@ const applicationReject = ({ _id }) => ({
   applicationId: _id,
 });
 
-const applicationRejectComplete = () => ({
+const applicationRejectComplete = application => ({
   type: APPLICATION_REJECT_COMPLETE,
+  application,
 });
 
 const applicationRejectFail = errorMsg => ({
@@ -124,8 +126,9 @@ const applicationReview = ({ _id }) => ({
   applicationId: _id,
 });
 
-const applicationReviewComplete = () => ({
+const applicationReviewComplete = application => ({
   type: APPLICATION_REVIEW_COMPLETE,
+  application,
 });
 
 const applicationReviewFail = errorMsg => ({
@@ -229,6 +232,25 @@ function applicationReducer(state = initialState, action) {
     case APPLICATION_FETCH_SINGLE_FAIL: {
       const { id, errorMsg } = action;
       return state.setIn(['application', id], fromJS({ error: errorMsg }));
+    }
+
+    case APPLICATION_APPROVE_COMPLETE: {
+      const { application } = action;
+      const { _id } = application;
+      return state
+        .setIn(['applications', _id], fromJS(application));
+    }
+    case applicationRejectComplete: {
+      const { application } = action;
+      const { _id } = application;
+      return state
+        .setIn(['applications', _id], fromJS(application));
+    }
+    case APPLICATION_REVIEW_COMPLETE: {
+      const { application } = action;
+      const { _id } = application;
+      return state
+        .setIn(['applications', _id], fromJS(application));
     }
 
     default: return state;

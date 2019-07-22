@@ -101,7 +101,7 @@ function* adminGetAllApplication({ payload }) {
 function* approveApplication(action) {
   yield configAxiosForApplication();
   const { applicationId } = action;
-  const { error } = yield call(ApplicationApi.approveApplication, applicationId);
+  const { response, error } = yield call(ApplicationApi.approveApplication, applicationId);
   if (error) {
     const message = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE
@@ -109,13 +109,14 @@ function* approveApplication(action) {
     yield put(actions.applicationApproveFail(message));
     return;
   }
-  yield put(actions.applicationApproveComplete());
+  const { data } = response;
+  yield put(actions.applicationApproveComplete(data));
 }
 
 function* rejectApplication(action) {
   yield configAxiosForApplication();
   const { applicationId } = action;
-  const { error } = yield call(ApplicationApi.rejectApplication, applicationId);
+  const { response, error } = yield call(ApplicationApi.rejectApplication, applicationId);
   if (error) {
     const message = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE
@@ -123,13 +124,14 @@ function* rejectApplication(action) {
     yield put(actions.applicationRejectFail(message));
     return;
   }
-  yield put(actions.applicationRejectComplete());
+  const { data } = response;
+  yield put(actions.applicationRejectComplete(data));
 }
 
 function* reviewApplication(action) {
   yield configAxiosForApplication();
   const { applicationId } = action;
-  const { error } = yield call(ApplicationApi.reviewApplication, applicationId);
+  const { response, error } = yield call(ApplicationApi.reviewApplication, applicationId);
   if (error) {
     const message = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE
@@ -137,7 +139,8 @@ function* reviewApplication(action) {
     yield put(actions.applicationReviewFail(message));
     return;
   }
-  yield put(actions.applicationReviewComplete());
+  const { data } = response;
+  yield put(actions.applicationReviewComplete(data));
 }
 
 function* applicationFetchSingle({ id }) {

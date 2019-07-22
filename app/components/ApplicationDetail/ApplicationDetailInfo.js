@@ -31,7 +31,12 @@ class applicationDetailInfo extends PureComponent {
   }
 
   render() {
-    const { applicationDetail } = this.props;
+    const {
+ applicationDetail,
+      applicationApprove,
+      applicationReject,
+      applicationReview,
+    } = this.props;
 
     if (_isEmpty(applicationDetail) || applicationDetail.isLoading) {
       return (
@@ -49,11 +54,23 @@ class applicationDetailInfo extends PureComponent {
       );
     }
 
-    const { _id, firstName, lastName } = applicationDetail;
-
+    const {
+      _id, firstName, lastName, status,
+    } = applicationDetail;
+    const actions = {
+      applicationApprove,
+      applicationReject,
+      applicationReview,
+    };
     return (
       <ItemDetailInfoWrapper>
-        <ApplicationDetailInfoHeader applicationId={_id} firstName={firstName} lastName={lastName} />
+        <ApplicationDetailInfoHeader
+          applicationId={_id}
+          firstName={firstName}
+          lastName={lastName}
+          status={status}
+          actions={actions}
+        />
         <Scrollbar autoHide style={scrollStyle}>
           <ApplicationDetailInfoContent applicationDetail={applicationDetail} />
         </Scrollbar>
@@ -65,6 +82,9 @@ class applicationDetailInfo extends PureComponent {
 applicationDetailInfo.propTypes = {
   applicationId: PropTypes.string.isRequired,
   fetchApplicationSingle: PropTypes.func.isRequired,
+  applicationApprove: PropTypes.func.isRequired,
+  applicationReject: PropTypes.func.isRequired,
+  applicationReview: PropTypes.func.isRequired,
   applicationDetail: PropTypes.object.isRequired,
 };
 

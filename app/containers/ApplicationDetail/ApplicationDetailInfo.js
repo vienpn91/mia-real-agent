@@ -11,6 +11,9 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = {
   fetchApplicationSingle: actions.fetchApplicationSingle,
+  applicationApprove: actions.applicationApprove,
+  applicationReject: actions.applicationReject,
+  applicationReview: actions.applicationReview,
 };
 
 export default connect(

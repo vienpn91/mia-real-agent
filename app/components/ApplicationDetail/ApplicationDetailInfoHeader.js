@@ -4,29 +4,52 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import history from 'utils/history';
 import {
   ItemDetailInfoHeaderWrapper,
   ItemDetailInfoActionGroup,
   ItemDetailInfoHeadTitle,
 } from 'components/Generals/ItemDetail.styled';
-import { IconStyled } from 'components/Generals/General.styled';
+import { Icon, Button } from 'antd';
+import { APPLICATION_STATUS } from '../../../common/enums';
 
 class ApplicationDetailInfoHeader extends PureComponent {
-  goToEditPage = () => {
-    const { applicationId } = this.props;
-    history.push(`/admin/users/${applicationId}/edit`);
-  };
+  handleApprove = () => {
+    const { applicationId, actions } = this.props;
+    actions.applicationApprove({ _id: applicationId });
+  }
+
+  handleReject = () => {
+    const { applicationId, actions } = this.props;
+    actions.applicationReject({ _id: applicationId });
+  }
+
+  handleReview = () => {
+    const { applicationId, actions } = this.props;
+    actions.applicationReview({ _id: applicationId });
+  }
 
   render() {
-    const { firstName, lastName } = this.props;
+    const { firstName, lastName, status } = this.props;
     return (
       <ItemDetailInfoHeaderWrapper>
-        <ItemDetailInfoHeadTitle>{`${firstName} ${lastName}`}</ItemDetailInfoHeadTitle>
+        <ItemDetailInfoHeadTitle>{`${firstName} ${lastName} [${status}]`}</ItemDetailInfoHeadTitle>
         <ItemDetailInfoActionGroup noTitle>
-          <IconStyled className="icon-pencil" onClick={this.goToEditPage} />
-          <Link to="/admin/users" className="close-action">
-            <IconStyled className="icon-close" />
+          {status === APPLICATION_STATUS.REVIEWING && [(<Button
+            type="primary"
+            onClick={this.handleApprove}
+          >
+            Approve
+          </Button>),
+          (<Button onClick={this.handleReject}>
+            Reject
+          </Button>)]}
+          {status === APPLICATION_STATUS.PENDING && (
+            <Button onClick={this.handleReview}>
+              Review
+            </Button>
+          )}
+          <Link to="/admin/applications" className="close-action">
+            <Icon type="close" />
           </Link>
         </ItemDetailInfoActionGroup>
       </ItemDetailInfoHeaderWrapper>
@@ -36,6 +59,8 @@ class ApplicationDetailInfoHeader extends PureComponent {
 
 ApplicationDetailInfoHeader.propTypes = {
   applicationId: PropTypes.string.isRequired,
+  actions: PropTypes.shape().isRequired,
+  status: PropTypes.string.isRequired,
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
 };

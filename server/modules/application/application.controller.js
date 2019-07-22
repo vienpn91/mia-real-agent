@@ -29,11 +29,11 @@ class ApplicationController extends BaseController {
         application: _id,
       };
 
-      const user = await UserService.insert(newUserPayload);
+      await UserService.insert(newUserPayload);
 
-      await this.updateStatus(application, APPLICATION_STATUS.APPROVED);
+      const result = await this.updateStatus(application, APPLICATION_STATUS.APPROVED);
 
-      return res.status(httpStatus.OK).send(user);
+      return res.status(httpStatus.OK).send(result);
     } catch (error) {
       return this.handleError(res, error);
     }
@@ -42,8 +42,8 @@ class ApplicationController extends BaseController {
   async rejectApplication(req, res) {
     try {
       const { model: application } = req;
-      await this.updateStatus(application, APPLICATION_STATUS.REJECTED);
-      return res.status(httpStatus.OK).send();
+      const result = await this.updateStatus(application, APPLICATION_STATUS.REJECTED);
+      return res.status(httpStatus.OK).send(result);
     } catch (error) {
       return this.handleError(res, error);
     }
@@ -52,8 +52,8 @@ class ApplicationController extends BaseController {
   async reviewApplication(req, res) {
     try {
       const { model: application } = req;
-      await this.updateStatus(application, APPLICATION_STATUS.REVIEWING);
-      return res.status(httpStatus.OK).send();
+      const result = await this.updateStatus(application, APPLICATION_STATUS.REVIEWING);
+      return res.status(httpStatus.OK).send(result);
     } catch (error) {
       return this.handleError(res, error);
     }
@@ -61,7 +61,8 @@ class ApplicationController extends BaseController {
 
   async updateStatus(application, status) {
     application.set({ status });
-    await application.save();
+    const result = await application.save();
+    return result;
   }
 }
 
