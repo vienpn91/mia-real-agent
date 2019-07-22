@@ -84,3 +84,5 @@ typings/
 .dynamodb/
 
 build/
+
+build_server/

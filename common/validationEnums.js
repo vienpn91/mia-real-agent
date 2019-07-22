@@ -1,5 +1,5 @@
-import * as Yup from 'yup';
-import { VALIDATION_ERROR_MESSAGE } from './enums';
+const Yup = require('yup');
+const { VALIDATION_ERROR_MESSAGE } = require('./enums');
 
 const {
   REQUIRED,
@@ -55,7 +55,7 @@ const postCode = Yup.string()
   .max(6, TOO_LONG)
   .matches(/[0-9]/, INVALID);
 
-export const VALIDATION = {
+const VALIDATION = {
   email,
   password,
   name,
@@ -64,3 +64,5 @@ export const VALIDATION = {
   confirmPassword,
   postCode,
 };
+
+module.exports.VALIDATION = VALIDATION;
