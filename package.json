@@ -77,6 +77,7 @@
     "socketio-jwt": "^4.5.0",
     "styled-components": "4.2.0",
     "warning": "4.0.3",
+    "webpack": "^4.36.1",
     "yup": "0.26.10"
   },
   "devDependencies": {
@@ -120,7 +121,6 @@
     "svg-url-loader": "^2.3.2",
     "terser-webpack-plugin": "^1.2.3",
     "url-loader": "^1.1.2",
-    "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",
     "webpack-dev-middleware": "^3.6.2",
     "webpack-hot-middleware": "^2.24.3",
