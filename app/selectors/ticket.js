@@ -1,6 +1,9 @@
 import { createSelector } from 'reselect';
 import { fromJS } from 'immutable';
+import _get from 'lodash/get';
 import { fetchingObj } from 'reducers/ticket';
+import { ROUTE_DETAIL } from '../utils/constants';
+import { getRouteMatch } from './router';
 
 const emptyMap = fromJS({});
 const emptyList = fromJS([]);
@@ -37,6 +40,43 @@ const reselectSorting = createSelector(getSorting, sorting => sorting.toJS());
 const getIsFetching = ({ ticket }) => ticket.getIn(['fetching', 'isFetching'], false);
 const getFetchingError = ({ ticket }) => ticket.getIn(['fetching', 'errorMsg'], '');
 
+const getTickets = ({ ticket }) => ticket.get('tickets', emptyMap);
+
+const getTotalCount = ({ ticket }) => ticket.get('totalRecord', 0);
+
+const reselectTickets = createSelector(
+  getTickets,
+  getVisibleTicketIds,
+  (tickets, visibleTicketIds) => {
+    const plainTicketById = tickets.toJS();
+    const plainVisibleTicketIds = visibleTicketIds.toJS();
+    return plainVisibleTicketIds.map(id => plainTicketById[id]);
+  },
+);
+
+const getTicketIdFromRoute = createSelector(
+  getRouteMatch(ROUTE_DETAIL.TICKET_DETAIL_ROUTER),
+  match => _get(match, 'params.id', null),
+);
+
+const getTicketOwnerFromRoute = createSelector(
+  getRouteMatch(ROUTE_DETAIL.TICKET_DETAIL_ROUTER),
+  match => _get(match, 'params.owner', null),
+);
+
+const getTicketPathFromRoute = createSelector(
+  getTicketIdFromRoute,
+  getTicketOwnerFromRoute,
+  (selectedId, owner) => `${selectedId}#${owner}`,
+);
+
+const getTicketDetailFromRoute = createSelector(
+  getTicketPathFromRoute,
+  getTickets,
+  (path, tickets) => tickets.get(path, emptyMap).toJS(),
+);
+
+
 export {
   reselectSorting,
   getSelectedPage,
@@ -55,4 +95,9 @@ export {
   getTicketArchiveError,
   getIsFetching,
   getFetchingError,
+
+  reselectTickets,
+  getTicketIdFromRoute,
+  getTicketDetailFromRoute,
+  getTotalCount,
 };
