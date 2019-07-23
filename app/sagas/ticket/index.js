@@ -69,14 +69,14 @@ function* getAllTicket({ payload }) {
     const message = _get(
       error, 'response.data.message', error.message
     );
-    yield put(actions.getAllFailAction(message));
+    yield put(actions.getAllTicketFailAction(message));
     return;
   }
 
   const data = _get(response, 'data', {});
   const { result, totalRecord } = data;
 
-  yield put(actions.getAllCompleteAction(result, totalRecord));
+  yield put(actions.getAllTicketCompleteAction(result, totalRecord));
 }
 
 function* adminGetAllTicket({ payload }) {

@@ -18,11 +18,10 @@ export const fetchConversation = ticketId => ({
   },
 });
 
-export const fetchConversationSuccess = (conversationList, total) => ({
+export const fetchConversationSuccess = conversation => ({
   type: CONVERSATION_FETCH_SUCCESS,
   payload: {
-    conversationList,
-    total,
+    conversation,
   },
 });
 
@@ -73,6 +72,19 @@ export const getTotalConverations = ({ conversations }) => conversations.get('to
 export const getErrorMessage = ({ conversations }) => conversations.get('errorMsg');
 export const isFetchingList = ({ conversations }) => conversations.get('isFetchingAll');
 export const isFetchingSingleItem = ({ conversations }) => conversations.get('isFetchingSingleItem');
+export const getConversationListByTicketList = ({ conversations }, ticketIdList) => {
+  const ticketIdSet = new Set(ticketIdList);
+  const byId = conversations.get('byId').toJS();
+
+  return conversations
+    .get('allIds')
+    .toJS()
+    .filter(id => ticketIdSet.has(byId[id].ticketId))
+    .reduce((acc, id) => {
+      acc[byId[id].ticketId] = byId[id];
+      return acc;
+    }, {});
+};
 
 const initialState = fromJS({
   isFetchingAll: false,
@@ -84,29 +96,25 @@ const initialState = fromJS({
   errorMsg: '',
 });
 
-function profileReducer(state = initialState, action) {
+function conversationReducer(state = initialState, action) {
   switch (action.type) {
     case CONVERSATION_FETCH: {
       return state.set('isFetchingAll', true).set('isFetchingSingleItem', false).set('errorMsg', '');
     }
 
     case CONVERSATION_FETCH_SUCCESS: {
-      const { conversationList, total } = action.payload;
+      const { conversation } = action.payload;
       let newState = state;
       let allIds = newState.get('allIds');
 
-      for (let i = 0; i < conversationList.length; i += 1) {
-        const conversation = conversationList[i];
-
-        newState = newState.setIn(['byId', conversation._id], conversation);
-        allIds = allIds.push(conversation._id);
-      }
+      allIds = allIds.push(conversation._id);
+      newState = newState.setIn(['byId', conversation._id], conversation);
 
       return newState
         .set('isFetchingAll', false)
         .set('isFetchingSingleItem', false)
         .set('allIds', allIds)
-        .set('total', total);
+        .set('total', newState.get('total') + 1);
     }
 
     case CONVERSATION_GET_DETAIL_FAILED:
@@ -145,7 +153,7 @@ function profileReducer(state = initialState, action) {
   }
 }
 
-export default profileReducer;
+export default conversationReducer;
 
 export const actions = {
   fetchConversation,

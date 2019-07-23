@@ -16,15 +16,18 @@ const getTicketTotalRecord = ({ ticket }) => ticket.get('totalRecord');
 const getTicketGetTicketDetail = ({ ticket }, id, owner) => ticket.getIn(['tickets', `${id}#${owner}`], emptyMap).toJS();
 const getTicketGetTicketIsGetting = ({ ticket }) => ticket.get('isGetting');
 const getTicketGetTicketError = ({ ticket }) => ticket.get('getError');
-const getTicketsById = ({ ticket }) => ticket.get('tickets');
-const getVisibleTicketIds = ({ ticket }) => ticket.get('visibleTicketIds', emptyList);
-const getTicketsList = createSelector(getTicketsById, getVisibleTicketIds, (ticketByIds, visibleTicketIds) => {
-  const plainTicketById = ticketByIds.toJS();
-  const plainVisibleTicketIds = visibleTicketIds.toJS();
-  const sortTickets = plainVisibleTicketIds.map(itemId => plainTicketById[itemId]);
-
-  return sortTickets;
-});
+const getTicketsById = ({ ticket }) => ticket.get('tickets').toJS();
+const getVisibleTicketIds = ({ ticket }) => ticket.get('visibleTicketIds', emptyList).toJS();
+const getTicketsList = createSelector(
+  getTicketsById,
+  getVisibleTicketIds,
+  (ticketByIds, visibleTicketIds) => visibleTicketIds.map(itemId => ticketByIds[itemId])
+);
+const getTicketIdList = createSelector(
+  getTicketsList,
+  // eslint-disable-next-line no-underscore-dangle
+  ticketList => ticketList.map(ticket => ticket._id)
+);
 
 const getTicketIsArchiving = ({ ticket }) => ticket.get('isArchiving');
 const getTicketArchiveError = ({ ticket }) => ticket.get('archiveError');
@@ -95,6 +98,7 @@ export {
   getTicketArchiveError,
   getIsFetching,
   getFetchingError,
+  getTicketIdList,
 
   reselectTickets,
   getTicketIdFromRoute,

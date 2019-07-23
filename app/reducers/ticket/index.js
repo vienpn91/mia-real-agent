@@ -63,19 +63,19 @@ const ticketAdminGetAll = payload => ({
   payload,
 });
 
-const getAllAction = payload => ({
+export const getAllTicketAction = payload => ({
   type: TICKET_GET_ALL,
   payload,
 });
 
 
-const getAllCompleteAction = (data, totalRecord) => ({
+const getAllTicketCompleteAction = (data, totalRecord) => ({
   type: TICKET_GET_ALL_SUCCESS,
   data,
   totalRecord,
 });
 
-const getAllFailAction = errorMsg => ({
+const getAllTicketFailAction = errorMsg => ({
   type: TICKET_GET_ALL_FAIL,
   errorMsg,
 });
@@ -368,9 +368,9 @@ export const actions = {
   createFailAction,
 
   ticketAdminGetAll,
-  getAllAction,
-  getAllCompleteAction,
-  getAllFailAction,
+  getAllTicketAction,
+  getAllTicketCompleteAction,
+  getAllTicketFailAction,
 
   getAction,
   getCompleteAction,

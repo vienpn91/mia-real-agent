@@ -112,11 +112,14 @@ class TicketController extends BaseController {
       const { _id: ticketId } = result;
       try {
         // create a conversation with mia by default
-        await ConversationService.insert({
+        const conversation = await ConversationService.insert({
           owner,
           members: ['5d2850fa87883f00e24833eb'],
           ticketId,
         });
+        // eslint-disable-next-line no-underscore-dangle
+        result.conversationId = conversation._id;
+        await result.save();
       } catch (error) {
         this.service.delete(ticketId);
         throw new APIError('Unable to create ticket', httpStatus.INTERNAL_SERVER_ERROR);

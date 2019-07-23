@@ -6,6 +6,10 @@ const { Schema } = mongoose;
 const ticketSchema = new Schema(
   {
     ticketId: String,
+    conversationId: {
+      type: Schema.Types.ObjectId,
+      required: false,
+    },
     title: { type: String, trim: true },
     description: { type: String, trim: true },
     status: {
