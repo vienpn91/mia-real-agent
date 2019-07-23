@@ -22,11 +22,11 @@ import { ActionBarStyled } from './styles';
 class TableRow extends React.PureComponent {
   onClick = () => {
     const {
-      item: { _id },
+      item,
       onClick,
     } = this.props;
 
-    onClick(_id);
+    onClick(item);
   };
 
   handleEditButton = () => {

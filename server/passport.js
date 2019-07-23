@@ -17,7 +17,7 @@ passport.use(
       passwordField: 'password',
     },
     (usernameOrEmail, password, cb) => {
-      UserModel.findOne({ $or: [{ email: usernameOrEmail }, { username: usernameOrEmail }] }).exec(async (err, user) => {
+      UserModel.findOne({ deletedAt: null, $or: [{ email: usernameOrEmail }, { username: usernameOrEmail }] }).exec(async (err, user) => {
         if (err) {
           return cb(err, false, { message: 'Something is wrong' });
         }

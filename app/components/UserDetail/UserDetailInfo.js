@@ -31,7 +31,7 @@ class UserDetailInfo extends PureComponent {
   }
 
   render() {
-    const { userDetail } = this.props;
+    const { userDetail, removeUser } = this.props;
 
     if (_isEmpty(userDetail) || userDetail.isLoading) {
       return (
@@ -53,7 +53,7 @@ class UserDetailInfo extends PureComponent {
 
     return (
       <ItemDetailInfoWrapper>
-        <UserDetailInfoHeader userId={_id} username={username} />
+        <UserDetailInfoHeader userId={_id} username={username} removeUser={removeUser} />
         <Scrollbar autoHide style={scrollStyle}>
           <UserDetailInfoContent userDetail={userDetail} />
         </Scrollbar>
@@ -65,6 +65,7 @@ class UserDetailInfo extends PureComponent {
 UserDetailInfo.propTypes = {
   userId: PropTypes.string.isRequired,
   fetchUserSingle: PropTypes.func.isRequired,
+  removeUser: PropTypes.func.isRequired,
   userDetail: PropTypes.object.isRequired,
 };
 
