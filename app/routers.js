@@ -23,6 +23,7 @@ import ThankForRegistering from './pages/ThankForRegistering';
 import Profile from './pages/Profile';
 import ChatbotComponent from './pages/Chatbot';
 import TicketManagement from './pages/TicketManagement';
+import TicketDetail from './containers/TicketDetail';
 import ApplicationManagement from './pages/ApplicationManagement';
 import ApplicationDetail from './containers/ApplicationDetail';
 
@@ -49,6 +50,7 @@ class Router extends React.PureComponent {
           <AdminMainLayout>
             <AuthenticatedRoute exact path="/admin/dashboard" component={AdminDashboard} />
             <AuthenticatedRoute exact path="/admin/tickets" component={TicketManagement} />
+            <AuthenticatedRoute path="/admin/tickets/:id" component={TicketDetail} />
             <AuthenticatedRoute exact path="/admin/applications" component={ApplicationManagement} />
             <AuthenticatedRoute path="/admin/applications/:id" component={ApplicationDetail} />
             <AuthenticatedRoute exact path="/admin/user" component={UserManagement} />

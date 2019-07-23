@@ -30,6 +30,10 @@ export const TICKET_SORTING = 'ticket/TICKET_SORTING';
 export const TICKET_FILTER = 'ticket/TICKET_FILTER';
 export const TICKET_FETCH = 'ticket/TICKET_FETCH';
 
+export const TICKET_FETCH_SINGLE = 'ticket/TICKET_FETCH_SINGLE';
+export const TICKET_FETCH_SINGLE_SUCCESS = 'ticket/TICKET_FETCH_SINGLE_SUCCESS';
+export const TICKET_FETCH_SINGLE_FAIL = 'ticket/TICKET_FETCH_SINGLE_FAIL';
+
 export const TICKET_CHANGE_PAGE = 'ticket/TICKET_CHANGE_PAGE';
 
 export const TICKET_ADMIN_GET_ALL = 'ticket/ADMIN_GET_ALL';
@@ -170,6 +174,29 @@ const changePage = (pageIndex, sizePerPage) => ({
   sizePerPage,
 });
 
+
+function fetchTicketSingle(id) {
+  return {
+    type: TICKET_FETCH_SINGLE,
+    id,
+  };
+}
+
+function fetchTicketSingleFail(id, errorMsg) {
+  return {
+    type: TICKET_FETCH_SINGLE_FAIL,
+    errorMsg,
+    id,
+  };
+}
+
+function fetchTicketSingleSuccess(payload) {
+  return {
+    type: TICKET_FETCH_SINGLE_SUCCESS,
+    payload,
+  };
+}
+
 export const fetchingObj = {
   isFetching: false,
   errorMsg: '',
@@ -182,6 +209,8 @@ export const initialState = fromJS({
   archiveError: '',
   removeError: '',
   getError: '',
+
+  ticket: {},
 
   tickets: {},
   totalRecord: 0,
@@ -316,6 +345,17 @@ function ticketReducer(state = initialState, action) {
       return state
         .set('fetching', fromJS({ isFetching: true, errorMsg: '' }))
         .setIn(['pagination', 'selectedPage'], action.pageIndex);
+    case TICKET_FETCH_SINGLE:
+      return state.setIn(['ticket', action.id, 'isLoading'], true);
+    case TICKET_FETCH_SINGLE_SUCCESS: {
+      const { payload } = action;
+      const { _id } = payload;
+      return state.setIn(['ticket', _id], fromJS(payload));
+    }
+    case TICKET_FETCH_SINGLE_FAIL: {
+      const { id, errorMsg } = action;
+      return state.setIn(['ticket', id], fromJS({ error: errorMsg }));
+    }
     default: return state;
   }
 }
@@ -351,4 +391,8 @@ export const actions = {
   archiveAction,
   archiveCompleteAction,
   archiveFailAction,
+
+  fetchTicketSingle,
+  fetchTicketSingleFail,
+  fetchTicketSingleSuccess,
 };

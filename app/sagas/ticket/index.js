@@ -13,7 +13,7 @@ import { notification } from 'antd';
 import { getSelectedPage, getSizePerPage, reselectSorting } from 'selectors/ticket';
 import {
   actions, CREATE, GET_ALL, GET, UPDATE, REMOVE, ARCHIVE,
-  TICKET_ADMIN_GET_ALL, TICKET_SORTING, TICKET_CHANGE_PAGE,
+  TICKET_ADMIN_GET_ALL, TICKET_SORTING, TICKET_CHANGE_PAGE, TICKET_FETCH_SINGLE,
 } from '../../reducers/ticket';
 import * as TicketApi from '../../api/ticket';
 import { configToken } from '../../api/config';
@@ -181,6 +181,21 @@ function* removeTicket({ payload }) {
   notification.success({ message: 'Ticket removed' });
 }
 
+function* ticketFetchSingle({ id }) {
+  yield configAxiosForTicket();
+  const { response } = yield call(TicketApi.get, id);
+  const error = _get(response, 'error');
+  const data = _get(response, 'data', {});
+  if (error) {
+    const errMsg = _get(error, 'response.data.message', error.message);
+    yield put(actions.fetchTicketSingleFail(id, errMsg));
+    notification.error({ message: errMsg });
+  } else {
+    yield put(actions.fetchTicketSingleSuccess(data));
+  }
+}
+
+
 export function* configAxiosForTicket() {
   const token = yield select(getToken);
   configToken(token);
@@ -195,6 +210,7 @@ function* ticketFlow() {
   yield takeLatest(ARCHIVE, archiveTicket);
   yield takeLatest([TICKET_CHANGE_PAGE, TICKET_SORTING], queryTickets);
   yield takeLatest(TICKET_ADMIN_GET_ALL, adminGetAllTicket);
+  yield takeLatest(TICKET_FETCH_SINGLE, ticketFetchSingle);
 }
 
 export default ticketFlow;

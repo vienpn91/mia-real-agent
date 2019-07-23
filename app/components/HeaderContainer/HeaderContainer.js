@@ -24,9 +24,10 @@ class HeaderContainer extends PureComponent {
   };
 
   onToggleSort = () => {
-    this.setState(prevState => ({
-      isSortOpen: !prevState.isSortOpen,
-    }));
+    const { isSortOpen } = this.state;
+    this.setState({
+      isSortOpen: !isSortOpen,
+    });
   };
 
   onToggleFilter = () => {

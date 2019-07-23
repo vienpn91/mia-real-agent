@@ -34,3 +34,8 @@ export const adminGetAllTicket = params => axios
   .get('admin/tickets', { params })
   .then(response => ({ response }))
   .catch(error => ({ error }));
+
+export const get = id => axios
+  .get(`admin/tickets/${id}`)
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
