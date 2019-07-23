@@ -24,3 +24,8 @@ export const reviewApplication = id => axios
   .post(`applications/${id}/review`)
   .then(response => ({ response }))
   .catch(error => ({ error }));
+
+export const get = id => axios
+  .get(`admin/applications/${id}`)
+  .then(response => ({ response }))
+  .catch(error => ({ error }));

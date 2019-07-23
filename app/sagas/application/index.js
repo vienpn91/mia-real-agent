@@ -5,11 +5,13 @@ import _get from 'lodash/get';
 import _assign from 'lodash/assign';
 import _pick from 'lodash/pick';
 import _pickBy from 'lodash/pickBy';
+import { notification } from 'antd';
 import { DEFAULT_ERROR_MESSAGE } from 'utils/constants';
 import {
   SUBMIT, actions, APPLICATION_CHANGE_PAGE,
   APPLICATION_ADMIN_GET_ALL, APPLICATION_SORTING,
   APPLICATION_APPROVE, APPLICATION_REJECT, APPLICATION_REVIEW,
+  APPLICATION_FETCH_SINGLE,
 } from 'reducers/application';
 import { getSkipLimit } from 'utils/func-utils';
 import { getSelectedPage, getSizePerPage, reselectSorting } from 'selectors/application';
@@ -99,7 +101,7 @@ function* adminGetAllApplication({ payload }) {
 function* approveApplication(action) {
   yield configAxiosForApplication();
   const { applicationId } = action;
-  const { error } = yield call(ApplicationApi.approveApplication, applicationId);
+  const { response, error } = yield call(ApplicationApi.approveApplication, applicationId);
   if (error) {
     const message = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE
@@ -107,13 +109,14 @@ function* approveApplication(action) {
     yield put(actions.applicationApproveFail(message));
     return;
   }
-  yield put(actions.applicationApproveComplete());
+  const { data } = response;
+  yield put(actions.applicationApproveComplete(data));
 }
 
 function* rejectApplication(action) {
   yield configAxiosForApplication();
   const { applicationId } = action;
-  const { error } = yield call(ApplicationApi.rejectApplication, applicationId);
+  const { response, error } = yield call(ApplicationApi.rejectApplication, applicationId);
   if (error) {
     const message = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE
@@ -121,13 +124,14 @@ function* rejectApplication(action) {
     yield put(actions.applicationRejectFail(message));
     return;
   }
-  yield put(actions.applicationRejectComplete());
+  const { data } = response;
+  yield put(actions.applicationRejectComplete(data));
 }
 
 function* reviewApplication(action) {
   yield configAxiosForApplication();
   const { applicationId } = action;
-  const { error } = yield call(ApplicationApi.reviewApplication, applicationId);
+  const { response, error } = yield call(ApplicationApi.reviewApplication, applicationId);
   if (error) {
     const message = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE
@@ -135,8 +139,24 @@ function* reviewApplication(action) {
     yield put(actions.applicationReviewFail(message));
     return;
   }
-  yield put(actions.applicationReviewComplete());
+  const { data } = response;
+  yield put(actions.applicationReviewComplete(data));
 }
+
+function* applicationFetchSingle({ id }) {
+  yield configAxiosForApplication();
+  const { response } = yield call(ApplicationApi.get, id);
+  const error = _get(response, 'error');
+  const data = _get(response, 'data', {});
+  if (error) {
+    const errMsg = _get(error, 'response.data.message', error.message);
+    yield put(actions.fetchApplicationSingleFail(id, errMsg));
+    notification.error({ message: errMsg });
+  } else {
+    yield put(actions.fetchApplicationSingleComplete(data));
+  }
+}
+
 
 export function* configAxiosForApplication() {
   const token = yield select(getToken);
@@ -150,6 +170,7 @@ function* ticketFlow() {
   yield takeEvery(APPLICATION_APPROVE, approveApplication);
   yield takeEvery(APPLICATION_REJECT, rejectApplication);
   yield takeEvery(APPLICATION_REVIEW, reviewApplication);
+  yield takeEvery(APPLICATION_FETCH_SINGLE, applicationFetchSingle);
 }
 
 export default ticketFlow;

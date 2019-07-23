@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { SubmitButtonStyled } from './General.styled';
 
 export const ItemDetailWrapper = styled.div`
-  height: calc(100vh - 50px);
+  height: calc(100vh - 62px);
   overflow: hidden;
   display: flex;
   width: 100%;
@@ -101,6 +101,9 @@ export const ItemDetailInfoActionGroup = styled.div`
         margin-left: auto;
       }
     `};
+  button:nth-child(n) {
+    margin-right: 10px;
+  }
 `;
 
 export const ActionButton = styled(SubmitButtonStyled)`

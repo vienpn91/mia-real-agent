@@ -29,6 +29,10 @@ export const APPLICATION_REVIEW = 'application/APPLICATION_REVIEW';
 export const APPLICATION_REVIEW_COMPLETE = 'application/APPLICATION_REVIEW_COMPLETE';
 export const APPLICATION_REVIEW_FAIL = 'application/APPLICATION_REVIEW_FAIL';
 
+export const APPLICATION_FETCH_SINGLE = 'application/APPLICATION_FETCH_SINGLE';
+export const APPLICATION_FETCH_SINGLE_COMPLETE = 'application/APPLICATION_FETCH_SINGLE_COMPLETE';
+export const APPLICATION_FETCH_SINGLE_FAIL = 'application/APPLICATION_FETCH_SINGLE_FAIL';
+
 // action creator
 const submitAction = application => ({
   type: SUBMIT,
@@ -92,8 +96,9 @@ const applicationApprove = ({ _id }) => ({
   applicationId: _id,
 });
 
-const applicationApproveComplete = () => ({
+const applicationApproveComplete = application => ({
   type: APPLICATION_APPROVE_COMPLETE,
+  application,
 });
 
 const applicationApproveFail = errorMsg => ({
@@ -106,8 +111,9 @@ const applicationReject = ({ _id }) => ({
   applicationId: _id,
 });
 
-const applicationRejectComplete = () => ({
+const applicationRejectComplete = application => ({
   type: APPLICATION_REJECT_COMPLETE,
+  application,
 });
 
 const applicationRejectFail = errorMsg => ({
@@ -120,14 +126,37 @@ const applicationReview = ({ _id }) => ({
   applicationId: _id,
 });
 
-const applicationReviewComplete = () => ({
+const applicationReviewComplete = application => ({
   type: APPLICATION_REVIEW_COMPLETE,
+  application,
 });
 
 const applicationReviewFail = errorMsg => ({
   type: APPLICATION_REVIEW_FAIL,
   errorMsg,
 });
+
+function fetchApplicationSingle(id) {
+  return {
+    type: APPLICATION_FETCH_SINGLE,
+    id,
+  };
+}
+
+function fetchApplicationSingleFail(id, errorMsg) {
+  return {
+    type: APPLICATION_FETCH_SINGLE_FAIL,
+    errorMsg,
+    id,
+  };
+}
+
+function fetchApplicationSingleComplete(payload) {
+  return {
+    type: APPLICATION_FETCH_SINGLE_COMPLETE,
+    payload,
+  };
+}
 
 // selector
 const getApplicationIsSubmitting = ({ application }) => application.get('isSubmitting');
@@ -139,6 +168,8 @@ export const fetchingObj = {
 };
 
 const initialState = fromJS({
+  application: {},
+
   isSubmitting: false,
   submitError: '',
 
@@ -190,6 +221,38 @@ function applicationReducer(state = initialState, action) {
       return state
         .set('fetching', fromJS({ isFetching: true, errorMsg: '' }))
         .setIn(['pagination', 'selectedPage'], action.pageIndex);
+
+    case APPLICATION_FETCH_SINGLE:
+      return state.setIn(['application', action.id, 'isLoading'], true);
+    case APPLICATION_FETCH_SINGLE_COMPLETE: {
+      const { payload } = action;
+      const { _id } = payload;
+      return state.setIn(['application', _id], fromJS(payload));
+    }
+    case APPLICATION_FETCH_SINGLE_FAIL: {
+      const { id, errorMsg } = action;
+      return state.setIn(['application', id], fromJS({ error: errorMsg }));
+    }
+
+    case APPLICATION_APPROVE_COMPLETE: {
+      const { application } = action;
+      const { _id } = application;
+      return state
+        .setIn(['applications', _id], fromJS(application));
+    }
+    case applicationRejectComplete: {
+      const { application } = action;
+      const { _id } = application;
+      return state
+        .setIn(['applications', _id], fromJS(application));
+    }
+    case APPLICATION_REVIEW_COMPLETE: {
+      const { application } = action;
+      const { _id } = application;
+      return state
+        .setIn(['applications', _id], fromJS(application));
+    }
+
     default: return state;
   }
 }
@@ -220,6 +283,10 @@ export const actions = {
   applicationReview,
   applicationReviewComplete,
   applicationReviewFail,
+
+  fetchApplicationSingle,
+  fetchApplicationSingleComplete,
+  fetchApplicationSingleFail,
 };
 
 export const selectors = {

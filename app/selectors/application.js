@@ -1,5 +1,8 @@
 import { createSelector } from 'reselect';
+import _get from 'lodash/get';
 import { fromJS } from 'immutable';
+import { getRouteMatch } from './router';
+import { ROUTE_DETAIL } from '../utils/constants';
 
 const emptyMap = fromJS({});
 const emptyList = fromJS([]);
@@ -28,6 +31,33 @@ const reselectSorting = createSelector(getSorting, sorting => sorting.toJS());
 const getIsFetching = ({ application }) => application.getIn(['fetching', 'isFetching'], false);
 const getFetchingError = ({ application }) => application.getIn(['fetching', 'errorMsg'], '');
 
+const getApplications = ({ application }) => application.get('applications', emptyMap);
+
+
+const reselectApplications = createSelector(
+  getApplications,
+  getVisibleApplicationIds,
+  (applications, visibleApplicationIds) => {
+    const plainApplicationById = applications.toJS();
+    const plainVisibleApplicationIds = visibleApplicationIds.toJS();
+    return plainVisibleApplicationIds.map(id => plainApplicationById[id]);
+  },
+);
+
+const getApplicationIdFromRoute = createSelector(
+  getRouteMatch(ROUTE_DETAIL.APPLICATION_DETAIL_ROUTER),
+  match => _get(match, 'params.id', null),
+);
+
+const getApplicationDetailFromRoute = createSelector(
+  getApplicationIdFromRoute,
+  getApplications,
+  (selectedId, applications) => applications.get(selectedId, emptyMap).toJS(),
+);
+
+
+const getTotalCount = ({ application }) => application.get('totalRecord', 0);
+
 
 export {
   reselectSorting,
@@ -38,4 +68,9 @@ export {
 
   getIsFetching,
   getFetchingError,
+
+  getTotalCount,
+  getApplicationIdFromRoute,
+  reselectApplications,
+  getApplicationDetailFromRoute,
 };
