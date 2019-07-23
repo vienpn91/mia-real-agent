@@ -140,13 +140,13 @@ class AuthController {
     }
 
     const {
-      _id, email, role, verifiedAt, token,
+      _id, email, username, role, verifiedAt, token,
     } = user;
     const userProfile = await UserService.getUserProfile(user);
     return res
       .status(200)
       .json({
-        token, userId: _id, email, role, verifiedAt, userProfile,
+        token, userId: _id, email, username, role, verifiedAt, userProfile,
       });
   }
 

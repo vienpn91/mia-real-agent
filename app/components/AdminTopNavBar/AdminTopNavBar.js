@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { PopupOverlayStyled } from 'components/Generals/General.styled';
-import ProfileUser from './ProfileUser/ProfileUser';
+
 import {
   HeaderStyled,
   TopbarRight,
@@ -9,17 +9,12 @@ import {
   ActionsStyled,
   SettingIcon,
 } from './AdminTopNavBar.styled';
+import ProfileUser from '../../containers/ProfileUser';
 
 class AdminTopNavBar extends PureComponent {
   state = {
     isUserInfoOpen: false,
   };
-
-  // onLogout = (e) => {
-  //   e.preventDefault();
-  //   const { logout } = this.props;
-  //   logout();
-  // };
 
   onToggleUserInfo = () => {
     this.setState(prevState => ({
@@ -46,7 +41,6 @@ class AdminTopNavBar extends PureComponent {
               <React.Fragment>
                 <PopupOverlayStyled onClick={this.onToggleUserInfo} />
                 <ProfileUser
-                  onLogout={this.onLogout}
                   onToggleUserInfo={this.onToggleUserInfo}
                 />
               </React.Fragment>

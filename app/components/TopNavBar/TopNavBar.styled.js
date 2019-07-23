@@ -113,3 +113,38 @@ export const Nav = styled.div`
     }
   }
 `;
+
+export const TopbarRight = styled.div`
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  margin-right: 20px;
+`;
+
+export const ActionsStyled = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  i {
+    line-height: 21px;
+    font-size: 18px;
+    margin-left: 15px;
+    cursor: pointer;
+    &:hover {
+      color: #41a0d9;
+    }
+  }
+`;
+
+export const ProfileStyled = styled.div`
+  display: flex;
+  align-items: center;
+  text-align: center;
+  padding: 0px 20px;
+  position: relative;
+`;
+
+export const ProfileImageStyled = styled.img`
+  height: 30px;
+  cursor: pointer;
+`;

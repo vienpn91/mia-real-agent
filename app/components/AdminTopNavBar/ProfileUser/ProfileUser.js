@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react/prefer-stateless-function */
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   ProfileUserInfoWrapper,
@@ -11,15 +12,15 @@ import {
   ProfileUserEmail,
   ProfileUserAction,
   CloseAction,
-  ProfileUserID,
 } from './ProfileUser.styled';
-import ProfileOrganization from './ProfileOrganization';
 
 const src = false;
 
 class ProfileUser extends React.PureComponent {
   render() {
-    const { onLogout, onToggleUserInfo } = this.props;
+    const {
+      onLogout, onToggleUserInfo, username, email,
+    } = this.props;
     return (
       <ProfileUserInfoWrapper>
         <ProfileUserHead>
@@ -27,14 +28,16 @@ class ProfileUser extends React.PureComponent {
             {src ? (
               <img src="#" />
             ) : (
-              <img src="https://cdn1.thr.com/sites/default/files/imagecache/landscape_928x523/2017/09/gettyimages-801080928_-_h_2017.jpg" />
-            )}
+              <img
+                src="https://cdn1.thr.com/sites/default/files/imagecache/landscape_928x523/2017/09/gettyimages-801080928_-_h_2017.jpg"
+              />
+            )
+            }
           </ProfileUserAvatar>
-          <ProfileUserName>Tri Nguyen</ProfileUserName>
-          <ProfileUserID>Grandfather</ProfileUserID>
-          <ProfileUserEmail>trinm@zigvy.com</ProfileUserEmail>
+          <ProfileUserName>{username}</ProfileUserName>
+          <ProfileUserEmail>{email}</ProfileUserEmail>
           <ProfileUserAction>
-            <button className="my-account">My Account</button>
+            <Link to="/profile">My Account</Link>
             <span>|</span>
             <button className="sign-out" onClick={onLogout}>
               Sign Out
@@ -44,7 +47,6 @@ class ProfileUser extends React.PureComponent {
             <i className="icon-close" />
           </CloseAction>
         </ProfileUserHead>
-        <ProfileOrganization />
       </ProfileUserInfoWrapper>
     );
   }
@@ -53,6 +55,8 @@ class ProfileUser extends React.PureComponent {
 ProfileUser.propTypes = {
   onLogout: PropTypes.func,
   onToggleUserInfo: PropTypes.func,
+  username: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
 };
 
 export default ProfileUser;

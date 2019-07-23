@@ -7,9 +7,9 @@ export const ProfileUserInfoWrapper = styled.div`
   transition: all 300ms ease-in-out;
   box-shadow: -2px 5px 10px 1px rgba(0, 0, 0, 0.176);
   width: 360px;
-  min-height: 500px;
+  min-height: 200px;
   z-index: 1;
-  background-color: ${props => props.theme.secondaryColor}
+  background-color: ${props => props.theme.secondaryColor};
 `;
 
 export const ProfileUserHead = styled.div`
@@ -40,6 +40,8 @@ export const ProfileUserName = styled.div`
   white-space: nowrap;
   text-transform: uppercase;
   font-size: 15px;
+  height: 30px;
+  line-height: 30px;
 `;
 
 export const ProfileUserID = styled.div`
@@ -57,10 +59,15 @@ export const ProfileUserEmail = styled.div`
   white-space: nowrap;
   font-size: 12px;
   color: #777;
+  height: 30px;
+  line-height: 30px;
 `;
 
 export const ProfileUserAction = styled.div`
   margin-bottom: 10px;
+  height: 30px;
+  line-height: 30px;
+  
   button {
     cursor: pointer;
     background-color: transparent;

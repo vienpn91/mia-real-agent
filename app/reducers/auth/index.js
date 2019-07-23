@@ -30,6 +30,7 @@ const initialState = fromJS({
   role: null,
   token: null,
   userId: null,
+  username: null,
   isLoggedIn: false,
   verifiedAt: null,
   errorMessage: null,
@@ -230,6 +231,7 @@ export const getUserRole = ({ auth }) => auth.get('role');
 export const getToken = ({ auth }) => auth.get('token');
 export const getUserEmail = ({ auth }) => auth.get('email');
 export const getUserId = ({ auth }) => auth.get('userId');
+export const getUsername = ({ auth }) => auth.get('username');
 export const checkAuthenticatedStatus = ({ auth }) => !!auth.get('isLoggedIn');
 export const selectErrorMessage = ({ auth }) => auth.get('errorMessage');
 export const getIsSendingEmail = ({ auth }) => auth.get('isVerifing', false);
@@ -252,6 +254,7 @@ function authReducer(state = initialState, action) {
         .set('token', authInfo.token)
         .set('userId', authInfo.userId)
         .set('verifiedAt', authInfo.verifiedAt)
+        .set('username', authInfo.username)
         .set('isLoading', false)
         .set('isLoggedIn', true);
     }
