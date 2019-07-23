@@ -7,10 +7,11 @@ import ConversationService from './conversation.service';
 class ConversationController extends BaseController {
   constructor() {
     super(ConversationService);
+    this.getAll = this.getAll.bind(this);
   }
 
 
-  getAll = async (req, res) => {
+  async getAll(req, res) {
     try {
       const {
         user,

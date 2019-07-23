@@ -24,6 +24,12 @@ class SocketIOServer {
         }))
       .on('authenticated', async (socket) => {
         const { data: user } = await this.authenticate(socket);
+        if (!user) {
+          // HMR error
+          Logger.warning('[Socket.io]: An invalid foul! Disconnecting...');
+          socket.disconnect();
+          return;
+        }
         const { email, role, _id: id } = user;
         const { connected } = socketIO.sockets;
         const { id: socketId } = socket.conn;

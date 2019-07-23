@@ -9,6 +9,12 @@ class ConversationService extends BaseService {
   countDocument(filter) {
     return this.collection.countDocuments(filter);
   }
+
+  getConversationByTicketId(ticketId) {
+    return this.getOneByQuery({
+      ticketId,
+    });
+  }
 }
 
 export default new ConversationService();

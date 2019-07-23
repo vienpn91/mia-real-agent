@@ -7,8 +7,6 @@ import Logger from '../../logger';
 
 class AgentController {
   constructor() {
-    this.findAgent = this.findAgent.bind(this);
-    this.acceptRequest = this.acceptRequest.bind(this);
     this.handleError = this.handleError.bind(this);
   }
 

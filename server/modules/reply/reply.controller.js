@@ -5,6 +5,8 @@ import ReplyService from './reply.service';
 class ReplyController extends BaseController {
   constructor() {
     super(ReplyService);
+    this.getReplyByTicketAndAgent = this.getReplyByTicketAndAgent.bind(this);
+    this.insertReply = this.insertReply.bind(this);
   }
 
   async getReplyByTicketAndAgent(req, res) {

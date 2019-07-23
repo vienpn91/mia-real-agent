@@ -14,17 +14,25 @@ const emptyObjString = '{}';
 class TicketController extends BaseController {
   constructor() {
     super(TicketService);
+    this.get = this.get.bind(this);
+    this.load = this.load.bind(this);
+    this.insert = this.insert.bind(this);
+    this.getAll = this.getAll.bind(this);
+    this.getAllConversations = this.getAllConversations.bind(this);
   }
 
-  getAllConversations = async (req, res) => {
-    const { id } = req.params;
-    const result = await ConversationService.getAll({
-      ticketId: id,
-    });
-    return res.status(httpStatus.OK).send(result);
+  async getAllConversations(req, res) {
+    try {
+      const { id } = req.params;
+      const result = await ConversationService.getConversationByTicketId(id);
+
+      return res.status(httpStatus.OK).send(result);
+    } catch (error) {
+      return this.handleError(res, error);
+    }
   }
 
-  get = async (req, res) => {
+  async get(req, res) {
     try {
       const { model } = req;
       const { _doc } = model;
@@ -53,7 +61,7 @@ class TicketController extends BaseController {
     }
   }
 
-  load = async (req, res, next, id) => {
+  async load(req, res, next, id) {
     try {
       const { user } = req;
       const { owner } = req.query;
@@ -62,13 +70,14 @@ class TicketController extends BaseController {
       }
       const { _id, role } = user;
 
+
       if (!mongoose.Types.ObjectId.isValid(owner) && role === ROLES.AGENT) {
         throw new APIError(CONTENT_NOT_FOUND, httpStatus.NOT_FOUND);
       }
 
       const condition = (role === ROLES.AGENT)
-        ? { owner, ticketId: id }
-        : { owner: _id, ticketId: id };
+        ? { owner, _id: id }
+        : { owner: _id, _id: id };
       const model = await this.service.getByCondition(condition);
 
       if (model == null) {
@@ -81,7 +90,7 @@ class TicketController extends BaseController {
     }
   }
 
-  insert = async (req, res) => {
+  async insert(req, res) {
     try {
       const { user, body: data } = req;
 
@@ -119,7 +128,7 @@ class TicketController extends BaseController {
     }
   }
 
-  getAll = async (req, res) => {
+  async getAll(req, res) {
     try {
       const {
         user, query: {

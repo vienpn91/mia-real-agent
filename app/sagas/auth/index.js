@@ -130,6 +130,7 @@ export function* checkToken() {
     return;
   }
   const { data } = response;
+  configAxiosForAuthenticate();
   yield put(authActions.loginSuccess({
     ...data,
     /* eslint-disable no-underscore-dangle */

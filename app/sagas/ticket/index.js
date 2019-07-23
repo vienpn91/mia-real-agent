@@ -1,6 +1,6 @@
 import {
   call, put, select,
-  takeLatest, take,
+  takeLatest, take, all,
 } from 'redux-saga/effects';
 // lodash
 import _get from 'lodash/get';
@@ -191,15 +191,18 @@ function* ticketFetchSingle({ id }) {
 }
 
 function* ticketFlow() {
-  yield takeLatest(TICKET_CREATE, createTicket);
-  yield takeLatest(TICKET_GET_ALL, getAllTicket);
-  yield takeLatest(TICKET_GET_DETAIL, getTicket);
-  yield takeLatest(TICKET_UPDATE, updateTicket);
-  yield takeLatest(TICKET_REMOVE, removeTicket);
-  yield takeLatest(TICKET_ARCHIVE, archiveTicket);
-  yield takeLatest([TICKET_CHANGE_PAGE, TICKET_SORTING], queryTickets);
-  yield takeLatest(TICKET_ADMIN_GET_ALL, adminGetAllTicket);
-  yield takeLatest(TICKET_FETCH_SINGLE, ticketFetchSingle);
+  yield take(AUTH_LOGIN_SUCCESS);
+  yield all([
+    takeLatest(TICKET_CREATE, createTicket),
+    takeLatest(TICKET_GET_ALL, getAllTicket),
+    takeLatest(TICKET_GET_DETAIL, getTicket),
+    takeLatest(TICKET_UPDATE, updateTicket),
+    takeLatest(TICKET_REMOVE, removeTicket),
+    takeLatest(TICKET_ARCHIVE, archiveTicket),
+    takeLatest([TICKET_CHANGE_PAGE, TICKET_SORTING], queryTickets),
+    takeLatest(TICKET_ADMIN_GET_ALL, adminGetAllTicket),
+    takeLatest(TICKET_FETCH_SINGLE, ticketFetchSingle),
+  ]);
 }
 
 export default ticketFlow;

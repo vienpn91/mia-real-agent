@@ -27,6 +27,10 @@ export default class BaseService {
       .exec();
   }
 
+  getOneByQuery(query) {
+    return this.collection.findOne(query).exec();
+  }
+
   async getAll(condition, options = {}) {
     const { skip = 0, limit, sort = { updatedAt: -1 } } = options;
     const notDeletedCondition = {
