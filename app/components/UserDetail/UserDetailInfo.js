@@ -25,7 +25,7 @@ class UserDetailInfo extends PureComponent {
     const { userId, fetchUserSingle } = this.props;
     const { userId: prevUserId } = prevProps;
 
-    if (prevUserId !== userId) {
+    if (prevUserId !== userId && userId) {
       fetchUserSingle(userId);
     }
   }
