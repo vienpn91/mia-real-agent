@@ -1,1 +1,1 @@
-export { default } from 'components/AdminDashboard';
+export { default } from 'containers/AdminDashboard';

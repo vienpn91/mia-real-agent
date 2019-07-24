@@ -1,5 +1,7 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
-import { func, shape } from 'prop-types';
+import { shape } from 'prop-types';
 import {
   TicketActivityWrapper,
   TicketActivityLeftItem,
@@ -10,19 +12,11 @@ import {
   TicketActivityNumber,
   TicketActivityUnit,
   TicketActivityPurpose,
-  TicketActivityQuantityGroup,
-  TicketActivityQuantityItem,
-  TicketActivityQuantityContent,
-  TicketActivityQuantityNumber,
 } from './TicketActivity.styled';
+import TicketDetailStatistic from './TicketDetailStatistic';
+
 
 class TicketActivity extends Component {
-  componentDidMount = () => {
-    const { getTicketActivity, getApplicationSummary } = this.props;
-    getTicketActivity();
-    getApplicationSummary();
-  }
-
   renderActivityItem = (value) => {
     const {
       number, unit, color, title,
@@ -71,60 +65,26 @@ class TicketActivity extends Component {
     );
   }
 
-  renderInventorySummary = () => {
-    const { applicationSummary } = this.props;
-    const { pending = 0, reviewing = 0 } = applicationSummary;
-    return (
-      <TicketActivityQuantityGroup>
-        <TicketActivityQuantityItem>
-          <TicketActivityQuantityContent>
-            Waiting for review
-          </TicketActivityQuantityContent>
-          <TicketActivityQuantityNumber>
-            {pending}
-          </TicketActivityQuantityNumber>
-        </TicketActivityQuantityItem>
-
-        <TicketActivityQuantityItem>
-          <TicketActivityQuantityContent>
-            Reviewing
-          </TicketActivityQuantityContent>
-          <TicketActivityQuantityNumber>
-            {reviewing}
-          </TicketActivityQuantityNumber>
-        </TicketActivityQuantityItem>
-      </TicketActivityQuantityGroup>
-    );
-  }
-
   render() {
+    const { ticketActivity } = this.props;
     return (
       <TicketActivityWrapper>
         <TicketActivityLeftItem>
           <TicketActivityTitle>
             Tickets Activity
-            {/* <TimeSelect
-              items={TIME_FILTER}
-              timeSelected={timeSelected}
-              selectTime={this.selectTime}
-              datePickerPlacement={PLACEMENT.LEFT}
-            /> */}
           </TicketActivityTitle>
           {this.renderTicketActivitySummary()}
         </TicketActivityLeftItem>
         <TicketActivityRightItem>
-          <TicketActivityTitle>Applications Summary</TicketActivityTitle>
-          {this.renderInventorySummary()}
+          <TicketActivityTitle>Tickets Detail</TicketActivityTitle>
+          <TicketDetailStatistic ticketActivity={ticketActivity} />
         </TicketActivityRightItem>
       </TicketActivityWrapper>
     );
   }
 }
 TicketActivity.propTypes = {
-  getTicketActivity: func.isRequired,
   ticketActivity: shape().isRequired,
-  getApplicationSummary: func.isRequired,
-  applicationSummary: shape().isRequired,
 };
 
 export default TicketActivity;
