@@ -17,7 +17,7 @@ const loginErrorMsg = 'Something is wrong';
 
 class AuthController {
   handlePassportStrategy(accessToken, refreshToken, profile, done) {
-    const condition = { $or: [] };
+    const condition = { $or: [], deletedAt: null };
     let email;
     const provider = {
       id: profile.id,

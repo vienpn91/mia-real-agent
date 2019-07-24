@@ -16,10 +16,15 @@ class TableManagement extends React.PureComponent {
     this.props.fetchList();
   }
 
-  goToDetail = (id) => {
-    const { endpoint, shouldOpenDetail = true } = this.props;
+  goToDetail = (item) => {
+    const { endpoint, shouldOpenDetail = true, onClick } = this.props;
+    if (onClick) {
+      onClick(item);
+      return;
+    }
     if (shouldOpenDetail) {
-      history.push(`/${endpoint}/${id}`);
+      const { _id } = item;
+      history.push(`/${endpoint}/${_id}`);
     }
   };
 
@@ -80,6 +85,7 @@ TableManagement.propTypes = {
   selectedPage: PropTypes.number.isRequired,
   sizePerPage: PropTypes.number.isRequired,
   shouldOpenDetail: PropTypes.bool,
+  onClick: PropTypes.func,
   actions: shape(),
 };
 

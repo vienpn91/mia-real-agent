@@ -29,6 +29,10 @@ const userSchema = new Schema(
       type: Date,
       default: null,
     },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
     application: { type: Schema.Types.ObjectId, ref: 'Application' },
   },
   {

@@ -2,6 +2,7 @@ import TableManagement from 'components/TableManagement';
 import { connect } from 'react-redux';
 import { actions } from 'reducers/ticket';
 import { createStructuredSelector } from 'reselect';
+import history from 'utils/history';
 import {
   getTicketsList,
   getIsFetching,
@@ -80,6 +81,7 @@ const mapStateToProps = (state) => {
   return {
     ...structureSelector,
     columns: ticketColumns,
+    onClick: ({ ticketId, owner: { _id } }) => { history.push(`/admin/tickets/${ticketId}/${_id}`); },
     endpoint: 'admin/tickets',
   };
 };

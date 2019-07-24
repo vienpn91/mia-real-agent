@@ -75,3 +75,8 @@ export const insert = data => axios
   .post('admin/users/', { data })
   .then(response => ({ response }))
   .catch(error => ({ error }));
+
+export const remove = id => axios
+  .delete(`admin/users/${id}`)
+  .then(response => ({ response }))
+  .catch(error => ({ error }));

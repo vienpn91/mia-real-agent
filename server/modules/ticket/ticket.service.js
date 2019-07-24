@@ -84,6 +84,11 @@ class TicketService extends BaseService {
       totalRecord: await this.countDocument(queryCondition),
     };
   }
+
+  async getAllByOwner(owner) {
+    const result = await this.collection.find({ owner }).exec();
+    return result;
+  }
 }
 
 export default new TicketService(ticketCollection);

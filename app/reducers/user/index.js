@@ -22,6 +22,11 @@ export const USER_UPDATE = 'user/UPDATE';
 export const USER_UPDATE_SUCCESS = 'user/UPDATE_SUCCESS';
 export const USER_UPDATE_FAIL = 'user/UPDATE_FAIL';
 
+// remove user
+export const USER_REMOVE = 'user/USER_REMOVE';
+export const USER_REMOVE_SUCCESS = 'user/USER_REMOVE_SUCCESS';
+export const USER_REMOVE_FAIL = 'user/USER_REMOVE_FAIL';
+
 // change page
 export const USER_CHANGE_PAGE = 'user/CHANGE_PAGE';
 
@@ -118,6 +123,27 @@ function addNewUserFail(errMsg) {
   };
 }
 
+function removeUser(userId) {
+  return {
+    type: USER_REMOVE,
+    userId,
+  };
+}
+
+function removeUserSuccess(userId) {
+  return {
+    type: USER_REMOVE_SUCCESS,
+    userId,
+  };
+}
+
+function removeUserFail(errMsg) {
+  return {
+    type: USER_REMOVE_FAIL,
+    message: errMsg,
+  };
+}
+
 function changePage(pageIndex, sizePerPage) {
   return {
     type: USER_CHANGE_PAGE,
@@ -141,6 +167,9 @@ export const actions = {
   updateUser,
   updateUserSuccess,
   updateUserFail,
+  removeUser,
+  removeUserSuccess,
+  removeUserFail,
 };
 
 // initialState

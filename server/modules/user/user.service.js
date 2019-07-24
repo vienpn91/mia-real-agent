@@ -81,6 +81,10 @@ class UserService extends BaseService {
     await user.save();
     sendUserRegisterSuccessMail(user);
   }
+
+  delete(id) {
+    return this.collection.updateOne({ _id: id }, { deletedAt: new Date(), token: null }).exec();
+  }
 }
 
 export default new UserService();

@@ -11,6 +11,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = {
   fetchUserSingle: actions.fetchUserSingle,
+  removeUser: actions.removeUser,
 };
 
 export default connect(

@@ -26,6 +26,7 @@ import {
   USER_CHANGE_PAGE,
   USER_FETCH_SINGLE,
   USER_UPDATE,
+  USER_REMOVE,
   actions as userActions,
 } from 'reducers/user';
 import * as UserAPI from 'api/user';
@@ -144,6 +145,21 @@ function* userUpdate({ payload }) {
   }
 }
 
+function* userRemove({ userId }) {
+  yield configAxios();
+  const { response, error } = yield call(UserAPI.remove, userId);
+  const data = _get(response, 'data', {});
+  if (error) {
+    const errMsg = _get(error, 'response.data.message', error.message);
+    yield put(userActions.removeUserFail(errMsg));
+    notification.error({ message: errMsg });
+  } else {
+    yield put(userActions.removeUserSuccess(data));
+    notification.success({ message: 'User remove success' });
+    yield put(push('/admin/user'));
+  }
+}
+
 export function* configAxios() {
   const token = yield select(getToken);
   configToken(token);
@@ -154,6 +170,7 @@ function* userFlow() {
   yield takeEvery(USER_ADD_NEW, addNewUser);
   yield takeEvery(USER_FETCH_SINGLE, userFetchSingle);
   yield takeEvery(USER_UPDATE, userUpdate);
+  yield takeEvery(USER_REMOVE, userRemove);
   while (1) {
     const action = yield take(USER_FETCH_LIST);
     yield call(fetchList, action);

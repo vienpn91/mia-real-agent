@@ -11,12 +11,18 @@ import {
   ItemDetailInfoHeadTitle,
 } from 'components/Generals/ItemDetail.styled';
 import { IconStyled } from 'components/Generals/General.styled';
+import { Button, Popconfirm } from 'antd';
 
 class UserDetailInfoHeader extends PureComponent {
   goToEditPage = () => {
     const { userId } = this.props;
     history.push(`/admin/users/${userId}/edit`);
   };
+
+  handleRemove = () => {
+    const { removeUser, userId } = this.props;
+    removeUser(userId);
+  }
 
   render() {
     const { username } = this.props;
@@ -28,6 +34,16 @@ class UserDetailInfoHeader extends PureComponent {
           <Link to="/admin/users" className="close-action">
             <IconStyled className="icon-close" />
           </Link>
+          <Popconfirm
+            title="Are you sure to remove this user?"
+            onConfirm={this.handleRemove}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button>
+              Remove
+            </Button>
+          </Popconfirm>
         </ItemDetailInfoActionGroup>
       </ItemDetailInfoHeaderWrapper>
     );
@@ -37,6 +53,7 @@ class UserDetailInfoHeader extends PureComponent {
 UserDetailInfoHeader.propTypes = {
   userId: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
+  removeUser: PropTypes.func.isRequired,
 };
 
 export default UserDetailInfoHeader;
