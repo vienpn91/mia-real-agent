@@ -18,8 +18,9 @@ import {
 
 class TicketActivity extends Component {
   componentDidMount = () => {
-    const { getTicketActivity } = this.props;
+    const { getTicketActivity, getApplicationSummary } = this.props;
     getTicketActivity();
+    getApplicationSummary();
   }
 
   renderActivityItem = (value) => {
@@ -36,10 +37,10 @@ class TicketActivity extends Component {
   };
 
   renderTicketActivitySummary = () => {
-    const { data } = this.props;
+    const { ticketActivity } = this.props;
     const {
-      resolved, pending, processing, closed,
-    } = data;
+      resolved = 0, pending = 0, processing = 0, closed = 0,
+    } = ticketActivity;
     return (
       <TicketActivityGroupItem>
         {this.renderActivityItem({
@@ -70,27 +71,31 @@ class TicketActivity extends Component {
     );
   }
 
-  renderInventorySummary = () => (
-    <TicketActivityQuantityGroup>
-      <TicketActivityQuantityItem>
-        <TicketActivityQuantityContent>
-          Quantity In Hand
-        </TicketActivityQuantityContent>
-        <TicketActivityQuantityNumber>
-          1000
-        </TicketActivityQuantityNumber>
-      </TicketActivityQuantityItem>
+  renderInventorySummary = () => {
+    const { applicationSummary } = this.props;
+    const { pending = 0, reviewing = 0 } = applicationSummary;
+    return (
+      <TicketActivityQuantityGroup>
+        <TicketActivityQuantityItem>
+          <TicketActivityQuantityContent>
+            Waiting for review
+          </TicketActivityQuantityContent>
+          <TicketActivityQuantityNumber>
+            {pending}
+          </TicketActivityQuantityNumber>
+        </TicketActivityQuantityItem>
 
-      <TicketActivityQuantityItem>
-        <TicketActivityQuantityContent>
-          Quantity To Be Received
-        </TicketActivityQuantityContent>
-        <TicketActivityQuantityNumber>
-          20
-        </TicketActivityQuantityNumber>
-      </TicketActivityQuantityItem>
-    </TicketActivityQuantityGroup>
-  );
+        <TicketActivityQuantityItem>
+          <TicketActivityQuantityContent>
+            Reviewing
+          </TicketActivityQuantityContent>
+          <TicketActivityQuantityNumber>
+            {reviewing}
+          </TicketActivityQuantityNumber>
+        </TicketActivityQuantityItem>
+      </TicketActivityQuantityGroup>
+    );
+  }
 
   render() {
     return (
@@ -108,7 +113,7 @@ class TicketActivity extends Component {
           {this.renderTicketActivitySummary()}
         </TicketActivityLeftItem>
         <TicketActivityRightItem>
-          <TicketActivityTitle>Inventory Summary</TicketActivityTitle>
+          <TicketActivityTitle>Applications Summary</TicketActivityTitle>
           {this.renderInventorySummary()}
         </TicketActivityRightItem>
       </TicketActivityWrapper>
@@ -117,7 +122,9 @@ class TicketActivity extends Component {
 }
 TicketActivity.propTypes = {
   getTicketActivity: func.isRequired,
-  data: shape().isRequired,
+  ticketActivity: shape().isRequired,
+  getApplicationSummary: func.isRequired,
+  applicationSummary: shape().isRequired,
 };
 
 export default TicketActivity;

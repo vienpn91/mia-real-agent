@@ -4,11 +4,13 @@ import { actions } from '../../../reducers/admin';
 import { selectors } from '../../../selectors/admin';
 
 const mapStateToProps = state => ({
-  data: selectors.getTicketActivityData(state),
+  ticketActivity: selectors.getTicketActivityData(state),
+  applicationSummary: selectors.getApplicationSummaryData(state),
 });
 
 const mapDispatchToProps = {
   getTicketActivity: actions.dashboardGetTicketActivity,
+  getApplicationSummary: actions.dashboardGetApplicationSummary,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TicketActivity);

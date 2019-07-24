@@ -7,6 +7,10 @@ export const DASHBOARD_GET_TICKET_ACTIVITY = 'admin/DASHBOARD_GET_TICKET_ACTIVIT
 export const DASHBOARD_GET_TICKET_ACTIVITY_SUCCESS = 'admin/DASHBOARD_GET_TICKET_ACTIVITY_SUCCESS';
 export const DASHBOARD_GET_TICKET_ACTIVITY_FAIL = 'admin/DASHBOARD_GET_TICKET_ACTIVITY_FAIL';
 
+export const DASHBOARD_GET_APPLICATION_SUMMARY = 'admin/DASHBOARD_GET_APPLICATION_SUMMARY';
+export const DASHBOARD_GET_APPLICATION_SUMMARY_SUCCESS = 'admin/DASHBOARD_GET_APPLICATION_SUMMARY_SUCCESS';
+export const DASHBOARD_GET_APPLICATION_SUMMARY_FAIL = 'admin/DASHBOARD_GET_APPLICATION_SUMMARY_FAIL';
+
 /*
  *
  * Admins actions
@@ -32,17 +36,41 @@ const dashboardGetTicketActivityFail = errorMessage => ({
   errorMessage,
 });
 
+const dashboardGetApplicationSummary = () => ({
+  type: DASHBOARD_GET_APPLICATION_SUMMARY,
+});
+
+const dashboardGetApplicationSummarySuccess = application => ({
+  type: DASHBOARD_GET_APPLICATION_SUMMARY_SUCCESS,
+  application,
+});
+
+const dashboardGetApplicationSummaryFail = errorMessage => ({
+  type: DASHBOARD_GET_APPLICATION_SUMMARY_FAIL,
+  errorMessage,
+});
+
 export const actions = {
   handleToggle,
   dashboardGetTicketActivity,
   dashboardGetTicketActivitySuccess,
   dashboardGetTicketActivityFail,
+
+  dashboardGetApplicationSummary,
+  dashboardGetApplicationSummarySuccess,
+  dashboardGetApplicationSummaryFail,
 };
 
 // initialState
 export const initialState = fromJS({
   toggleLeftSideBar: false,
   ticketActivity: {
+    isLoading: false,
+    data: {},
+    error: null,
+  },
+
+  applicationSummary: {
     isLoading: false,
     data: {},
     error: null,
@@ -72,6 +100,24 @@ function modalReducer(state = initialState, action) {
       return state
         .setIn(['ticketActivity', 'isLoading'], false)
         .setIn(['ticketActivity', 'error'], errorMessage);
+    }
+
+    case DASHBOARD_GET_APPLICATION_SUMMARY: {
+      return state
+        .setIn(['applicationSummary', 'isLoading'], true)
+        .setIn(['applicationSummary', 'data'], {});
+    }
+    case DASHBOARD_GET_APPLICATION_SUMMARY_SUCCESS: {
+      const { application } = action;
+      return state
+        .setIn(['applicationSummary', 'isLoading'], false)
+        .setIn(['applicationSummary', 'data'], application);
+    }
+    case DASHBOARD_GET_APPLICATION_SUMMARY_FAIL: {
+      const { errorMessage } = action;
+      return state
+        .setIn(['applicationSummary', 'isLoading'], false)
+        .setIn(['applicationSummary', 'error'], errorMessage);
     }
     default:
       return state;
