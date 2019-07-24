@@ -7,6 +7,7 @@ import profileSaga from './profile';
 import ticketSaga from './ticket';
 import chatSaga from './chat';
 import userSaga from './user';
+import adminSaga from './admin';
 import applicationSaga from './application';
 
 export default function* rootSagas() {
@@ -26,5 +27,6 @@ export default function* rootSagas() {
     chatSaga(),
     userSaga(),
     applicationSaga(),
+    adminSaga(),
   ]);
 }

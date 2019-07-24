@@ -1,11 +1,11 @@
 import React from 'react';
 import ShadowScrollbars from 'components/Scrollbar';
-import TicketActivity from './TicketActivity/TicketActivity';
 import TicketStatistic from './TicketStatistic/TicketStatistic';
 import {
   DashboardWrapperStyled,
   DashboardStatisticWarpper,
 } from './AdminDashboard.styled';
+import TicketActivity from '../../containers/AdminDashboard/TicketActivity/TicketActivity';
 
 const scrollStyle = {
   height: 'calc(100vh - 60px)',

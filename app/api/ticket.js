@@ -39,3 +39,8 @@ export const get = id => axios
   .get(`admin/tickets/${id}`)
   .then(response => ({ response }))
   .catch(error => ({ error }));
+
+export const getActivity = () => axios
+  .get('admin/tickets/dashboard/activity')
+  .then(response => ({ response }))
+  .catch(error => ({ error }));

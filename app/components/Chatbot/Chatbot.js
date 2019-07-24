@@ -143,7 +143,7 @@ export default class ChatbotComponent extends Component {
         <ChatbotTicketListWrapper>
           {this.renderTicketHeader()}
           {this.renderSearchTicket()}
-          <Tickets />
+          <Tickets openSetting={this.handleOpenSettingModal} />
         </ChatbotTicketListWrapper>
         <ChatbotContentWrapper>
           <Content>
