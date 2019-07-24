@@ -1,14 +1,14 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/prop-types */
 import React from 'react';
+import { shape } from 'prop-types';
 import {
   PieChart, Pie, Cell, Tooltip,
 } from 'recharts';
 import {
   TicketDetailGroupActiveItem,
   TicketDetailPercent,
-} from '../TicketStatistic/TicketStatistic.styled';
-import { func } from 'prop-types';
+} from './TicketActivity.styled';
 
 const ChartSize = 200;
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
@@ -71,7 +71,7 @@ const TicketDetailStatistic = ({ ticketActivity }) => (
 );
 
 TicketDetailStatistic.propTypes = {
-  ticketActivity: func.isRequired,
+  ticketActivity: shape().isRequired,
 };
 
 export default TicketDetailStatistic;

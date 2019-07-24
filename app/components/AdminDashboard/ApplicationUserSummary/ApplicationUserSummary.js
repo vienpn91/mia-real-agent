@@ -9,8 +9,9 @@ import {
   TicketActivityTitle,
 } from './ApplicationUserSummary.styled';
 import ApplicationSummary from '../ApplicationSummary';
+import UserSummary from '../UserSummary';
 
-const ApplicationUserSummary = ({ applicationSummary }) => (
+const ApplicationUserSummary = ({ applicationSummary, userSummary }) => (
   <TicketActivityWrapper>
     <TicketActivityLeftItem>
       <TicketActivityTitle>
@@ -19,8 +20,8 @@ const ApplicationUserSummary = ({ applicationSummary }) => (
       <ApplicationSummary applicationSummary={applicationSummary} />
     </TicketActivityLeftItem>
     <TicketActivityRightItem>
-      <TicketActivityTitle>Applications Summary</TicketActivityTitle>
-      {/* <TicketDetailStatistic /> */}
+      <TicketActivityTitle>Users Summary</TicketActivityTitle>
+      <UserSummary userSummary={userSummary} />
     </TicketActivityRightItem>
   </TicketActivityWrapper>
 );

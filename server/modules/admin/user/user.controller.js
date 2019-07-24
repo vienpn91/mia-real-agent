@@ -77,6 +77,53 @@ class UserController extends BaseController {
       return super.handleError(res, error);
     }
   }
+
+  getUserSummary = async (req, res) => {
+    try {
+      const notDeletedCondition = {
+        $or: [
+          { deleted: { $exists: false } },
+          { deleted: { $exists: true, $in: [false] } },
+        ],
+      };
+      const notArchivedCondition = {
+        $or: [
+          { archived: { $exists: false } },
+          { archived: { $exists: true, $in: [false] } },
+        ],
+      };
+
+      const queryCondition = {
+        $and: [notDeletedCondition, notArchivedCondition],
+      };
+
+      const userQuery = {
+        role: {
+          $in: [
+            ROLES.INDIVIDUAL,
+            ROLES.BUSINESS,
+          ],
+        },
+      };
+
+      const agentQuery = {
+        role: {
+          $in: [
+            ROLES.FREELANCER,
+            ROLES.FULLTIME,
+          ],
+        },
+      };
+
+      const user = await this.service.getUserCount({ ...queryCondition, ...userQuery });
+      const agent = await this.service.getUserCount({ ...queryCondition, ...agentQuery });
+      return res.status(httpStatus.OK).send({
+        user, agent,
+      });
+    } catch (error) {
+      return this.handleError(res, error);
+    }
+  }
 }
 
 export default new UserController();

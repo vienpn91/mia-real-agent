@@ -1,10 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { func, shape } from 'prop-types';
 import ShadowScrollbars from 'components/Scrollbar';
-import TicketStatistic from './TicketStatistic/TicketStatistic';
 import {
   DashboardWrapperStyled,
-  DashboardStatisticWarpper,
 } from './AdminDashboard.styled';
 import TicketActivity from './TicketActivity/TicketActivity';
 import ApplicationUserSummary from './ApplicationUserSummary/ApplicationUserSummary';
@@ -17,18 +15,22 @@ const scrollStyle = {
 
 export class AdminDashboard extends Component {
   componentDidMount = () => {
-    const { getTicketActivity, getApplicationSummary } = this.props;
+    const { getTicketActivity, getApplicationSummary, getUserSummary } = this.props;
     getTicketActivity();
     getApplicationSummary();
+    getUserSummary();
   }
 
   render() {
-    const { ticketActivity, applicationSummary } = this.props;
+    const { ticketActivity, applicationSummary, userSummary } = this.props;
     return (
       <DashboardWrapperStyled>
         <ShadowScrollbars autoHide style={scrollStyle}>
           <TicketActivity ticketActivity={ticketActivity} />
-          <ApplicationUserSummary applicationSummary={applicationSummary} />
+          <ApplicationUserSummary
+            applicationSummary={applicationSummary}
+            userSummary={userSummary}
+          />
         </ShadowScrollbars>
       </DashboardWrapperStyled>
     );
@@ -40,6 +42,8 @@ AdminDashboard.propTypes = {
   ticketActivity: shape().isRequired,
   getApplicationSummary: func.isRequired,
   applicationSummary: shape().isRequired,
+  getUserSummary: func.isRequired,
+  userSummary: shape().isRequired,
 };
 
 export default AdminDashboard;

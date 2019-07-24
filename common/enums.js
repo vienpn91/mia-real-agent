@@ -21,6 +21,7 @@ const ROLES = {
   AGENT: 'agent',
   BUSINESS: 'business',
   FREELANCER: 'freelancer',
+  FULLTIME: 'fulltime',
   EMPLOYEE: 'employee',
 };
 

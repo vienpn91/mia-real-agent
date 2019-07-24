@@ -80,3 +80,8 @@ export const remove = id => axios
   .delete(`admin/users/${id}`)
   .then(response => ({ response }))
   .catch(error => ({ error }));
+
+export const getUserSummary = () => axios
+  .get('admin/users/dashboard/summary')
+  .then(response => ({ response }))
+  .catch(error => ({ error }));

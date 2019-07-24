@@ -11,6 +11,10 @@ export const DASHBOARD_GET_APPLICATION_SUMMARY = 'admin/DASHBOARD_GET_APPLICATIO
 export const DASHBOARD_GET_APPLICATION_SUMMARY_SUCCESS = 'admin/DASHBOARD_GET_APPLICATION_SUMMARY_SUCCESS';
 export const DASHBOARD_GET_APPLICATION_SUMMARY_FAIL = 'admin/DASHBOARD_GET_APPLICATION_SUMMARY_FAIL';
 
+export const DASHBOARD_GET_USER_SUMMARY = 'admin/DASHBOARD_GET_USER_SUMMARY';
+export const DASHBOARD_GET_USER_SUMMARY_SUCCESS = 'admin/DASHBOARD_GET_USER_SUMMARY_SUCCESS';
+export const DASHBOARD_GET_USER_SUMMARY_FAIL = 'admin/DASHBOARD_GET_USER_SUMMARY_FAIL';
+
 /*
  *
  * Admins actions
@@ -50,6 +54,20 @@ const dashboardGetApplicationSummaryFail = errorMessage => ({
   errorMessage,
 });
 
+const dashboardGetUserSummary = () => ({
+  type: DASHBOARD_GET_USER_SUMMARY,
+});
+
+const dashboardGetUserSummarySuccess = user => ({
+  type: DASHBOARD_GET_USER_SUMMARY_SUCCESS,
+  user,
+});
+
+const dashboardGetUserSummaryFail = errorMessage => ({
+  type: DASHBOARD_GET_USER_SUMMARY_FAIL,
+  errorMessage,
+});
+
 export const actions = {
   handleToggle,
   dashboardGetTicketActivity,
@@ -59,6 +77,10 @@ export const actions = {
   dashboardGetApplicationSummary,
   dashboardGetApplicationSummarySuccess,
   dashboardGetApplicationSummaryFail,
+
+  dashboardGetUserSummary,
+  dashboardGetUserSummarySuccess,
+  dashboardGetUserSummaryFail,
 };
 
 // initialState
@@ -71,6 +93,12 @@ export const initialState = fromJS({
   },
 
   applicationSummary: {
+    isLoading: false,
+    data: {},
+    error: null,
+  },
+
+  userSummary: {
     isLoading: false,
     data: {},
     error: null,
@@ -118,6 +146,24 @@ function modalReducer(state = initialState, action) {
       return state
         .setIn(['applicationSummary', 'isLoading'], false)
         .setIn(['applicationSummary', 'error'], errorMessage);
+    }
+
+    case DASHBOARD_GET_USER_SUMMARY: {
+      return state
+        .setIn(['userSummary', 'isLoading'], true)
+        .setIn(['userSummary', 'data'], {});
+    }
+    case DASHBOARD_GET_USER_SUMMARY_SUCCESS: {
+      const { user } = action;
+      return state
+        .setIn(['userSummary', 'isLoading'], false)
+        .setIn(['userSummary', 'data'], user);
+    }
+    case DASHBOARD_GET_USER_SUMMARY_FAIL: {
+      const { errorMessage } = action;
+      return state
+        .setIn(['userSummary', 'isLoading'], false)
+        .setIn(['userSummary', 'error'], errorMessage);
     }
     default:
       return state;
