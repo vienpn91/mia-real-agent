@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import ConversationList from 'components/ConversationList';
 import { getUserRole } from 'reducers/auth';
+import ConversationList from '../../components/ConversationList';
 import {
   isFetchingList,
   getTotalConverations,

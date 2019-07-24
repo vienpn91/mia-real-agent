@@ -17,12 +17,12 @@ const scrollStyle = {
 
 export default class ConversationDetail extends Component {
   static propTypes = {
-    Conversation: shape().isRequired,
+    conversation: shape().isRequired,
   }
 
   renderOwnerInfo = () => {
-    const { Conversation } = this.props;
-    const { owner, ownerProfile } = Conversation;
+    const { conversation } = this.props;
+    const { owner, ownerProfile } = conversation;
     if (!owner) {
       return 'No Owner';
     }
@@ -41,8 +41,8 @@ export default class ConversationDetail extends Component {
   }
 
   renderAssigneeInfo = () => {
-    const { Conversation } = this.props;
-    const { assignee, assigneeProfile } = Conversation;
+    const { conversation } = this.props;
+    const { assignee, assigneeProfile } = conversation;
     if (!assignee) {
       return 'No Assignee';
     }
@@ -54,8 +54,8 @@ export default class ConversationDetail extends Component {
   }
 
   renderConversationInfo = () => {
-    const { Conversation } = this.props;
-    if (!Conversation) {
+    const { conversation } = this.props;
+    if (!conversation) {
       return (
         <ConversationInfoWrapper>
           <Descriptions column={4}>
@@ -66,11 +66,11 @@ export default class ConversationDetail extends Component {
     }
     const {
       title, description,
-    } = Conversation;
+    } = conversation;
     return (
       <ConversationInfoWrapper>
         <Descriptions column={5}>
-          <Descriptions.Item label="Conversation">{title}</Descriptions.Item>
+          <Descriptions.Item label="conversation">{title}</Descriptions.Item>
           <Descriptions.Item label="Description">{description}</Descriptions.Item>
           <Descriptions.Item label="Owner">{this.renderOwnerInfo()}</Descriptions.Item>
           <Descriptions.Item label="Assigne">{this.renderAssigneeInfo()}</Descriptions.Item>

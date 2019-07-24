@@ -18,7 +18,6 @@ const scrollStyle = {
 
 class Ticket extends Component {
   renderTicketItem = (ticket, index) => {
-    const { conversationList } = this.props;
     const { _id } = ticket;
 
     return (
@@ -27,7 +26,6 @@ class Ticket extends Component {
         ticket={ticket}
         index={index}
         // eslint-disable-next-line no-underscore-dangle
-        conversation={conversationList[_id]}
       />
     );
   };
@@ -77,7 +75,6 @@ class Ticket extends Component {
 Ticket.propTypes = {
   ticketList: PropTypes.array,
   fetchingContext: PropTypes.object,
-  conversationList: PropTypes.objectOf(PropTypes.any),
 };
 
 export default Ticket;

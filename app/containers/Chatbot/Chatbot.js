@@ -11,7 +11,6 @@ import {
   selectConversation,
 } from '../../reducers/conversations';
 import { getUserRole } from '../../reducers/auth';
-import { getChatLogByConversationId } from '../../reducers/chatlog';
 
 const mapStateToProps = state => ({
   userRole: getUserRole(state),
@@ -20,7 +19,6 @@ const mapStateToProps = state => ({
   total: getTotalConverations(state),
   errorMsg: getErrorMessage(state),
   currentConversation: getCurrentConveration(state),
-  chatLog: getChatLogByConversationId(state, getCurrentConverationId(state)),
 });
 
 const mapDispatchToProps = {

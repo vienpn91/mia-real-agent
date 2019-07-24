@@ -3,13 +3,25 @@ import _get from 'lodash/get';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import BaseController from '../base/base.controller';
 import ConversationService from './conversation.service';
+import ReplyService from '../reply/reply.service';
 
 class ConversationController extends BaseController {
   constructor() {
     super(ConversationService);
     this.getAll = this.getAll.bind(this);
+    this.getReplyMessages = this.getReplyMessages.bind(this);
   }
 
+  async getReplyMessages(req, res) {
+    try {
+      const { id } = req.params;
+      const replyMessages = await ReplyService.getByConversation(id);
+
+      return res.status(httpStatus.OK).send(replyMessages);
+    } catch (error) {
+      return super.handleError(res, error);
+    }
+  }
 
   async getAll(req, res) {
     try {

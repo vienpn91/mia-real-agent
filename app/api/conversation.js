@@ -15,6 +15,11 @@ export const getConversation = id => axios
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
+export const getConversationMessage = id => axios
+  .get(`conversations/${id}/replies`)
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
+
 export const updateConversation = ({ _id, ...rest }) => axios
   .put(`conversations/${_id}`, rest)
   .then(response => ({ response }))

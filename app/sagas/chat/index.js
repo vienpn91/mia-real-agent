@@ -1,45 +1,14 @@
 import {
-  call, put, select, takeLatest,
+  call, put, takeLatest,
 } from 'redux-saga/effects';
 import _get from 'lodash/get';
 import { DEFAULT_ERROR_MESSAGE } from 'utils/constants';
 import { notification } from 'antd';
 import {
-  actions, GET_CHAT, INSERT_MESSAGE, UPDATE_CHAT,
-  FIND_AGENT, ACCEPT_AGENT, REQUEST_CONFIRM, selectors,
+  actions, INSERT_MESSAGE,
+  FIND_AGENT, ACCEPT_AGENT, REQUEST_CONFIRM,
 } from '../../reducers/chat';
-import * as ChatApi from '../../api/chat';
 import * as AgentApi from '../../api/agent';
-import { combineChat } from './utils';
-
-export function* getChat({ payload }) {
-  const { ticketId, agentId } = payload;
-  const { response, error } = yield call(ChatApi.getChatByTicketAndAgent, ticketId, agentId);
-  if (error) {
-    const errorMessage = _get(
-      error, 'response.data.message', DEFAULT_ERROR_MESSAGE
-    );
-    yield put(actions.getChatFailAction(errorMessage));
-    return;
-  }
-  const { data } = response;
-  yield put(actions.getChatCompleteAction({ ...data, messages: [] }));
-}
-
-export function* updateChat() {
-  const { _id } = yield select(selectors.getChatData);
-  const { response, error } = yield call(ChatApi.getChat, _id);
-  if (error) {
-    const errorMessage = _get(
-      error, 'response.data.message', DEFAULT_ERROR_MESSAGE
-    );
-    yield put(actions.updateChatFailAction(errorMessage));
-    return;
-  }
-  const { data } = response;
-  const { messages } = data;
-  yield put(actions.updateChatCompleteAction({ ...data, messages: combineChat(messages) }));
-}
 
 export function* sendMessage({ payload }) {
   const {
@@ -99,8 +68,6 @@ export function* confirmRequest({ payload }) {
 }
 
 function* chatFlow() {
-  yield takeLatest(GET_CHAT, getChat);
-  yield takeLatest(UPDATE_CHAT, updateChat);
   yield takeLatest(INSERT_MESSAGE, sendMessage);
   yield takeLatest(FIND_AGENT, findAvailableAgent);
   yield takeLatest(ACCEPT_AGENT, acceptAgent);

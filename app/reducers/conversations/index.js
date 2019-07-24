@@ -1,20 +1,25 @@
 /* eslint-disable no-underscore-dangle */
-import { fromJS } from 'immutable';
+import { fromJS, Set as ISet } from 'immutable';
 
 export const CONVERSATION_FETCH = 'conversations/CONVERSATION_FETCH';
 export const CONVERSATION_FETCH_SUCCESS = 'conversations/CONVERSATION_FETCH_SUCCESS';
 export const CONVERSATION_FETCH_FAILED = 'conversations/CONVERSATION_FETCH_FAILED';
+
 export const CONVERSATION_GET_DETAIL = 'conversations/CONVERSATION_GET_DETAIL';
 export const CONVERSATION_GET_DETAIL_SUCCESS = 'conversations/CONVERSATION_GET_DETAIL_SUCCESS';
 export const CONVERSATION_GET_DETAIL_FAILED = 'conversations/CONVERSATION_GET_DETAIL_FAILED';
+
 export const CONVERSATION_SET_CURRENT = 'conversations/CONVERSATION_SET_CURRENT';
 
 
 // action creator
-export const fetchConversation = ticketId => ({
+
+// FETCH SINGLE CONVERSATION
+
+export const fetchConversation = conversationId => ({
   type: CONVERSATION_FETCH,
   payload: {
-    ticketId,
+    conversationId,
   },
 });
 
@@ -31,6 +36,8 @@ export const fetchConversationFailed = error => ({
     error,
   },
 });
+
+// FETCH CONVERSATION DETAIL
 
 export const getConversationDetail = id => ({
   type: CONVERSATION_GET_DETAIL,
@@ -52,6 +59,8 @@ export const getConversationDetailFailed = error => ({
     error,
   },
 });
+
+// SELECT CONVERSATION
 
 export const selectConversation = id => ({
   type: CONVERSATION_SET_CURRENT,
@@ -90,7 +99,7 @@ const initialState = fromJS({
   isFetchingAll: false,
   isFetchingSingleItem: false,
   byId: {},
-  allIds: [],
+  allIds: new ISet(),
   currentConversation: null,
   total: 0,
   errorMsg: '',
@@ -107,7 +116,7 @@ function conversationReducer(state = initialState, action) {
       let newState = state;
       let allIds = newState.get('allIds');
 
-      allIds = allIds.push(conversation._id);
+      allIds = allIds.add(conversation._id);
       newState = newState.setIn(['byId', conversation._id], conversation);
 
       return newState
@@ -139,7 +148,7 @@ function conversationReducer(state = initialState, action) {
     case CONVERSATION_GET_DETAIL_SUCCESS: {
       const { conversation } = action.payload;
       const { _id: id } = conversation;
-      const allIds = state.get('allIds').push(id);
+      const allIds = state.get('allIds').add(id);
 
       return state
         .setIn(['byId', id], conversation)

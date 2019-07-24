@@ -44,29 +44,23 @@ export default class MessageBox extends Component {
   }
 
   static propTypes = {
-    isGetting: bool.isRequired,
-    isFindingAgent: bool.isRequired,
     ticket: object.isRequired,
-    chatData: shape(),
-    sendMessage: func.isRequired,
-    findAgent: func.isRequired,
-    getChat: func.isRequired,
     userId: string.isRequired,
+    fetchReplyMessages: func.isRequired,
+    currentConversation: object,
   }
 
   static defaultProps = {
-    chatData: null,
+    currentConversation: {},
   }
 
   componentDidMount = () => {
-    const { getChat, ticket } = this.props;
-    const { _id, assignee } = ticket;
-    if (assignee) {
-      getChat(_id, assignee);
-    }
+    const { fetchReplyMessages, currentConversation } = this.props;
+    fetchReplyMessages(currentConversation._id);
   }
 
   componentDidUpdate = (prevProps) => {
+    return;
     this.scrollChatToBottom();
     const {
       chatData, getChat, ticket, userId,
@@ -82,7 +76,7 @@ export default class MessageBox extends Component {
       const { messages } = chatData;
       const last = messages[messages.length - 1];
       if (!last) {
-        return;
+
       }
       const { messageOwner, contents } = last;
       if (messageOwner === userId && !_isEmpty(pendingMessages)) {
@@ -133,6 +127,7 @@ export default class MessageBox extends Component {
   )
 
   renderMessageContent = () => {
+    return;
     const { chatData, userId, ticket } = this.props;
     const { assignee } = ticket;
     if (!assignee) {
@@ -210,8 +205,7 @@ export default class MessageBox extends Component {
   }
 
   renderMessageInput = () => {
-    const { isFindingAgent, ticket } = this.props;
-    const { assignee } = ticket;
+    const { isFindingAgent } = this.props;
     return (
       <Formik
         ref={(formik) => { this.formik = formik; }}
@@ -228,7 +222,6 @@ export default class MessageBox extends Component {
               {this.renderGroupAction()}
               <InputAction onClick={handleSubmit} className="mia-enter" />
               <Button
-                // disabled={assignee}
                 loading={isFindingAgent}
                 key="button"
                 type="primary"
@@ -262,7 +255,7 @@ export default class MessageBox extends Component {
   }
 
   render() {
-    const { isGetting, chatData, ticket } = this.props;
+    const { isGetting, chatData } = this.props;
     return (
       <LoadingSpin loading={isGetting}>
         {this.renderMessageHeader()}
@@ -282,7 +275,7 @@ export default class MessageBox extends Component {
               <div ref={this.messagesEndRef} />
             </ShadowScrollbars>
           </MessageBoxContent>
-          <ConversationDetail ticket={ticket} />
+          {/* <ConversationDetail conversation={ticket} /> */}
         </MessageBoxWrapper>
       </LoadingSpin>
     );

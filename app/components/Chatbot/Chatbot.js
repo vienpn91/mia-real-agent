@@ -32,32 +32,24 @@ export default class ChatbotComponent extends Component {
   }
 
   static propTypes = {
-    userRole: PropTypes.string.isRequired,
-    isFetchingList: PropTypes.bool,
-    isFetchingConversation: PropTypes.bool,
-    total: PropTypes.number,
     errorMsg: PropTypes.string,
-    chatLog: PropTypes.arrayOf(PropTypes.object),
     currentConversation: PropTypes.objectOf(PropTypes.any),
     selectConversation: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
-    isFetchingList: false,
-    isFetchingConversation: false,
-    total: 0,
-    errorMsg: '',
-    chatLog: [],
     currentConversation: null,
   }
 
   componentDidMount = () => {
     const { currentConversation, selectConversation } = this.props;
+    const id = _get(this.props, 'match.params.id', null);
+
     if (!currentConversation) {
       selectConversation(id);
       return;
     }
-    const id = _get(this.props, 'match.params.id', null);
+
     // const ticketId = _get(this.props, 'match.params.ticketId', null);
 
     // eslint-disable-next-line no-underscore-dangle
@@ -92,7 +84,7 @@ export default class ChatbotComponent extends Component {
   }
 
   goToDashboard = () => {
-    history.push('/dashboard');
+    history.push('/dashboard/ticket/1');
   }
 
   renderConversationHeader = () => (
@@ -132,7 +124,9 @@ export default class ChatbotComponent extends Component {
         <ChatbotConversationListWrapper>
           {this.renderConversationHeader()}
           {this.renderSearchConversation()}
-          <ConversationList />
+          <ConversationList
+            openSetting={this.handleOpenSettingModal}
+          />
         </ChatbotConversationListWrapper>
         <ChatbotContentWrapper>
           <Content>

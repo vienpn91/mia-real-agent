@@ -15,7 +15,7 @@ import user from './user';
 import admin from './admin';
 import system from './system';
 import conversations from './conversations';
-import chatlog from './chatlog';
+import replies from './replies';
 
 export const REHYDRATE_COMPLETE = 'root/REHYDRATE_COMPLETE';
 export const CLEAR_TRANSACTION = 'root/CLEAR_TRANSACTION';
@@ -35,7 +35,7 @@ export default function createReducer(injectedReducers = {}) {
     application,
     system,
     conversations,
-    chatlog,
+    replies,
     router: connectRouter(history),
     ...injectedReducers,
   });

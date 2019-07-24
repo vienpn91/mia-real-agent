@@ -14,12 +14,11 @@ class ReplyService extends BaseService {
     return saved;
   }
 
-  getByTicketAndAgent(ticketId, agentId) {
-    const chat = this.collection.findOne({
-      ticketId,
-      to: agentId,
+  getByConversation(conversationId) {
+    const replies = this.collection.find({
+      conversationId,
     }).exec();
-    return chat;
+    return replies;
   }
 }
 

@@ -21,7 +21,6 @@ class TicketItem extends Component {
   static propTypes = {
     ticket: object.isRequired,
     index: number,
-    conversation: object,
   }
 
   renderSubtitle = () => {
@@ -40,9 +39,9 @@ class TicketItem extends Component {
   }
 
   renderTicketContent = () => {
-    const { ticket, conversation = {} } = this.props;
-    const { _id: convId } = conversation;
-    const url = `/conversation/${convId}`;
+    const { ticket } = this.props;
+    const { conversationId } = ticket;
+    const url = `/conversation/${conversationId}`;
     return (
       <DashboardTitle>
         <DashboardRightBlock>

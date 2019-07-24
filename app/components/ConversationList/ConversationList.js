@@ -31,7 +31,7 @@ const scrollStyleMobile = {
   width: '100%',
 };
 
-class Conversations extends React.PureComponent {
+class ConversationList extends React.PureComponent {
   selectConversation = (conversationId) => {
     const { selectConversation } = this.props;
 
@@ -117,7 +117,7 @@ class Conversations extends React.PureComponent {
   }
 }
 
-Conversations.propTypes = {
+ConversationList.propTypes = {
   userRole: PropTypes.string.isRequired,
   isFetchingList: PropTypes.bool,
   total: PropTypes.number,
@@ -126,4 +126,4 @@ Conversations.propTypes = {
   conversationList: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-export default Conversations;
+export default ConversationList;
