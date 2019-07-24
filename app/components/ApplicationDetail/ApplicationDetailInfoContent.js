@@ -148,7 +148,7 @@ class ApplicationDetailInfoContent extends PureComponent {
       }
       {
         descriptions.map(({ description, value }) => (
-          <DescriptionWrapper>
+          <DescriptionWrapper key={description}>
             <p>
               {description}
             </p>
