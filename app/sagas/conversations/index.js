@@ -26,8 +26,6 @@ function* fetchConversationMessages({ payload }) {
     if (error) throw new Error(error);
     const data = get(response, 'data', {});
 
-    console.log(data);
-
     yield put(fetchReplyMessagesSuccess(conversationId, data));
   } catch (error) {
     console.log('[CONVERSATION SAGA - fetchConversationMessages] ERROR:', error.message);

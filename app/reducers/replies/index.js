@@ -1,12 +1,45 @@
 /* eslint-disable no-underscore-dangle */
-import { fromJS, Set as ISet, List } from 'immutable';
+import cuid from 'cuid';
+import {
+  fromJS, Set as ISet, List, Map,
+} from 'immutable';
 
 export const REPLIES_FETCH = 'replies/REPLIES_FETCH';
 export const REPLIES_FETCH_SUCCESS = 'replies/REPLIES_FETCH_SUCCESS';
 export const REPLIES_FETCH_FAILED = 'replies/REPLIES_FETCH_FAILED';
 
+export const REPLIES_SEND_MESSAGE = 'replies/REPLIES_SEND_MESSAGE';
+export const REPLIES_SEND_MESSAGE_SUCCESS = 'replies/REPLIES_SEND_MESSAGE_SUCCESS';
+export const REPLIES_SEND_MESSAGE_FAILED = 'replies/REPLIES_SEND_MESSAGE_FAILED';
 
 // action creator
+export const sendReplyMessage = (conversationId, message) => ({
+  type: REPLIES_SEND_MESSAGE,
+  payload: {
+    conversationId,
+    message,
+    localMessageId: cuid(),
+  },
+});
+
+export const sendReplyMessageSuccess = (conversationId, message, localMessageId) => ({
+  type: REPLIES_SEND_MESSAGE_SUCCESS,
+  payload: {
+    conversationId,
+    message,
+    localMessageId,
+  },
+});
+
+export const sendReplyMessageFailed = (conversationId, error, localMessageId) => ({
+  type: REPLIES_SEND_MESSAGE_FAILED,
+  payload: {
+    conversationId,
+    error,
+    localMessageId,
+  },
+});
+
 export const fetchReplyMessages = conversationId => ({
   type: REPLIES_FETCH,
   payload: {
@@ -33,24 +66,55 @@ export const fetchReplyMessagesFailed = (conversationId, error) => ({
 
 // selector
 export const getTotalReplyMessages = ({ replies }) => replies.get('total');
+
 export const getReplyMessagesByConversationId = ({ replies }, conversationId) => {
   const replyMessages = replies
     .getIn(['byId', conversationId]);
   if (!replyMessages) return [];
   return replyMessages.toJS();
 };
-export const getErrorMessage = ({ replies }, conversationId) => replies.getIn(['error', conversationId]);
-export const isFetchingReplies = ({ replies }, conversationId) => replies.get('isFetching').toObject()[conversationId];
+
+export const getErrorMessage = ({ replies }, conversationId) => {
+  if (!conversationId) return '';
+  const error = replies.getIn(['error', conversationId]);
+  if (!error) return '';
+
+  return error;
+};
+
+export const isFetchingReplies = ({ replies }, conversationId) => {
+  if (!conversationId) return false;
+  const isFetching = replies.get('isFetching');
+  return isFetching.has(conversationId);
+};
+
+export const getSendingMessages = ({ replies }, conversationId) => {
+  if (!conversationId) return {};
+  const sendingMessage = replies.getIn(['sendingMessage', conversationId]);
+  if (!sendingMessage) return {};
+
+  return sendingMessage.toJS();
+};
+
+export const getSendingMessagesError = ({ replies }, conversationId) => {
+  if (!conversationId) return {};
+  const sendingMessageError = replies.getIn(['sendingMessageError', conversationId]);
+  if (!sendingMessageError) return {};
+
+  return sendingMessageError.toJS();
+};
 
 const initialState = fromJS({
   isFetching: new ISet(),
-  byId: {},
   allIds: new ISet(),
-  total: 0,
+  byId: {},
   error: {},
+  total: 0,
+  sendingMessage: {},
+  sendingMessageError: {},
 });
 
-function profileReducer(state = initialState, action) {
+function repliesReducer(state = initialState, action) {
   switch (action.type) {
     case REPLIES_FETCH: {
       const { conversationId } = action.payload;
@@ -70,6 +134,7 @@ function profileReducer(state = initialState, action) {
       const allIds = state.get('allIds').add(conversationId);
       const isFetching = state.get('isFetching').delete(conversationId);
       let currentReplies = state.getIn(['byId', conversationId]);
+
       if (!currentReplies) {
         currentReplies = new List(replies);
       } else {
@@ -93,13 +158,106 @@ function profileReducer(state = initialState, action) {
         .set('error', error);
     }
 
+    /**
+     * Handle sending message
+     * We will have a sendingMessage map
+     * each key in map is a conversationId
+     * and value is another map which has localMessageId as a key and message as a value
+     * [conversationId]: {
+     *  [localMessageId]: {
+     *    id: localMessageId
+     *    message,
+     *  }
+     *  [localMessageId]: {
+     *    id: localMessageId
+     *    message,
+     *  }
+     * }
+     */
+    case REPLIES_SEND_MESSAGE: {
+      const { message, localMessageId, conversationId } = action.payload;
+      let sendingList = state.getIn(['sendingMessage', conversationId]);
+      const error = state.get('error').delete(conversationId);
+
+      if (!sendingList) {
+        sendingList = new Map({
+          [localMessageId]: {
+            id: localMessageId,
+            message,
+          },
+        });
+      } else {
+        sendingList = sendingList.set(localMessageId, {
+          id: localMessageId,
+          message,
+        });
+      }
+
+      const sendingMessage = state.setIn(['sendingMessage', conversationId], sendingList);
+
+      return state
+        .set('sendingMessage', sendingMessage)
+        .set('error', error);
+    }
+
+    case REPLIES_SEND_MESSAGE_SUCCESS: {
+      const { message, localMessageId, conversationId } = action.payload;
+      const sendingList = state.getIn(['sendingMessage', conversationId]).delete(localMessageId);
+      const currentReplies = state.getIn(['byId', conversationId]).push(message);
+      const sendingMessage = state.setIn(['sendingMessage', conversationId], sendingList);
+
+      return state
+        .set('sendingMessage', sendingMessage)
+        .setIn(['byId', conversationId], currentReplies);
+    }
+
+    /**
+     * Handle sending message failure
+     * Similar to sending message map
+     * each key in map is a conversationId
+     * and value is another map which has localMessageId as a key and error as a value
+     * [conversationId]: {
+     *  [localMessageId]: {
+     *    id: localMessageId
+     *    error,
+     *  }
+     *  [localMessageId]: {
+     *    id: localMessageId
+     *    error,
+     *  }
+     * }
+     */
+    case REPLIES_SEND_MESSAGE_FAILED: {
+      const { localMessageId, conversationId, error } = action.payload;
+      const sendingList = state.getIn(['sendingMessage', conversationId]).delete(localMessageId);
+      let sendingMessageError = state.getIn(['sendingMessageError', conversationId]);
+
+      if (!sendingMessageError) {
+        sendingMessageError = new Map({
+          [localMessageId]: {
+            id: localMessageId,
+            error,
+          },
+        });
+      } else {
+        sendingMessageError = sendingMessageError.set(localMessageId, {
+          id: localMessageId,
+          error,
+        });
+      }
+
+      return state
+        .set('sendingMessageError', sendingMessageError)
+        .set('sendingList', sendingList);
+    }
+
     default: {
       return state;
     }
   }
 }
 
-export default profileReducer;
+export default repliesReducer;
 
 export const actions = {
   fetchReplyMessages,

@@ -15,7 +15,6 @@ import * as UserApi from '../../api/user';
 import { configToken } from '../../api/config';
 
 function* getDashboardTicketActivity() {
-  yield configAxiosForAdmin();
   const { response, error } = yield call(TicketApi.getActivity);
   if (error) {
     const message = _get(
@@ -29,7 +28,6 @@ function* getDashboardTicketActivity() {
 }
 
 function* getDashboardApplicationSummary() {
-  yield configAxiosForAdmin();
   const { response, error } = yield call(ApplicationApi.getApplicationSummary);
   if (error) {
     const message = _get(
@@ -43,7 +41,6 @@ function* getDashboardApplicationSummary() {
 }
 
 function* getDashboardUserSummary() {
-  yield configAxiosForAdmin();
   const { response, error } = yield call(UserApi.getUserSummary);
   if (error) {
     const message = _get(
