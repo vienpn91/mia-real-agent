@@ -4,6 +4,7 @@ import _get from 'lodash/get';
 
 import BaseController from '../../base/base.controller';
 import TicketService from '../../ticket/ticket.service';
+import { TICKET_STATUS } from '../../../../common/enums';
 
 const emptyObjString = '{}';
 
@@ -27,6 +28,37 @@ class AdminTicketController extends BaseController {
       const query = JSON.parse(_get(params, 'query', emptyObjString));
       const result = await this.service.getAllWithUserData(query, option);
       return res.status(httpStatus.OK).send(result);
+    } catch (error) {
+      return this.handleError(res, error);
+    }
+  }
+
+  getTicketActivity = async (req, res) => {
+    try {
+      const notDeletedCondition = {
+        $or: [
+          { deleted: { $exists: false } },
+          { deleted: { $exists: true, $in: [false] } },
+        ],
+      };
+      const notArchivedCondition = {
+        $or: [
+          { archived: { $exists: false } },
+          { archived: { $exists: true, $in: [false] } },
+        ],
+      };
+
+      const queryCondition = {
+        $and: [notDeletedCondition, notArchivedCondition],
+      };
+
+      const resolved = await this.service.getTicketCount({ ...queryCondition, status: TICKET_STATUS.RESOLVED });
+      const pending = await this.service.getTicketCount({ ...queryCondition, status: TICKET_STATUS.PENDING });
+      const processing = await this.service.getTicketCount({ ...queryCondition, status: TICKET_STATUS.PROCESSING });
+      const closed = await this.service.getTicketCount({ ...queryCondition, status: TICKET_STATUS.CLOSED });
+      return res.status(httpStatus.OK).send({
+        resolved, pending, processing, closed,
+      });
     } catch (error) {
       return this.handleError(res, error);
     }

@@ -20,7 +20,7 @@ export const TicketActivityLeftItem = styled.div`
 `;
 
 export const TicketActivityRightItem = styled.div`
-  flex: 0 0 32%;
+  flex: 0 0 50%;
   padding: 30px 35px 30px 40px;
   border-left: 1px solid #d9d9d9;
   @media (max-width: 1024px) {

@@ -89,6 +89,11 @@ class TicketService extends BaseService {
     const result = await this.collection.find({ owner }).exec();
     return result;
   }
+
+  async getTicketCount(query) {
+    const result = await this.collection.find(query).count();
+    return result;
+  }
 }
 
 export default new TicketService(ticketCollection);

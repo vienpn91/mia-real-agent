@@ -29,3 +29,8 @@ export const get = id => axios
   .get(`admin/applications/${id}`)
   .then(response => ({ response }))
   .catch(error => ({ error }));
+
+export const getApplicationSummary = () => axios
+  .get('admin/applications/dashboard/summary')
+  .then(response => ({ response }))
+  .catch(error => ({ error }));

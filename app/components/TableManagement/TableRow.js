@@ -94,7 +94,7 @@ class TableRow extends React.PureComponent {
     return (
       <ActionBarStyled onClick={this.handleActionBarOnClick}>
         {icons.map(({ type, func = () => { } }) => (
-          <Icon type={type} onClick={() => func(item)} />
+          <Icon key={type} type={type} onClick={() => func(item)} />
         ))}
       </ActionBarStyled>
     );

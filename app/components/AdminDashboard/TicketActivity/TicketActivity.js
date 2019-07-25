@@ -1,4 +1,7 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
+import { shape } from 'prop-types';
 import {
   TicketActivityWrapper,
   TicketActivityLeftItem,
@@ -9,11 +12,9 @@ import {
   TicketActivityNumber,
   TicketActivityUnit,
   TicketActivityPurpose,
-  TicketActivityQuantityGroup,
-  TicketActivityQuantityItem,
-  TicketActivityQuantityContent,
-  TicketActivityQuantityNumber,
 } from './TicketActivity.styled';
+import TicketDetailStatistic from './TicketDetailStatistic';
+
 
 class TicketActivity extends Component {
   renderActivityItem = (value) => {
@@ -29,80 +30,61 @@ class TicketActivity extends Component {
     );
   };
 
-  renderTicketActivitySummary = () => (
-    <TicketActivityGroupItem>
-      {this.renderActivityItem({
-        number: 10,
-        unit: 'Qty',
-        color: '#1093de',
-        title: 'Tickets Resolved',
-      })}
-      {this.renderActivityItem({
-        number: 20,
-        unit: 'Qty',
-        color: '#db3f26',
-        title: 'Tickets Pending',
-      })}
-      {this.renderActivityItem({
-        number: 25,
-        unit: 'Qty',
-        color: '#388a10',
-        title: 'Tickets Processing',
-      })}
-      {this.renderActivityItem({
-        number: 30,
-        unit: 'Qty',
-        color: '#f4a204',
-        title: 'Tickets Closed',
-      })}
-    </TicketActivityGroupItem>
-  );
-
-  renderInventorySummary = () => (
-    <TicketActivityQuantityGroup>
-      <TicketActivityQuantityItem>
-        <TicketActivityQuantityContent>
-            Quantity In Hand
-        </TicketActivityQuantityContent>
-        <TicketActivityQuantityNumber>
-          1000
-        </TicketActivityQuantityNumber>
-      </TicketActivityQuantityItem>
-
-      <TicketActivityQuantityItem>
-        <TicketActivityQuantityContent>
-            Quantity To Be Received
-        </TicketActivityQuantityContent>
-        <TicketActivityQuantityNumber>
-          20
-        </TicketActivityQuantityNumber>
-      </TicketActivityQuantityItem>
-    </TicketActivityQuantityGroup>
-  );
+  renderTicketActivitySummary = () => {
+    const { ticketActivity } = this.props;
+    const {
+      resolved = 0, pending = 0, processing = 0, closed = 0,
+    } = ticketActivity;
+    return (
+      <TicketActivityGroupItem>
+        {this.renderActivityItem({
+          number: resolved,
+          unit: 'Qty',
+          color: '#1093de',
+          title: 'Tickets Resolved',
+        })}
+        {this.renderActivityItem({
+          number: pending,
+          unit: 'Qty',
+          color: '#db3f26',
+          title: 'Tickets Pending',
+        })}
+        {this.renderActivityItem({
+          number: processing,
+          unit: 'Qty',
+          color: '#388a10',
+          title: 'Tickets Processing',
+        })}
+        {this.renderActivityItem({
+          number: closed,
+          unit: 'Qty',
+          color: '#f4a204',
+          title: 'Tickets Closed',
+        })}
+      </TicketActivityGroupItem>
+    );
+  }
 
   render() {
+    const { ticketActivity } = this.props;
     return (
       <TicketActivityWrapper>
         <TicketActivityLeftItem>
           <TicketActivityTitle>
             Tickets Activity
-            {/* <TimeSelect
-              items={TIME_FILTER}
-              timeSelected={timeSelected}
-              selectTime={this.selectTime}
-              datePickerPlacement={PLACEMENT.LEFT}
-            /> */}
           </TicketActivityTitle>
           {this.renderTicketActivitySummary()}
         </TicketActivityLeftItem>
         <TicketActivityRightItem>
-          <TicketActivityTitle>Inventory Summary</TicketActivityTitle>
-          {this.renderInventorySummary()}
+          <TicketActivityTitle>Tickets Detail</TicketActivityTitle>
+          <TicketDetailStatistic ticketActivity={ticketActivity} />
         </TicketActivityRightItem>
       </TicketActivityWrapper>
     );
   }
 }
-TicketActivity.propTypes = {};
+TicketActivity.propTypes = {
+  ticketActivity: shape().isRequired,
+};
 
 export default TicketActivity;

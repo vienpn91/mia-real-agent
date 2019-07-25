@@ -85,6 +85,11 @@ class UserService extends BaseService {
   delete(id) {
     return this.collection.updateOne({ _id: id }, { deletedAt: new Date(), token: null }).exec();
   }
+
+  async getUserCount(query) {
+    const result = await this.collection.find(query).count();
+    return result;
+  }
 }
 
 export default new UserService();

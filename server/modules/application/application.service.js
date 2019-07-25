@@ -50,6 +50,11 @@ class ApplicationService extends BaseService {
       totalRecord: await this.countDocument(queryCondition),
     };
   }
+
+  async getApplicationCount(query) {
+    const result = await this.collection.find(query).count();
+    return result;
+  }
 }
 
 export default new ApplicationService(applicationCollection);

@@ -82,7 +82,7 @@ class HeaderContainer extends PureComponent {
       sorting,
       handleSort,
       sortItem,
-      url,
+      url = '',
       shouldRenderNewButton = true,
       shouldRenderSendEmailButton = false,
     } = this.props;
