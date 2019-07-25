@@ -1,12 +1,20 @@
 import UserQueue from '../queue/userQueue';
 
+export const emitNewMessage = (payload) => {
+  const { to } = payload;
+  const toUser = UserQueue.getUser(to);
+
+  if (!toUser) return;
+  toUser.emit('NEW_MESSAGE', payload);
+};
+
 export const unregister = (id, socket) => {
   UserQueue.removeUser(id);
   deaf(socket);
 };
 
 export const deaf = (socket) => {
-  socket.off('REPLY_MESSAGE');
+  socket.off('REPLY_MESSAGE', emitNewMessage);
 };
 
 export const register = (id, socket) => {
@@ -27,11 +35,5 @@ export const listen = (socket) => {
    *  message
    * }
    */
-  socket.on('REPLY_MESSAGE', (payload) => {
-    const { to } = payload;
-    const toUser = UserQueue.getUser(to);
-
-    if (!toUser) return;
-    toUser.emit('NEW_MESSAGE', payload);
-  });
+  socket.on('REPLY_MESSAGE', emitNewMessage);
 };
