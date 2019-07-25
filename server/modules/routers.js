@@ -7,6 +7,7 @@ import ApplicationRouter from './application/application.route';
 import AgentRouter from './agent/agent.route';
 import ConversationRouter from './conversation/conversation.route';
 import AdminRouter from './admin/routers';
+import ReplyRouter from './reply/reply.route';
 
 const router = express.Router();
 
@@ -18,5 +19,6 @@ export default () => {
   router.use('/agents', AgentRouter.router);
   router.use('/conversations', ConversationRouter.router);
   router.use('/admin', AdminRouter.router);
+  router.use('/reply', ReplyRouter.router);
   return router;
 };

@@ -7,13 +7,6 @@ class ReplyService extends BaseService {
     super(ReplyCollection);
   }
 
-  async insertReply(model, msg) {
-    const { messages } = model;
-    _.assign(model, { messages: messages.concat(msg) });
-    const saved = await model.save();
-    return saved;
-  }
-
   getByConversation(conversationId) {
     const replies = this.collection.find({
       conversationId,
