@@ -12,7 +12,8 @@ import {
 import { actions } from '../../reducers/chat';
 
 /* events */
-const UPDATE_CHAT = 'UPDATE_CHAT';
+const NEW_MESSAGE = 'NEW_MESSAGE';
+const REPLY_MESSAGE = 'REPLY_MESSAGE';
 const REQUEST_AVAILABLE = 'REQUEST_AVAILABLE';
 const REQUEST_CONFIRM = 'REQUEST_CONFIRM';
 
@@ -37,34 +38,31 @@ function createSocketConnection(token) {
   // const endpoint = process.env.SOCKETIO_ENDPOINT;
   const socket = socketIOClient('/', {
     path: '/chat',
-    upgradeTimeout: 30000000, // default value is 10000ms, try changing it to 20k or more
+    upgradeTimeout: 30000, // 5 minutes
   });
   socket.heartbeatTimeout = 1000;
   socket.on('connect', () => {
     socket
       .emit('authenticate', { token }) // send the jwt
       .on('unauthorized', (msg) => {
-        console.log(`unauthorized: ${JSON.stringify(msg.data)}`);
+        console.log(`[SOCKET] Unauthorized: ${JSON.stringify(msg.data)}`);
         // socket.disconnect();
       })
       .on('disconnect', (reason) => {
-        console.log('reasson', reason);
+        console.log('[SOCKET] Server disconnected', reason);
         // socketConnection.connect();
       });
   });
-  return new Promise((resolve) => {
-    socket.on('connect', () => {
-      resolve(socket);
-    });
-  });
+  return socket;
 }
 
-function* updateChat() {
-  const socketChannel = yield call(createSocketChannel, socketConnection, UPDATE_CHAT);
+function* handleNewMessage() {
+  const socketChannel = yield call(createSocketChannel, socketConnection, NEW_MESSAGE);
 
   // watch message and relay the action
   while (true) {
-    yield take(socketChannel);
+    const data = yield take(socketChannel);
+    console.log(data);
     yield put(actions.updateChatAction());
   }
 }
@@ -95,9 +93,12 @@ function* requestConfirm() {
 
 function* connectFlow() {
   const token = yield select(getToken);
-  socketConnection = yield call(createSocketConnection, token);
+  // user is not logged in
+  if (!token) return;
+  socketConnection = createSocketConnection(token);
+
   yield all([
-    updateChat(),
+    handleNewMessage(),
     requestAgent(),
     requestConfirm(),
   ]);
@@ -110,6 +111,15 @@ function* disconnectFlow() {
 function* socketIOFlow() {
   yield takeEvery([AUTH_LOGIN_SUCCESS], connectFlow);
   yield takeEvery(AUTH_LOGOUT, disconnectFlow);
+}
+
+export function emitReply(from, to, conversation, message) {
+  socketConnection.emit(REPLY_MESSAGE, {
+    from,
+    to,
+    conversation,
+    message,
+  });
 }
 
 export default socketIOFlow;

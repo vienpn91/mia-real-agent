@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const TicketTabWrapper = styled.div`
   max-width: 980px;
-  width: calc(100% - 30px);
+  width: 100%;
   margin: 0 auto;
 `;
 

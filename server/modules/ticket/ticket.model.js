@@ -6,6 +6,10 @@ const { Schema } = mongoose;
 const ticketSchema = new Schema(
   {
     ticketId: String,
+    conversationId: {
+      type: Schema.Types.ObjectId,
+      required: false,
+    },
     title: { type: String, trim: true },
     description: { type: String, trim: true },
     status: {
@@ -16,13 +20,17 @@ const ticketSchema = new Schema(
     category: [String],
     owner: { type: Schema.Types.ObjectId, ref: 'User' },
     assignee: { type: Schema.Types.ObjectId, ref: 'User' },
-    deleted: {
-      type: Boolean,
-      default: false,
+    deletedAt: {
+      type: Date,
+      default: null,
     },
-    archived: {
-      type: Boolean,
-      default: false,
+    archivedAt: {
+      type: Date,
+      default: null,
+    },
+    createdAt: {
+      type: Date,
+      default: () => new Date(),
     },
   },
   {

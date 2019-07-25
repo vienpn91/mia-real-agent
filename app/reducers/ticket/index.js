@@ -2,29 +2,29 @@ import { fromJS } from 'immutable';
 import _keyBy from 'lodash/keyBy';
 import _get from 'lodash/get';
 
-export const CREATE = 'ticket/CREATE';
-export const CREATE_SUCCESS = 'ticket/CREATE_SUCCESS';
-export const CREATE_FAIL = 'ticket/CREATE_FAIL';
+export const TICKET_CREATE = 'ticket/CREATE';
+export const TICKET_CREATE_SUCCESS = 'ticket/CREATE_SUCCESS';
+export const TICKET_CREATE_FAIL = 'ticket/CREATE_FAIL';
 
-export const GET_ALL = 'ticket/GET_ALL';
-export const GET_ALL_SUCCESS = 'ticket/GET_ALL_SUCCESS';
-export const GET_ALL_FAIL = 'ticket/GET_ALL_FAIL';
+export const TICKET_GET_ALL = 'ticket/GET_ALL';
+export const TICKET_GET_ALL_SUCCESS = 'ticket/GET_ALL_SUCCESS';
+export const TICKET_GET_ALL_FAIL = 'ticket/GET_ALL_FAIL';
 
-export const GET = 'ticket/GET';
-export const GET_SUCCESS = 'ticket/GET_SUCCESS';
-export const GET_FAIL = 'ticket/GET_FAIL';
+export const TICKET_GET_DETAIL = 'ticket/GET';
+export const TICKET_GET_DETAIL_SUCCESS = 'ticket/GET_SUCCESS';
+export const TICKET_GET_DETAIL_FAIL = 'ticket/GET_FAIL';
 
-export const ARCHIVE = 'ticket/ARCHIVE';
-export const ARCHIVE_SUCCESS = 'ticket/ARCHIVE_SUCCESS';
-export const ARCHIVE_FAIL = 'ticket/GET_FAIL';
+export const TICKET_ARCHIVE = 'ticket/ARCHIVE';
+export const TICKET_ARCHIVE_SUCCESS = 'ticket/ARCHIVE_SUCCESS';
+export const TICKET_ARCHIVE_FAIL = 'ticket/GET_FAIL';
 
-export const UPDATE = 'ticket/UPDATE';
-export const UPDATE_SUCCESS = 'ticket/UPDATE_SUCCESS';
+export const TICKET_UPDATE = 'ticket/UPDATE';
+export const TICKET_UPDATE_SUCCESS = 'ticket/UPDATE_SUCCESS';
 export const UPDATE_FAIL = 'ticket/UPDATE_FAIL';
 
-export const REMOVE = 'ticket/REMOVE';
-export const REMOVE_SUCCESS = 'ticket/REMOVE_SUCCESS';
-export const REMOVE_FAIL = 'ticket/REMOVE_FAIL';
+export const TICKET_REMOVE = 'ticket/REMOVE';
+export const TICKET_REMOVE_SUCCESS = 'ticket/REMOVE_SUCCESS';
+export const TICKET_REMOVE_FAIL = 'ticket/REMOVE_FAIL';
 
 export const TICKET_SORTING = 'ticket/TICKET_SORTING';
 export const TICKET_FILTER = 'ticket/TICKET_FILTER';
@@ -41,18 +41,18 @@ export const TICKET_ADMIN_GET_ALL = 'ticket/ADMIN_GET_ALL';
 // action creator
 
 const createAction = payload => ({
-  type: CREATE,
+  type: TICKET_CREATE,
   payload,
 });
 
 
 const createCompleteAction = payload => ({
-  type: CREATE_SUCCESS,
+  type: TICKET_CREATE_SUCCESS,
   payload,
 });
 
 const createFailAction = errorMessage => ({
-  type: CREATE_FAIL,
+  type: TICKET_CREATE_FAIL,
   payload: {
     errorMessage,
   },
@@ -63,25 +63,25 @@ const ticketAdminGetAll = payload => ({
   payload,
 });
 
-const getAllAction = payload => ({
-  type: GET_ALL,
+export const getAllTicketAction = payload => ({
+  type: TICKET_GET_ALL,
   payload,
 });
 
 
-const getAllCompleteAction = (data, totalRecord) => ({
-  type: GET_ALL_SUCCESS,
+const getAllTicketCompleteAction = (data, totalRecord) => ({
+  type: TICKET_GET_ALL_SUCCESS,
   data,
   totalRecord,
 });
 
-const getAllFailAction = errorMsg => ({
-  type: GET_ALL_FAIL,
+const getAllTicketFailAction = errorMsg => ({
+  type: TICKET_GET_ALL_FAIL,
   errorMsg,
 });
 
 const getAction = (ticketId, owner) => ({
-  type: GET,
+  type: TICKET_GET_DETAIL,
   payload: {
     ticketId,
     owner,
@@ -89,46 +89,46 @@ const getAction = (ticketId, owner) => ({
 });
 
 const getCompleteAction = ticket => ({
-  type: GET_SUCCESS,
+  type: TICKET_GET_DETAIL_SUCCESS,
   payload: {
     ticket,
   },
 });
 
 const getFailAction = errorMessage => ({
-  type: GET_FAIL,
+  type: TICKET_GET_DETAIL_FAIL,
   payload: {
     errorMessage,
   },
 });
 
 const archiveAction = ticketId => ({
-  type: ARCHIVE,
+  type: TICKET_ARCHIVE,
   payload: {
     ticketId,
   },
 });
 
 const archiveCompleteAction = ticket => ({
-  type: ARCHIVE_SUCCESS,
+  type: TICKET_ARCHIVE_SUCCESS,
   payload: ticket,
 });
 
 const archiveFailAction = errorMessage => ({
-  type: ARCHIVE_FAIL,
+  type: TICKET_ARCHIVE_FAIL,
   payload: {
     errorMessage,
   },
 });
 
 const updateAction = ticket => ({
-  type: UPDATE,
+  type: TICKET_UPDATE,
   payload: { ticket },
 });
 
 
 const updateCompleteAction = ticket => ({
-  type: UPDATE_SUCCESS,
+  type: TICKET_UPDATE_SUCCESS,
   payload: ticket,
 });
 
@@ -140,19 +140,19 @@ const updateFailAction = errorMessage => ({
 });
 
 const removeAction = ticketId => ({
-  type: REMOVE,
+  type: TICKET_REMOVE,
   payload: {
     ticketId,
   },
 });
 
 const removeCompleteAction = ticket => ({
-  type: REMOVE_SUCCESS,
+  type: TICKET_REMOVE_SUCCESS,
   payload: ticket,
 });
 
 const removeFailAction = errorMessage => ({
-  type: REMOVE_FAIL,
+  type: TICKET_REMOVE_FAIL,
   payload: {
     errorMessage,
   },
@@ -236,10 +236,10 @@ export const initialState = fromJS({
 
 function ticketReducer(state = initialState, action) {
   switch (action.type) {
-    case CREATE:
+    case TICKET_CREATE:
       return state.set('isCreating', true)
         .set('createError', '');
-    case CREATE_SUCCESS: {
+    case TICKET_CREATE_SUCCESS: {
       const { payload } = action;
       const { ticketId, owner } = payload;
       const visibleTicketIds = state.get('visibleTicketIds').toJS();
@@ -249,28 +249,28 @@ function ticketReducer(state = initialState, action) {
         .setIn(['tickets', `${ticketId}#${owner}`], fromJS(payload))
         .set('visibleTicketIds', fromJS(newVisibleTicketIds));
     }
-    case CREATE_FAIL:
+    case TICKET_CREATE_FAIL:
       return state.set('isCreating', false)
         .set('createError', action.errorMessage);
 
-    case GET:
+    case TICKET_GET_DETAIL:
       return state.set('isGetting', true)
         .set('getError', '');
-    case GET_SUCCESS: {
+    case TICKET_GET_DETAIL_SUCCESS: {
       const { ticket } = action.payload;
       const { ticketId, owner } = ticket;
       return state.set('isGetting', false)
         .setIn(['tickets', `${ticketId}#${owner}`], fromJS(ticket));
     }
-    case GET_FAIL:
+    case TICKET_GET_DETAIL_FAIL:
       return state.set('isGetting', false)
         .set('getError', action.payload.errorMessage);
 
-    case ARCHIVE:
+    case TICKET_ARCHIVE:
       return state.set('isArchiving', true)
         .set('archiveError', '');
 
-    case ARCHIVE_SUCCESS: {
+    case TICKET_ARCHIVE_SUCCESS: {
       const { payload } = action;
       const { ticketId, owner } = payload;
       const visibleTicketIds = state.get('visibleTicketIds').toJS();
@@ -281,15 +281,15 @@ function ticketReducer(state = initialState, action) {
         .set('visibleTicketIds', fromJS(newVisibleTicketIds));
     }
 
-    case ARCHIVE_FAIL:
+    case TICKET_ARCHIVE_FAIL:
       return state.set('isArchiving', false)
         .set('archiveError', action.payload.errorMessage);
 
-    case UPDATE:
+    case TICKET_UPDATE:
       return state.set('isUpdating', true)
         .set('updateError', '');
 
-    case UPDATE_SUCCESS: {
+    case TICKET_UPDATE_SUCCESS: {
       const { payload } = action;
       const { ticketId, owner } = payload;
       return state.set('isUpdating', false)
@@ -299,11 +299,11 @@ function ticketReducer(state = initialState, action) {
       return state.set('isUpdating', false)
         .set('updateError', action.payload.errorMessage);
 
-    case REMOVE:
+    case TICKET_REMOVE:
       return state.set('isRemoving', true)
         .set('removeError', '');
 
-    case REMOVE_SUCCESS: {
+    case TICKET_REMOVE_SUCCESS: {
       const { payload } = action;
       const { ticketId, owner } = payload;
       const visibleTicketIds = state.get('visibleTicketIds').toJS();
@@ -313,14 +313,14 @@ function ticketReducer(state = initialState, action) {
         .removeIn(['tickets', `${ticketId}#${owner}`])
         .set('visibleTicketIds', fromJS(newVisibleTicketIds));
     }
-    case REMOVE_FAIL:
+    case TICKET_REMOVE_FAIL:
       return state.set('isRemoving', false)
         .set('removeError', action.payload.errorMessage);
 
     case TICKET_ADMIN_GET_ALL:
-    case GET_ALL:
+    case TICKET_GET_ALL:
       return state.set('fetching', fromJS({ isFetching: true, errorMsg: '' }));
-    case GET_ALL_SUCCESS: {
+    case TICKET_GET_ALL_SUCCESS: {
       const { data, totalRecord } = action;
       const newTickets = state
         .get('tickets')
@@ -339,7 +339,7 @@ function ticketReducer(state = initialState, action) {
         .set('totalRecord', totalRecord)
         .set('fetching', fromJS(fetchingObj));
     }
-    case GET_ALL_FAIL:
+    case TICKET_GET_ALL_FAIL:
       return state.set('fetching', fromJS({ isFetching: false, errorMsg: action.errorMsg }));
     case TICKET_CHANGE_PAGE:
       return state
@@ -368,9 +368,9 @@ export const actions = {
   createFailAction,
 
   ticketAdminGetAll,
-  getAllAction,
-  getAllCompleteAction,
-  getAllFailAction,
+  getAllTicketAction,
+  getAllTicketCompleteAction,
+  getAllTicketFailAction,
 
   getAction,
   getCompleteAction,

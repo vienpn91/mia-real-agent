@@ -14,6 +14,8 @@ import history from '../utils/history';
 import user from './user';
 import admin from './admin';
 import system from './system';
+import conversations from './conversations';
+import replies from './replies';
 
 export const REHYDRATE_COMPLETE = 'root/REHYDRATE_COMPLETE';
 export const CLEAR_TRANSACTION = 'root/CLEAR_TRANSACTION';
@@ -32,6 +34,8 @@ export default function createReducer(injectedReducers = {}) {
     admin,
     application,
     system,
+    conversations,
+    replies,
     router: connectRouter(history),
     ...injectedReducers,
   });

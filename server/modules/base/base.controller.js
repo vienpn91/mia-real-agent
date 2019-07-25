@@ -9,7 +9,13 @@ const emptyObjString = '{}';
 export default class BaseController {
   constructor(service) {
     this.service = service;
-    this.handleError.bind(this);
+    this.handleError = this.handleError.bind(this);
+    this.load = this.load.bind(this);
+    this.insert = this.insert.bind(this);
+    this.update = this.update.bind(this);
+    this.get = this.get.bind(this);
+    this.getAll = this.getAll.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
   handleError(res, error) {
@@ -18,7 +24,7 @@ export default class BaseController {
     return res.status(status).send(error.message);
   }
 
-  load = async (req, res, next, id) => {
+  async load(req, res, next, id) {
     try {
       if (!mongoose.Types.ObjectId.isValid(id)) {
         const { CONTENT_NOT_FOUND } = ERROR_MESSAGE;
@@ -38,7 +44,7 @@ export default class BaseController {
     }
   }
 
-  insert = async (req, res) => {
+  async insert(req, res) {
     try {
       const data = req.body;
       const result = await this.service.insert(data);
@@ -48,7 +54,7 @@ export default class BaseController {
     }
   }
 
-  update = async (req, res) => {
+  async update(req, res) {
     try {
       const { model } = req;
       const newModel = req.body;
@@ -61,7 +67,7 @@ export default class BaseController {
     }
   }
 
-  get = async (req, res) => {
+  async get(req, res) {
     try {
       const { model } = req;
 
@@ -71,7 +77,7 @@ export default class BaseController {
     }
   }
 
-  getAll = async (req, res) => {
+  async getAll(req, res) {
     try {
       const {
         skip = 0, limit = 10, sort, ...params
@@ -89,10 +95,10 @@ export default class BaseController {
     }
   }
 
-  delete = async (req, res) => {
+  async delete(req, res) {
     try {
       const { model } = req;
-      model.deleted = true;
+      model.deletedAt = new Date();
       const deleteModel = await model.save();
       return res.status(httpStatus.OK).send(deleteModel);
     } catch (error) {

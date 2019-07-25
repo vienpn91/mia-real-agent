@@ -53,6 +53,7 @@ module.exports = options => ({
   ]),
 
   resolve: {
+    modules: ['node_modules', 'server'],
     extensions: ['.ts', '.js', 'html'],
   },
 

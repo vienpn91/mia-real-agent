@@ -12,13 +12,14 @@ import {
 } from '../../mail';
 
 const { SECRET_KEY_JWT } = process.env;
-const JWT_OPTIONS = {
-  expiresIn: '1d',
-};
 
 class UserService extends BaseService {
   constructor() {
     super(userCollection);
+  }
+
+  getByUsername(username) {
+    return userCollection.findOne({ username }).exec();
   }
 
   getByEmail(email) {
@@ -63,14 +64,14 @@ class UserService extends BaseService {
         throw new Error('User does not exists');
       }
       const { _id: userId } = user;
-      const token = jwt.sign({ userId }, SECRET_KEY_JWT, JWT_OPTIONS);
+      const token = jwt.sign({ userId }, SECRET_KEY_JWT);
       const vericationLink = `${DOMAIN}/api/users/verify/${token}`;
       sendUserVerifyMail(user, vericationLink);
     }
   }
 
   async verifyAccount(token) {
-    const data = jwt.verify(token, SECRET_KEY_JWT, JWT_OPTIONS);
+    const data = jwt.verify(token, SECRET_KEY_JWT);
     const { userId } = data;
     const user = await this.collection.findOne({ _id: userId }).exec();
     const { verifiedAt } = user;

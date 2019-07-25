@@ -103,7 +103,6 @@ export class ApplicationForm extends Component {
       ...educationData,
       ...values,
     };
-    console.log(data);
 
     onSubmit(data);
   }

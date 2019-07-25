@@ -1,6 +1,6 @@
 
 /* eslint consistent-return:0 import/order:0 */
-import '@babel/polyfill';
+import '@babel/polyfill/noConflict';
 import { resolve, join } from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';

@@ -3,6 +3,7 @@ import socketioJwt from 'socketio-jwt';
 import Logger from '../logger';
 import AgentQueue from '../modules/queue/agentQueue';
 import { ROLES } from '../../common/enums';
+import { register, unregister } from '../modules/chat/chat.socket';
 
 const ACTION_MESSAGE = 'ACTION_MESSAGE';
 
@@ -23,16 +24,27 @@ class SocketIOServer {
         }))
       .on('authenticated', async (socket) => {
         const { data: user } = await this.authenticate(socket);
-        const { email, role } = user;
-        Logger.info(`[Socket.io]: The foul [${email}] has join the fray`);
-        socket.on('disconnect', async () => {
-          Logger.info('[Socket.io]: The foul has exit the fray');
-          AgentQueue.remove(user);
-        });
+        if (!user) {
+          // HMR error
+          Logger.warning('[Socket.io]: An invalid foul! Disconnecting...');
+          socket.disconnect();
+          return;
+        }
+        const { email, role, _id: id } = user;
         const { connected } = socketIO.sockets;
         const { id: socketId } = socket.conn;
+
+        socket.on('disconnect', async () => {
+          Logger.info('[Socket.io]: The foul has exit the fray');
+          unregister(id.toString(), socket);
+          AgentQueue.remove(user);
+        });
+
+        Logger.info(`[Socket.io]: The foul [${email}] has join the fray`);
+        register(id.toString(), socket);
         connected[socketId] = socket;
         if (role === ROLES.AGENT) {
+          Logger.info(`[Socket.io]: The foul [${email}] has upgraded to a magical agent`);
           AgentQueue.add({ user, socketId });
         }
       });

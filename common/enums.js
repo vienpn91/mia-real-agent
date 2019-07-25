@@ -1,4 +1,4 @@
-const VALIDATION_ERROR_MESSAGE = {
+export const VALIDATION_ERROR_MESSAGE = {
   REQUIRED: 'Required',
   INVALID: 'Invalid',
   TOO_SHORT: 'Too Short',
@@ -9,13 +9,13 @@ const VALIDATION_ERROR_MESSAGE = {
   CONFIRM_PASSWORD: 'The confirm password is not the same the password',
 };
 
-const VALIDATION_TYPE = {
+export const VALIDATION_TYPE = {
   EMAIL: 'EMAIL',
   PASSWORD: 'PASSWORD',
   STRING: 'STRING',
 };
 
-const ROLES = {
+export const ROLES = {
   ADMIN: 'admin',
   INDIVIDUAL: 'individual',
   AGENT: 'agent',
@@ -23,9 +23,10 @@ const ROLES = {
   FREELANCER: 'freelancer',
   FULLTIME: 'fulltime',
   EMPLOYEE: 'employee',
+  MIA_AGENT: 'mia_agent',
 };
 
-const TICKET_STATUS = {
+export const TICKET_STATUS = {
   OPEN: 'Open',
   RESOLVED: 'Resolved',
   CLOSED: 'Closed',
@@ -34,7 +35,7 @@ const TICKET_STATUS = {
   SEARCHING: 'Searching',
 };
 
-const COLOR_BY_STATUS = {
+export const COLOR_BY_STATUS = {
   Open: '#449bea',
   Resolved: '#05ca05',
   Closed: '#d4101e',
@@ -44,13 +45,13 @@ const COLOR_BY_STATUS = {
   Assigned: '',
 };
 
-const POPUP_TYPE = {
+export const POPUP_TYPE = {
   CONFIRM: 'confirm',
   ERROR: 'error',
   MESSAGE: 'message',
 };
 
-const POSITION_OPTIONS = [
+export const POSITION_OPTIONS = [
   {
     label: 'IT',
     value: 'IT',
@@ -66,7 +67,7 @@ const POSITION_OPTIONS = [
 ];
 
 
-const SIZE_OPTIONS = [
+export const SIZE_OPTIONS = [
   {
     label: 'Self-employed',
     value: 'A',
@@ -105,7 +106,7 @@ const SIZE_OPTIONS = [
   },
 ];
 
-const FIELD_OPTIONS = [
+export const FIELD_OPTIONS = [
   {
     label: 'IT',
     value: 'IT',
@@ -120,7 +121,7 @@ const FIELD_OPTIONS = [
   },
 ];
 
-const CATEGORY_OPTIONS = [
+export const CATEGORY_OPTIONS = [
   {
     label: 'IT',
     value: 'IT',
@@ -135,38 +136,29 @@ const CATEGORY_OPTIONS = [
   },
 ];
 
-const APPLICATION_STATUS = {
+export const APPLICATION_STATUS = {
   PENDING: 'Pending',
   REVIEWING: 'Reviewing',
   REJECTED: 'Rejected',
   APPROVED: 'Approved',
 };
 
-const APPLICATION_TYPE = {
+export const APPLICATION_TYPE = {
   FREELANCER: 'Freelancer',
   FULLTIME: 'Fulltime',
 };
 
-const APPLICATION_LANGUAGE = {
+export const APPLICATION_LANGUAGE = {
   VIETNAMESE: 'Vietnamese',
   CHINESE: 'Chinese',
   JANPANESE: 'Japanese',
   ENGLISH: 'English',
 };
 
-const PAGE_SIZE = 10;
+export const REPLY_TYPE = {
+  USER_NORMAL: 'USER_NORMAL',
+  USER_MISC: 'USER_MISC', // MEDIA, VIDEO, IMAGE, FILES, ETC
+  SYSTEM_NOTIFICATION: 'SYSTEM_NOTIFICATION',
+};
 
-module.exports.PAGE_SIZE = PAGE_SIZE;
-module.exports.VALIDATION_ERROR_MESSAGE = VALIDATION_ERROR_MESSAGE;
-module.exports.VALIDATION_TYPE = VALIDATION_TYPE;
-module.exports.ROLES = ROLES;
-module.exports.TICKET_STATUS = TICKET_STATUS;
-module.exports.COLOR_BY_STATUS = COLOR_BY_STATUS;
-module.exports.POPUP_TYPE = POPUP_TYPE;
-module.exports.POSITION_OPTIONS = POSITION_OPTIONS;
-module.exports.SIZE_OPTIONS = SIZE_OPTIONS;
-module.exports.FIELD_OPTIONS = FIELD_OPTIONS;
-module.exports.CATEGORY_OPTIONS = CATEGORY_OPTIONS;
-module.exports.APPLICATION_STATUS = APPLICATION_STATUS;
-module.exports.APPLICATION_TYPE = APPLICATION_TYPE;
-module.exports.APPLICATION_LANGUAGE = APPLICATION_LANGUAGE;
+export const PAGE_SIZE = 10;

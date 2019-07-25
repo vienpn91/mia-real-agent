@@ -20,6 +20,11 @@ export const updateTicket = ({ ticketId, ...rest }) => axios
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
+export const getConversationByTicketId = ticketId => axios
+  .get(`tickets/${ticketId}/conversations`)
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
+
 export const removeTicket = id => axios
   .delete(`tickets/${id}`)
   .then(response => ({ response }))

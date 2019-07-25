@@ -7,7 +7,7 @@ export const ChatbotWrapper = styled.div`
   height: 100vh;
 `;
 
-export const ChatbotTicketListWrapper = styled.div`
+export const ChatbotConversationListWrapper = styled.div`
   flex: 0 0 400px;
   color: ${props => props.theme.textColor};
   background-color: ${props => props.theme.secondaryColor};
@@ -114,7 +114,7 @@ export const ChatbotTicketListWrapper = styled.div`
   }
 `;
 
-export const ChatbotTicketDetailWrapper = styled(ChatbotTicketListWrapper)`
+export const ChatbotConversationDetailWrapper = styled(ChatbotConversationListWrapper)`
   border-left: 1px solid #d9d9d9;
   @media (max-width: 1500px) {
     flex: 0 0 30%;
@@ -137,7 +137,7 @@ export const ChatbotContentWrapper = styled.div`
   }
 `;
 
-export const TicketHeaderWrapper = styled.div`
+export const ConversationHeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -164,11 +164,9 @@ export const TicketHeaderWrapper = styled.div`
   }
 `;
 
-export const TicketItemWrapper = styled.div`
-  height: calc(100% - 120px);
-`;
 
-export const TicketGroup = styled.div`
+
+export const ConversationGroup = styled.div`
   flex: 1;
   line-height: normal;
   @media (max-width: 768px) {
@@ -176,7 +174,7 @@ export const TicketGroup = styled.div`
   }
 `;
 
-export const TicketName = styled.div`
+export const ConversationName = styled.div`
   font-size: 15px;
   font-weight: 700;
   margin-bottom: 5px;
@@ -186,7 +184,7 @@ export const TicketName = styled.div`
   text-overflow: ellipsis;
 `;
 
-export const TicketTime = styled.div`
+export const ConversationTime = styled.div`
   margin-left: 10px;
   display: flex;
   flex-direction: column;
@@ -202,7 +200,7 @@ export const TicketTime = styled.div`
   }
 `;
 
-export const TicketStatus = styled.div`
+export const ConversationStatus = styled.div`
   span {
     font-size: 13px;
     &:first-child {
@@ -221,199 +219,17 @@ export const TicketStatus = styled.div`
 
 `;
 
-export const TicketFilterWrapper = styled.div`
-  padding: 15px 24px;
-  border-top: 1px solid #d9d9d9;
-  .ant-select {
-    margin-top: 5px;
-    border-radius: 4px;
-  }
-  .ant-select-selection--multiple {
-    color: ${props => props.theme.secondaryColor};
-    border: 1px solid #d9d9d9;
-    &:hover {
-      border-color: #b1b1b1;
-    }
-  }
-  .ant-select-open .ant-select-selection {
-    border-color: #b1b1b1;
-    box-shadow: none;
-  }
-  @media (max-width: 1024px) {
-    padding: 15px;
-  }
-  @media (max-width: 840px) {
-    display: none;
-  }
-`;
-
-export const TicketPaginationWrapper = styled.div`
-  padding: 0 16px;
-  text-align: center;
-  .ant-pagination-item,
-  .ant-pagination-prev,
-  .ant-pagination-next {
-    height: auto !important;
-    line-height: normal !important;
-    &:hover {
-      a {
-        color: ${props => props.theme.primaryColor};
-      }
-    }
-  }
-  .ant-pagination-item.ant-pagination-item-active a {
-    color: ${props => props.theme.textColor};
-  }
-  .ant-pagination-item-active {
-    border: none;
-    a {
-      color: ${props => props.theme.primaryColor} !important;
-    }
-    &:hover {
-      color: ${props => props.theme.primaryColor};
-    }
-  }
-  @media (max-width: 840px) {
-    display: none;
-  }
-`;
-
 export const TickerActionWrapper = styled.div``;
 
-export const TicketGroupAction = styled.div``;
+export const ConversationGroupAction = styled.div``;
 
-export const TicketButton = styled.div`
+export const ConversationButton = styled.div`
   padding: 6px 15px;
   cursor: pointer;
   &:hover {
     background-color: #279cd4;
     color: ${props => props.theme.secondaryColor};
   }
-`;
-
-export const MessageBoxWrapper = styled.div`
-  display: flex;
-  height: calc(100vh - 60px);
-  background: ${props => props.theme.secondaryColor};
-  position: relative;
-`;
-
-export const MessageBoxContent = styled.div`
-  flex: 1;
-  height: 100%;
-  background-color: #f5f6f7;
-`;
-
-export const MessageBoxItem = styled.div`
-  display: flex;
-  align-items: flex-end;
-  margin-bottom: 15px;
-  p {
-    margin-bottom: 0;
-    margin-top: 3px;
-    width: fit-content;
-    border-radius: 20px;
-    padding: 5px 12px;
-    word-break: break-all;
-    clear: left;
-  }
-  ${({ left }) => left && css`
-    justify-content: flex-start;
-    padding-left: 10px;
-    .ant-avatar {
-      margin-right: 10px;
-    }
-    p {
-      float: left;
-      background-color: #e2e2e2;
-    }
-  `}
-  ${({ right }) => right && css`
-    justify-content: flex-end;
-    padding-right: 10px;
-    .ant-avatar {
-      margin-left: 10px;
-    }
-    p {
-      float: right;
-      color: ${props => props.theme.secondaryColor};
-      background-color: #ff5504;
-    }
-    > div{
-     align-items: flex-end;
-    }
-  `}
-  &:first-child {
-    padding-top: 15px;
-  }
-`;
-
-export const MessageBoxHeaderWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  .ant-breadcrumb-link {
-    color: ${props => props.theme.textColor};
-  }
-`;
-
-
-export const MessageText = styled.div`
-  width: fit-content;
-  max-width: 60%;
-  display: flex;
-  flex-direction: column;
-`;
-
-export const UserMessage = styled.p`
-  background-color: ${({ pending }) => pending && '#f78b5f !important'};
-`;
-
-export const MessageInputWrapper = styled.div`
-  position: absolute;
-  bottom: 0px;
-  display: flex;
-  align-items: center;
-  background-color: ${props => props.theme.secondaryColor};
-  border-top: 1px solid #ddd;
-  height: 60px;
-  width: 100%;
-  padding: 0px 10px;
-
-  .ant-form-item{
-    width: 100%;
-    margin: 0;
-    input{
-      outline: none !important;
-      border: 1px solid transparent !important;
-    }
-  }
-  button{
-    margin-left: 10px;
-  }
-`;
-
-export const MessageActionWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  height: 100%;
-  padding: 12px 0px;
-`;
-
-export const MessageInput = styled(FormInput)`
-  flex: 1;
-  border: none;
-  height: 100%;
-  &::placeholder {
-    font-style: normal;
-    color: #ccc;
-  }
-`;
-
-export const MessageEmpty = styled.div`
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 export const InputAction = styled.label`
@@ -430,16 +246,16 @@ export const InputUpload = styled.input`
   display: none;
 `;
 
-export const TicketEmpty = styled.div`
+export const ConversationEmpty = styled.div`
   padding: 15px;
   width: 100%;
   text-align: center;
   text-transform: uppercase;
 `;
 
-export const TicketDetailWrapper = styled.div``;
+export const ConversationDetailWrapper = styled.div``;
 
-export const TicketDetailAvatar = styled.div`
+export const ConversationDetailAvatar = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -450,7 +266,7 @@ export const TicketDetailAvatar = styled.div`
   }
 `;
 
-export const TicketInfoWrapper = styled.div`
+export const ConversationInfoWrapper = styled.div`
   .ant-descriptions-row {
     display: flex;
     flex-direction: column;
@@ -483,7 +299,7 @@ export const TicketInfoWrapper = styled.div`
   }
 `;
 
-export const TicketTimelineWrapper = styled.div`
+export const ConversationTimelineWrapper = styled.div`
   padding: 20px 25px;
   .ant-timeline-item-content {
     margin: 0px 0x 0px 25px;

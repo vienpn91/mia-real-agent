@@ -12,7 +12,6 @@ class AgentRouter {
       '/:id/accept',
       controller.acceptRequest,
     );
-    this.router.param('id', controller.load);
   }
 }
 

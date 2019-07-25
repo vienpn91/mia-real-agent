@@ -1,28 +1,24 @@
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   Layout, Icon, Input, Tooltip, Tabs,
 } from 'antd';
-import {
-  func, shape, string,
-  bool,
-} from 'prop-types';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
-import Tickets from 'containers/Chatbot/Tickets';
+import ConversationList from 'containers/ConversationList';
 import history from 'utils/history';
 import { Return } from 'components/Generals/General.styled';
-import MessageBoxContainer from '../../containers/Chatbot/MessageBox';
+import MessageBoxContainer from '../../containers/MessageBox';
 import {
   ChatbotWrapper,
-  ChatbotTicketListWrapper,
+  ChatbotConversationListWrapper,
   ChatbotContentWrapper,
-  TicketHeaderWrapper,
-  TicketEmpty,
+  ConversationHeaderWrapper,
+  ConversationEmpty,
 } from './Chatbot.styled';
-import CreateTicketFormContainer from '../../containers/Chatbot/CreateTicket';
-import { ROLES } from '../../../common/enums';
-import EditTicketContainer from '../../containers/Chatbot/EditTicket';
+import CreateConversationFormContainer from '../../containers/Chatbot/CreateTicket';
+import EditConversationContainer from '../../containers/Chatbot/EditTicket';
 
 const { Content } = Layout;
 const { Search } = Input;
@@ -32,45 +28,33 @@ export default class ChatbotComponent extends Component {
   state = {
     isOpenCreateModal: false,
     isOpenSettingModal: false,
-    settingChosenTicket: null,
+    settingChosenConversation: null,
   }
 
   static propTypes = {
-    getTicket: func.isRequired,
-    ticketDetail: shape(),
-    getError: string,
-    userRole: string,
-    isGetting: bool.isRequired,
+    errorMsg: PropTypes.string,
+    currentConversation: PropTypes.objectOf(PropTypes.any),
+    selectConversation: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
-    ticketDetail: null,
+    currentConversation: null,
   }
 
   componentDidMount = () => {
-    const { getTicket } = this.props;
+    const { currentConversation, selectConversation } = this.props;
     const id = _get(this.props, 'match.params.id', null);
-    const owner = _get(this.props, 'match.params.owner', null);
-    if (id) {
-      getTicket(id, owner);
-    }
-  }
 
-  componentDidUpdate(prevProps) {
-    const {
-      getTicket, getError, userRole, isGetting,
-    } = this.props;
-    const prevId = _get(prevProps, 'match.params.id', null);
-    const prevOwner = _get(prevProps, 'match.params.owner', null);
-    const id = _get(this.props, 'match.params.id', null);
-    const owner = _get(this.props, 'match.params.owner', null);
-    // Redirect when ticket not found
-    if (!isGetting && prevProps.isGetting && getError) {
-      history.push((userRole === ROLES.AGENT) ? '/dashboard' : '/ticket');
+    if (!currentConversation) {
+      selectConversation(id);
+      return;
     }
 
-    if (id && (prevId !== id || prevOwner !== owner)) {
-      getTicket(id, owner);
+    // const ticketId = _get(this.props, 'match.params.ticketId', null);
+
+    // eslint-disable-next-line no-underscore-dangle
+    if (id !== currentConversation._id) {
+      selectConversation(id);
     }
   }
 
@@ -89,7 +73,7 @@ export default class ChatbotComponent extends Component {
   handleOpenSettingModal = (ticket) => {
     this.setState({
       isOpenSettingModal: true,
-      settingChosenTicket: ticket,
+      settingChosenConversation: ticket,
     });
   }
 
@@ -100,11 +84,11 @@ export default class ChatbotComponent extends Component {
   }
 
   goToDashboard = () => {
-    history.push('/dashboard');
+    history.push('/dashboard/ticket/1');
   }
 
-  renderTicketHeader = () => (
-    <TicketHeaderWrapper>
+  renderConversationHeader = () => (
+    <ConversationHeaderWrapper>
       <Return onClick={this.goToDashboard}>
         <Icon type="left" />
         <span>MENU</span>
@@ -112,51 +96,54 @@ export default class ChatbotComponent extends Component {
       <Tooltip title="Create ticket">
         <Icon type="edit" onClick={this.handleOpenCreateModal} />
       </Tooltip>
-    </TicketHeaderWrapper>
+    </ConversationHeaderWrapper>
   );
 
-  renderSearchTicket = () => (
-    <TicketHeaderWrapper search>
+  renderSearchConversation = () => (
+    <ConversationHeaderWrapper search>
       <Search
-        placeholder="Search on Ticket"
+        placeholder="Search on Conversation"
         onSearch={value => console.log(value)}
       />
-    </TicketHeaderWrapper>
+    </ConversationHeaderWrapper>
   );
 
   renderTabItem = () => (
     <Tabs defaultActiveKey="1">
-      <TabPane tab="Detail" key="1">
-
-      </TabPane>
-      <TabPane tab="List" key="2">
-
-      </TabPane>
+      <TabPane tab="Detail" key="1" />
+      <TabPane tab="List" key="2" />
     </Tabs>
   )
 
   render() {
-    const { isOpenCreateModal, isOpenSettingModal, settingChosenTicket } = this.state;
-    const { ticketDetail, getError } = this.props;
+    const { isOpenCreateModal, isOpenSettingModal, settingChosenConversation } = this.state;
+    const { currentConversation, errorMsg } = this.props;
+
     return (
       <ChatbotWrapper>
-        <ChatbotTicketListWrapper>
-          {this.renderTicketHeader()}
-          {this.renderSearchTicket()}
-          <Tickets openSetting={this.handleOpenSettingModal} />
-        </ChatbotTicketListWrapper>
+        <ChatbotConversationListWrapper>
+          {this.renderConversationHeader()}
+          {this.renderSearchConversation()}
+          <ConversationList
+            openSetting={this.handleOpenSettingModal}
+          />
+        </ChatbotConversationListWrapper>
         <ChatbotContentWrapper>
           <Content>
-            {(!_isEmpty(ticketDetail) && !getError) ? <MessageBoxContainer ticket={ticketDetail} /> : <TicketEmpty>Please select a ticket</TicketEmpty>}
+            {
+              (!_isEmpty(currentConversation) && !errorMsg)
+                ? <MessageBoxContainer ticket={currentConversation} />
+                : <ConversationEmpty>Please select a ticket</ConversationEmpty>
+            }
           </Content>
         </ChatbotContentWrapper>
-        <CreateTicketFormContainer
+        <CreateConversationFormContainer
           isOpen={isOpenCreateModal}
           handleCancel={this.handleCloseCreateModal}
         />
-        <EditTicketContainer
+        <EditConversationContainer
           isOpen={isOpenSettingModal}
-          ticket={settingChosenTicket}
+          ticket={settingChosenConversation}
           handleCancel={this.handleCloseSettingModal}
         />
       </ChatbotWrapper>

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
-import PropTypes, { string } from 'prop-types';
+import PropTypes from 'prop-types';
 import SpinnerLoading from 'components/PageLoading';
 import ShadowScrollbars from 'components/Scrollbar';
 import TicketItem from './TicketItem/TicketItem';
@@ -10,7 +10,6 @@ import {
   TableContentWrapper,
   TableEmptyContent,
 } from '../../TableComponent/TableComponent.styled';
-import { ROLES } from '../../../../common/enums';
 
 const scrollStyle = {
   height: '100%',
@@ -18,18 +17,21 @@ const scrollStyle = {
 };
 
 class Ticket extends Component {
-  static propTypes = {
-    userRole: string.isRequired,
-  }
-
   renderTicketItem = (ticket, index) => {
-    const { userRole } = this.props;
     const { _id } = ticket;
-    return <TicketItem isRealAgent={userRole === ROLES.AGENT} key={_id} ticket={ticket} index={index} />;
+
+    return (
+      <TicketItem
+        key={_id}
+        ticket={ticket}
+        index={index}
+        // eslint-disable-next-line no-underscore-dangle
+      />
+    );
   };
 
   renderTicketTableContent = () => {
-    const { tickets, fetchingContext } = this.props;
+    const { ticketList, fetchingContext } = this.props;
     const { isFetching = false } = fetchingContext;
 
     if (isFetching) {
@@ -40,7 +42,7 @@ class Ticket extends Component {
       );
     }
 
-    const isNoTicket = tickets.length === 0;
+    const isNoTicket = ticketList.length === 0;
     return (
       <ShadowScrollbars
         autoHide
@@ -49,8 +51,12 @@ class Ticket extends Component {
         <TableContentWrapper bgTable>
 
           {isNoTicket
-            ? <TableEmptyContent>No tickets available, click here to create one</TableEmptyContent>
-            : tickets.map(this.renderTicketItem)
+            ? (
+              <TableEmptyContent>
+                No ticketList available, click here to create one
+              </TableEmptyContent>
+            )
+            : ticketList.map(this.renderTicketItem)
           }
         </TableContentWrapper>
       </ShadowScrollbars>
@@ -67,7 +73,7 @@ class Ticket extends Component {
 }
 
 Ticket.propTypes = {
-  tickets: PropTypes.array,
+  ticketList: PropTypes.array,
   fetchingContext: PropTypes.object,
 };
 

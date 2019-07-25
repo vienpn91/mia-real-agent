@@ -1,12 +1,10 @@
 import { connect } from 'react-redux';
-import Ticket from 'components/TicketTab/Ticket';
-import { getTicketsList, getFetchingContext } from 'selectors/ticket';
-import { getUserRole } from 'reducers/auth';
+import { getTicketsList, getFetchingContext } from '../../../selectors/ticket';
+import Ticket from '../../../components/TicketTab/Ticket';
 
 const mapStateToProps = state => ({
-  tickets: getTicketsList(state),
+  ticketList: getTicketsList(state),
   fetchingContext: getFetchingContext(state),
-  userRole: getUserRole(state),
 });
 
 export default connect(mapStateToProps)(Ticket);

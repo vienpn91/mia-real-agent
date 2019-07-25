@@ -37,7 +37,7 @@ const persistConfig = {
     }),
   ],
   stateReconciler: autoMerge,
-  whitelist: ['auth', 'entities'],
+  whitelist: ['auth'],
   key: 'root',
   storage,
   version: 0,

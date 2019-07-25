@@ -15,28 +15,26 @@ export default class BaseService {
   }
 
   delete(id) {
-    return this.collection.updateOne({ _id: id }, { deleted: true }).exec();
+    return this.collection.updateOne({ _id: id }, { deletedAt: true }).exec();
   }
 
   get(id) {
     return this.collection
       .findOne({
         _id: id,
-        $or: [
-          { deleted: { $exists: false } },
-          { deleted: { $exists: true, $in: [false] } },
-        ],
+        deletedAt: null,
       })
       .exec();
   }
 
-  async getAll(condition, options) {
+  getOneByQuery(query) {
+    return this.collection.findOne(query).exec();
+  }
+
+  async getAll(condition, options = {}) {
     const { skip = 0, limit, sort = { updatedAt: -1 } } = options;
     const notDeletedCondition = {
-      $or: [
-        { deleted: { $exists: false } },
-        { deleted: { $exists: true, $in: [false] } },
-      ],
+      deletedAt: null,
     };
     const queryCondition = {
       $and: [condition, notDeletedCondition],

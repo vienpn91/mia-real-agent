@@ -1,7 +1,7 @@
 /* eslint-disable default-case */
 import React, { Component } from 'react';
 import moment from 'moment';
-import { object, number, bool } from 'prop-types';
+import { object, number } from 'prop-types';
 import { Icon } from 'antd';
 import {
   DashboardTitle,
@@ -21,7 +21,6 @@ class TicketItem extends Component {
   static propTypes = {
     ticket: object.isRequired,
     index: number,
-    isRealAgent: bool.isRequired,
   }
 
   renderSubtitle = () => {
@@ -40,9 +39,9 @@ class TicketItem extends Component {
   }
 
   renderTicketContent = () => {
-    const { ticket, isRealAgent } = this.props;
-    const { ticketId, owner } = ticket;
-    const url = isRealAgent ? `/ticket/${ticketId}/${owner}` : `/ticket/${ticketId}`;
+    const { ticket } = this.props;
+    const { conversationId } = ticket;
+    const url = `/conversation/${conversationId}`;
     return (
       <DashboardTitle>
         <DashboardRightBlock>

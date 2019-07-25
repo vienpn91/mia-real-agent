@@ -6,7 +6,7 @@ import {
   Menu, Dropdown, Icon,
   Pagination,
 } from 'antd';
-import Ticket from 'containers/TicketTab/Ticket';
+import Ticket from '../../containers/TicketTab/Ticket';
 import _isNumber from 'lodash/isNumber';
 import { DefaultButton } from 'components/Generals/General.styled';
 import {
@@ -38,23 +38,23 @@ class TicketTab extends PureComponent {
   }
 
   componentDidMount() {
-    const { getAllAction, match, history } = this.props;
-    getAllAction({ skip: 0, limit: PAGE_SIZE });
+    const { getAllTicketAction, match, history } = this.props;
+    getAllTicketAction({ skip: 0, limit: PAGE_SIZE });
     const { params } = match;
     const { tab, page } = params;
     if (page && _isNumber(page)) {
-      getAllAction({ skip: (page - 1) * PAGE_SIZE, limit: PAGE_SIZE });
+      getAllTicketAction({ skip: (page - 1) * PAGE_SIZE, limit: PAGE_SIZE });
     } else {
       history.push(`/dashboard/${tab}/1`);
     }
   }
 
   componentDidUpdate = (prevProps) => {
-    const { getAllAction, match } = this.props;
+    const { getAllTicketAction, match } = this.props;
     const { params } = match;
     const { page } = params;
     if (prevProps.match.params.page !== page) {
-      getAllAction({ skip: (page - 1) * PAGE_SIZE, limit: PAGE_SIZE });
+      getAllTicketAction({ skip: (page - 1) * PAGE_SIZE, limit: PAGE_SIZE });
     }
   }
 
@@ -160,7 +160,7 @@ class TicketTab extends PureComponent {
 }
 
 TicketTab.propTypes = {
-  getAllAction: PropTypes.func,
+  getAllTicketAction: PropTypes.func,
   totalRecord: number.isRequired,
   history: shape(),
   match: shape(),

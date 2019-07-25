@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import BaseController from '../base/base.controller';
 import TicketService from './ticket.service';
 import UserService from '../user/user.service';
+import ConversationService from '../conversation/conversation.service';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import { ROLES } from '../../../common/enums';
 
@@ -13,9 +14,25 @@ const emptyObjString = '{}';
 class TicketController extends BaseController {
   constructor() {
     super(TicketService);
+    this.get = this.get.bind(this);
+    this.load = this.load.bind(this);
+    this.insert = this.insert.bind(this);
+    this.getAll = this.getAll.bind(this);
+    this.getAllConversations = this.getAllConversations.bind(this);
   }
 
-  get = async (req, res) => {
+  async getAllConversations(req, res) {
+    try {
+      const { id } = req.params;
+      const result = await ConversationService.getConversationByTicketId(id);
+
+      return res.status(httpStatus.OK).send(result);
+    } catch (error) {
+      return this.handleError(res, error);
+    }
+  }
+
+  async get(req, res) {
     try {
       const { model } = req;
       const { _doc } = model;
@@ -44,7 +61,7 @@ class TicketController extends BaseController {
     }
   }
 
-  load = async (req, res, next, id) => {
+  async load(req, res, next, id) {
     try {
       const { user } = req;
       const { owner } = req.query;
@@ -53,13 +70,14 @@ class TicketController extends BaseController {
       }
       const { _id, role } = user;
 
+
       if (!mongoose.Types.ObjectId.isValid(owner) && role === ROLES.AGENT) {
         throw new APIError(CONTENT_NOT_FOUND, httpStatus.NOT_FOUND);
       }
 
       const condition = (role === ROLES.AGENT)
-        ? { owner, ticketId: id }
-        : { owner: _id, ticketId: id };
+        ? { owner, _id: id }
+        : { owner: _id, _id: id };
       const model = await this.service.getByCondition(condition);
 
       if (model == null) {
@@ -72,7 +90,7 @@ class TicketController extends BaseController {
     }
   }
 
-  insert = async (req, res) => {
+  async insert(req, res) {
     try {
       const { user, body: data } = req;
 
@@ -80,24 +98,40 @@ class TicketController extends BaseController {
         throw new APIError(ERROR_MESSAGE.UNAUTHORIZED, httpStatus.UNAUTHORIZED);
       }
 
-      const { _id } = user;
-      const condition = { owner: _id };
+      const { _id: owner } = user;
+      const condition = { owner };
       const totalCount = await this.service.countDocument(condition);
 
       const newData = {
         ...data,
         ticketId: totalCount + 1,
-        owner: _id,
+        owner,
       };
 
       const result = await this.service.insert(newData);
+      const { _id: ticketId } = result;
+      try {
+        // create a conversation with mia by default
+        const conversation = await ConversationService.insert({
+          owner,
+          members: ['5d2850fa87883f00e24833eb'],
+          ticketId,
+        });
+        // eslint-disable-next-line no-underscore-dangle
+        result.conversationId = conversation._id;
+        await result.save();
+      } catch (error) {
+        this.service.delete(ticketId);
+        throw new APIError('Unable to create ticket', httpStatus.INTERNAL_SERVER_ERROR);
+      }
+
       return res.status(httpStatus.OK).send(result);
     } catch (error) {
       return this.handleError(res, error);
     }
   }
 
-  getAll = async (req, res) => {
+  async getAll(req, res) {
     try {
       const {
         user, query: {
@@ -116,7 +150,11 @@ class TicketController extends BaseController {
       const option = { skip, limit };
       if (sort) {
         const sortObj = JSON.parse(sort);
-        option.sort = sortObj;
+        option.sort = {
+          status: 1,
+          createdAt: -1,
+          ...sortObj,
+        };
       }
 
       const query = JSON.parse(_get(params, 'query', emptyObjString));
@@ -126,6 +164,7 @@ class TicketController extends BaseController {
       };
 
       const result = await this.service.getAll(newQuery, option);
+
       return res.status(httpStatus.OK).send(result);
     } catch (error) {
       return this.handleError(res, error);

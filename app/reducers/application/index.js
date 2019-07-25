@@ -58,18 +58,18 @@ const applicationAdminGetAll = payload => ({
   payload,
 });
 
-const getAllAction = payload => ({
+const getAllApplicationAction = payload => ({
   type: GET_ALL,
   payload,
 });
 
-const getAllCompleteAction = (data, totalRecord) => ({
+const getAllApplicationCompleteAction = (data, totalRecord) => ({
   type: GET_ALL_SUCCESS,
   data,
   totalRecord,
 });
 
-const getAllFailAction = errorMsg => ({
+const getAllApplicationFailAction = errorMsg => ({
   type: GET_ALL_FAIL,
   errorMsg,
 });
@@ -268,9 +268,10 @@ export const actions = {
   sortApplication,
   filterApplication,
   changePage,
-  getAllAction,
-  getAllCompleteAction,
-  getAllFailAction,
+
+  getAllApplicationAction,
+  getAllApplicationCompleteAction,
+  getAllApplicationFailAction,
 
   applicationApprove,
   applicationApproveComplete,

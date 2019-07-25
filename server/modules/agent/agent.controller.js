@@ -1,39 +1,13 @@
 import httpStatus from 'http-status';
-import mongoose from 'mongoose';
-import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import TicketService from '../ticket/ticket.service';
-import ChatlogService from '../chatlog/chatlog.service';
-import UserService from '../user/user.service';
+import ConversationService from '../conversation/conversation.service';
 import AgentQueue from '../queue/agentQueue';
-import { authenticateSocketIO } from '../../middlewares/authenticateMiddlewares';
+import UserQueue from '../queue/userQueue';
 import Logger from '../../logger';
 
 class AgentController {
   constructor() {
-    this.findAgent = this.findAgent.bind(this);
-    this.acceptRequest = this.acceptRequest.bind(this);
     this.handleError = this.handleError.bind(this);
-    this.load = this.load.bind(this);
-  }
-
-  async load(req, res, next, id) {
-    try {
-      if (!mongoose.Types.ObjectId.isValid(id)) {
-        const { CONTENT_NOT_FOUND } = ERROR_MESSAGE;
-        throw new APIError(CONTENT_NOT_FOUND, httpStatus.BAD_REQUEST);
-      }
-      const model = await UserService.get(id);
-
-      if (model == null) {
-        const { CONTENT_NOT_FOUND } = ERROR_MESSAGE;
-        throw new APIError(CONTENT_NOT_FOUND, httpStatus.NOT_FOUND);
-      }
-
-      req.model = model;
-      return next();
-    } catch (error) {
-      return this.handleError(res, error);
-    }
   }
 
   handleError(res, error) {
@@ -81,37 +55,42 @@ class AgentController {
 
   async acceptRequest(req, res) {
     try {
-      const { model } = req;
+      const { id: agentId } = req.params;
       const { ticketId, isConfirm } = req.body;
       const ticket = await TicketService.get(ticketId);
       const { owner } = ticket;
-      const { _id } = model;
+      let userConv = null;
       if (isConfirm) {
-        AgentQueue.remove(_id);
+        AgentQueue.remove(agentId);
         // Update asignnee for ticket
         TicketService.update(ticketId,
-          { assignee: _id });
+          { assignee: agentId });
         // Create chat here
-        ChatlogService.insert({
+
+        const userConversationPromise = ConversationService.insert({
+          owner,
+          members: [agentId],
           ticketId,
-          from: owner,
-          to: _id,
         });
+        // const agentConversationPromise = ConversationService.insert({
+        //   owner: agentId,
+        //   members: [owner],
+        //   ticketId,
+        // });
+
+        [userConv] = await Promise.all([
+          userConversationPromise,
+          // agentConversationPromise,
+        ]);
       }
-      const { socketIO } = global.socketIOServer;
-      const { connected } = socketIO.sockets;
-      const sockets = Object.keys(connected).map(i => connected[i]);
-      sockets.forEach(
-        async (socket) => {
-          const { data: user } = await authenticateSocketIO(socket);
-          const { _id: userId } = user;
-          if (userId.toString() === owner.toString()) {
-            const { _doc } = ticket;
-            socket.emit('REQUEST_CONFIRM', { ticketId: _doc.ticketId, isConfirm });
-          }
-        }
-      );
-      return res.status(httpStatus.OK).send({ agentId: _id });
+
+      const userSocket = UserQueue.getUser(owner.toString());
+
+      userSocket.emit('REQUEST_CONFIRM', {
+        ...(userConv || {}),
+        isConfirm,
+      });
+      return res.status(httpStatus.OK).send(userConv);
     } catch (error) {
       return this.handleError(res, error);
     }

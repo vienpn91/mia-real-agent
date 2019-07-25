@@ -3,26 +3,26 @@ import ShadowScrollbars from 'components/Scrollbar';
 import { Descriptions, Timeline, Icon } from 'antd';
 import { shape } from 'prop-types';
 import {
-  TicketDetailWrapper,
-  TicketInfoWrapper,
-  TicketTimelineWrapper,
-  ChatbotTicketDetailWrapper,
-} from '../Chatbot.styled';
-import { ROLES } from '../../../../common/enums';
+  ConversationDetailWrapper,
+  ConversationInfoWrapper,
+  ConversationTimelineWrapper,
+  ChatbotConversationDetailWrapper,
+} from './styles';
+import { ROLES } from '../../../common/enums';
 
 const scrollStyle = {
   height: 'calc(100vh - 60px)',
   width: '100%',
 };
 
-export default class TicketDetail extends Component {
+export default class ConversationDetail extends Component {
   static propTypes = {
-    ticket: shape().isRequired,
+    conversation: shape().isRequired,
   }
 
   renderOwnerInfo = () => {
-    const { ticket } = this.props;
-    const { owner, ownerProfile } = ticket;
+    const { conversation } = this.props;
+    const { owner, ownerProfile } = conversation;
     if (!owner) {
       return 'No Owner';
     }
@@ -41,8 +41,8 @@ export default class TicketDetail extends Component {
   }
 
   renderAssigneeInfo = () => {
-    const { ticket } = this.props;
-    const { assignee, assigneeProfile } = ticket;
+    const { conversation } = this.props;
+    const { assignee, assigneeProfile } = conversation;
     if (!assignee) {
       return 'No Assignee';
     }
@@ -53,35 +53,35 @@ export default class TicketDetail extends Component {
     return `${firstName} ${lastName} - ${company}`;
   }
 
-  renderTicketInfo = () => {
-    const { ticket } = this.props;
-    if (!ticket) {
+  renderConversationInfo = () => {
+    const { conversation } = this.props;
+    if (!conversation) {
       return (
-        <TicketInfoWrapper>
+        <ConversationInfoWrapper>
           <Descriptions column={4}>
-            No ticketData
+            No ConversationData
           </Descriptions>
-        </TicketInfoWrapper>
+        </ConversationInfoWrapper>
       );
     }
     const {
       title, description,
-    } = ticket;
+    } = conversation;
     return (
-      <TicketInfoWrapper>
+      <ConversationInfoWrapper>
         <Descriptions column={5}>
-          <Descriptions.Item label="Ticket">{title}</Descriptions.Item>
+          <Descriptions.Item label="conversation">{title}</Descriptions.Item>
           <Descriptions.Item label="Description">{description}</Descriptions.Item>
           <Descriptions.Item label="Owner">{this.renderOwnerInfo()}</Descriptions.Item>
           <Descriptions.Item label="Assigne">{this.renderAssigneeInfo()}</Descriptions.Item>
           <Descriptions.Item label="Status">Processing</Descriptions.Item>
         </Descriptions>
-      </TicketInfoWrapper>
+      </ConversationInfoWrapper>
     );
   }
 
-  renderTicketTimeline = () => (
-    <TicketTimelineWrapper>
+  renderConversationTimeline = () => (
+    <ConversationTimelineWrapper>
       <Timeline>
         <Timeline.Item dot={<Icon type="check-circle" style={{ fontSize: '16px' }} />} color="green">
           Con Luong opened 3 minutes ago
@@ -93,19 +93,19 @@ export default class TicketDetail extends Component {
           Con Luong assigned Tri Nguyen
         </Timeline.Item>
       </Timeline>
-    </TicketTimelineWrapper>
+    </ConversationTimelineWrapper>
   )
 
   render() {
     return (
-      <ChatbotTicketDetailWrapper>
+      <ChatbotConversationDetailWrapper>
         <ShadowScrollbars autoHide style={scrollStyle}>
-          <TicketDetailWrapper>
-            {this.renderTicketInfo()}
-            {this.renderTicketTimeline()}
-          </TicketDetailWrapper>
+          <ConversationDetailWrapper>
+            {this.renderConversationInfo()}
+            {this.renderConversationTimeline()}
+          </ConversationDetailWrapper>
         </ShadowScrollbars>
-      </ChatbotTicketDetailWrapper>
+      </ChatbotConversationDetailWrapper>
     );
   }
 }
