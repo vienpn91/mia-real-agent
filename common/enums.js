@@ -161,4 +161,10 @@ export const REPLY_TYPE = {
   SYSTEM_NOTIFICATION: 'SYSTEM_NOTIFICATION',
 };
 
+export const REPLY_STATUS = {
+  PENDING: 'PENDING',
+  SENT: 'SENT', // MEDIA, VIDEO, IMAGE, FILES, ETC
+  READ: 'READ',
+};
+
 export const PAGE_SIZE = 10;

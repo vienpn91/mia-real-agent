@@ -44,7 +44,7 @@ export default class MessageBox extends Component {
     currentConversation: PropTypes.object,
     isFetchingReplies: PropTypes.bool,
     replyMessages: PropTypes.arrayOf(PropTypes.shape()),
-    sendingMessages: PropTypes.objectOf(PropTypes.any),
+    sendingMessages: PropTypes.arrayOf(PropTypes.shape()),
     sendingMessageErrors: PropTypes.objectOf(PropTypes.any),
     sendReplyMessage: PropTypes.func.isRequired,
   }
@@ -54,7 +54,7 @@ export default class MessageBox extends Component {
     isFetchingReplies: false,
     replyMessages: [],
     conversationId: '',
-    sendingMessages: {},
+    sendingMessages: [],
     sendingMessageErrors: {},
   }
 
@@ -103,72 +103,43 @@ export default class MessageBox extends Component {
     }
   }
 
-  renderLeftMessageContent = (_id, contents) => (
-    <MessageBoxItem left key={_id}>
+  renderOtherUserMessageContent = (msgId, message) => (
+    <MessageBoxItem left key={msgId}>
       <Avatar icon="user" size={35} />
       <MessageText>
-        {
-          contents.map(
-            ({ _id: messageId, content }) => (<p key={messageId}>{content}</p>)
-          )
-        }
+        <p>{message}</p>
       </MessageText>
     </MessageBoxItem>
   )
 
-  renderRightMessageContent = (_id, contents) => (
-    <MessageBoxItem right key={_id}>
+  renderUserMessageContent = (msgId, message, isPending = false) => (
+    <MessageBoxItem right key={msgId}>
       <MessageText>
-        {
-          contents.map(
-            ({ _id: messageId, content, isPending }) => (
-              <UserMessage pending={isPending} key={messageId}>{content}</UserMessage>
-            )
-          )
-        }
+        <UserMessage pending={isPending}>{message}</UserMessage>
       </MessageText>
       <Avatar icon="user" size={35} />
     </MessageBoxItem>
   )
 
   renderMessageContent = () => {
-    return;
-    const { replyMessages, userId, ticket } = this.props;
-    const { assignee } = ticket;
-    if (!assignee) {
-      return (<InfoNotification>Please find Agent</InfoNotification>);
-    }
-    const { pendingMessages } = this.state;
-    const { messages: originMessages } = replyMessages;
-    const messages = Object.assign([], originMessages);
-    if (_isEmpty(messages)) {
+    const { replyMessages, userId } = this.props;
+    if (!replyMessages || !replyMessages.length) {
       return (<MessageEmpty>No Message</MessageEmpty>);
     }
-    // Apend pending Messages
-    if (!_isEmpty(pendingMessages)) {
-      const last = messages[messages.length - 1];
-      const { messageOwner: lastOwner, contents: lastContents } = last;
-      if (lastOwner === userId) {
-        messages[messages.length - 1] = {
-          ...last,
-          contents: lastContents.concat(pendingMessages),
-        };
-      } else {
-        messages.push({
-          _id: messages.length,
-          messageOwner: userId,
-          contents: pendingMessages,
-        });
-      }
-    }
 
-    return [messages.map(({ _id, messageOwner, contents }) => {
-      if (messageOwner === userId) {
-        return this.renderRightMessageContent(_id, contents);
+    return replyMessages.map(({ from, _id: msgId, messages }) => {
+      if (from === userId) {
+        return this.renderUserMessageContent(msgId, messages);
       }
-      return this.renderLeftMessageContent(_id, contents);
-    }),
-    ];
+      return this.renderOtherUserMessageContent(msgId, messages);
+    });
+  }
+
+  renderPendingMessageContent = () => {
+    const { sendingMessages } = this.props;
+    if (!sendingMessages || !sendingMessages.length) return null;
+
+    return sendingMessages.map(({ id: msgId, message }) => this.renderUserMessageContent(msgId, message, true));
   }
 
   renderGroupAction = () => (
@@ -240,6 +211,7 @@ export default class MessageBox extends Component {
 
   render() {
     const { isFetchingReplies, replyMessages } = this.props;
+
     return (
       <LoadingSpin loading={isFetchingReplies}>
         {this.renderMessageHeader()}
@@ -249,13 +221,12 @@ export default class MessageBox extends Component {
               autoHide
               style={scrollStyle}
             >
-              <React.Fragment>
-                {!replyMessages || !replyMessages.length
-                  ? <MessageEmpty>No Chat Data</MessageEmpty>
-                  : this.renderMessageContent()
-                }
-                {this.renderMessageInput()}
-              </React.Fragment>
+              {!replyMessages || !replyMessages.length
+                ? <MessageEmpty>No Chat Data</MessageEmpty>
+                : this.renderMessageContent()
+              }
+              {this.renderPendingMessageContent()}
+              {this.renderMessageInput()}
               <div ref={this.messagesEndRef} />
             </ShadowScrollbars>
           </MessageBoxContent>
