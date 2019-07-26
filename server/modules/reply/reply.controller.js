@@ -11,9 +11,14 @@ class ReplyController extends BaseController {
 
   async insertReply(req, res) {
     try {
-      const reply = req.body;
+      const data = req.body;
+      const reply = {
+        conversationId: data.conversation,
+        from: data.from,
+        messages: data.message,
+      };
       const newReply = await this.service.insert(reply);
-      emitNewMessage(reply);
+      emitNewMessage(data);
       return res.status(httpStatus.OK).send({ reply: newReply });
     } catch (error) {
       return super.handleError(res, error);

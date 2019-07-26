@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import cuid from 'cuid';
 import {
-  fromJS, Set as ISet, List, Map,
+  fromJS, Set as ISet, Map, OrderedMap,
 } from 'immutable';
 
 export const REPLIES_FETCH = 'replies/REPLIES_FETCH';
@@ -71,7 +71,7 @@ export const getReplyMessagesByConversationId = ({ replies }, conversationId) =>
   const replyMessages = replies
     .getIn(['byId', conversationId]);
   if (!replyMessages) return [];
-  return replyMessages.toJS();
+  return replyMessages.toList().toJS();
 };
 
 export const getErrorMessage = ({ replies }, conversationId) => {
@@ -89,11 +89,11 @@ export const isFetchingReplies = ({ replies }, conversationId) => {
 };
 
 export const getSendingMessages = ({ replies }, conversationId) => {
-  if (!conversationId) return {};
+  if (!conversationId) return [];
   const sendingMessage = replies.getIn(['sendingMessage', conversationId]);
-  if (!sendingMessage) return {};
+  if (!sendingMessage) return [];
 
-  return sendingMessage.toJS();
+  return sendingMessage.toList().toJS();
 };
 
 export const getSendingMessagesError = ({ replies }, conversationId) => {
@@ -129,16 +129,20 @@ function repliesReducer(state = initialState, action) {
     case REPLIES_FETCH_SUCCESS: {
       const {
         conversationId,
-        replies, total,
+        replies = [], total,
       } = action.payload;
       const allIds = state.get('allIds').add(conversationId);
       const isFetching = state.get('isFetching').delete(conversationId);
       let currentReplies = state.getIn(['byId', conversationId]);
+      const repliesMap = replies.reduce((acc, reply) => {
+        acc[reply._id] = reply;
+        return acc;
+      }, {});
 
       if (!currentReplies) {
-        currentReplies = new List(replies);
+        currentReplies = new OrderedMap(repliesMap);
       } else {
-        currentReplies = currentReplies.push(...replies);
+        currentReplies = currentReplies.merge(repliesMap);
       }
 
       return state
@@ -193,21 +197,26 @@ function repliesReducer(state = initialState, action) {
         });
       }
 
-      const sendingMessage = state.setIn(['sendingMessage', conversationId], sendingList);
-
       return state
-        .set('sendingMessage', sendingMessage)
+        .setIn(['sendingMessage', conversationId], sendingList)
         .set('error', error);
     }
 
     case REPLIES_SEND_MESSAGE_SUCCESS: {
       const { message, localMessageId, conversationId } = action.payload;
+      const { _id: msgId } = message;
       const sendingList = state.getIn(['sendingMessage', conversationId]).delete(localMessageId);
-      const currentReplies = state.getIn(['byId', conversationId]).push(message);
-      const sendingMessage = state.setIn(['sendingMessage', conversationId], sendingList);
+      let currentReplies = state.getIn(['byId', conversationId]);
+      if (!currentReplies) {
+        currentReplies = new OrderedMap({
+          [msgId]: message,
+        });
+      } else {
+        currentReplies = currentReplies.set(msgId, message);
+      }
 
       return state
-        .set('sendingMessage', sendingMessage)
+        .setIn(['sendingMessage', conversationId], sendingList)
         .setIn(['byId', conversationId], currentReplies);
     }
 
