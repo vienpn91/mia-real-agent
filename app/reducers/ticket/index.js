@@ -38,7 +38,33 @@ export const TICKET_CHANGE_PAGE = 'ticket/TICKET_CHANGE_PAGE';
 
 export const TICKET_ADMIN_GET_ALL = 'ticket/ADMIN_GET_ALL';
 
+
+export const TICKET_SET_CURRENT = 'ticket/TICKET_SET_CURRENT';
+export const TICKET_SET_CURRENT_SUCCESS = 'ticket/TICKET_SET_CURRENT_SUCCESS';
+export const TICKET_SET_CURRENT_FAIL = 'ticket/TICKET_SET_CURRENT_FAIL';
+
 // action creator
+
+const selectTicket = ticketId => ({
+  type: TICKET_SET_CURRENT,
+  payload: {
+    ticketId,
+  },
+});
+
+const selectTicketSuccess = ticket => ({
+  type: TICKET_SET_CURRENT_SUCCESS,
+  payload: {
+    ticket,
+  },
+});
+
+const selectTicketFail = error => ({
+  type: TICKET_SET_CURRENT_FAIL,
+  payload: {
+    error,
+  },
+});
 
 const createAction = payload => ({
   type: TICKET_CREATE,
@@ -80,11 +106,10 @@ const getAllTicketFailAction = errorMsg => ({
   errorMsg,
 });
 
-const getAction = (ticketId, owner) => ({
+const getAction = ticketId => ({
   type: TICKET_GET_DETAIL,
   payload: {
     ticketId,
-    owner,
   },
 });
 
@@ -224,6 +249,8 @@ export const initialState = fromJS({
     order: -1,
   }),
 
+  currentticket: null,
+
   ticketDetail: null,
   // processing value
   isCreating: false,
@@ -236,17 +263,22 @@ export const initialState = fromJS({
 
 function ticketReducer(state = initialState, action) {
   switch (action.type) {
+    case TICKET_SET_CURRENT_SUCCESS: {
+      const { ticket } = action.payload;
+      return state.set('currentticket', ticket);
+    }
+
     case TICKET_CREATE:
       return state.set('isCreating', true)
         .set('createError', '');
     case TICKET_CREATE_SUCCESS: {
       const { payload } = action;
-      const { ticketId, owner } = payload;
+      const { _id } = payload;
       const visibleTicketIds = state.get('visibleTicketIds').toJS();
-      const newVisibleTicketIds = [`${ticketId}#${owner}`, ...visibleTicketIds];
+      const newVisibleTicketIds = [_id, ...visibleTicketIds];
       return state
         .set('isCreating', false)
-        .setIn(['tickets', `${ticketId}#${owner}`], fromJS(payload))
+        .setIn(['tickets', _id], fromJS(payload))
         .set('visibleTicketIds', fromJS(newVisibleTicketIds));
     }
     case TICKET_CREATE_FAIL:
@@ -258,9 +290,9 @@ function ticketReducer(state = initialState, action) {
         .set('getError', '');
     case TICKET_GET_DETAIL_SUCCESS: {
       const { ticket } = action.payload;
-      const { ticketId, owner } = ticket;
+      const { _id } = ticket;
       return state.set('isGetting', false)
-        .setIn(['tickets', `${ticketId}#${owner}`], fromJS(ticket));
+        .setIn(['tickets', _id], fromJS(ticket));
     }
     case TICKET_GET_DETAIL_FAIL:
       return state.set('isGetting', false)
@@ -272,12 +304,12 @@ function ticketReducer(state = initialState, action) {
 
     case TICKET_ARCHIVE_SUCCESS: {
       const { payload } = action;
-      const { ticketId, owner } = payload;
+      const { _id } = payload;
       const visibleTicketIds = state.get('visibleTicketIds').toJS();
-      const newVisibleTicketIds = visibleTicketIds.filter(id => id !== `${ticketId}#${owner}`);
+      const newVisibleTicketIds = visibleTicketIds.filter(id => id !== _id);
       return state
         .set('isArchiving', false)
-        .removeIn(['tickets', `${ticketId}#${owner}`])
+        .removeIn(['tickets', _id])
         .set('visibleTicketIds', fromJS(newVisibleTicketIds));
     }
 
@@ -291,9 +323,9 @@ function ticketReducer(state = initialState, action) {
 
     case TICKET_UPDATE_SUCCESS: {
       const { payload } = action;
-      const { ticketId, owner } = payload;
+      const { _id } = payload;
       return state.set('isUpdating', false)
-        .setIn(['tickets', `${ticketId}#${owner}`], fromJS(payload));
+        .setIn(['tickets', _id], fromJS(payload));
     }
     case UPDATE_FAIL:
       return state.set('isUpdating', false)
@@ -305,12 +337,12 @@ function ticketReducer(state = initialState, action) {
 
     case TICKET_REMOVE_SUCCESS: {
       const { payload } = action;
-      const { ticketId, owner } = payload;
+      const { _id } = payload;
       const visibleTicketIds = state.get('visibleTicketIds').toJS();
-      const newVisibleTicketIds = visibleTicketIds.filter(id => id !== `${ticketId}#${owner}`);
+      const newVisibleTicketIds = visibleTicketIds.filter(id => id !== _id);
       return state
         .set('isRemoving', false)
-        .removeIn(['tickets', `${ticketId}#${owner}`])
+        .removeIn(['tickets', _id])
         .set('visibleTicketIds', fromJS(newVisibleTicketIds));
     }
     case TICKET_REMOVE_FAIL:
@@ -324,14 +356,8 @@ function ticketReducer(state = initialState, action) {
       const { data, totalRecord } = action;
       const newTickets = state
         .get('tickets')
-        .merge(fromJS(_keyBy(data, ({ ticketId, owner }) => {
-          const ownerId = _get(owner, '_id', owner); // for admin site, owner is object
-          return `${ticketId}#${ownerId}`;
-        })));
-      const visibleTicketIds = data.map(({ ticketId, owner }) => {
-        const ownerId = _get(owner, '_id', owner); // for admin site, owner is object
-        return `${ticketId}#${ownerId}`;
-      });
+        .merge(fromJS(_keyBy(data, ({ _id }) => _id)));
+      const visibleTicketIds = data.map(({ _id }) => _id);
 
       return state
         .set('visibleTicketIds', fromJS(visibleTicketIds))
@@ -395,4 +421,8 @@ export const actions = {
   fetchTicketSingle,
   fetchTicketSingleFail,
   fetchTicketSingleSuccess,
+
+  selectTicket,
+  selectTicketSuccess,
+  selectTicketFail,
 };

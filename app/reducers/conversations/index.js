@@ -10,6 +10,8 @@ export const CONVERSATION_GET_DETAIL_SUCCESS = 'conversations/CONVERSATION_GET_D
 export const CONVERSATION_GET_DETAIL_FAILED = 'conversations/CONVERSATION_GET_DETAIL_FAILED';
 
 export const CONVERSATION_SET_CURRENT = 'conversations/CONVERSATION_SET_CURRENT';
+export const CONVERSATION_SET_CURRENT_SUCCESS = 'conversations/CONVERSATION_SET_CURRENT_SUCCESS';
+export const CONVERSATION_SET_CURRENT_FAIL = 'conversations/CONVERSATION_SET_CURRENT_FAIL';
 
 
 // action creator
@@ -62,10 +64,24 @@ export const getConversationDetailFailed = error => ({
 
 // SELECT CONVERSATION
 
-export const selectConversation = id => ({
+export const selectConversation = conversationId => ({
   type: CONVERSATION_SET_CURRENT,
   payload: {
-    id,
+    conversationId,
+  },
+});
+
+export const selectConversationSuccess = conversation => ({
+  type: CONVERSATION_SET_CURRENT_SUCCESS,
+  payload: {
+    conversation,
+  },
+});
+
+export const selectConversationFail = error => ({
+  type: CONVERSATION_SET_CURRENT_FAIL,
+  payload: {
+    error,
   },
 });
 
@@ -76,6 +92,7 @@ export const getConverationList = ({ conversations }) => {
   return allIds.map(id => byId[id]);
 };
 export const getCurrentConveration = ({ conversations }) => conversations.get('currentConversation');
+export const getConverationById = ({ conversations }, _id) => conversations.get('byId').get(_id);
 export const getCurrentConverationId = ({ conversations }) => (conversations.get('currentConversation') || {})._id;
 export const getTotalConverations = ({ conversations }) => conversations.get('total');
 export const getErrorMessage = ({ conversations }) => conversations.get('errorMsg');
@@ -139,9 +156,8 @@ function conversationReducer(state = initialState, action) {
         .set('errorMsg', '');
     }
 
-    case CONVERSATION_SET_CURRENT: {
-      const { id } = action.payload;
-      const conversation = state.get('byId').get(id);
+    case CONVERSATION_SET_CURRENT_SUCCESS: {
+      const { conversation } = action.payload;
       return state.set('currentConversation', conversation);
     }
 

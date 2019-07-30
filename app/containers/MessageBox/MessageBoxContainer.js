@@ -10,6 +10,12 @@ import {
   sendReplyMessage,
 } from '../../reducers/replies';
 import {
+  actions,
+} from '../../reducers/ticket';
+import {
+  getCurrentTicket,
+} from '../../selectors/ticket';
+import {
   getCurrentConveration,
   getCurrentConverationId,
 } from '../../reducers/conversations';
@@ -22,6 +28,7 @@ const mapStateToProps = (state) => {
     conversationId,
     userId: getUserId(state),
     currentConversation: getCurrentConveration(state),
+    currentTicket: getCurrentTicket(state),
     isFetchingReplies: isFetchingReplies(state, conversationId),
     errorMessage: getErrorMessage(state, conversationId),
     replyMessages: getReplyMessagesByConversationId(state, conversationId),
@@ -32,6 +39,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   fetchReplyMessages,
+  setCurrentTicket: actions.selectTicket,
   sendReplyMessage,
 };
 

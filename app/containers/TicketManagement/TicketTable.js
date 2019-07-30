@@ -81,7 +81,7 @@ const mapStateToProps = (state) => {
   return {
     ...structureSelector,
     columns: ticketColumns,
-    onClick: ({ ticketId, owner: { _id } }) => { history.push(`/admin/tickets/${ticketId}/${_id}`); },
+    onClick: ({ _id }) => { history.push(`/admin/tickets/${_id}`); },
     endpoint: 'admin/tickets',
   };
 };

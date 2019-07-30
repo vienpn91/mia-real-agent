@@ -42,29 +42,44 @@ export default class MessageBox extends Component {
     conversationId: PropTypes.string,
     fetchReplyMessages: PropTypes.func.isRequired,
     currentConversation: PropTypes.object,
+    currentTicket: PropTypes.object,
     isFetchingReplies: PropTypes.bool,
     replyMessages: PropTypes.arrayOf(PropTypes.shape()),
     sendingMessages: PropTypes.arrayOf(PropTypes.shape()),
-    sendingMessageErrors: PropTypes.objectOf(PropTypes.any),
+    // sendingMessageErrors: PropTypes.objectOf(PropTypes.any),
     sendReplyMessage: PropTypes.func.isRequired,
+    setCurrentTicket: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
     currentConversation: {},
+    currentTicket: {},
     isFetchingReplies: false,
     replyMessages: [],
     conversationId: '',
     sendingMessages: [],
-    sendingMessageErrors: {},
+    // sendingMessageErrors: {},
   }
 
   componentDidMount = () => {
-    const { fetchReplyMessages, currentConversation } = this.props;
+    const { fetchReplyMessages, currentConversation, setCurrentTicket } = this.props;
     // eslint-disable-next-line no-underscore-dangle
-    fetchReplyMessages(currentConversation._id);
+    if (!_isEmpty(currentConversation)) {
+      const { ticketId, _id } = currentConversation;
+      fetchReplyMessages(_id);
+      setCurrentTicket(ticketId);
+    }
   }
 
   componentDidUpdate = (prevProps) => {
+    const { currentConversation, setCurrentTicket } = this.props;
+    if (!_isEmpty(currentConversation)) {
+      const { ticketId: prevTicketId } = prevProps.currentConversation;
+      const { ticketId } = currentConversation;
+      if (ticketId !== prevTicketId) {
+        setCurrentTicket(ticketId);
+      }
+    }
     return;
     this.scrollChatToBottom();
     const {
@@ -183,7 +198,7 @@ export default class MessageBox extends Component {
               type="primary"
               onClick={this.handleFindAgent}
             >
-                Find Agent
+              Find Agent
             </Button>
           </MessageInputWrapper>
         </Form>
