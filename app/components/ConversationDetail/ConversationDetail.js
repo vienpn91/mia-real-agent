@@ -17,12 +17,12 @@ const scrollStyle = {
 
 export default class ConversationDetail extends Component {
   static propTypes = {
-    conversation: shape().isRequired,
+    ticket: shape().isRequired,
   }
 
   renderOwnerInfo = () => {
-    const { conversation } = this.props;
-    const { owner, ownerProfile } = conversation;
+    const { ticket } = this.props;
+    const { owner, ownerProfile } = ticket;
     if (!owner) {
       return 'No Owner';
     }
@@ -36,13 +36,13 @@ export default class ConversationDetail extends Component {
         return `${firstName} ${lastName} - ${company}`;
       case ROLES.BUSINESS:
         return company;
-      default: return 'No Role found';
+      default: return `Owner "${owner}" role not valid`;
     }
   }
 
   renderAssigneeInfo = () => {
-    const { conversation } = this.props;
-    const { assignee, assigneeProfile } = conversation;
+    const { ticket } = this.props;
+    const { assignee, assigneeProfile } = ticket;
     if (!assignee) {
       return 'No Assignee';
     }
@@ -54,27 +54,27 @@ export default class ConversationDetail extends Component {
   }
 
   renderConversationInfo = () => {
-    const { conversation } = this.props;
-    if (!conversation) {
+    const { ticket } = this.props;
+    if (!ticket) {
       return (
         <ConversationInfoWrapper>
           <Descriptions column={4}>
-            No ConversationData
+            No ticket data
           </Descriptions>
         </ConversationInfoWrapper>
       );
     }
     const {
-      title, description,
-    } = conversation;
+      title, description, status,
+    } = ticket;
     return (
       <ConversationInfoWrapper>
         <Descriptions column={5}>
-          <Descriptions.Item label="conversation">{title}</Descriptions.Item>
+          <Descriptions.Item label="Ticket">{title}</Descriptions.Item>
           <Descriptions.Item label="Description">{description}</Descriptions.Item>
           <Descriptions.Item label="Owner">{this.renderOwnerInfo()}</Descriptions.Item>
           <Descriptions.Item label="Assigne">{this.renderAssigneeInfo()}</Descriptions.Item>
-          <Descriptions.Item label="Status">Processing</Descriptions.Item>
+          <Descriptions.Item label="Status">{status}</Descriptions.Item>
         </Descriptions>
       </ConversationInfoWrapper>
     );

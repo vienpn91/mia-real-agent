@@ -87,14 +87,14 @@ function* adminGetAllApplication({ payload }) {
     const message = _get(
       error, 'response.data.message', error.message
     );
-    yield put(actions.getAllFailAction(message));
+    yield put(actions.getAllApplicationFailAction(message));
     return;
   }
 
   const data = _get(response, 'data', {});
   const { result, totalRecord } = data;
 
-  yield put(actions.getAllCompleteAction(result, totalRecord));
+  yield put(actions.getAllApplicationCompleteAction(result, totalRecord));
 }
 
 

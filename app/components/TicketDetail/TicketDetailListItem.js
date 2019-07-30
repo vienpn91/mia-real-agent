@@ -11,10 +11,10 @@ import history from 'utils/history';
 class UserListItem extends React.PureComponent {
   onClick = () => {
     const {
-      item: { ticketId, owner: { _id } },
+      item: { _id },
     } = this.props;
 
-    history.push(`/admin/tickets/${ticketId}/${_id}`);
+    history.push(`/admin/tickets/${_id}`);
   };
 
   render() {

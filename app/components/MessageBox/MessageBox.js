@@ -23,6 +23,7 @@ import {
   InfoNotification,
 } from './styles';
 import LoadingSpin from '../Loading';
+import ConversationDetail from '../ConversationDetail/ConversationDetail';
 
 const scrollStyle = {
   height: '100%',
@@ -42,63 +43,43 @@ export default class MessageBox extends Component {
     conversationId: PropTypes.string,
     fetchReplyMessages: PropTypes.func.isRequired,
     currentConversation: PropTypes.object,
+    currentTicket: PropTypes.object,
     isFetchingReplies: PropTypes.bool,
     replyMessages: PropTypes.arrayOf(PropTypes.shape()),
     sendingMessages: PropTypes.arrayOf(PropTypes.shape()),
-    sendingMessageErrors: PropTypes.objectOf(PropTypes.any),
+    // sendingMessageErrors: PropTypes.objectOf(PropTypes.any),
     sendReplyMessage: PropTypes.func.isRequired,
+    setCurrentTicket: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
     currentConversation: {},
+    currentTicket: {},
     isFetchingReplies: false,
     replyMessages: [],
     conversationId: '',
     sendingMessages: [],
-    sendingMessageErrors: {},
+    // sendingMessageErrors: {},
   }
 
   componentDidMount = () => {
-    const { fetchReplyMessages, currentConversation } = this.props;
+    const { fetchReplyMessages, currentConversation, setCurrentTicket } = this.props;
     // eslint-disable-next-line no-underscore-dangle
-    fetchReplyMessages(currentConversation._id);
+    if (!_isEmpty(currentConversation)) {
+      const { ticketId, _id } = currentConversation;
+      fetchReplyMessages(_id);
+      setCurrentTicket(ticketId);
+    }
   }
 
   componentDidUpdate = (prevProps) => {
-    return;
     this.scrollChatToBottom();
-    const {
-      replyMessages, getChat, ticket, userId,
-    } = this.props;
-    const { ticket: prevTicket } = prevProps;
-    const { _id, assignee } = ticket;
-    const { _id: prevId } = prevTicket;
-    if (ticket !== null && _id !== prevId && assignee) {
-      getChat(_id, assignee);
-    }
-    if (replyMessages && prevProps.replyMessages !== replyMessages) {
-      const { pendingMessages } = this.state;
-      const { messages } = replyMessages;
-      const last = messages[messages.length - 1];
-      if (!last) {
-
-      }
-      const { messageOwner, contents } = last;
-      if (messageOwner === userId && !_isEmpty(pendingMessages)) {
-        const updatePendingMessage = pendingMessages.filter(
-          ({ timestamp }) => !contents.find(
-            ({ timestamp: msgTimestamp }) => {
-              if (!msgTimestamp) {
-                return false;
-              }
-              return new Date(msgTimestamp).getTime()
-                === new Date(timestamp).getTime();
-            }
-          )
-        );
-        this.setState({
-          pendingMessages: updatePendingMessage,
-        });
+    const { currentConversation, setCurrentTicket } = this.props;
+    if (!_isEmpty(currentConversation)) {
+      const { ticketId: prevTicketId } = prevProps.currentConversation;
+      const { ticketId } = currentConversation;
+      if (ticketId !== prevTicketId) {
+        setCurrentTicket(ticketId);
       }
     }
   }
@@ -183,7 +164,7 @@ export default class MessageBox extends Component {
               type="primary"
               onClick={this.handleFindAgent}
             >
-                Find Agent
+              Find Agent
             </Button>
           </MessageInputWrapper>
         </Form>
@@ -210,7 +191,7 @@ export default class MessageBox extends Component {
   }
 
   render() {
-    const { isFetchingReplies, replyMessages } = this.props;
+    const { isFetchingReplies, replyMessages, currentTicket } = this.props;
 
     return (
       <LoadingSpin loading={isFetchingReplies}>
@@ -230,7 +211,7 @@ export default class MessageBox extends Component {
               <div ref={this.messagesEndRef} />
             </ShadowScrollbars>
           </MessageBoxContent>
-          {/* <ConversationDetail conversation={ticket} /> */}
+          <ConversationDetail ticket={currentTicket} />
         </MessageBoxWrapper>
       </LoadingSpin>
     );

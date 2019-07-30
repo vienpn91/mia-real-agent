@@ -11,11 +11,13 @@ import _pickBy from 'lodash/pickBy';
 import { getSkipLimit } from 'utils/func-utils';
 
 import { notification } from 'antd';
-import { getSelectedPage, getSizePerPage, reselectSorting } from 'selectors/ticket';
+import {
+  getSelectedPage, getSizePerPage, reselectSorting, getTicketById,
+} from 'selectors/ticket';
 import {
   actions, TICKET_CREATE, TICKET_GET_ALL,
   TICKET_GET_DETAIL, TICKET_UPDATE, TICKET_REMOVE, TICKET_ARCHIVE,
-  TICKET_ADMIN_GET_ALL, TICKET_SORTING, TICKET_CHANGE_PAGE, TICKET_FETCH_SINGLE,
+  TICKET_ADMIN_GET_ALL, TICKET_SORTING, TICKET_CHANGE_PAGE, TICKET_FETCH_SINGLE, TICKET_SET_CURRENT, TICKET_GET_DETAIL_SUCCESS,
 } from '../../reducers/ticket';
 import {
   AUTH_LOGIN_SUCCESS,
@@ -105,20 +107,20 @@ function* adminGetAllTicket({ payload }) {
     const message = _get(
       error, 'response.data.message', error.message
     );
-    yield put(actions.getAllFailAction(message));
+    yield put(actions.getAllTicketFailAction(message));
     return;
   }
 
   const data = _get(response, 'data', {});
   const { result, totalRecord } = data;
 
-  yield put(actions.getAllCompleteAction(result, totalRecord));
+  yield put(actions.getAllTicketCompleteAction(result, totalRecord));
 }
 
 function* getTicket({ payload }) {
-  const { ticketId, owner } = payload;
+  const { ticketId } = payload;
   try {
-    const { response } = yield call(TicketApi.getTicket, ticketId, owner);
+    const { response } = yield call(TicketApi.getTicket, ticketId);
     const { data } = response;
     const { _doc } = data;
     yield put(actions.getCompleteAction(_doc));
@@ -190,6 +192,20 @@ function* ticketFetchSingle({ id }) {
   }
 }
 
+function* setCurrentTicket({ payload }) {
+  const { ticketId } = payload;
+  const ticket = yield select(getTicketById, ticketId);
+  if (!ticket) {
+    yield put(actions.getAction(ticketId));
+    const { payload: fetchData } = yield take(TICKET_GET_DETAIL_SUCCESS);
+    const { ticket: fetchedTicket } = fetchData;
+    yield put(actions.selectTicketSuccess(fetchedTicket));
+  } else {
+    yield put(actions.selectTicketSuccess(ticket));
+  }
+}
+
+
 function* ticketFlow() {
   yield take(AUTH_LOGIN_SUCCESS);
   yield all([
@@ -202,6 +218,7 @@ function* ticketFlow() {
     takeLatest([TICKET_CHANGE_PAGE, TICKET_SORTING], queryTickets),
     takeLatest(TICKET_ADMIN_GET_ALL, adminGetAllTicket),
     takeLatest(TICKET_FETCH_SINGLE, ticketFetchSingle),
+    takeLatest(TICKET_SET_CURRENT, setCurrentTicket),
   ]);
 }
 

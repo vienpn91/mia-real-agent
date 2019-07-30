@@ -6,7 +6,6 @@ import {
   isFetchingSingleItem,
   getTotalConverations,
   getErrorMessage,
-  getCurrentConverationId,
   getCurrentConveration,
   selectConversation,
 } from '../../reducers/conversations';

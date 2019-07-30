@@ -10,8 +10,8 @@ export const getAllTicket = params => axios
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
-export const getTicket = (id, owner) => axios
-  .get(`tickets/${id}${owner ? `?owner=${owner}` : ''}`)
+export const getTicket = id => axios
+  .get(`tickets/${id}`)
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
