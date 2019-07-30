@@ -9,7 +9,7 @@ export class AgentAcceptRequest extends PureComponent {
   static propTypes = {
     isOpen: bool.isRequired,
     isConfirming: bool.isRequired,
-    requestConfirm: func.isRequired,
+    agentConfirmAction: func.isRequired,
     userId: string,
     ticket: shape(),
     history: shape(),
@@ -51,11 +51,11 @@ export class AgentAcceptRequest extends PureComponent {
 
   handleSubmit = (isConfirm) => {
     const {
-      requestConfirm, ticket,
+      agentConfirmAction, ticket,
       userId,
     } = this.props;
     const { _id, ticketId, owner } = ticket;
-    requestConfirm(userId, _id, isConfirm, { ticketId, owner });
+    agentConfirmAction(userId, _id, isConfirm, { ticketId, owner });
   }
 
   render() {

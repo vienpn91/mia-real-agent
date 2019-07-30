@@ -68,9 +68,9 @@ export function* confirmRequest({ payload }) {
 }
 
 function* chatFlow() {
-  yield takeLatest(INSERT_MESSAGE, sendMessage);
-  yield takeLatest(FIND_AGENT, findAvailableAgent);
-  yield takeLatest(ACCEPT_AGENT, acceptAgent);
+  // yield takeLatest(INSERT_MESSAGE, sendMessage);
+  // yield takeLatest(FIND_AGENT, findAvailableAgent);
+  // yield takeLatest(ACCEPT_AGENT, acceptAgent);
   yield takeLatest(REQUEST_CONFIRM, confirmRequest);
 }
 

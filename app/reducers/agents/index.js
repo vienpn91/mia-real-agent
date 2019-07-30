@@ -7,6 +7,12 @@ export const AGENTS_FIND = 'agents/AGENTS_FIND';
 export const AGENTS_FIND_SUCCESS = 'agents/AGENTS_FIND_SUCCESS';
 export const AGENTS_FIND_FAILED = 'agents/AGENTS_FIND_FAILED';
 
+export const AGENT_NEW_REQUEST = 'chat/AGENT_NEW_REQUEST';
+
+export const AGENT_CONFIRM = 'chat/AGENT_CONFIRM';
+export const AGENT_CONFIRM_SUCCESS = 'chat/AGENT_CONFIRM_SUCCESS';
+export const AGENT_CONFIRM_FAIL = 'chat/AGENT_CONFIRM_FAIL';
+
 // action creator
 
 export const findAgentRequest = conversationId => ({
@@ -31,6 +37,44 @@ export const findAgentRequestFailed = (conversationId, error) => ({
   },
 });
 
+export const agentNewRequest = data => ({
+  type: AGENT_NEW_REQUEST,
+  payload: {
+    data,
+  },
+});
+
+export const agentConfirmAction = (agentId, conversationId, isConfirm, redirectData) => ({
+  type: AGENT_CONFIRM,
+  payload: {
+    agentId,
+    conversationId,
+    isConfirm,
+    redirectData,
+  },
+});
+
+// payload: {
+//   ticketId,
+//   owner,
+//   isConfirm,
+// }
+export const agentConfirmCompleteAction = (conversationId, payload) => ({
+  type: AGENT_CONFIRM_SUCCESS,
+  payload: {
+    ...payload,
+    conversationId,
+  },
+});
+
+export const agentConfirmFailAction = (conversationId, error) => ({
+  type: AGENT_CONFIRM_FAIL,
+  payload: {
+    conversationId,
+    error,
+  },
+});
+
 // selector
 export const getErrorMessage = ({ agents }, conversationId) => {
   if (!conversationId) return '';
@@ -46,9 +90,16 @@ export const isFindingAgent = ({ agents }, conversationId) => {
   return isRequestingList.has(conversationId);
 };
 
+export const isWaitingForComfirm = ({ agents }) => agents.get('isWaitingForComfirm');
+export const isSendingConfirmation = ({ agents }) => agents.get('isSendingConfirmation');
+
+// initial state
 const initialState = fromJS({
   isRequestingList: new ISet(),
   error: {},
+  isWaitingForComfirm: false,
+  isSendingConfirmation: false,
+  confirmationError: '',
 });
 
 function agentsReducer(state = initialState, action) {
@@ -81,6 +132,25 @@ function agentsReducer(state = initialState, action) {
         .set('error', error);
     }
 
+    case AGENT_NEW_REQUEST: {
+      return state.set('isWaitingForComfirm', true);
+    }
+
+    case AGENT_CONFIRM: {
+      return state.set('isSendingConfirmation', true);
+    }
+
+    case AGENT_CONFIRM_SUCCESS: {
+      return state.set('isSendingConfirmation', false);
+    }
+
+    case AGENT_CONFIRM_FAIL: {
+      const { error } = action.payload;
+      return state
+        .set('isSendingConfirmation', false)
+        .set('confirmationError', error);
+    }
+
     default: {
       return state;
     }
@@ -93,6 +163,9 @@ export const actions = {
   findAgentRequest,
   findAgentRequestSuccess,
   findAgentRequestFailed,
+  agentConfirmAction,
+  agentConfirmCompleteAction,
+  agentConfirmFailAction,
 };
 
 export const selectors = {

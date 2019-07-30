@@ -52,11 +52,6 @@ export const findAvailableAgent = ticketId => axios
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
-export const acceptAgent = (id, ticketId, isConfirm) => axios
-  .post(`agents/${id}/accept`, { ticketId, isConfirm })
-  .then(response => ({ response }))
-  .catch(error => ({ error }));
-
 export const list = params => axios
   .get('admin/users/', { params })
   .then(response => ({ response }))

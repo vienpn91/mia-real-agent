@@ -35,10 +35,7 @@ export const TICKET_FETCH_SINGLE_SUCCESS = 'ticket/TICKET_FETCH_SINGLE_SUCCESS';
 export const TICKET_FETCH_SINGLE_FAIL = 'ticket/TICKET_FETCH_SINGLE_FAIL';
 
 export const TICKET_CHANGE_PAGE = 'ticket/TICKET_CHANGE_PAGE';
-export const TICKET_SET_CURRENT = 'ticket/TICKET_SET_CURRENT';
 export const TICKET_ADMIN_GET_ALL = 'ticket/ADMIN_GET_ALL';
-
-
 export const TICKET_SET_CURRENT = 'ticket/TICKET_SET_CURRENT';
 export const TICKET_SET_CURRENT_SUCCESS = 'ticket/TICKET_SET_CURRENT_SUCCESS';
 export const TICKET_SET_CURRENT_FAIL = 'ticket/TICKET_SET_CURRENT_FAIL';
@@ -199,13 +196,6 @@ const changePage = (pageIndex, sizePerPage) => ({
   sizePerPage,
 });
 
-export const selectTicket = id => ({
-  type: TICKET_SET_CURRENT,
-  payload: {
-    id,
-  },
-});
-
 function fetchTicketSingle(id) {
   return {
     type: TICKET_FETCH_SINGLE,
@@ -272,7 +262,7 @@ function ticketReducer(state = initialState, action) {
   switch (action.type) {
     case TICKET_SET_CURRENT_SUCCESS: {
       const { ticket } = action.payload;
-      return state.set('currentticket', fromJS(ticket));
+      return state.set('currentTicket', fromJS(ticket));
     }
 
     case TICKET_CREATE:
@@ -398,11 +388,11 @@ function ticketReducer(state = initialState, action) {
       return state.setIn(['ticket', id], fromJS({ error: errorMsg }));
     }
 
-    case TICKET_SET_CURRENT: {
-      const { id } = action.payload;
-      const ticket = state.get('byId').get(id);
-      return state.set('currentTicket', ticket);
-    }
+    // case TICKET_SET_CURRENT: {
+    //   const { id } = action.payload;
+    //   const ticket = state.get('byId').get(id);
+    //   return state.set('currentTicket', ticket);
+    // }
     default: return state;
   }
 }
