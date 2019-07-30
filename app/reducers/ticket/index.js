@@ -249,7 +249,7 @@ export const initialState = fromJS({
     order: -1,
   }),
 
-  currentticket: null,
+  currentticket: fromJS({}),
 
   ticketDetail: null,
   // processing value
@@ -265,7 +265,7 @@ function ticketReducer(state = initialState, action) {
   switch (action.type) {
     case TICKET_SET_CURRENT_SUCCESS: {
       const { ticket } = action.payload;
-      return state.set('currentticket', ticket);
+      return state.set('currentticket', fromJS(ticket));
     }
 
     case TICKET_CREATE:

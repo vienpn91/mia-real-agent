@@ -31,7 +31,7 @@ const getTicketIdList = createSelector(
 
 const getTicketById = ({ ticket }, _id) => ticket.get('tickets').get(_id);
 
-const getCurrentTicket = ({ ticket }) => ticket.get('currentticket');
+const getCurrentTicket = ({ ticket }) => ticket.get('currentticket').toJS();
 
 const getTicketIsArchiving = ({ ticket }) => ticket.get('isArchiving');
 const getTicketArchiveError = ({ ticket }) => ticket.get('archiveError');

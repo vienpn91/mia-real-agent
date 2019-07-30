@@ -23,6 +23,7 @@ import {
   InfoNotification,
 } from './styles';
 import LoadingSpin from '../Loading';
+import ConversationDetail from '../ConversationDetail/ConversationDetail';
 
 const scrollStyle = {
   height: '100%',
@@ -225,7 +226,7 @@ export default class MessageBox extends Component {
   }
 
   render() {
-    const { isFetchingReplies, replyMessages } = this.props;
+    const { isFetchingReplies, replyMessages, currentTicket } = this.props;
 
     return (
       <LoadingSpin loading={isFetchingReplies}>
@@ -245,7 +246,7 @@ export default class MessageBox extends Component {
               <div ref={this.messagesEndRef} />
             </ShadowScrollbars>
           </MessageBoxContent>
-          {/* <ConversationDetail conversation={ticket} /> */}
+          <ConversationDetail ticket={currentTicket} />
         </MessageBoxWrapper>
       </LoadingSpin>
     );
