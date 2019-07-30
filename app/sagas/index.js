@@ -11,6 +11,7 @@ import adminSaga from './admin';
 import applicationSaga from './application';
 import conversationSaga from './conversations';
 import repliesSaga from './replies';
+import agentsSaga from './agents';
 
 export default function* rootSagas() {
   configAxios();
@@ -32,5 +33,6 @@ export default function* rootSagas() {
     adminSaga(),
     conversationSaga(),
     repliesSaga(),
+    agentsSaga(),
   ]);
 }

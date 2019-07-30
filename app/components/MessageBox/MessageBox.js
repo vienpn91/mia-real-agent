@@ -53,9 +53,11 @@ export default class MessageBox extends Component {
     currentConversation: PropTypes.object,
     currentTicket: PropTypes.object,
     isFetchingReplies: PropTypes.bool,
+    isFindingAgent: PropTypes.bool,
     replyMessages: PropTypes.arrayOf(PropTypes.shape()),
     sendingMessages: PropTypes.arrayOf(PropTypes.shape()),
-    // sendingMessageErrors: PropTypes.objectOf(PropTypes.any),
+    sendingMessageErrors: PropTypes.objectOf(PropTypes.any),
+    findAgentRequest: PropTypes.func.isRequired,
     sendReplyMessage: PropTypes.func.isRequired,
     setCurrentTicket: PropTypes.func.isRequired,
   }
@@ -64,6 +66,7 @@ export default class MessageBox extends Component {
     currentConversation: {},
     currentTicket: {},
     isFetchingReplies: false,
+    isFindingAgent: false,
     replyMessages: [],
     conversationId: '',
     sendingMessages: [],
@@ -151,34 +154,43 @@ export default class MessageBox extends Component {
     }
   }
 
-  renderMessageInput = () => (
-    <Formik
-      ref={(formik) => { this.formik = formik; }}
-      initialValues={initialValues}
-      onSubmit={this.handleChatSubmit}
-    >
-      {({ handleSubmit }) => (
-        <Form
-          onSubmit={handleSubmit}
-          onChange={this.handleChangeValues}
-        >
-          <MessageInputWrapper>
-            <MessageInput type="text" name="content" placeholder="Type message ..." autocomplete="false" />
-            {this.renderGroupAction()}
-            <InputAction onClick={handleSubmit} className="mia-enter" />
-            <Button
-              loading={false}
-              key="button"
-              type="primary"
-              onClick={this.handleFindAgent}
-            >
-              Find Agent
-            </Button>
-          </MessageInputWrapper>
-        </Form>
-      )}
-    </Formik>
-  )
+  handleFindAgent = () => {
+    const { findAgentRequest, conversationId } = this.props;
+
+    findAgentRequest(conversationId);
+  }
+
+  renderMessageInput = () => {
+    const { isFindingAgent } = this.props;
+    return (
+      <Formik
+        ref={(formik) => { this.formik = formik; }}
+        initialValues={initialValues}
+        onSubmit={this.handleChatSubmit}
+      >
+        {({ handleSubmit }) => (
+          <Form
+            onSubmit={handleSubmit}
+            onChange={this.handleChangeValues}
+          >
+            <MessageInputWrapper>
+              <MessageInput type="text" name="content" placeholder="Type message ..." />
+              {this.renderGroupAction()}
+              <InputAction onClick={handleSubmit} className="mia-enter" />
+              <Button
+                loading={isFindingAgent}
+                key="button"
+                type="primary"
+                onClick={this.handleFindAgent}
+              >
+                  Find Agent
+              </Button>
+            </MessageInputWrapper>
+          </Form>
+        )}
+      </Formik>
+    )
+  }
 
   renderMessageHeader = () => {
     const { ticket } = this.props;

@@ -19,6 +19,10 @@ import {
   getCurrentConveration,
   getCurrentConverationId,
 } from '../../reducers/conversations';
+import {
+  isFindingAgent,
+  findAgentRequest,
+} from '../../reducers/agents';
 import MessageBox from '../../components/MessageBox';
 
 const mapStateToProps = (state) => {
@@ -34,6 +38,7 @@ const mapStateToProps = (state) => {
     replyMessages: getReplyMessagesByConversationId(state, conversationId),
     sendingMessages: getSendingMessages(state, conversationId),
     sendingMessageErrors: getSendingMessagesError(state, conversationId),
+    isFindingAgent: isFindingAgent(state, conversationId),
   });
 };
 
@@ -41,6 +46,7 @@ const mapDispatchToProps = {
   fetchReplyMessages,
   setCurrentTicket: actions.selectTicket,
   sendReplyMessage,
+  findAgentRequest,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageBox);

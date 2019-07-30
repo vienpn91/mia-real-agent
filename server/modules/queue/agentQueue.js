@@ -5,8 +5,11 @@ class AgentQueue {
 
   getAgent = agentId => this.queue.find(({ _id }) => agentId === _id);
 
-  add = (agent) => {
-    this.queue = this.queue.concat(agent);
+  add = ({ agent, socketId }) => {
+    this.queue = this.queue.concat({
+      ...agent,
+      socketId,
+    });
   };
 
   remove = (agentId) => {

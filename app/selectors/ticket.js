@@ -72,6 +72,9 @@ const getTicketDetailFromRoute = createSelector(
   (path, tickets) => tickets.get(path, emptyMap).toJS(),
 );
 
+export const getCurrentTicket = ({ ticket }) => ticket.get('currentTicket');
+// eslint-disable-next-line no-underscore-dangle
+export const getCurrentTicketId = ({ ticket }) => ticket.get('currentTicket') || {}._id;
 
 export {
   reselectSorting,

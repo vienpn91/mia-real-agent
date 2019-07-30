@@ -21,6 +21,19 @@ class TicketController extends BaseController {
     this.getAllConversations = this.getAllConversations.bind(this);
   }
 
+
+  async findAvailableAgents(req, res) {
+    try {
+      const { model } = req;
+      // const replyMessages = await ReplyService.getByConversation(id);
+      console.log(model);
+
+      return res.status(httpStatus.OK).send(model);
+    } catch (error) {
+      return super.handleError(res, error);
+    }
+  }
+
   async getAllConversations(req, res) {
     try {
       const { id } = req.params;

@@ -16,43 +16,6 @@ class AgentController {
     return res.status(status).send(error.message);
   }
 
-  async findAgent(req, res) {
-    try {
-      const { ticketId } = req.body;
-      const ticket = await TicketService.get(ticketId);
-      const { categories: ticketCategories } = ticket;
-      // Get owner information
-      const queue = AgentQueue.get();
-      let agents = queue.filter(
-        ({ categories }) => {
-          if (!categories) {
-            return false;
-          }
-          return categories
-            .some(category => ticketCategories.includes(category));
-        }
-      );
-      if (agents.length === 0) {
-        agents = queue;
-      }
-      const agent = agents[Math.floor(Math.random() * agents.length)];
-      if (agent) {
-        const { socketId } = agent;
-        const { socketIO } = global.socketIOServer;
-        const { connected } = socketIO.sockets;
-        const socket = connected[socketId];
-        // Emit ticket infomation to agent
-        if (socket) {
-          const { _doc } = ticket;
-          socket.emit('REQUEST_AVAILABLE', _doc);
-        }
-      }
-      return res.status(httpStatus.OK).send({ agent });
-    } catch (error) {
-      return this.handleError(res, error);
-    }
-  }
-
   async acceptRequest(req, res) {
     try {
       const { id: agentId } = req.params;

@@ -35,7 +35,7 @@ export const TICKET_FETCH_SINGLE_SUCCESS = 'ticket/TICKET_FETCH_SINGLE_SUCCESS';
 export const TICKET_FETCH_SINGLE_FAIL = 'ticket/TICKET_FETCH_SINGLE_FAIL';
 
 export const TICKET_CHANGE_PAGE = 'ticket/TICKET_CHANGE_PAGE';
-
+export const TICKET_SET_CURRENT = 'ticket/TICKET_SET_CURRENT';
 export const TICKET_ADMIN_GET_ALL = 'ticket/ADMIN_GET_ALL';
 
 
@@ -199,6 +199,12 @@ const changePage = (pageIndex, sizePerPage) => ({
   sizePerPage,
 });
 
+export const selectTicket = id => ({
+  type: TICKET_SET_CURRENT,
+  payload: {
+    id,
+  },
+});
 
 function fetchTicketSingle(id) {
   return {
@@ -259,6 +265,7 @@ export const initialState = fromJS({
   isRemoving: false,
   isGetting: false,
   fetching: fetchingObj,
+  currentTicket: null,
 });
 
 function ticketReducer(state = initialState, action) {
@@ -271,6 +278,7 @@ function ticketReducer(state = initialState, action) {
     case TICKET_CREATE:
       return state.set('isCreating', true)
         .set('createError', '');
+
     case TICKET_CREATE_SUCCESS: {
       const { payload } = action;
       const { _id } = payload;
@@ -327,6 +335,7 @@ function ticketReducer(state = initialState, action) {
       return state.set('isUpdating', false)
         .setIn(['tickets', _id], fromJS(payload));
     }
+
     case UPDATE_FAIL:
       return state.set('isUpdating', false)
         .set('updateError', action.payload.errorMessage);
@@ -345,6 +354,7 @@ function ticketReducer(state = initialState, action) {
         .removeIn(['tickets', _id])
         .set('visibleTicketIds', fromJS(newVisibleTicketIds));
     }
+
     case TICKET_REMOVE_FAIL:
       return state.set('isRemoving', false)
         .set('removeError', action.payload.errorMessage);
@@ -352,6 +362,7 @@ function ticketReducer(state = initialState, action) {
     case TICKET_ADMIN_GET_ALL:
     case TICKET_GET_ALL:
       return state.set('fetching', fromJS({ isFetching: true, errorMsg: '' }));
+
     case TICKET_GET_ALL_SUCCESS: {
       const { data, totalRecord } = action;
       const newTickets = state
@@ -367,20 +378,30 @@ function ticketReducer(state = initialState, action) {
     }
     case TICKET_GET_ALL_FAIL:
       return state.set('fetching', fromJS({ isFetching: false, errorMsg: action.errorMsg }));
+
     case TICKET_CHANGE_PAGE:
       return state
         .set('fetching', fromJS({ isFetching: true, errorMsg: '' }))
         .setIn(['pagination', 'selectedPage'], action.pageIndex);
+
     case TICKET_FETCH_SINGLE:
       return state.setIn(['ticket', action.id, 'isLoading'], true);
+
     case TICKET_FETCH_SINGLE_SUCCESS: {
       const { payload } = action;
       const { _id } = payload;
       return state.setIn(['ticket', _id], fromJS(payload));
     }
+
     case TICKET_FETCH_SINGLE_FAIL: {
       const { id, errorMsg } = action;
       return state.setIn(['ticket', id], fromJS({ error: errorMsg }));
+    }
+
+    case TICKET_SET_CURRENT: {
+      const { id } = action.payload;
+      const ticket = state.get('byId').get(id);
+      return state.set('currentTicket', ticket);
     }
     default: return state;
   }

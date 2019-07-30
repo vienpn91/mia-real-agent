@@ -25,6 +25,11 @@ export const getConversationByTicketId = ticketId => axios
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
+export const findAgent = ticketId => axios
+  .get(`tickets/${ticketId}/find_agent`)
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
+
 export const removeTicket = id => axios
   .delete(`tickets/${id}`)
   .then(response => ({ response }))
