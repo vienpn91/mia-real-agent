@@ -26,7 +26,7 @@ export const getConversationByTicketId = ticketId => axios
   .catch(error => ({ error }));
 
 export const findAgent = ticketId => axios
-  .get(`tickets/${ticketId}/find_agent`)
+  .post(`tickets/${ticketId}/find_agent`)
   .then(response => ({ response }))
   .catch(error => ({ error }));
 

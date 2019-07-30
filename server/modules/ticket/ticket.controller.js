@@ -6,6 +6,8 @@ import TicketService from './ticket.service';
 import UserService from '../user/user.service';
 import ConversationService from '../conversation/conversation.service';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
+import AgentQueue from '../queue/agentQueue';
+import UserQueue from '../queue/userQueue';
 import { ROLES } from '../../../common/enums';
 
 const { CONTENT_NOT_FOUND } = ERROR_MESSAGE;
@@ -24,11 +26,30 @@ class TicketController extends BaseController {
 
   async findAvailableAgents(req, res) {
     try {
-      const { model } = req;
+      const { model: ticket } = req;
       // const replyMessages = await ReplyService.getByConversation(id);
-      console.log(model);
+      const { category: ticketCategories = [] } = ticket;
+      // Get owner information
+      const queue = AgentQueue.get();
+      const agents = queue.filter(
+        ({ categories }) => {
+          if (!categories) {
+            return false;
+          }
+          return categories
+            .some(category => ticketCategories.includes(category));
+        }
+      );
+      if (!agents.length) {
+        return res.status(httpStatus.NOT_FOUND).send('Agent not found!');
+      }
+      agents.forEach((agent) => {
+        // eslint-disable-next-line no-underscore-dangle
+        const socket = UserQueue.getUser(agent._id);
+        socket.emit('REQUEST_AVAILABLE', ticket.toObject());
+      });
 
-      return res.status(httpStatus.OK).send(model);
+      return res.status(httpStatus.OK).send();
     } catch (error) {
       return super.handleError(res, error);
     }

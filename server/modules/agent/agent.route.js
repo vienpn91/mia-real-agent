@@ -5,7 +5,7 @@ class AgentRouter {
   constructor(controller) {
     this.router = Router();
     this.router.post(
-      '/:id/accept',
+      '/accept',
       controller.acceptRequest,
     );
   }

@@ -22,7 +22,7 @@ export function* findAvailableAgent({ payload }) {
     yield put(findAgentRequestSuccess(conversationId));
   } catch (error) {
     const errorMsg = error.message || error;
-    yield put(findAgentRequestFailed(errorMsg, conversationId));
+    yield put(findAgentRequestFailed(conversationId, errorMsg));
   }
 }
 
