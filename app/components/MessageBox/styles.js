@@ -146,3 +146,42 @@ export const InputAction = styled.label`
 export const InputUpload = styled.input`
   display: none;
 `;
+
+export const RatingWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const RatingContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  ul{
+    padding-left: 4px; 
+  }
+`;
+
+export const CommentInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: ${props => props.theme.secondaryColor};
+  border-top: 1px solid #ddd;
+  height: 100px;
+  width: 350px;
+  padding: 0px 10px;
+  margin-top: 10px;
+  .ant-form-item{
+    width: 100%;
+    margin: 0;
+    input{
+      outline: none !important;
+      border: 1px solid transparent !important;
+    }
+  }
+  button{
+    margin-left: 10px;
+  }
+`;

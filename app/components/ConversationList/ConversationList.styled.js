@@ -138,3 +138,8 @@ export const ConversationPaginationWrapper = styled.div`
     display: none;
   }
 `;
+
+export const ActionList = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
