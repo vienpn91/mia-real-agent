@@ -60,6 +60,7 @@ export default class MessageBox extends Component {
     findAgentRequest: PropTypes.func.isRequired,
     sendReplyMessage: PropTypes.func.isRequired,
     setCurrentTicket: PropTypes.func.isRequired,
+    userRole: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
@@ -161,7 +162,8 @@ export default class MessageBox extends Component {
   }
 
   renderMessageInput = () => {
-    const { isFindingAgent } = this.props;
+    const { isFindingAgent, userRole } = this.props;
+
     return (
       <Formik
         ref={(formik) => { this.formik = formik; }}
@@ -177,19 +179,21 @@ export default class MessageBox extends Component {
               <MessageInput type="text" name="content" placeholder="Type message ..." />
               {this.renderGroupAction()}
               <InputAction onClick={handleSubmit} className="mia-enter" />
-              <Button
-                loading={isFindingAgent}
-                key="button"
-                type="primary"
-                onClick={this.handleFindAgent}
-              >
+              {userRole !== 'agent' && (
+                <Button
+                  loading={isFindingAgent}
+                  key="button"
+                  type="primary"
+                  onClick={this.handleFindAgent}
+                >
                   Find Agent
-              </Button>
+                </Button>
+              )}
             </MessageInputWrapper>
           </Form>
         )}
       </Formik>
-    )
+    );
   }
 
   renderMessageHeader = () => {

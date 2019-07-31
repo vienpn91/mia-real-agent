@@ -15,10 +15,11 @@ export const AGENT_CONFIRM_FAIL = 'chat/AGENT_CONFIRM_FAIL';
 
 // action creator
 
-export const findAgentRequest = conversationId => ({
+export const findAgentRequest = (conversationId, isConfirm) => ({
   type: AGENTS_FIND,
   payload: {
     conversationId,
+    isConfirm,
   },
 });
 
@@ -44,13 +45,12 @@ export const agentNewRequest = data => ({
   },
 });
 
-export const agentConfirmAction = (agentId, conversationId, isConfirm, redirectData) => ({
+export const agentConfirmAction = (conversationId, ticketId, isConfirm) => ({
   type: AGENT_CONFIRM,
   payload: {
-    agentId,
     conversationId,
+    ticketId,
     isConfirm,
-    redirectData,
   },
 });
 
@@ -59,18 +59,15 @@ export const agentConfirmAction = (agentId, conversationId, isConfirm, redirectD
 //   owner,
 //   isConfirm,
 // }
-export const agentConfirmCompleteAction = (conversationId, payload) => ({
+export const agentConfirmSuccessAction = () => ({
   type: AGENT_CONFIRM_SUCCESS,
   payload: {
-    ...payload,
-    conversationId,
   },
 });
 
-export const agentConfirmFailAction = (conversationId, error) => ({
+export const agentConfirmFailAction = error => ({
   type: AGENT_CONFIRM_FAIL,
   payload: {
-    conversationId,
     error,
   },
 });
@@ -92,6 +89,7 @@ export const isFindingAgent = ({ agents }, conversationId) => {
 
 export const isWaitingForComfirm = ({ agents }) => agents.get('isWaitingForComfirm');
 export const isSendingConfirmation = ({ agents }) => agents.get('isSendingConfirmation');
+export const getRequestData = ({ agents }) => agents.get('requestData');
 
 // initial state
 const initialState = fromJS({
@@ -100,6 +98,7 @@ const initialState = fromJS({
   isWaitingForComfirm: false,
   isSendingConfirmation: false,
   confirmationError: '',
+  requestData: null,
 });
 
 function agentsReducer(state = initialState, action) {
@@ -133,15 +132,22 @@ function agentsReducer(state = initialState, action) {
     }
 
     case AGENT_NEW_REQUEST: {
-      return state.set('isWaitingForComfirm', true);
+      const { data } = action.payload;
+
+      return state
+        .set('isWaitingForComfirm', true)
+        .set('requestData', data);
     }
 
     case AGENT_CONFIRM: {
-      return state.set('isSendingConfirmation', true);
+      return state
+        .set('isSendingConfirmation', true);
     }
 
     case AGENT_CONFIRM_SUCCESS: {
-      return state.set('isSendingConfirmation', false);
+      return state
+        .set('isSendingConfirmation', false)
+        .set('isWaitingForComfirm', false);
     }
 
     case AGENT_CONFIRM_FAIL: {
@@ -164,7 +170,7 @@ export const actions = {
   findAgentRequestSuccess,
   findAgentRequestFailed,
   agentConfirmAction,
-  agentConfirmCompleteAction,
+  agentConfirmSuccessAction,
   agentConfirmFailAction,
 };
 

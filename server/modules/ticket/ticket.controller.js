@@ -69,11 +69,12 @@ class TicketController extends BaseController {
   async get(req, res) {
     try {
       const { model } = req;
-      const { _doc } = model;
-      const { assignee, owner: ticketOwner } = _doc;
-      const user = await UserService.get(ticketOwner);
-      const { profile, role: ownerRole } = user;
+      const ticket = model.toObject();
+      const { assignee, owner: ticketOwnerId } = ticket;
+      const ticketOwner = await UserService.get(ticketOwnerId);
+      const { profile, role: ownerRole } = ticketOwner;
       let assigneeProfile = null;
+
       if (assignee) {
         assigneeProfile = (await UserService.get(assignee)).profile;
       }
@@ -81,7 +82,7 @@ class TicketController extends BaseController {
         {
           ...model,
           _doc: {
-            ..._doc,
+            ...ticket,
             ownerProfile: {
               role: ownerRole,
               profile,
@@ -98,20 +99,14 @@ class TicketController extends BaseController {
   async load(req, res, next, id) {
     try {
       const { user } = req;
-      const { owner } = req.query;
       if (!user) {
         throw new APIError(ERROR_MESSAGE.UNAUTHORIZED, httpStatus.UNAUTHORIZED);
       }
-      const { _id, role } = user;
-
-
-      if (!mongoose.Types.ObjectId.isValid(owner) && role === ROLES.AGENT) {
-        throw new APIError(CONTENT_NOT_FOUND, httpStatus.NOT_FOUND);
-      }
+      const { _id: userId, role } = user;
 
       const condition = (role === ROLES.AGENT)
-        ? { owner, _id: id }
-        : { owner: _id, _id: id };
+        ? { assignee: userId, _id: id }
+        : { owner: userId, _id: id };
       const model = await this.service.getByCondition(condition);
 
       if (model == null) {

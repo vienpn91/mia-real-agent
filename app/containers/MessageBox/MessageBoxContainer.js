@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { getUserId } from 'reducers/auth';
+import { getUserId, getUserRole } from 'reducers/auth';
 import {
   fetchReplyMessages,
   isFetchingReplies,
@@ -39,6 +39,7 @@ const mapStateToProps = (state) => {
     sendingMessages: getSendingMessages(state, conversationId),
     sendingMessageErrors: getSendingMessagesError(state, conversationId),
     isFindingAgent: isFindingAgent(state, conversationId),
+    userRole: getUserRole(state),
   });
 };
 

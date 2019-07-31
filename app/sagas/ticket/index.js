@@ -120,14 +120,17 @@ function* adminGetAllTicket({ payload }) {
 function* getTicket({ payload }) {
   const { ticketId } = payload;
   try {
-    const { response } = yield call(TicketApi.getTicket, ticketId);
+    const { response, error } = yield call(TicketApi.getTicket, ticketId);
+    if (error) {
+      throw new Error(_get(
+        error, 'response.data.message', error.message
+      ));
+    }
     const { data } = response;
     const { _doc } = data;
     yield put(actions.getCompleteAction(_doc));
   } catch (error) {
-    const message = _get(
-      error, 'response.data.message', error.message
-    );
+    const message = error.message || error;
     notification.error({ message });
     yield put(actions.getFailAction(message));
   }
@@ -180,15 +183,17 @@ function* removeTicket({ payload }) {
 }
 
 function* ticketFetchSingle({ id }) {
-  const { response } = yield call(TicketApi.get, id);
-  const error = _get(response, 'error');
-  const data = _get(response, 'data', {});
-  if (error) {
-    const errMsg = _get(error, 'response.data.message', error.message);
+  try {
+    const { response, error } = yield call(TicketApi.get, id);
+    const data = _get(response, 'data', {});
+    if (error) {
+      throw new Error(error);
+    }
+    yield put(actions.fetchTicketSingleSuccess(data));
+  } catch (error) {
+    const errMsg = error.message || error;
     yield put(actions.fetchTicketSingleFail(id, errMsg));
     notification.error({ message: errMsg });
-  } else {
-    yield put(actions.fetchTicketSingleSuccess(data));
   }
 }
 

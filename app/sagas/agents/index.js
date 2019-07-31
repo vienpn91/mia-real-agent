@@ -1,11 +1,14 @@
 import {
   call, put, takeLatest, select,
 } from 'redux-saga/effects';
+import { push } from 'connected-react-router';
 import {
   AGENTS_FIND,
   AGENT_CONFIRM,
   findAgentRequestFailed,
   findAgentRequestSuccess,
+  agentConfirmSuccessAction,
+  agentConfirmFailAction,
 } from '../../reducers/agents';
 import {
   getConversationById,
@@ -30,18 +33,22 @@ export function* findAvailableAgent({ payload }) {
 
 export function* confirmRequest({ payload }) {
   const {
-    agentId, ticketId: _id, isConfirm,
-    redirectData,
+    conversationId,
+    ticketId,
+    isConfirm,
   } = payload;
-  const { error } = yield call(acceptAgent, agentId, _id, isConfirm);
-  // if (error) {
-  //   const errorMessage = _get(
-  //     error, 'response.data.message', DEFAULT_ERROR_MESSAGE
-  //   );
-  //   yield put(actions.requestConfirmFailAction(errorMessage));
-  //   return;
-  // }
-  // yield put(actions.requestConfirmCompleteAction({ ...redirectData, isConfirm }));
+  try {
+    const { error } = yield call(acceptAgent, conversationId, ticketId, isConfirm);
+    if (error) {
+      throw new Error(error);
+    }
+    yield put(agentConfirmSuccessAction());
+
+    if (isConfirm) yield put(push(`/conversation/${conversationId}`));
+  } catch (error) {
+    const errorMsg = error.message || error;
+    yield put(agentConfirmFailAction(errorMsg));
+  }
 }
 
 function* agentFlow() {

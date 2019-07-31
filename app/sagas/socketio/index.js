@@ -73,6 +73,7 @@ function* requestAgent() {
   // watch message and relay the action
   while (true) {
     const data = yield take(socketChannel);
+    console.log(data);
     yield put(agentNewRequest(data));
   }
 }

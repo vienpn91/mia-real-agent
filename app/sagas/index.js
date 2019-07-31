@@ -5,7 +5,6 @@ import authSaga from './auth';
 import socketioSaga from './socketio';
 import profileSaga from './profile';
 import ticketSaga from './ticket';
-import chatSaga from './chat';
 import userSaga from './user';
 import adminSaga from './admin';
 import applicationSaga from './application';
@@ -27,7 +26,6 @@ export default function* rootSagas() {
     socketioSaga(),
     profileSaga(),
     ticketSaga(),
-    chatSaga(),
     userSaga(),
     applicationSaga(),
     adminSaga(),

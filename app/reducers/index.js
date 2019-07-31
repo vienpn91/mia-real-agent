@@ -7,7 +7,6 @@ import { connectRouter } from 'connected-react-router';
 import auth from './auth';
 import profile from './profile';
 import ticket from './ticket';
-import chat from './chat';
 import modal from './modal';
 import application from './application';
 import history from '../utils/history';
@@ -29,7 +28,6 @@ export default function createReducer(injectedReducers = {}) {
     auth,
     profile,
     ticket,
-    chat,
     modal,
     user,
     admin,

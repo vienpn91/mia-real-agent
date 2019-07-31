@@ -3,16 +3,12 @@ import { fromJS } from 'immutable';
 import { ROUTE_DETAIL } from 'utils/constants';
 // lodash
 import _get from 'lodash/get';
-
-import { initialState as userInitialState } from 'reducers/user';
 import { getRouteMatch } from './router';
 
 const emptyMap = fromJS({});
 const emptyList = fromJS([]);
 
-const getUserState = state => _get(state, 'user', userInitialState);
-
-const getUsers = ({ user: userState }) => userState.get('user', emptyMap);
+const getUsers = ({ user: userState }) => userState.get('user', emptyMap).toJS();
 
 const getIsLoading = ({ user: userState }) => userState.get('isLoading', false);
 
@@ -54,13 +50,17 @@ const getUserIdFromRoute = createSelector(
 const getUserDetailFromRoute = createSelector(
   getUserIdFromRoute,
   getUsers,
-  (selectedId, userss) => userss.get(selectedId, emptyMap).toJS(),
+  (selectedId, users) => users.get(selectedId, emptyMap).toJS(),
+);
+
+const getCurrentUserRole = createSelector(
+  getUsers,
+  user => user.roles
 );
 
 export {
   getUsers,
   getIsLoading,
-  getUserState,
   getTotalCount,
   getSizePerPage,
   getSelectedPage,

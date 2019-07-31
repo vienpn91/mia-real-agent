@@ -205,10 +205,12 @@ function userReducer(state = initialState, action) {
   switch (action.type) {
     case USER_FETCH_LIST:
       return state.set('isLoading', true);
+
     case USER_FETCH_LIST_SUCCESS: {
       const { data, totalCount } = action;
       const visibleUserIds = data.map(({ _id }) => _id);
       const newUsers = state.get('user').mergeDeep(fromJS(_keyBy(data, '_id')));
+
       return state
         .set('isLoading', false)
         .set('user', newUsers)
@@ -216,8 +218,10 @@ function userReducer(state = initialState, action) {
         .set('visibleUserIds', fromJS(visibleUserIds))
         .set('totalCount', totalCount);
     }
+
     case USER_FETCH_LIST_FAIL:
       return state.set('isLoading', false).set('errorMsg', action.message);
+
     case USER_SORTING:
       return state
         .setIn(['pagination', 'selectedPage'], 1)
@@ -229,6 +233,7 @@ function userReducer(state = initialState, action) {
         .setIn(['addNew', 'inProgress'], true)
         .setIn(['addNew', 'message'], '');
     }
+
     case USER_ADD_NEW_SUCCESS: {
       const { _id } = action.data;
       const visibleUserIds = state.get('visibleUserIds').toJS();
@@ -245,34 +250,45 @@ function userReducer(state = initialState, action) {
         .setIn(['addNew', 'inProgress'], false)
         .setIn(['addNew', 'message'], message);
     }
+
     case USER_CHANGE_PAGE:
       return state
         .set('isLoading', true)
         .setIn(['pagination', 'selectedPage'], action.pageIndex);
+
     case USER_FETCH_SINGLE:
       return state.setIn(['user', action.id, 'isLoading'], true);
+
     case USER_FETCH_SINGLE_SUCCESS: {
       const { payload } = action;
       const { _id } = payload;
+
       return state.setIn(['user', _id], fromJS(payload));
     }
+
     case USER_FETCH_SINGLE_FAIL: {
       const { id, errorMsg } = action;
+
       return state.setIn(['user', id], fromJS({ error: errorMsg }));
     }
+
     case USER_UPDATE: {
       return state
         .setIn(['update', 'inProgress'], true)
         .setIn(['update', 'message'], '');
     }
+
     case USER_UPDATE_SUCCESS: {
       const { _id } = action.data;
+
       return state
         .setIn(['update', 'inProgress'], false)
         .setIn(['user', _id], fromJS(action.data));
     }
+
     case USER_UPDATE_FAIL: {
       const { errorMsg } = action;
+
       return state
         .setIn(['update', 'inProgress'], false)
         .setIn(['update', 'message'], errorMsg);

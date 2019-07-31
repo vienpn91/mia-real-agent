@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import Popup from 'components/Popup';
 import {
   bool, shape, func,
-  string,
 } from 'prop-types';
 
 export class AgentAcceptRequest extends PureComponent {
@@ -10,52 +9,38 @@ export class AgentAcceptRequest extends PureComponent {
     isOpen: bool.isRequired,
     isConfirming: bool.isRequired,
     agentConfirmAction: func.isRequired,
-    userId: string,
-    ticket: shape(),
-    history: shape(),
-    redirectData: shape(),
+    requestData: shape(),
   }
 
   static defaultProps = {
-    ticket: null,
-    userId: null,
-  }
-
-  componentDidUpdate = (prevProps) => {
-    const { redirectData, history, isConfirming } = this.props;
-    if (!isConfirming && prevProps.isConfirming) {
-      const { ticketId, owner, isConfirm } = redirectData;
-      if (redirectData && isConfirm) {
-        history.push(`/ticket/${ticketId}/${owner}`);
-      }
-    }
+    requestData: null,
   }
 
   renderTicketContent = () => {
-    const { ticket } = this.props;
-    if (!ticket) {
+    const { requestData } = this.props;
+    if (!requestData) {
       return (<h2>No Data</h2>);
     }
     const {
-      category, title,
+      category = [], title,
       description,
-    } = ticket;
+    } = requestData;
     return (
       <div>
-        <p>{title}</p>
-        <p>{description}</p>
-        <p>{category.join(', ')}</p>
+        <p>{`Title: ${title}`}</p>
+        <p>{`Description: ${description}`}</p>
+        <p>{`Categories: ${category.join(', ')}`}</p>
       </div>
     );
   }
 
   handleSubmit = (isConfirm) => {
     const {
-      agentConfirmAction, ticket,
-      userId,
+      agentConfirmAction,
+      requestData,
     } = this.props;
-    const { _id, ticketId, owner } = ticket;
-    agentConfirmAction(userId, _id, isConfirm, { ticketId, owner });
+
+    agentConfirmAction(requestData.conversationId, requestData._id, isConfirm);
   }
 
   render() {

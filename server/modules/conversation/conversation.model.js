@@ -25,6 +25,10 @@ const conversationSchema = new Schema(
       type: Date,
       default: () => new Date(),
     },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
   },
   {
     versionKey: false,
