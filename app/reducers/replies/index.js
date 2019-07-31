@@ -12,6 +12,8 @@ export const REPLIES_SEND_MESSAGE = 'replies/REPLIES_SEND_MESSAGE';
 export const REPLIES_SEND_MESSAGE_SUCCESS = 'replies/REPLIES_SEND_MESSAGE_SUCCESS';
 export const REPLIES_SEND_MESSAGE_FAILED = 'replies/REPLIES_SEND_MESSAGE_FAILED';
 
+export const REPLIES_ADD_MESSAGE = 'replies/REPLIES_ADD_MESSAGE';
+
 // action creator
 export const sendReplyMessage = (conversationId, message) => ({
   type: REPLIES_SEND_MESSAGE,
@@ -61,6 +63,14 @@ export const fetchReplyMessagesFailed = (conversationId, error) => ({
   payload: {
     conversationId,
     error,
+  },
+});
+
+export const addNewMessage = (conversationId, message) => ({
+  type: REPLIES_ADD_MESSAGE,
+  payload: {
+    conversationId,
+    message,
   },
 });
 
@@ -205,6 +215,7 @@ function repliesReducer(state = initialState, action) {
     case REPLIES_SEND_MESSAGE_SUCCESS: {
       const { message, localMessageId, conversationId } = action.payload;
       const { _id: msgId } = message;
+      const allIds = state.get('allIds').add(conversationId);
       const sendingList = state.getIn(['sendingMessage', conversationId]).delete(localMessageId);
       let currentReplies = state.getIn(['byId', conversationId]);
       if (!currentReplies) {
@@ -216,6 +227,7 @@ function repliesReducer(state = initialState, action) {
       }
 
       return state
+        .set('allIds', allIds)
         .setIn(['sendingMessage', conversationId], sendingList)
         .setIn(['byId', conversationId], currentReplies);
     }
@@ -258,6 +270,25 @@ function repliesReducer(state = initialState, action) {
       return state
         .set('sendingMessageError', sendingMessageError)
         .set('sendingList', sendingList);
+    }
+
+    case REPLIES_ADD_MESSAGE: {
+      const { message, conversationId } = action.payload;
+      const { _id: msgId } = message;
+      let currentReplies = state.getIn(['byId', conversationId]);
+      const allIds = state.get('allIds').add(conversationId);
+
+      if (!currentReplies) {
+        currentReplies = new OrderedMap({
+          [msgId]: message,
+        });
+      } else {
+        currentReplies = currentReplies.set(msgId, message);
+      }
+
+      return state
+        .set('allIds', allIds)
+        .setIn(['byId', conversationId], currentReplies);
     }
 
     default: {
