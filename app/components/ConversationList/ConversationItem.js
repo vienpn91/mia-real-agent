@@ -4,7 +4,7 @@ import PropTypes, { func } from 'prop-types';
 import { DATE_TIME_FORMAT } from 'utils/constants';
 import { Popover, Icon, Button } from 'antd';
 import {
-  ConversationTime,
+  ConversationTime, ActionList,
 } from './ConversationList.styled';
 
 class ConversationItem extends React.PureComponent {
@@ -14,12 +14,11 @@ class ConversationItem extends React.PureComponent {
   }
 
   renderGroupAction = () => (
-    <div>
-      <Button>Remove</Button>
+    <ActionList>
       <Button>Archive</Button>
-      <Button>Mark as</Button>
-      <Button>Rate</Button>
-    </div>
+      <Button>Close</Button>
+      <Button>Report</Button>
+    </ActionList>
   )
 
   render() {
@@ -37,7 +36,6 @@ class ConversationItem extends React.PureComponent {
         <span>{timeFormat}</span>
         <Popover
           content={this.renderGroupAction()}
-          title="More action"
           trigger="click"
           placement="bottom"
           onVisibleChange={this.handleVisibleChange}

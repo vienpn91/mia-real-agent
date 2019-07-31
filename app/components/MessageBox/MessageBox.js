@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
   Avatar, Breadcrumb,
-  Button, Form,
+  Button, Form, Rate,
 } from 'antd';
 import _isEmpty from 'lodash/isEmpty';
 import { Formik } from 'formik';
@@ -21,9 +21,13 @@ import {
   InputAction,
   UserMessage,
   InfoNotification,
+  RatingWrapper,
+  RatingContent,
+  CommentInputWrapper,
 } from './styles';
 import LoadingSpin from '../Loading';
 import ConversationDetail from '../ConversationDetail/ConversationDetail';
+import { TICKET_STATUS } from '../../../common/enums';
 
 const scrollStyle = {
   height: '100%',
@@ -32,6 +36,10 @@ const scrollStyle = {
 
 const initialValues = {
   content: '',
+};
+
+const commentInitialValues = {
+  comment: '',
 };
 
 export default class MessageBox extends Component {
@@ -155,7 +163,7 @@ export default class MessageBox extends Component {
           onChange={this.handleChangeValues}
         >
           <MessageInputWrapper>
-            <MessageInput type="text" name="content" placeholder="Type message ..." />
+            <MessageInput type="text" name="content" placeholder="Type message ..." autocomplete="false" />
             {this.renderGroupAction()}
             <InputAction onClick={handleSubmit} className="mia-enter" />
             <Button
@@ -187,29 +195,62 @@ export default class MessageBox extends Component {
   }
 
   scrollChatToBottom() {
-    this.messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    const { current } = this.messagesEndRef;
+    if (current) {
+      current.scrollIntoView({ behavior: 'smooth' });
+    }
   }
+
+  renderRating = () => (
+    <RatingWrapper>
+      <RatingContent>
+        <h2>Rate your experience</h2>
+        <Rate />
+        <Formik
+          ref={(formik) => { this.formik = formik; }}
+          initialValues={commentInitialValues}
+        // onSubmit={this.handleChatSubmit}
+        >
+          {({ handleSubmit }) => (
+            <Form
+              onSubmit={handleSubmit}
+              onChange={this.handleChangeValues}
+            >
+              <CommentInputWrapper>
+                <MessageInput type="text" name="comment" placeholder="Type comment ..." autocomplete="false" />
+                <InputAction onClick={handleSubmit} className="mia-enter" />
+              </CommentInputWrapper>
+            </Form>
+          )}
+        </Formik>
+      </RatingContent>
+    </RatingWrapper>
+  );
+
 
   render() {
     const { isFetchingReplies, replyMessages, currentTicket } = this.props;
-
+    const { status } = currentTicket;
     return (
       <LoadingSpin loading={isFetchingReplies}>
         {this.renderMessageHeader()}
         <MessageBoxWrapper>
           <MessageBoxContent>
-            <ShadowScrollbars
-              autoHide
-              style={scrollStyle}
-            >
-              {!replyMessages || !replyMessages.length
-                ? <MessageEmpty>No Chat Data</MessageEmpty>
-                : this.renderMessageContent()
-              }
-              {this.renderPendingMessageContent()}
-              {this.renderMessageInput()}
-              <div ref={this.messagesEndRef} />
-            </ShadowScrollbars>
+            {status === TICKET_STATUS.CLOSED ? this.renderRating()
+              : (
+                <ShadowScrollbars
+                  autoHide
+                  style={scrollStyle}
+                >
+                  {!replyMessages || !replyMessages.length
+                    ? <MessageEmpty>No Chat Data</MessageEmpty>
+                    : this.renderMessageContent()
+                  }
+                  {this.renderPendingMessageContent()}
+                  {this.renderMessageInput()}
+                  <div ref={this.messagesEndRef} />
+                </ShadowScrollbars>
+              )}
           </MessageBoxContent>
           <ConversationDetail ticket={currentTicket} />
         </MessageBoxWrapper>
