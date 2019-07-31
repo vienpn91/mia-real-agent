@@ -30,7 +30,7 @@ import ConversationDetail from '../ConversationDetail/ConversationDetail';
 import { TICKET_STATUS } from '../../../common/enums';
 
 const scrollStyle = {
-  height: '100%',
+  height: '94%',
   width: '100%',
 };
 
@@ -176,7 +176,7 @@ export default class MessageBox extends Component {
             onChange={this.handleChangeValues}
           >
             <MessageInputWrapper>
-              <MessageInput type="text" name="content" placeholder="Type message ..." />
+              <MessageInput type="text" name="content" placeholder="Type message ..." autoComplete="false" />
               {this.renderGroupAction()}
               <InputAction onClick={handleSubmit} className="mia-enter" />
               {userRole !== 'agent' && (
@@ -233,7 +233,7 @@ export default class MessageBox extends Component {
               onChange={this.handleChangeValues}
             >
               <CommentInputWrapper>
-                <MessageInput type="text" name="comment" placeholder="Type comment ..." autocomplete="false" />
+                <MessageInput type="text" name="comment" placeholder="Type comment ..." autoComplete="false" />
                 <InputAction onClick={handleSubmit} className="mia-enter" />
               </CommentInputWrapper>
             </Form>
@@ -246,7 +246,7 @@ export default class MessageBox extends Component {
 
   render() {
     const { isFetchingReplies, replyMessages, currentTicket } = this.props;
-    const { status } = currentTicket;
+    const { status } = currentTicket || {};
     return (
       <LoadingSpin loading={isFetchingReplies}>
         {this.renderMessageHeader()}
@@ -254,18 +254,20 @@ export default class MessageBox extends Component {
           <MessageBoxContent>
             {status === TICKET_STATUS.CLOSED ? this.renderRating()
               : (
-                <ShadowScrollbars
-                  autoHide
-                  style={scrollStyle}
-                >
-                  {!replyMessages || !replyMessages.length
-                    ? <MessageEmpty>No Chat Data</MessageEmpty>
-                    : this.renderMessageContent()
-                  }
-                  {this.renderPendingMessageContent()}
+                <>
+                  <ShadowScrollbars
+                    autoHide
+                    style={scrollStyle}
+                  >
+                    {!replyMessages || !replyMessages.length
+                      ? <MessageEmpty>No Chat Data</MessageEmpty>
+                      : this.renderMessageContent()
+                    }
+                    {this.renderPendingMessageContent()}
+                    <div ref={this.messagesEndRef} />
+                  </ShadowScrollbars>
                   {this.renderMessageInput()}
-                  <div ref={this.messagesEndRef} />
-                </ShadowScrollbars>
+                </>
               )}
           </MessageBoxContent>
           <ConversationDetail ticket={currentTicket} />

@@ -23,6 +23,7 @@ export default class ConversationDetail extends Component {
   renderOwnerInfo = () => {
     const { ticket } = this.props;
     const { owner, ownerProfile } = ticket;
+
     if (!owner) {
       return 'No Owner';
     }
@@ -73,7 +74,7 @@ export default class ConversationDetail extends Component {
           <Descriptions.Item label="Ticket">{title}</Descriptions.Item>
           <Descriptions.Item label="Description">{description}</Descriptions.Item>
           <Descriptions.Item label="Owner">{this.renderOwnerInfo()}</Descriptions.Item>
-          <Descriptions.Item label="Assigne">{this.renderAssigneeInfo()}</Descriptions.Item>
+          <Descriptions.Item label="Assignee">{this.renderAssigneeInfo()}</Descriptions.Item>
           <Descriptions.Item label="Status">{status}</Descriptions.Item>
         </Descriptions>
       </ConversationInfoWrapper>

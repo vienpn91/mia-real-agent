@@ -1,11 +1,14 @@
 import UserQueue from '../queue/userQueue';
 
-export const emitNewMessage = (payload) => {
-  const { to } = payload;
+export const emitNewMessage = (metadata, reply) => {
+  const { to } = metadata;
   const toUser = UserQueue.getUser(to);
 
   if (!toUser) return;
-  toUser.emit('NEW_MESSAGE', payload);
+  toUser.emit('NEW_MESSAGE', {
+    metadata,
+    reply,
+  });
 };
 
 export const unregister = (id, socket) => {

@@ -10,6 +10,7 @@ import {
   AUTH_LOGOUT,
 } from '../../reducers/auth';
 import { agentNewRequest } from '../../reducers/agents';
+import { addNewMessage } from '../../reducers/replies';
 
 /* events */
 const NEW_MESSAGE = 'NEW_MESSAGE';
@@ -20,15 +21,11 @@ const REQUEST_CONFIRM = 'REQUEST_CONFIRM';
 let socketConnection;
 
 function createSocketChannel(socket, type) {
-  return eventChannel((emit) => {
-    const handler = (data) => {
-      if (data) {
-        emit(data);
-      }
-    };
-    socket.on(type, handler);
+  return eventChannel((dispatch) => {
+    socket.on(type, dispatch);
+
     const unsubscribe = () => {
-      socket.off(type, handler);
+      socket.off(type, dispatch);
     };
     return unsubscribe;
   });
@@ -61,9 +58,9 @@ function* handleNewMessage() {
 
   // watch message and relay the action
   while (true) {
-    const data = yield take(socketChannel);
-    console.log(data);
-    // yield put(actions.updateChatAction());
+    const { metadata, reply } = yield take(socketChannel);
+
+    yield put(addNewMessage(metadata.conversation, reply));
   }
 }
 
@@ -73,7 +70,7 @@ function* requestAgent() {
   // watch message and relay the action
   while (true) {
     const data = yield take(socketChannel);
-    console.log(data);
+
     yield put(agentNewRequest(data));
   }
 }

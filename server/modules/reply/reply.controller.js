@@ -18,7 +18,7 @@ class ReplyController extends BaseController {
         messages: data.message,
       };
       const newReply = await this.service.insert(reply);
-      emitNewMessage(data);
+      emitNewMessage(data, newReply);
       return res.status(httpStatus.OK).send({ reply: newReply });
     } catch (error) {
       return super.handleError(res, error);
