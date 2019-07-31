@@ -6,6 +6,8 @@ import TicketService from './ticket.service';
 import UserService from '../user/user.service';
 import ConversationService from '../conversation/conversation.service';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
+import AgentQueue from '../queue/agentQueue';
+import UserQueue from '../queue/userQueue';
 import { ROLES } from '../../../common/enums';
 
 const { CONTENT_NOT_FOUND } = ERROR_MESSAGE;
@@ -19,6 +21,38 @@ class TicketController extends BaseController {
     this.insert = this.insert.bind(this);
     this.getAll = this.getAll.bind(this);
     this.getAllConversations = this.getAllConversations.bind(this);
+  }
+
+
+  async findAvailableAgents(req, res) {
+    try {
+      const { model: ticket } = req;
+      // const replyMessages = await ReplyService.getByConversation(id);
+      const { category: ticketCategories = [] } = ticket;
+      // Get owner information
+      const queue = AgentQueue.get();
+      const agents = queue.filter(
+        ({ categories }) => {
+          if (!categories) {
+            return false;
+          }
+          return categories
+            .some(category => ticketCategories.includes(category));
+        }
+      );
+      if (!agents.length) {
+        return res.status(httpStatus.NOT_FOUND).send('Agent not found!');
+      }
+      agents.forEach((agent) => {
+        // eslint-disable-next-line no-underscore-dangle
+        const socket = UserQueue.getUser(agent._id);
+        socket.emit('REQUEST_AVAILABLE', ticket.toObject());
+      });
+
+      return res.status(httpStatus.OK).send();
+    } catch (error) {
+      return super.handleError(res, error);
+    }
   }
 
   async getAllConversations(req, res) {
@@ -35,11 +69,12 @@ class TicketController extends BaseController {
   async get(req, res) {
     try {
       const { model } = req;
-      const { _doc } = model;
-      const { assignee, owner: ticketOwner } = _doc;
-      const user = await UserService.get(ticketOwner);
-      const { profile, role: ownerRole } = user;
+      const ticket = model.toObject();
+      const { assignee, owner: ticketOwnerId } = ticket;
+      const ticketOwner = await UserService.get(ticketOwnerId);
+      const { profile, role: ownerRole } = ticketOwner;
       let assigneeProfile = null;
+
       if (assignee) {
         assigneeProfile = (await UserService.get(assignee)).profile;
       }
@@ -47,7 +82,7 @@ class TicketController extends BaseController {
         {
           ...model,
           _doc: {
-            ..._doc,
+            ...ticket,
             ownerProfile: {
               role: ownerRole,
               profile,
@@ -64,20 +99,14 @@ class TicketController extends BaseController {
   async load(req, res, next, id) {
     try {
       const { user } = req;
-      const { owner } = req.query;
       if (!user) {
         throw new APIError(ERROR_MESSAGE.UNAUTHORIZED, httpStatus.UNAUTHORIZED);
       }
-      const { _id, role } = user;
-
-
-      if (!mongoose.Types.ObjectId.isValid(owner) && role === ROLES.AGENT) {
-        throw new APIError(CONTENT_NOT_FOUND, httpStatus.NOT_FOUND);
-      }
+      const { _id: userId, role } = user;
 
       const condition = (role === ROLES.AGENT)
-        ? { owner, _id: id }
-        : { owner: _id, _id: id };
+        ? { assignee: userId, _id: id }
+        : { owner: userId, _id: id };
       const model = await this.service.getByCondition(condition);
 
       if (model == null) {

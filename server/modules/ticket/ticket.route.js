@@ -6,6 +6,7 @@ class TicketRouter extends BaseRouter {
     super(controller);
 
     this.router.get('/:id/conversations', this.controller.getAllConversations); // get conversation by ticket id
+    this.router.post('/:id/find_agent', this.controller.findAvailableAgents);
   }
 }
 export default new TicketRouter(TicketController);

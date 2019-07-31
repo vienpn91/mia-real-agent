@@ -1,13 +1,16 @@
 import httpStatus from 'http-status';
+import { TICKET_STATUS } from '../../../common/enums';
 import TicketService from '../ticket/ticket.service';
 import ConversationService from '../conversation/conversation.service';
 import AgentQueue from '../queue/agentQueue';
 import UserQueue from '../queue/userQueue';
 import Logger from '../../logger';
+import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 
 class AgentController {
   constructor() {
     this.handleError = this.handleError.bind(this);
+    this.acceptRequest = this.acceptRequest.bind(this);
   }
 
   handleError(res, error) {
@@ -16,81 +19,52 @@ class AgentController {
     return res.status(status).send(error.message);
   }
 
-  async findAgent(req, res) {
-    try {
-      const { ticketId } = req.body;
-      const ticket = await TicketService.get(ticketId);
-      const { categories: ticketCategories } = ticket;
-      // Get owner information
-      const queue = AgentQueue.get();
-      let agents = queue.filter(
-        ({ categories }) => {
-          if (!categories) {
-            return false;
-          }
-          return categories
-            .some(category => ticketCategories.includes(category));
-        }
-      );
-      if (agents.length === 0) {
-        agents = queue;
-      }
-      const agent = agents[Math.floor(Math.random() * agents.length)];
-      if (agent) {
-        const { socketId } = agent;
-        const { socketIO } = global.socketIOServer;
-        const { connected } = socketIO.sockets;
-        const socket = connected[socketId];
-        // Emit ticket infomation to agent
-        if (socket) {
-          const { _doc } = ticket;
-          socket.emit('REQUEST_AVAILABLE', _doc);
-        }
-      }
-      return res.status(httpStatus.OK).send({ agent });
-    } catch (error) {
-      return this.handleError(res, error);
-    }
-  }
-
   async acceptRequest(req, res) {
     try {
-      const { id: agentId } = req.params;
-      const { ticketId, isConfirm } = req.body;
-      const ticket = await TicketService.get(ticketId);
-      const { owner } = ticket;
-      let userConv = null;
-      if (isConfirm) {
-        AgentQueue.remove(agentId);
-        // Update asignnee for ticket
-        TicketService.update(ticketId,
-          { assignee: agentId });
-        // Create chat here
+      const { user: agent } = req;
+      const { ticketId, conversationId, isConfirm } = req.body;
+      const [ticket, conversation] = await Promise.all([
+        TicketService.get(ticketId),
+        ConversationService.get(conversationId),
+      ]);
+      // eslint-disable-next-line no-underscore-dangle
+      const agentId = agent._id;
 
-        const userConversationPromise = ConversationService.insert({
-          owner,
-          members: [agentId],
-          ticketId,
-        });
-        // const agentConversationPromise = ConversationService.insert({
-        //   owner: agentId,
-        //   members: [owner],
-        //   ticketId,
-        // });
-
-        [userConv] = await Promise.all([
-          userConversationPromise,
-          // agentConversationPromise,
-        ]);
+      if (
+        !ticket
+        || !conversation
+      ) {
+        throw new APIError(ERROR_MESSAGE.BAD_REQUEST, httpStatus.BAD_REQUEST);
       }
 
-      const userSocket = UserQueue.getUser(owner.toString());
+      if (isConfirm && ticket.status === TICKET_STATUS.OPEN) {
+        AgentQueue.remove(agentId);
 
-      userSocket.emit('REQUEST_CONFIRM', {
-        ...(userConv || {}),
-        isConfirm,
-      });
-      return res.status(httpStatus.OK).send(userConv);
+        // update assign and members for tickets and conversations
+        ticket.assignee = agentId;
+        // TODO! remove this once the request and chat flow completely refactored
+        // ticket.status = TICKET_STATUS.PROCESSING;
+        if (conversation.members) {
+          const agentIdStr = agentId.toString();
+          const shouldAdd = !conversation.members.some(member => member.toString() === agentIdStr);
+
+          if (shouldAdd) conversation.members.push(agentId);
+        } else {
+          conversation.members = [agentId];
+        }
+        await Promise.all([
+          ticket.save(),
+          conversation.save(),
+        ]);
+
+        const { owner } = ticket;
+        const ownerSocket = UserQueue.getUser(owner);
+        ownerSocket.emit('REQUEST_CONFIRM', {
+          isConfirm,
+          ticketId: ticket.ticketId,
+        });
+      }
+      return res.status(httpStatus.OK).send();
     } catch (error) {
       return this.handleError(res, error);
     }

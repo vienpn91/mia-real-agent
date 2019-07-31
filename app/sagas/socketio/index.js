@@ -9,7 +9,7 @@ import {
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
 } from '../../reducers/auth';
-import { actions } from '../../reducers/chat';
+import { agentNewRequest } from '../../reducers/agents';
 
 /* events */
 const NEW_MESSAGE = 'NEW_MESSAGE';
@@ -63,7 +63,7 @@ function* handleNewMessage() {
   while (true) {
     const data = yield take(socketChannel);
     console.log(data);
-    yield put(actions.updateChatAction());
+    // yield put(actions.updateChatAction());
   }
 }
 
@@ -73,7 +73,8 @@ function* requestAgent() {
   // watch message and relay the action
   while (true) {
     const data = yield take(socketChannel);
-    yield put(actions.requestAcceptAction(data));
+    console.log(data);
+    yield put(agentNewRequest(data));
   }
 }
 

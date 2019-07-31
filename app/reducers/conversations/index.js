@@ -111,21 +111,26 @@ export const getConversationListByTicketList = ({ conversations }, ticketIdList)
       return acc;
     }, {});
 };
+export const getConversationById = ({ conversations }, conversationId) => conversations.getIn(['byId', conversationId]);
+
 
 const initialState = fromJS({
-  isFetchingAll: false,
-  isFetchingSingleItem: false,
   byId: {},
   allIds: new ISet(),
-  currentConversation: null,
   total: 0,
   errorMsg: '',
+  isFetchingAll: false,
+  isFetchingSingleItem: false,
+  currentConversation: null,
 });
 
 function conversationReducer(state = initialState, action) {
   switch (action.type) {
     case CONVERSATION_FETCH: {
-      return state.set('isFetchingAll', true).set('isFetchingSingleItem', false).set('errorMsg', '');
+      return state
+        .set('isFetchingAll', true)
+        .set('isFetchingSingleItem', false)
+        .set('errorMsg', '');
     }
 
     case CONVERSATION_FETCH_SUCCESS: {
@@ -146,7 +151,10 @@ function conversationReducer(state = initialState, action) {
     case CONVERSATION_GET_DETAIL_FAILED:
     case CONVERSATION_FETCH_FAILED: {
       const { error } = action.payload;
-      return state.set('isFetchingAll', false).set('isFetchingSingleItem', false).set('errorMsg', error);
+      return state
+        .set('isFetchingAll', false)
+        .set('isFetchingSingleItem', false)
+        .set('errorMsg', error);
     }
 
     case CONVERSATION_GET_DETAIL: {

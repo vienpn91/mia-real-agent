@@ -5,12 +5,12 @@ import authSaga from './auth';
 import socketioSaga from './socketio';
 import profileSaga from './profile';
 import ticketSaga from './ticket';
-import chatSaga from './chat';
 import userSaga from './user';
 import adminSaga from './admin';
 import applicationSaga from './application';
 import conversationSaga from './conversations';
 import repliesSaga from './replies';
+import agentsSaga from './agents';
 
 export default function* rootSagas() {
   configAxios();
@@ -26,11 +26,11 @@ export default function* rootSagas() {
     socketioSaga(),
     profileSaga(),
     ticketSaga(),
-    chatSaga(),
     userSaga(),
     applicationSaga(),
     adminSaga(),
     conversationSaga(),
     repliesSaga(),
+    agentsSaga(),
   ]);
 }

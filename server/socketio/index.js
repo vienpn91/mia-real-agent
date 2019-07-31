@@ -45,7 +45,7 @@ class SocketIOServer {
         connected[socketId] = socket;
         if (role === ROLES.AGENT) {
           Logger.info(`[Socket.io]: The foul [${email}] has upgraded to a magical agent`);
-          AgentQueue.add({ user, socketId });
+          AgentQueue.add(user);
         }
       });
     this.socketIO = socketIO;

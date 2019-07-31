@@ -7,7 +7,6 @@ import { connectRouter } from 'connected-react-router';
 import auth from './auth';
 import profile from './profile';
 import ticket from './ticket';
-import chat from './chat';
 import modal from './modal';
 import application from './application';
 import history from '../utils/history';
@@ -16,6 +15,7 @@ import admin from './admin';
 import system from './system';
 import conversations from './conversations';
 import replies from './replies';
+import agents from './agents';
 
 export const REHYDRATE_COMPLETE = 'root/REHYDRATE_COMPLETE';
 export const CLEAR_TRANSACTION = 'root/CLEAR_TRANSACTION';
@@ -28,7 +28,6 @@ export default function createReducer(injectedReducers = {}) {
     auth,
     profile,
     ticket,
-    chat,
     modal,
     user,
     admin,
@@ -36,6 +35,7 @@ export default function createReducer(injectedReducers = {}) {
     system,
     conversations,
     replies,
+    agents,
     router: connectRouter(history),
     ...injectedReducers,
   });

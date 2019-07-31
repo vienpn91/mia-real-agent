@@ -1,20 +1,26 @@
 import { connect } from 'react-redux';
-import AgentAcceptRequest from 'components/AgentAcceptRequest';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
-import { actions, selectors } from '../../reducers/chat';
+import AgentAcceptRequest from '../../components/AgentAcceptRequest';
+import {
+  getRequestData,
+  agentConfirmAction,
+  isWaitingForComfirm,
+  isSendingConfirmation,
+} from '../../reducers/agents';
 import { getUserId } from '../../reducers/auth';
+import { getCurrentConverationId } from '../../reducers/conversations';
 
 const mapStateToProps = state => ({
-  isOpen: selectors.getChatIsAgentRequesting(state),
-  isConfirming: selectors.getChatIsAgentRequestIsConfirming(state),
+  isOpen: isWaitingForComfirm(state),
+  isConfirming: isSendingConfirmation(state),
   userId: getUserId(state),
-  ticket: selectors.getChatIsAgentRequestTicket(state),
-  redirectData: selectors.getChatIsAgentRequestConfirmRedirectData(state),
+  conversationId: getCurrentConverationId(state),
+  requestData: getRequestData(state),
 });
 
 const mapDispatchToProps = {
-  requestConfirm: actions.requestConfirmAction,
+  agentConfirmAction,
 };
 
 export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(AgentAcceptRequest);
