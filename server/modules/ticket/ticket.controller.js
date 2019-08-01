@@ -143,7 +143,7 @@ class TicketController extends BaseController {
         // create a conversation with mia by default
         const conversation = await ConversationService.insert({
           owner,
-          members: ['5d2850fa87883f00e24833eb'],
+          members: [],
           ticketId,
         });
         // eslint-disable-next-line no-underscore-dangle

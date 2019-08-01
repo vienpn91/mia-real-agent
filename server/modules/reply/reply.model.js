@@ -9,10 +9,7 @@ const ReplySchema = new Schema(
       type: Schema.Types.ObjectId,
       required: true,
     },
-    from: {
-      type: Schema.Types.ObjectId,
-      required: true,
-    },
+    from: Schema.Types.ObjectId,
     messages: {
       type: String,
       required: true,
