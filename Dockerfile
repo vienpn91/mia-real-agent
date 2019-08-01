@@ -8,7 +8,18 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package*.json ./
 
-RUN npm install
+RUN apk add --no-cache --virtual build-dependencies \
+        python \
+        make \
+        g++ \
+        bash \
+        autoconf \
+        automake \
+        libc6-compat \
+        libjpeg-turbo-dev \
+        libpng-dev \
+    && yarn \
+    && apk del build-dependencies
 # If you are building your code for production
 # RUN npm ci --only=production
 
@@ -16,4 +27,4 @@ RUN npm install
 COPY . .
 
 EXPOSE 3000
-CMD [ "npm", "run", "start:production" ]
+CMD [ "yarn", "start:production" ]
