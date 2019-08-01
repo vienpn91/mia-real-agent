@@ -14,6 +14,7 @@ const conversationSchema = new Schema(
     members: {
       type: [Schema.Types.ObjectId],
       required: true,
+      default: [],
     },
     ratingScore: {
       type: Number,
