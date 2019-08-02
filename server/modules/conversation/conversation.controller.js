@@ -68,10 +68,10 @@ class ConversationController extends BaseController {
       const { model, body } = req;
       const { score, comment } = body;
 
-      _.assign(model, { ratingScore: score, ratingComment: comment });
+      _.assign(model, { rating: { score, comment } });
 
       const savedModel = await model.save();
-      return res.status(httpStatus.OK).send({ data: savedModel });
+      return res.status(httpStatus.OK).send(savedModel);
     } catch (error) {
       return super.handleError(res, error);
     }

@@ -211,6 +211,14 @@ function conversationReducer(state = initialState, action) {
         .set('total', state.get('total') + 1);
     }
 
+    case CONVERSATION_RATING_SUBMIT_SUCCESS: {
+      const { conversation } = action.payload;
+      let newState = state;
+      newState = newState.setIn(['byId', conversation._id], conversation);
+      return newState;
+    }
+
+
     default: {
       return state;
     }
