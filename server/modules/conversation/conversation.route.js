@@ -6,6 +6,7 @@ class ConversationRouter extends BaseRouter {
     super(controller);
 
     this.router.get('/:id/replies', this.controller.getReplyMessages);
+    this.router.post('/:id/rating', this.controller.rating);
   }
 }
 

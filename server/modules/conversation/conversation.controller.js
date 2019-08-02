@@ -1,4 +1,5 @@
 import httpStatus from 'http-status';
+import _ from 'lodash';
 import _get from 'lodash/get';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import BaseController from '../base/base.controller';
@@ -59,6 +60,20 @@ class ConversationController extends BaseController {
       });
     } catch (error) {
       return this.handleError(res, error);
+    }
+  }
+
+  async rating(req, res) {
+    try {
+      const { model, body } = req;
+      const { score, comment } = body;
+
+      _.assign(model, { ratingScore: score, ratingComment: comment });
+
+      const savedModel = await model.save();
+      return res.status(httpStatus.OK).send({ data: savedModel });
+    } catch (error) {
+      return super.handleError(res, error);
     }
   }
 }
