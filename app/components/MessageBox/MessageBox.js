@@ -165,7 +165,6 @@ export default class MessageBox extends Component {
 
   renderMessageInput = () => {
     const { isFindingAgent, userRole } = this.props;
-
     return (
       <Formik
         ref={(formik) => { this.formik = formik; }}
@@ -225,31 +224,35 @@ export default class MessageBox extends Component {
     submitRating(_id, values);
   }
 
-  renderRating = () => (
-    <RatingWrapper>
-      <RatingContent>
-        <h2>Rate your experience</h2>
-        <Formik
-          ref={(formik) => { this.ratingFormik = formik; }}
-          initialValues={commentInitialValues}
-          onSubmit={this.handleSubmitRating}
-        >
-          {({ handleSubmit }) => (
-            <Form
-              onSubmit={handleSubmit}
-              onChange={this.handleChangeValues}
-            >
-              <FormInput type="rate" name="score" />
-              <CommentInputWrapper>
-                <MessageInput type="text" name="comment" placeholder="Type comment ..." autoComplete="false" />
-                <InputAction onClick={handleSubmit} className="mia-enter" />
-              </CommentInputWrapper>
-            </Form>
-          )}
-        </Formik>
-      </RatingContent>
-    </RatingWrapper>
-  );
+  renderRating = () => {
+    const { currentConversation } = this.props;
+    const { rating } = currentConversation;
+    return (
+      <RatingWrapper>
+        <RatingContent>
+          <h2>Rate your experience</h2>
+          <Formik
+            ref={(formik) => { this.ratingFormik = formik; }}
+            initialValues={rating}
+            onSubmit={this.handleSubmitRating}
+          >
+            {({ handleSubmit }) => (
+              <Form
+                onSubmit={handleSubmit}
+                onChange={this.handleChangeValues}
+              >
+                <FormInput type="rate" name="score" />
+                <CommentInputWrapper>
+                  <MessageInput type="text" name="comment" placeholder="Type comment ..." autoComplete="false" />
+                  <InputAction onClick={handleSubmit} className="mia-enter" />
+                </CommentInputWrapper>
+              </Form>
+            )}
+          </Formik>
+        </RatingContent>
+      </RatingWrapper>
+    );
+  }
 
 
   render() {
