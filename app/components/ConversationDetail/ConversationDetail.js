@@ -17,7 +17,7 @@ const scrollStyle = {
 
 export default class ConversationDetail extends Component {
   static propTypes = {
-    ticket: shape().isRequired,
+    ticket: shape(),
   }
 
   renderOwnerInfo = () => {

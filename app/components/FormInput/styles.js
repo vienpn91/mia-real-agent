@@ -192,3 +192,8 @@ export const InputWrapperStyled = styled(Form.Item)`
     }
   `}
 `;
+
+export const RateWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;

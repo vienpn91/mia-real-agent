@@ -18,6 +18,7 @@ import {
 import {
   getCurrentConveration,
   getCurrentConverationId,
+  actions as CONVERSATION_ACTIONS
 } from '../../reducers/conversations';
 import {
   isFindingAgent,
@@ -48,6 +49,7 @@ const mapDispatchToProps = {
   setCurrentTicket: actions.selectTicket,
   sendReplyMessage,
   findAgentRequest,
+  submitRating: CONVERSATION_ACTIONS.submitConversationRating,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageBox);

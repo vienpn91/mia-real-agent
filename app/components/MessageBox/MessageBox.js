@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
   Avatar, Breadcrumb,
-  Button, Form, Rate,
+  Button, Form,
 } from 'antd';
 import _isEmpty from 'lodash/isEmpty';
 import { Formik } from 'formik';
@@ -28,6 +28,7 @@ import {
 import LoadingSpin from '../Loading';
 import ConversationDetail from '../ConversationDetail/ConversationDetail';
 import { TICKET_STATUS } from '../../../common/enums';
+import FormInput from '../FormInput/FormInput';
 
 const scrollStyle = {
   height: '94%',
@@ -39,6 +40,7 @@ const initialValues = {
 };
 
 const commentInitialValues = {
+  score: 0,
   comment: '',
 };
 
@@ -46,7 +48,6 @@ export default class MessageBox extends Component {
   messagesEndRef = React.createRef();
 
   static propTypes = {
-    ticket: PropTypes.object.isRequired,
     userId: PropTypes.string.isRequired,
     conversationId: PropTypes.string,
     fetchReplyMessages: PropTypes.func.isRequired,
@@ -60,6 +61,7 @@ export default class MessageBox extends Component {
     findAgentRequest: PropTypes.func.isRequired,
     sendReplyMessage: PropTypes.func.isRequired,
     setCurrentTicket: PropTypes.func.isRequired,
+    submitRating: PropTypes.func.isRequired,
     userRole: PropTypes.string.isRequired,
   }
 
@@ -197,13 +199,13 @@ export default class MessageBox extends Component {
   }
 
   renderMessageHeader = () => {
-    const { ticket } = this.props;
-    const { assignee = {} } = ticket;
+    const { currentTicket } = this.props;
+    const { assignee = {}, title } = currentTicket || {};
     const { firstName = '', lastName = '' } = assignee;
     return (
       <MessageBoxHeaderWrapper>
         <Breadcrumb separator="-">
-          <Breadcrumb.Item>{ticket.title}</Breadcrumb.Item>
+          <Breadcrumb.Item>{title}</Breadcrumb.Item>
           <Breadcrumb.Item>{`${firstName} ${lastName}`}</Breadcrumb.Item>
         </Breadcrumb>
       </MessageBoxHeaderWrapper>
@@ -217,21 +219,27 @@ export default class MessageBox extends Component {
     }
   }
 
+  handleSubmitRating = (values) => {
+    const { submitRating, currentConversation } = this.props;
+    const { _id } = currentConversation;
+    submitRating(_id, values);
+  }
+
   renderRating = () => (
     <RatingWrapper>
       <RatingContent>
         <h2>Rate your experience</h2>
-        <Rate />
         <Formik
-          ref={(formik) => { this.formik = formik; }}
+          ref={(formik) => { this.ratingFormik = formik; }}
           initialValues={commentInitialValues}
-        // onSubmit={this.handleChatSubmit}
+          onSubmit={this.handleSubmitRating}
         >
           {({ handleSubmit }) => (
             <Form
               onSubmit={handleSubmit}
               onChange={this.handleChangeValues}
             >
+              <FormInput type="rate" name="score" />
               <CommentInputWrapper>
                 <MessageInput type="text" name="comment" placeholder="Type comment ..." autoComplete="false" />
                 <InputAction onClick={handleSubmit} className="mia-enter" />

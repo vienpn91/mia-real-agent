@@ -13,8 +13,39 @@ export const CONVERSATION_SET_CURRENT = 'conversations/CONVERSATION_SET_CURRENT'
 export const CONVERSATION_SET_CURRENT_SUCCESS = 'conversations/CONVERSATION_SET_CURRENT_SUCCESS';
 export const CONVERSATION_SET_CURRENT_FAIL = 'conversations/CONVERSATION_SET_CURRENT_FAIL';
 
+export const CONVERSATION_RATING_SUBMIT = 'conversations/CONVERSATION_RATING_SUBMIT';
+export const CONVERSATION_RATING_SUBMIT_SUCCESS = 'conversations/CONVERSATION_RATING_SUBMIT_SUCCESS';
+export const CONVERSATION_RATING_SUBMIT_FAIL = 'conversations/CONVERSATION_RATING_SUBMIT_FAIL';
+
 
 // action creator
+
+// SUBMIT CONVERSATION RATING
+
+const submitConversationRating = (conversationId, { score, comment }) => ({
+  type: CONVERSATION_RATING_SUBMIT,
+  payload: {
+    conversationId,
+    rating: {
+      score,
+      comment,
+    },
+  },
+});
+
+const submitConversationRatingSuccess = conversation => ({
+  type: CONVERSATION_RATING_SUBMIT_SUCCESS,
+  payload: {
+    conversation,
+  },
+});
+
+const submitConversationRatingFailed = error => ({
+  type: CONVERSATION_RATING_SUBMIT_FAIL,
+  payload: {
+    error,
+  },
+});
 
 // FETCH SINGLE CONVERSATION
 
@@ -192,6 +223,11 @@ export const actions = {
   fetchConversation,
   fetchConversationSuccess,
   fetchConversationFailed,
+
+  submitConversationRating,
+  submitConversationRatingSuccess,
+  submitConversationRatingFailed,
+
   selectConversation,
 };
 
