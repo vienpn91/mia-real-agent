@@ -3,7 +3,8 @@ import {
 } from 'redux-saga/effects';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
-import { getConversation, getConversationMessage } from '../../api/conversation';
+import { notification } from 'antd';
+import { getConversation, getConversationMessage, submitRating } from '../../api/conversation';
 import {
   CONVERSATION_FETCH,
   CONVERSATION_FETCH_FAILED,
@@ -13,6 +14,7 @@ import {
   getConverationById,
   selectConversationSuccess,
   fetchConversation as fetchConversationAction,
+  CONVERSATION_RATING_SUBMIT,
 } from '../../reducers/conversations';
 import {
   TICKET_GET_ALL_SUCCESS,
@@ -79,11 +81,27 @@ function* fetchAllConversationBasedOnTicket({ data }) {
   }
 }
 
+function* submitConversationRating({ payload }) {
+  const { conversationId, rating } = payload;
+  try {
+    const { response, error } = yield call(submitRating, conversationId, rating);
+    if (error) throw new Error(error);
+    const data = _get(response, 'data', {});
+    notification.success({ message: 'Rating submitted' });
+    yield put(actions.submitConversationRatingSuccess(data));
+  } catch (error) {
+    const errorMessage = error.message || error;
+    notification.error({ message: errorMessage });
+    yield put(actions.submitConversationRatingFailed(errorMessage));
+  }
+}
+
 function* conversationFlow() {
   yield takeLatest(CONVERSATION_FETCH, fetchConversation);
   yield takeLatest(CONVERSATION_SET_CURRENT, setCurrentConversation);
   yield takeLatest(TICKET_GET_ALL_SUCCESS, fetchAllConversationBasedOnTicket);
   yield takeLatest(REPLIES_FETCH, fetchConversationMessages);
+  yield takeLatest(CONVERSATION_RATING_SUBMIT, submitConversationRating);
 }
 
 export default conversationFlow;

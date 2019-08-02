@@ -16,11 +16,13 @@ const conversationSchema = new Schema(
       required: true,
       default: [],
     },
-    ratingScore: {
-      type: Number,
-      default: 0,
+    rating: {
+      score: {
+        type: Number,
+        default: 0,
+      },
+      comment: String,
     },
-    ratingComment: String,
     status: String,
     createdAt: {
       type: Date,
