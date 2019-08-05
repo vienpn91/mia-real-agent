@@ -5,6 +5,8 @@ import AgentQueue from '../modules/queue/agentQueue';
 import TicketService from '../modules/ticket/ticket.service';
 import { ROLES } from '../../common/enums';
 import { register, unregister } from '../modules/chat/chat.socket';
+import { createTicketOfflineCronJob } from './cronJob';
+import DisconnectQueue from '../modules/queue/disconnectQueue';
 
 const ACTION_MESSAGE = 'ACTION_MESSAGE';
 let socketIO;
@@ -17,6 +19,16 @@ class SocketIOServer {
     socketIO = createSocketIO(server, {
       path: '/chat',
     });
+    this.socketIO = socketIO;
+    this.setUpSocket();
+    return socketIO;
+  }
+
+  emitActionMessage(action) {
+    this.socketIO.emit(ACTION_MESSAGE, action);
+  }
+
+  setUpSocket = () => {
     socketIO
       .on('connection',
         socketioJwt.authorize({
@@ -43,25 +55,26 @@ class SocketIOServer {
           }
           // if user/agent goes offline
           TicketService.handleTicketOffline(user);
+          const job = createTicketOfflineCronJob(user);
+          job.start();
+          console.log(job);
+          DisconnectQueue.addJob(job, id);
         });
         connected[socketId] = socket;
+        DisconnectQueue.destroyJob(id);
         if (role === ROLES.FREELANCER || role === ROLES.FULLTIME) {
           Logger.info(`[Socket.io]: The Mercenary [${email}] has join the fray`);
           const { _doc } = user;
           AgentQueue.add({ ..._doc, socketId });
+          // if agent go online
+          TicketService.handleTicketAssigneeOnline(user);
         } else {
           Logger.info(`[Socket.io]: The Foul [${email}] has join the fray`);
           register(id.toString(), socket);
+          // if user go online
+          TicketService.handleTicketOwnerOnline(user);
         }
-        // change status for offlined ticket
-        // TicketService.handleTicketOwnerOnline(user);
       });
-    this.socketIO = socketIO;
-    return socketIO;
-  }
-
-  emitActionMessage(action) {
-    this.socketIO.emit(ACTION_MESSAGE, action);
   }
 }
 
