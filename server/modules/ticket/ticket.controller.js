@@ -1,4 +1,5 @@
 import httpStatus from 'http-status';
+import _ from 'lodash';
 import _get from 'lodash/get';
 import mongoose from 'mongoose';
 import BaseController from '../base/base.controller';
@@ -8,7 +9,8 @@ import ConversationService from '../conversation/conversation.service';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import AgentQueue from '../queue/agentQueue';
 import UserQueue from '../queue/userQueue';
-import { ROLES } from '../../../common/enums';
+import { ROLES, TICKET_STATUS } from '../../../common/enums';
+import { getSocketByUser } from '../../socketio';
 
 const { CONTENT_NOT_FOUND } = ERROR_MESSAGE;
 const emptyObjString = '{}';
@@ -45,10 +47,12 @@ class TicketController extends BaseController {
       }
       agents.forEach((agent) => {
         // eslint-disable-next-line no-underscore-dangle
-        const socket = UserQueue.getUser(agent._id);
+        const socket = getSocketByUser(agent);
+        console.log('socket', socket);
         socket.emit('REQUEST_AVAILABLE', ticket.toObject());
       });
-
+      _.assign(ticket, { status: TICKET_STATUS.PENDING });
+      ticket.save({});
       return res.status(httpStatus.OK).send();
     } catch (error) {
       return super.handleError(res, error);
@@ -104,7 +108,7 @@ class TicketController extends BaseController {
       }
       const { _id: userId, role } = user;
 
-      const condition = (role === ROLES.AGENT)
+      const condition = (role === ROLES.FREELANCER || role === ROLES.FULLTIME)
         ? { assignee: userId, _id: id }
         : { owner: userId, _id: id };
       const model = await this.service.getByCondition(condition);

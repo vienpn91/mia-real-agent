@@ -1,5 +1,6 @@
 import ticketCollection from './ticket.model';
 import BaseService from '../base/base.service';
+import { TICKET_STATUS } from '../../../common/enums';
 
 class TicketService extends BaseService {
   constructor(collection) {
@@ -81,6 +82,47 @@ class TicketService extends BaseService {
     const result = await this.collection.find(query).count();
     return result;
   }
+
+  async handleTicketOffline(user) {
+    const { _id } = user;
+    const query = {
+      status: { $in: [TICKET_STATUS.IDLE, TICKET_STATUS.PROCESSING] },
+      $or: [
+        { owner: _id },
+        { assignee: _id },
+      ],
+    };
+    const tickets = await this.collection.update(query, { status: TICKET_STATUS.OFFLINE }).exec();
+    return tickets;
+  }
+
+  async handleTicketOwnerOnline(user) {
+    const { _id } = user;
+    const query = {
+      status: TICKET_STATUS.OFFLINE,
+      owner: _id,
+    };
+    const tickets = await this.collection.update(query, { status: TICKET_STATUS.PROCESSING }).exec();
+    return tickets;
+  }
+
+  async handleCloseTicket(query) {
+    const tickets = await this.collection.update(query, { status: TICKET_STATUS.CLOSED }).exec();
+    return tickets;
+  }
 }
+
+export const closeTicketOfflineQuery = ({ _id: userId }) => ({
+  status: TICKET_STATUS.OFFLINE,
+  $or: [
+    { owner: userId },
+    { assignee: userId },
+  ],
+});
+
+export const closeTicketInProgressQuery = ({ _id: userId }) => ({
+  status: TICKET_STATUS.PROCESSING,
+  assignee: userId,
+});
 
 export default new TicketService(ticketCollection);

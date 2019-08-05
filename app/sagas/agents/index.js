@@ -2,6 +2,7 @@ import {
   call, put, takeLatest, select,
 } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
+import { notification } from 'antd';
 import {
   AGENTS_FIND,
   AGENT_CONFIRM,
@@ -24,9 +25,11 @@ export function* findAvailableAgent({ payload }) {
     if (error) {
       throw new Error(error);
     }
+    notification.success({ message: 'Agent found' });
     yield put(findAgentRequestSuccess(conversationId));
   } catch (error) {
     const errorMsg = error.message || error;
+    notification.error({ message: errorMsg });
     yield put(findAgentRequestFailed(conversationId, errorMsg));
   }
 }

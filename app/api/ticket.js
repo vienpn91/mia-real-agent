@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { handleError } from './utils';
 
 export const createTicket = data => axios
   .post('tickets', data)
@@ -28,7 +29,7 @@ export const getConversationByTicketId = ticketId => axios
 export const findAgent = ticketId => axios
   .post(`tickets/${ticketId}/find_agent`)
   .then(response => ({ response }))
-  .catch(error => ({ error }));
+  .catch(error => handleError(error));
 
 export const removeTicket = id => axios
   .delete(`tickets/${id}`)

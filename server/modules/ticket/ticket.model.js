@@ -14,7 +14,15 @@ const ticketSchema = new Schema(
     description: { type: String, trim: true },
     status: {
       type: String,
-      enum: [TICKET_STATUS.CLOSED, TICKET_STATUS.OPEN, TICKET_STATUS.PENDING, TICKET_STATUS.PROCESSING, TICKET_STATUS.RESOLVED],
+      enum: [
+        TICKET_STATUS.CLOSED,
+        TICKET_STATUS.OPEN,
+        TICKET_STATUS.IDLE,
+        TICKET_STATUS.PROCESSING,
+        TICKET_STATUS.RESOLVED,
+        TICKET_STATUS.OFFLINE,
+        TICKET_STATUS.PENDING,
+      ],
       default: TICKET_STATUS.OPEN,
     },
     category: [String],

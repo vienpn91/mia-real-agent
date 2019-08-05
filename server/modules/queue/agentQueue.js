@@ -9,9 +9,10 @@ class AgentQueue {
     this.queue = this.queue.concat(agent);
   };
 
-  remove = (agentId) => {
+  remove = (agent) => {
     const { queue } = this;
-    queue.shift(queue.indexOf(({ _id: removeAgentId }) => agentId === removeAgentId));
+    const { _id } = agent;
+    queue.filter(({ _id: removeAgentId }) => _id !== removeAgentId);
     this.queue = queue;
   };
 }

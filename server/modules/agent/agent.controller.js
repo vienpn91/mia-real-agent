@@ -1,4 +1,5 @@
 import httpStatus from 'http-status';
+import _ from 'lodash';
 import { TICKET_STATUS } from '../../../common/enums';
 import TicketService from '../ticket/ticket.service';
 import ConversationService from '../conversation/conversation.service';
@@ -37,13 +38,15 @@ class AgentController {
         throw new APIError(ERROR_MESSAGE.BAD_REQUEST, httpStatus.BAD_REQUEST);
       }
 
-      if (isConfirm && ticket.status === TICKET_STATUS.OPEN) {
+      if (ticket.status !== TICKET_STATUS.PENDING) {
+        return res.status(httpStatus.BAD_REQUEST).send();
+      }
+      if (isConfirm) {
         AgentQueue.remove(agentId);
 
         // update assign and members for tickets and conversations
         ticket.assignee = agentId;
-        // TODO! remove this once the request and chat flow completely refactored
-        // ticket.status = TICKET_STATUS.PROCESSING;
+        ticket.status = TICKET_STATUS.PROCESSING;
         if (conversation.members) {
           const agentIdStr = agentId.toString();
           const shouldAdd = !conversation.members.some(member => member.toString() === agentIdStr);
@@ -63,6 +66,9 @@ class AgentController {
           isConfirm,
           ticketId: ticket.ticketId,
         });
+      } else {
+        _.assign(ticket, { status: TICKET_STATUS.PROCESSING });
+        ticket.save({});
       }
       return res.status(httpStatus.OK).send();
     } catch (error) {
