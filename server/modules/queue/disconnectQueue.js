@@ -29,4 +29,12 @@ class DisconnectQueue {
   };
 }
 
-export default new DisconnectQueue();
+
+// eslint-disable-next-line import/no-mutable-exports
+let disconnetQueue = null;
+
+if (!disconnetQueue) {
+  disconnetQueue = new DisconnectQueue();
+}
+
+export default disconnetQueue;

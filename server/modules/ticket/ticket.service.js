@@ -92,32 +92,34 @@ class TicketService extends BaseService {
         { assignee: _id },
       ],
     };
-    const tickets = await this.collection.update(query, { status: TICKET_STATUS.OFFLINE }).exec();
+    const tickets = await this.collection.updateMany(query, { status: TICKET_STATUS.OFFLINE }).exec();
     return tickets;
   }
 
-  async handleTicketOwnerOnline(user) {
+  async handleTicketOnline(user) {
     const { _id } = user;
     const query = {
       status: TICKET_STATUS.OFFLINE,
-      owner: _id,
+      $or: [
+        { owner: _id },
+        { assignee: _id },
+      ],
     };
-    const tickets = await this.collection.update(query, { status: TICKET_STATUS.PROCESSING }).exec();
-    return tickets;
-  }
-
-  async handleTicketAssigneeOnline(user) {
-    const { _id } = user;
-    const query = {
-      status: TICKET_STATUS.OFFLINE,
-      assignee: _id,
-    };
-    const tickets = await this.collection.update(query, { status: TICKET_STATUS.IDLE }).exec();
+    const tickets = await this.collection.updateMany(query, { status: TICKET_STATUS.IDLE }).exec();
     return tickets;
   }
 
   async handleCloseTicket(query) {
-    const tickets = await this.collection.update(query, { status: TICKET_STATUS.CLOSED }).exec();
+    const tickets = await this.collection.updateMany(query, { status: TICKET_STATUS.CLOSED }).exec();
+    return tickets;
+  }
+
+  async handleTicketIdle(ticketId) {
+    const query = {
+      status: TICKET_STATUS.PROCESSING,
+      _id: ticketId,
+    };
+    const tickets = await this.collection.update(query, { status: TICKET_STATUS.IDLE }).exec();
     return tickets;
   }
 }

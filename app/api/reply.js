@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-export const sendReplyMessage = (from, to, conversation, message) => axios
+export const sendReplyMessage = (from, to, conversationId, messages) => axios
   .post('/reply', {
-    from, to, conversation, message,
+    from, to, conversationId, messages,
   })
   .then(response => ({ response }))
   .catch(error => ({ error }));

@@ -64,14 +64,11 @@ class SocketIOServer {
           Logger.info(`[Socket.io]: The Mercenary [${email}] has join the fray`);
           const { _doc } = user;
           AgentQueue.add({ ..._doc, socketId });
-          // if agent go online
-          TicketService.handleTicketAssigneeOnline(user);
         } else {
           Logger.info(`[Socket.io]: The Foul [${email}] has join the fray`);
           register(id.toString(), socket);
-          // if user go online
-          TicketService.handleTicketOwnerOnline(user);
         }
+        TicketService.handleTicketOnline(user);
       });
   }
 }

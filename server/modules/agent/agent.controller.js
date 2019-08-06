@@ -5,8 +5,10 @@ import TicketService from '../ticket/ticket.service';
 import ConversationService from '../conversation/conversation.service';
 import AgentQueue from '../queue/agentQueue';
 import UserQueue from '../queue/userQueue';
+import IdleQueue from '../queue/idleQueue';
 import Logger from '../../logger';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
+import { idleTicketTimeOut } from '../../socketio/timer';
 
 class AgentController {
   constructor() {
@@ -59,13 +61,14 @@ class AgentController {
           ticket.save(),
           conversation.save(),
         ]);
-
         const { owner } = ticket;
         const ownerSocket = UserQueue.getUser(owner);
         ownerSocket.emit('REQUEST_CONFIRM', {
           isConfirm,
           ticketId: ticket.ticketId,
         });
+        const timer = idleTicketTimeOut(ticketId);
+        IdleQueue.addTimer(timer, ticketId);
       } else {
         _.assign(ticket, { status: TICKET_STATUS.PROCESSING });
         ticket.save({});

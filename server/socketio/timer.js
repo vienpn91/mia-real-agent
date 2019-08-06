@@ -4,3 +4,7 @@ export const closeTicketTimeOut = user => setTimeout(() => {
   const query = closeTicketOfflineQuery(user);
   TicketService.handleCloseTicket(query);
 }, 300000);
+
+export const idleTicketTimeOut = ticketId => setTimeout(() => {
+  TicketService.handleTicketIdle(ticketId);
+}, 300000);
