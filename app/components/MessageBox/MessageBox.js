@@ -177,7 +177,7 @@ export default class MessageBox extends Component {
             onChange={this.handleChangeValues}
           >
             <MessageInputWrapper>
-              <MessageInput type="text" name="content" placeholder="Type message ..." autoComplete="false" />
+              <MessageInput type="text" name="content" placeholder="Type message ..." autoComplete="off" />
               {this.renderGroupAction()}
               <InputAction onClick={handleSubmit} className="mia-enter" />
               {userRole !== 'agent' && (
@@ -243,7 +243,7 @@ export default class MessageBox extends Component {
               >
                 <FormInput type="rate" name="score" />
                 <CommentInputWrapper>
-                  <MessageInput type="text" name="comment" placeholder="Type comment ..." autoComplete="false" />
+                  <MessageInput type="text" name="comment" placeholder="Type comment ..." autoComplete="off" />
                   <InputAction onClick={handleSubmit} className="mia-enter" />
                 </CommentInputWrapper>
               </Form>

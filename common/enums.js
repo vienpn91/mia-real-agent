@@ -31,8 +31,9 @@ export const TICKET_STATUS = {
   RESOLVED: 'Resolved',
   CLOSED: 'Closed',
   PENDING: 'Pending',
+  IDLE: 'Idle',
   PROCESSING: 'Processing',
-  SEARCHING: 'Searching',
+  OFFLINE: 'Offline',
 };
 
 export const COLOR_BY_STATUS = {

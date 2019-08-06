@@ -53,7 +53,7 @@ class AdminTicketController extends BaseController {
       };
 
       const resolved = await this.service.getTicketCount({ ...queryCondition, status: TICKET_STATUS.RESOLVED });
-      const pending = await this.service.getTicketCount({ ...queryCondition, status: TICKET_STATUS.PENDING });
+      const pending = await this.service.getTicketCount({ ...queryCondition, status: TICKET_STATUS.IDLE });
       const processing = await this.service.getTicketCount({ ...queryCondition, status: TICKET_STATUS.PROCESSING });
       const closed = await this.service.getTicketCount({ ...queryCondition, status: TICKET_STATUS.CLOSED });
       return res.status(httpStatus.OK).send({

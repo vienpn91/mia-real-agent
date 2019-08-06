@@ -4,6 +4,10 @@ import BaseController from '../base/base.controller';
 import ReplyService from './reply.service';
 import { emitNewMessage } from '../chat/chat.socket';
 import Logger from '../../logger';
+import IdleQueue from '../queue/idleQueue';
+import ConversationService from '../conversation/conversation.service';
+import TicketService from '../ticket/ticket.service';
+import { TICKET_STATUS } from '../../../common/enums';
 
 class ReplyController extends BaseController {
   constructor() {
@@ -47,10 +51,11 @@ class ReplyController extends BaseController {
   async insertReply(req, res) {
     try {
       const userReply = req.body;
+      const { conversationId, from, messages } = userReply;
       const reply = {
-        conversationId: userReply.conversation,
-        from: userReply.from,
-        messages: userReply.message,
+        conversationId,
+        from,
+        messages,
       };
       const newReply = await this.service.insert(reply);
 
@@ -59,6 +64,10 @@ class ReplyController extends BaseController {
       } else {
         setTimeout(() => this.getResponseFromMia(userReply), 0);
       }
+      const { ticketId } = await ConversationService.getOneByQuery({ _id: conversationId });
+      TicketService.update(ticketId, { status: TICKET_STATUS.PROCESSING });
+      IdleQueue.resetTimer(ticketId);
+
       return res.status(httpStatus.OK).send({ reply: newReply });
     } catch (error) {
       return super.handleError(res, error);
