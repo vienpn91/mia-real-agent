@@ -44,6 +44,10 @@ class ConversationRoomQueue {
         const { [userId]: _, ...otherUser } = room;
         if (otherUser) {
           this.queue[conversationId] = otherUser;
+          Object.keys(room).forEach((otherUserId) => {
+            const otherSocket = room[otherUserId];
+            otherSocket.emit('OTHER_LEFT_ROOM', { userId: otherUserId });
+          });
         } else {
           const { [conversationId]: removeConversation, ...rest } = this.queue;
           this.queue = rest;

@@ -19,7 +19,9 @@ const NEW_MESSAGE = 'NEW_MESSAGE';
 const REPLY_MESSAGE = 'REPLY_MESSAGE';
 const REQUEST_AVAILABLE = 'REQUEST_AVAILABLE';
 const REQUEST_CONFIRM = 'REQUEST_CONFIRM';
+// conversation room
 const OTHER_JOIN_ROOM = 'OTHER_JOIN_ROOM';
+const OTHER_LEFT_ROOM = 'OTHER_LEFT_ROOM';
 
 let socketConnection;
 
@@ -96,7 +98,17 @@ function* otherJoinConversation() {
   // watch message and relay the action
   while (true) {
     const data = yield take(socketChannel);
-    console.log(data);
+    console.log('connect', data);
+  }
+}
+
+function* otherLeftConversation() {
+  const socketChannel = yield call(createSocketChannel, socketConnection, OTHER_LEFT_ROOM);
+
+  // watch message and relay the action
+  while (true) {
+    const data = yield take(socketChannel);
+    console.log('disconnect', data);
   }
 }
 
@@ -111,6 +123,7 @@ function* connectFlow() {
     requestAgent(),
     requestConfirm(),
     otherJoinConversation(),
+    otherLeftConversation(),
   ]);
 }
 

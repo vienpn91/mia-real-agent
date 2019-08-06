@@ -57,6 +57,7 @@ class SocketIOServer {
           TicketService.handleTicketOffline(user);
           const timer = closeTicketTimeOut(user);
           DisconnectQueue.addTimer(timer, id);
+          ConversationRoomQueue.removeUser(id);
         });
         connected[socketId] = socket;
         DisconnectQueue.destroyTimer(id);
