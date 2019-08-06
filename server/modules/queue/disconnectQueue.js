@@ -10,19 +10,19 @@ class DisconnectQueue {
     this._queue = queue;
   }
 
-  getJob = userId => this.queue[userId];
+  getTimer = userId => this.queue[userId];
 
-  addJob = (job, userId) => {
+  addTimer = (timer, userId) => {
     this.queue = {
       ...this.queue,
-      [userId]: job,
+      [userId]: timer,
     };
   };
 
-  destroyJob = (userId) => {
-    const job = this.queue[userId];
-    if (job) {
-      job.destroy();
+  destroyTimer = (userId) => {
+    const timer = this.queue[userId];
+    if (timer) {
+      clearTimeout(timer);
       const { [userId]: _, ...rest } = this.queue;
       this.queue = rest;
     }

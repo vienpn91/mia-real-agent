@@ -5,8 +5,8 @@ import AgentQueue from '../modules/queue/agentQueue';
 import TicketService from '../modules/ticket/ticket.service';
 import { ROLES } from '../../common/enums';
 import { register, unregister } from '../modules/chat/chat.socket';
-import { createTicketOfflineCronJob } from './cronJob';
 import DisconnectQueue from '../modules/queue/disconnectQueue';
+import { closeTicketTimeOut } from './timer';
 
 const ACTION_MESSAGE = 'ACTION_MESSAGE';
 let socketIO;
@@ -55,13 +55,11 @@ class SocketIOServer {
           }
           // if user/agent goes offline
           TicketService.handleTicketOffline(user);
-          const job = createTicketOfflineCronJob(user);
-          job.start();
-          console.log(job);
-          DisconnectQueue.addJob(job, id);
+          const timer = closeTicketTimeOut(user);
+          DisconnectQueue.addTimer(timer, id);
         });
         connected[socketId] = socket;
-        DisconnectQueue.destroyJob(id);
+        DisconnectQueue.destroyTimer(id);
         if (role === ROLES.FREELANCER || role === ROLES.FULLTIME) {
           Logger.info(`[Socket.io]: The Mercenary [${email}] has join the fray`);
           const { _doc } = user;
