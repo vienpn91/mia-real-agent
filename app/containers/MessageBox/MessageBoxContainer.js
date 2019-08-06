@@ -50,6 +50,7 @@ const mapDispatchToProps = {
   sendReplyMessage,
   findAgentRequest,
   submitRating: CONVERSATION_ACTIONS.submitConversationRating,
+  joinConversation: CONVERSATION_ACTIONS.userJoinConversation,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageBox);

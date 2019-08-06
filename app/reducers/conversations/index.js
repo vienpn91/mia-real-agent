@@ -17,8 +17,16 @@ export const CONVERSATION_RATING_SUBMIT = 'conversations/CONVERSATION_RATING_SUB
 export const CONVERSATION_RATING_SUBMIT_SUCCESS = 'conversations/CONVERSATION_RATING_SUBMIT_SUCCESS';
 export const CONVERSATION_RATING_SUBMIT_FAIL = 'conversations/CONVERSATION_RATING_SUBMIT_FAIL';
 
+export const USER_JOIN_CONVERSATION = 'conversations/USER_JOIN_CONVERSATION';
 
 // action creator
+
+const userJoinConversation = conversationId => ({
+  type: USER_JOIN_CONVERSATION,
+  payload: {
+    conversationId,
+  },
+});
 
 // SUBMIT CONVERSATION RATING
 
@@ -237,6 +245,8 @@ export const actions = {
   submitConversationRatingFailed,
 
   selectConversation,
+
+  userJoinConversation,
 };
 
 export const selectors = {

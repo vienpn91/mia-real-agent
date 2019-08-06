@@ -1,3 +1,5 @@
+import _isEmpty from 'lodash/isEmpty';
+
 // Dump data
 // [conversationId]: {
 //  [userId1]: socket1,
@@ -20,6 +22,12 @@ class ConversationRoomQueue {
 
   newUser = (conversationId, userId, socket) => {
     const room = this.getRoom(conversationId) || {};
+    if (!_isEmpty(room)) {
+      Object.keys(room).forEach((otherUserId) => {
+        const otherSocket = room[otherUserId];
+        otherSocket.emit('OTHER_JOIN_ROOM', { userId: otherUserId });
+      });
+    }
     this.queue = {
       ...this.queue,
       [conversationId]: {
@@ -52,4 +60,4 @@ if (!conversationRoomQueue) {
   conversationRoomQueue = new ConversationRoomQueue();
 }
 
-export default ConversationRoomQueue;
+export default conversationRoomQueue;

@@ -7,6 +7,7 @@ import { ROLES } from '../../common/enums';
 import { register, unregister } from '../modules/chat/chat.socket';
 import DisconnectQueue from '../modules/queue/disconnectQueue';
 import { closeTicketTimeOut } from './timer';
+import ConversationRoomQueue from '../modules/queue/conversationRoomQueue';
 
 const ACTION_MESSAGE = 'ACTION_MESSAGE';
 let socketIO;
@@ -68,7 +69,14 @@ class SocketIOServer {
           register(id.toString(), socket);
         }
         TicketService.handleTicketOnline(user);
+        this.setUpConversationRoom(socket);
       });
+  }
+
+  setUpConversationRoom = (socket) => {
+    socket.on('JOIN_CONVERSATION', async ({ conversationId, userId }) => {
+      ConversationRoomQueue.newUser(conversationId, userId, socket);
+    });
   }
 }
 

@@ -1,5 +1,5 @@
 import {
-  take, takeEvery, call, put, select, all,
+  take, takeEvery, call, put, select, all, takeLatest,
 } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import socketIOClient from 'socket.io-client';
@@ -8,15 +8,18 @@ import {
   getToken,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
+  getUserId,
 } from '../../reducers/auth';
 import { agentNewRequest } from '../../reducers/agents';
 import { addNewMessage } from '../../reducers/replies';
+import { USER_JOIN_CONVERSATION } from '../../reducers/conversations';
 
 /* events */
 const NEW_MESSAGE = 'NEW_MESSAGE';
 const REPLY_MESSAGE = 'REPLY_MESSAGE';
 const REQUEST_AVAILABLE = 'REQUEST_AVAILABLE';
 const REQUEST_CONFIRM = 'REQUEST_CONFIRM';
+const OTHER_JOIN_ROOM = 'OTHER_JOIN_ROOM';
 
 let socketConnection;
 
@@ -87,6 +90,15 @@ function* requestConfirm() {
     }
   }
 }
+function* otherJoinConversation() {
+  const socketChannel = yield call(createSocketChannel, socketConnection, OTHER_JOIN_ROOM);
+
+  // watch message and relay the action
+  while (true) {
+    const data = yield take(socketChannel);
+    console.log(data);
+  }
+}
 
 function* connectFlow() {
   const token = yield select(getToken);
@@ -98,6 +110,7 @@ function* connectFlow() {
     handleNewMessage(),
     requestAgent(),
     requestConfirm(),
+    otherJoinConversation(),
   ]);
 }
 
@@ -105,9 +118,16 @@ function* disconnectFlow() {
   if (socketConnection) socketConnection.disconnect();
 }
 
+function* userJoinConversation({ payload }) {
+  const { conversationId } = payload;
+  const userId = yield select(getUserId);
+  socketConnection.emit('JOIN_CONVERSATION', { conversationId, userId });
+}
+
 function* socketIOFlow() {
   yield takeEvery([AUTH_LOGIN_SUCCESS], connectFlow);
   yield takeEvery(AUTH_LOGOUT, disconnectFlow);
+  yield takeLatest(USER_JOIN_CONVERSATION, userJoinConversation);
 }
 
 export function emitReply(from, to, conversation, message) {

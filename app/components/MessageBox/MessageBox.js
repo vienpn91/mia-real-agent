@@ -39,11 +39,6 @@ const initialValues = {
   content: '',
 };
 
-const commentInitialValues = {
-  score: 0,
-  comment: '',
-};
-
 export default class MessageBox extends Component {
   messagesEndRef = React.createRef();
 
@@ -58,9 +53,12 @@ export default class MessageBox extends Component {
     replyMessages: PropTypes.arrayOf(PropTypes.shape()),
     sendingMessages: PropTypes.arrayOf(PropTypes.shape()),
     sendingMessageErrors: PropTypes.objectOf(PropTypes.any),
+
     findAgentRequest: PropTypes.func.isRequired,
     sendReplyMessage: PropTypes.func.isRequired,
     setCurrentTicket: PropTypes.func.isRequired,
+    joinConversation: PropTypes.func.isRequired,
+
     submitRating: PropTypes.func.isRequired,
     userRole: PropTypes.string.isRequired,
   }
@@ -77,10 +75,14 @@ export default class MessageBox extends Component {
   }
 
   componentDidMount = () => {
-    const { fetchReplyMessages, currentConversation, setCurrentTicket } = this.props;
+    const {
+      fetchReplyMessages, currentConversation,
+      setCurrentTicket, joinConversation,
+    } = this.props;
     // eslint-disable-next-line no-underscore-dangle
     if (!_isEmpty(currentConversation)) {
       const { ticketId, _id } = currentConversation;
+      joinConversation(_id);
       fetchReplyMessages(_id);
       setCurrentTicket(ticketId);
     }
