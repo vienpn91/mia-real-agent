@@ -19,12 +19,22 @@ export const CONVERSATION_RATING_SUBMIT_FAIL = 'conversations/CONVERSATION_RATIN
 
 export const USER_JOIN_CONVERSATION = 'conversations/USER_JOIN_CONVERSATION';
 
+export const USER_TYPING = 'conversations/USER_TYPING';
+
 // action creator
 
 const userJoinConversation = conversationId => ({
   type: USER_JOIN_CONVERSATION,
   payload: {
     conversationId,
+  },
+});
+
+const userTyping = (conversationId, message) => ({
+  type: USER_TYPING,
+  payload: {
+    conversationId,
+    message,
   },
 });
 
@@ -247,6 +257,7 @@ export const actions = {
   selectConversation,
 
   userJoinConversation,
+  userTyping,
 };
 
 export const selectors = {

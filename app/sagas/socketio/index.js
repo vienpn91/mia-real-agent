@@ -12,7 +12,7 @@ import {
 } from '../../reducers/auth';
 import { agentNewRequest } from '../../reducers/agents';
 import { addNewMessage } from '../../reducers/replies';
-import { USER_JOIN_CONVERSATION } from '../../reducers/conversations';
+import { USER_JOIN_CONVERSATION, USER_TYPING } from '../../reducers/conversations';
 
 /* events */
 const NEW_MESSAGE = 'NEW_MESSAGE';
@@ -22,6 +22,7 @@ const REQUEST_CONFIRM = 'REQUEST_CONFIRM';
 // conversation room
 const OTHER_JOIN_ROOM = 'OTHER_JOIN_ROOM';
 const OTHER_LEFT_ROOM = 'OTHER_LEFT_ROOM';
+const RECEIVE_USER_TYPING = 'RECEIVE_USER_TYPING';
 
 let socketConnection;
 
@@ -112,6 +113,16 @@ function* otherLeftConversation() {
   }
 }
 
+function* observeUserTypingConversation() {
+  const socketChannel = yield call(createSocketChannel, socketConnection, RECEIVE_USER_TYPING);
+
+  // watch message and relay the action
+  while (true) {
+    const data = yield take(socketChannel);
+    console.log('observe', data);
+  }
+}
+
 function* connectFlow() {
   const token = yield select(getToken);
   // user is not logged in
@@ -124,6 +135,7 @@ function* connectFlow() {
     requestConfirm(),
     otherJoinConversation(),
     otherLeftConversation(),
+    observeUserTypingConversation(),
   ]);
 }
 
@@ -137,10 +149,17 @@ function* userJoinConversation({ payload }) {
   socketConnection.emit('JOIN_CONVERSATION', { conversationId, userId });
 }
 
+function* userTyping({ payload }) {
+  const { conversationId, message } = payload;
+  const userId = yield select(getUserId);
+  socketConnection.emit('USER_TYPING', { conversationId, userId, message });
+}
+
 function* socketIOFlow() {
   yield takeEvery([AUTH_LOGIN_SUCCESS], connectFlow);
   yield takeEvery(AUTH_LOGOUT, disconnectFlow);
   yield takeLatest(USER_JOIN_CONVERSATION, userJoinConversation);
+  yield takeLatest(USER_TYPING, userTyping);
 }
 
 export function emitReply(from, to, conversation, message) {

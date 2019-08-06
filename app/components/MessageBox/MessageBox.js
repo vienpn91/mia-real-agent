@@ -27,7 +27,7 @@ import {
 } from './styles';
 import LoadingSpin from '../Loading';
 import ConversationDetail from '../ConversationDetail/ConversationDetail';
-import { TICKET_STATUS } from '../../../common/enums';
+import { TICKET_STATUS, ROLES } from '../../../common/enums';
 import FormInput from '../FormInput/FormInput';
 
 const scrollStyle = {
@@ -58,6 +58,7 @@ export default class MessageBox extends Component {
     sendReplyMessage: PropTypes.func.isRequired,
     setCurrentTicket: PropTypes.func.isRequired,
     joinConversation: PropTypes.func.isRequired,
+    userTyping: PropTypes.func.isRequired,
 
     submitRating: PropTypes.func.isRequired,
     userRole: PropTypes.string.isRequired,
@@ -165,6 +166,14 @@ export default class MessageBox extends Component {
     findAgentRequest(conversationId);
   }
 
+  handleTyping = (e) => {
+    const { userTyping, conversationId, userRole } = this.props;
+    if (userRole !== ROLES.FREELANCER && userRole !== ROLES.FULLTIME) {
+      const { value } = e.target;
+      userTyping(conversationId, value);
+    }
+  }
+
   renderMessageInput = () => {
     const { isFindingAgent, userRole } = this.props;
     return (
@@ -179,19 +188,26 @@ export default class MessageBox extends Component {
             onChange={this.handleChangeValues}
           >
             <MessageInputWrapper>
-              <MessageInput type="text" name="content" placeholder="Type message ..." autoComplete="off" />
+              <MessageInput
+                onChange={this.handleTyping}
+                type="text"
+                name="content"
+                placeholder="Type message ..."
+                autoComplete="off"
+              />
               {this.renderGroupAction()}
               <InputAction onClick={handleSubmit} className="mia-enter" />
-              {userRole !== 'agent' && (
-                <Button
-                  loading={isFindingAgent}
-                  key="button"
-                  type="primary"
-                  onClick={this.handleFindAgent}
-                >
-                  Find Agent
-                </Button>
-              )}
+              {(userRole !== ROLES.FREELANCER && userRole !== ROLES.FULLTIME)
+                && (
+                  <Button
+                    loading={isFindingAgent}
+                    key="button"
+                    type="primary"
+                    onClick={this.handleFindAgent}
+                  >
+                    Find Agent
+                  </Button>
+                )}
             </MessageInputWrapper>
           </Form>
         )}

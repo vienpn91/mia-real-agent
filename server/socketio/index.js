@@ -78,6 +78,10 @@ class SocketIOServer {
     socket.on('JOIN_CONVERSATION', async ({ conversationId, userId }) => {
       ConversationRoomQueue.newUser(conversationId, userId, socket);
     });
+
+    socket.on('USER_TYPING', async ({ conversationId, userId, message }) => {
+      ConversationRoomQueue.observeUserTypingMessage(conversationId, userId, message);
+    });
   }
 }
 
