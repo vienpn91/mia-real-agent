@@ -4,7 +4,6 @@ import BaseController from '../base/base.controller';
 import ReplyService from './reply.service';
 import { emitNewMessage } from '../chat/chat.socket';
 import Logger from '../../logger';
-import { idleTicketTimeOut } from '../../socketio/timer';
 import IdleQueue from '../queue/idleQueue';
 import ConversationService from '../conversation/conversation.service';
 import TicketService from '../ticket/ticket.service';
@@ -67,9 +66,7 @@ class ReplyController extends BaseController {
       }
       const { ticketId } = await ConversationService.getOneByQuery({ _id: conversationId });
       TicketService.update(ticketId, { status: TICKET_STATUS.PROCESSING });
-      IdleQueue.destroyTimer(ticketId);
-      const timer = idleTicketTimeOut(ticketId);
-      IdleQueue.addTimer(timer, ticketId);
+      IdleQueue.resetTimer(ticketId);
 
       return res.status(httpStatus.OK).send({ reply: newReply });
     } catch (error) {

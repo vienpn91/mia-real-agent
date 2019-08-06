@@ -1,5 +1,5 @@
 import httpStatus from 'http-status';
-import _ from 'lodash';
+import _assign from 'lodash/assign';
 import { TICKET_STATUS } from '../../../common/enums';
 import TicketService from '../ticket/ticket.service';
 import ConversationService from '../conversation/conversation.service';
@@ -8,7 +8,6 @@ import UserQueue from '../queue/userQueue';
 import IdleQueue from '../queue/idleQueue';
 import Logger from '../../logger';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
-import { idleTicketTimeOut } from '../../socketio/timer';
 
 class AgentController {
   constructor() {
@@ -67,10 +66,9 @@ class AgentController {
           isConfirm,
           ticketId: ticket.ticketId,
         });
-        const timer = idleTicketTimeOut(ticketId);
-        IdleQueue.addTimer(timer, ticketId);
+        IdleQueue.addTimer(ticketId);
       } else {
-        _.assign(ticket, { status: TICKET_STATUS.OPEN });
+        _assign.assign(ticket, { status: TICKET_STATUS.OPEN });
         ticket.save({});
       }
       return res.status(httpStatus.OK).send();

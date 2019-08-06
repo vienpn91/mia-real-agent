@@ -19,13 +19,12 @@ class SocketIOServer {
     socketIO = createSocketIO(server, {
       path: '/chat',
     });
-    this.socketIO = socketIO;
     this.setUpSocket();
     return socketIO;
   }
 
   emitActionMessage(action) {
-    this.socketIO.emit(ACTION_MESSAGE, action);
+    socketIO.emit(ACTION_MESSAGE, action);
   }
 
   setUpSocket = () => {
