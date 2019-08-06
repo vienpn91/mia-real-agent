@@ -70,7 +70,7 @@ class AgentController {
         const timer = idleTicketTimeOut(ticketId);
         IdleQueue.addTimer(timer, ticketId);
       } else {
-        _.assign(ticket, { status: TICKET_STATUS.PROCESSING });
+        _.assign(ticket, { status: TICKET_STATUS.OPEN });
         ticket.save({});
       }
       return res.status(httpStatus.OK).send();

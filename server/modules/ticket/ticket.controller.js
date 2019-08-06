@@ -48,7 +48,6 @@ class TicketController extends BaseController {
       agents.forEach((agent) => {
         // eslint-disable-next-line no-underscore-dangle
         const socket = getSocketByUser(agent);
-        console.log('socket', socket);
         socket.emit('REQUEST_AVAILABLE', ticket.toObject());
       });
       _.assign(ticket, { status: TICKET_STATUS.PENDING });
