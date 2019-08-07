@@ -327,10 +327,13 @@ export default class MessageBox extends Component {
 
 
   render() {
-    const { isFetchingReplies, replyMessages, currentTicket } = this.props;
+    const {
+      isFetchingReplies, isFindingAgent,
+      replyMessages, currentTicket,
+    } = this.props;
     const { status } = currentTicket || {};
     return (
-      <LoadingSpin loading={isFetchingReplies}>
+      <LoadingSpin loading={isFetchingReplies || isFindingAgent}>
         {this.renderMessageHeader()}
         <MessageBoxWrapper>
           <MessageBoxContent>
