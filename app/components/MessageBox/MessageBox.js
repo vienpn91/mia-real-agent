@@ -24,6 +24,8 @@ import {
   RatingWrapper,
   RatingContent,
   CommentInputWrapper,
+  TicketStatus,
+  MessageBoxSystemNotification,
 } from './styles';
 import LoadingSpin from '../Loading';
 import ConversationDetail from '../ConversationDetail/ConversationDetail';
@@ -45,6 +47,7 @@ export default class MessageBox extends Component {
   static propTypes = {
     userId: PropTypes.string.isRequired,
     conversationId: PropTypes.string,
+    systemMessage: PropTypes.string,
     fetchReplyMessages: PropTypes.func.isRequired,
     currentConversation: PropTypes.object,
     currentTicket: PropTypes.object,
@@ -119,18 +122,29 @@ export default class MessageBox extends Component {
     </MessageBoxItem>
   )
 
+  renderSystemMessage = () => {
+    const { systemMessage } = this.props;
+    return systemMessage && (
+      <MessageBoxSystemNotification>
+        {systemMessage}
+      </MessageBoxSystemNotification>
+    );
+  }
+
   renderMessageContent = () => {
     const { replyMessages, userId } = this.props;
     if (!replyMessages || !replyMessages.length) {
       return (<MessageEmpty>No Message</MessageEmpty>);
     }
 
-    return replyMessages.map(({ from, _id: msgId, messages }) => {
+    return [replyMessages.map(({ from, _id: msgId, messages }) => {
       if (from === userId) {
         return this.renderUserMessageContent(msgId, messages);
       }
       return this.renderOtherUserMessageContent(msgId, messages);
-    });
+    }), (
+      this.renderSystemMessage()
+    )];
   }
 
   renderPendingMessageContent = () => {
@@ -217,12 +231,17 @@ export default class MessageBox extends Component {
 
   renderMessageHeader = () => {
     const { currentTicket } = this.props;
-    const { assignee = {}, title } = currentTicket || {};
+    const { assignee = {}, title, status } = currentTicket || {};
     const { firstName = '', lastName = '' } = assignee;
     return (
       <MessageBoxHeaderWrapper>
         <Breadcrumb separator="-">
-          <Breadcrumb.Item>{title}</Breadcrumb.Item>
+          <Breadcrumb.Item>
+            <TicketStatus status={status} />
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
+            {title}
+          </Breadcrumb.Item>
           <Breadcrumb.Item>{`${firstName} ${lastName}`}</Breadcrumb.Item>
         </Breadcrumb>
       </MessageBoxHeaderWrapper>

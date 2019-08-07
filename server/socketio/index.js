@@ -67,8 +67,8 @@ class SocketIOServer {
           AgentQueue.add({ ..._doc, socketId });
         } else {
           Logger.info(`[Socket.io]: The Foul [${email}] has join the fray`);
-          register(id.toString(), socket);
         }
+        register(id.toString(), socket);
         TicketService.handleTicketOnline(user);
         this.setUpConversationRoom(socket);
       });

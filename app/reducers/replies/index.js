@@ -273,8 +273,8 @@ function repliesReducer(state = initialState, action) {
     }
 
     case REPLIES_ADD_MESSAGE: {
-      const { message, conversationId } = action.payload;
-      const { _id: msgId } = message;
+      const { message } = action.payload;
+      const { _id: msgId, conversationId } = message;
       let currentReplies = state.getIn(['byId', conversationId]);
       const allIds = state.get('allIds').add(conversationId);
 

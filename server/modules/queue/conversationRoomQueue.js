@@ -27,7 +27,7 @@ class ConversationRoomQueue {
       if (otherUser) {
         Object.keys(otherUser).forEach((otherUserId) => {
           const otherSocket = room[otherUserId];
-          otherSocket.emit('RECEIVE_USER_TYPING', { userId, message });
+          otherSocket.emit('RECEIVE_USER_TYPING', { conversationId, userId, message });
         });
       }
     }
@@ -38,7 +38,7 @@ class ConversationRoomQueue {
     if (!_isEmpty(room)) {
       Object.keys(room).forEach((otherUserId) => {
         const otherSocket = room[otherUserId];
-        otherSocket.emit('OTHER_JOIN_ROOM', { userId });
+        otherSocket.emit('OTHER_JOIN_ROOM', { conversationId, userId });
       });
     }
     this.queue = {
@@ -59,7 +59,7 @@ class ConversationRoomQueue {
           this.queue[conversationId] = otherUser;
           Object.keys(room).forEach((otherUserId) => {
             const otherSocket = room[otherUserId];
-            otherSocket.emit('OTHER_LEFT_ROOM', { userId });
+            otherSocket.emit('OTHER_LEFT_ROOM', { conversationId, userId });
           });
         } else {
           const { [conversationId]: removeConversation, ...rest } = this.queue;

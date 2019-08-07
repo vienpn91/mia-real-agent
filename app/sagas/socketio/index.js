@@ -12,7 +12,10 @@ import {
 } from '../../reducers/auth';
 import { agentNewRequest } from '../../reducers/agents';
 import { addNewMessage } from '../../reducers/replies';
-import { USER_JOIN_CONVERSATION, USER_TYPING } from '../../reducers/conversations';
+import {
+  actions as CONVERSATION_ACTIONS,
+  USER_JOIN_CONVERSATION, USER_TYPING, getCurrentConveration,
+} from '../../reducers/conversations';
 
 /* events */
 const NEW_MESSAGE = 'NEW_MESSAGE';
@@ -98,8 +101,13 @@ function* otherJoinConversation() {
 
   // watch message and relay the action
   while (true) {
-    const data = yield take(socketChannel);
-    console.log('connect', data);
+    const { conversationId, userId } = yield take(socketChannel);
+    const conversation = yield select(getCurrentConveration);
+    // eslint-disable-next-line no-underscore-dangle
+    if (conversation && conversationId === conversation._id) {
+      const role = (conversation.owner === userId) ? 'User' : 'Agent';
+      yield put(CONVERSATION_ACTIONS.notifiSystemMessage(`${role} has join conversation`));
+    }
   }
 }
 
@@ -108,8 +116,13 @@ function* otherLeftConversation() {
 
   // watch message and relay the action
   while (true) {
-    const data = yield take(socketChannel);
-    console.log('disconnect', data);
+    const { conversationId, userId } = yield take(socketChannel);
+    const conversation = yield select(getCurrentConveration);
+    // eslint-disable-next-line no-underscore-dangle
+    if (conversation && conversationId === conversation._id) {
+      const role = (conversation.owner === userId) ? 'User' : 'Agent';
+      yield put(CONVERSATION_ACTIONS.notifiSystemMessage(`${role} has left conversation`));
+    }
   }
 }
 

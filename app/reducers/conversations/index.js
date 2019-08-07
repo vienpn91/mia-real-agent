@@ -21,6 +21,8 @@ export const USER_JOIN_CONVERSATION = 'conversations/USER_JOIN_CONVERSATION';
 
 export const USER_TYPING = 'conversations/USER_TYPING';
 
+export const SYSTEM_MESSAGE = 'conversations/SYSTEM_MESSAGE';
+
 // action creator
 
 const userJoinConversation = conversationId => ({
@@ -35,6 +37,13 @@ const userTyping = (conversationId, message) => ({
   payload: {
     conversationId,
     message,
+  },
+});
+
+const notifiSystemMessage = systemMessage => ({
+  type: SYSTEM_MESSAGE,
+  payload: {
+    systemMessage,
   },
 });
 
@@ -162,6 +171,7 @@ export const getConversationListByTicketList = ({ conversations }, ticketIdList)
 };
 export const getConversationById = ({ conversations }, conversationId) => conversations.getIn(['byId', conversationId]);
 
+export const getSystemMessage = ({ conversations }) => conversations.get('systemMessage');
 
 const initialState = fromJS({
   byId: {},
@@ -171,10 +181,17 @@ const initialState = fromJS({
   isFetchingAll: false,
   isFetchingSingleItem: false,
   currentConversation: null,
+  systemMessage: '',
 });
 
 function conversationReducer(state = initialState, action) {
   switch (action.type) {
+    case SYSTEM_MESSAGE: {
+      const { systemMessage } = action.payload;
+      return state
+        .set('systemMessage', systemMessage);
+    }
+
     case CONVERSATION_FETCH: {
       return state
         .set('isFetchingAll', true)
@@ -258,6 +275,7 @@ export const actions = {
 
   userJoinConversation,
   userTyping,
+  notifiSystemMessage,
 };
 
 export const selectors = {

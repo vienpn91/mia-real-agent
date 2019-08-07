@@ -3,7 +3,6 @@ import UserQueue from '../queue/userQueue';
 export const emitNewMessage = (metadata, reply) => {
   const { to } = metadata;
   const toUser = UserQueue.getUser(to);
-
   if (!toUser) return;
   toUser.emit('NEW_MESSAGE', {
     metadata,

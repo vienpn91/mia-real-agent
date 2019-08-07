@@ -1,5 +1,7 @@
+import { Divider } from 'antd';
 import styled, { css } from 'styled-components';
 import FormInput from '../FormInput/FormInput';
+import { COLOR_BY_STATUS } from '../../../common/enums';
 
 export const InfoNotification = styled.h2`
   margin: 50%;
@@ -183,5 +185,20 @@ export const CommentInputWrapper = styled.div`
   }
   button{
     margin-left: 10px;
+  }
+`;
+
+export const TicketStatus = styled.div`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-table;
+  background: ${({ status }) => [COLOR_BY_STATUS[status]]};
+`;
+
+export const MessageBoxSystemNotification = styled(Divider)`
+  span{
+    font-size: 0.9em;
+    color: #828282;
   }
 `;

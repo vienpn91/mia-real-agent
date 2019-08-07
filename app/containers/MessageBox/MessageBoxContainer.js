@@ -18,7 +18,8 @@ import {
 import {
   getCurrentConveration,
   getCurrentConverationId,
-  actions as CONVERSATION_ACTIONS
+  actions as CONVERSATION_ACTIONS,
+  getSystemMessage,
 } from '../../reducers/conversations';
 import {
   isFindingAgent,
@@ -41,6 +42,7 @@ const mapStateToProps = (state) => {
     sendingMessageErrors: getSendingMessagesError(state, conversationId),
     isFindingAgent: isFindingAgent(state, conversationId),
     userRole: getUserRole(state),
+    systemMessage: getSystemMessage(state),
   });
 };
 
