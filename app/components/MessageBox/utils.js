@@ -9,7 +9,7 @@ export const insertSystemMessageToRepliesChat = (replyMessages, systemMessage) =
   }
   const { sentAt } = systemMessage;
   let index = replyMessages
-    .findIndex(({ sentAt: replySentAt }) => compareDate(new Date(replySentAt), sentAt));
+    .findIndex(({ sentAt: replySentAt }) => compareDate(new Date(replySentAt), sentAt) > 0);
   if (index < 0) {
     index = replyMessages.length;
   }

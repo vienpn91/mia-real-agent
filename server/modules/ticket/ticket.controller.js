@@ -1,14 +1,12 @@
 import httpStatus from 'http-status';
 import _ from 'lodash';
 import _get from 'lodash/get';
-import mongoose from 'mongoose';
 import BaseController from '../base/base.controller';
 import TicketService from './ticket.service';
 import UserService from '../user/user.service';
 import ConversationService from '../conversation/conversation.service';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import AgentQueue from '../queue/agentQueue';
-import UserQueue from '../queue/userQueue';
 import { ROLES, TICKET_STATUS } from '../../../common/enums';
 import { getSocketByUser } from '../../socketio';
 
@@ -45,11 +43,19 @@ class TicketController extends BaseController {
       if (!agents.length) {
         return res.status(httpStatus.NOT_FOUND).send('Agent not found!');
       }
+      let hadSentToAgent = false;
       agents.forEach((agent) => {
         // eslint-disable-next-line no-underscore-dangle
         const socket = getSocketByUser(agent);
-        socket.emit('REQUEST_AVAILABLE', ticket.toObject());
+        if (socket) {
+          hadSentToAgent = true;
+          socket.emit('REQUEST_AVAILABLE', ticket.toObject());
+        }
       });
+      if (!hadSentToAgent) {
+        return res.status(httpStatus.NOT_FOUND).send('Agent not found!');
+      }
+
       _.assign(ticket, { status: TICKET_STATUS.PENDING });
       ticket.save({});
       return res.status(httpStatus.OK).send();

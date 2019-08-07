@@ -198,12 +198,16 @@ export default class MessageBox extends Component {
   );
 
   handleChatSubmit = (values) => {
-    const { sendReplyMessage, conversationId, userTyping } = this.props;
+    const {
+      sendReplyMessage, conversationId, userTyping, userRole,
+    } = this.props;
     const { content } = values;
     const trimmedContent = content.trim();
     if (trimmedContent) {
       sendReplyMessage(conversationId, trimmedContent);
-      userTyping(conversationId, '');
+      if (userRole !== ROLES.FREELANCER && userRole !== ROLES.FULLTIME) {
+        userTyping(conversationId, '');
+      }
       this.formik.getFormikContext().resetForm();
     }
   }

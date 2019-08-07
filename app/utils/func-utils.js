@@ -7,5 +7,5 @@ export function getSkipLimit(pageIndex, sizePerPage) {
 }
 
 export function compareDate(a, b) {
-  return moment(a).isAfter(moment(b));
+  return moment(a).diff(moment(b));
 }
