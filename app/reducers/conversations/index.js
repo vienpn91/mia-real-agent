@@ -34,19 +34,19 @@ const userJoinConversation = conversationId => ({
   },
 });
 
-const userTyping = (conversationId, message) => ({
+const userTyping = (conversationId, messages) => ({
   type: USER_TYPING,
   payload: {
     conversationId,
-    message,
+    messages,
   },
 });
 
-const otherUserTyping = (conversationId, message) => ({
+const otherUserTyping = (conversationId, messages) => ({
   type: OTHER_USER_TYPING,
   payload: {
     conversationId,
-    message,
+    messages,
   },
 });
 
@@ -201,13 +201,14 @@ function conversationReducer(state = initialState, action) {
   switch (action.type) {
     case SYSTEM_MESSAGE: {
       const { systemMessage } = action.payload;
+      const sentAt = new Date();
       return state
-        .set('systemMessage', { message: systemMessage, sentAt: new Date() });
+        .set('systemMessage', { message: systemMessage, sentAt });
     }
     case OTHER_USER_TYPING: {
-      const { conversationId, message } = action.payload;
+      const { conversationId, messages } = action.payload;
       return state
-        .set('otherUserTyping', { conversationId, message });
+        .set('otherUserTyping', { conversationId, messages });
     }
 
     case CONVERSATION_FETCH: {

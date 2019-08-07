@@ -137,8 +137,8 @@ function* observeUserTypingConversation() {
 
   // watch message and relay the action
   while (true) {
-    const { conversationId, message } = yield take(socketChannel);
-    yield put(CONVERSATION_ACTIONS.otherUserTyping(conversationId, message));
+    const { conversationId, messages } = yield take(socketChannel);
+    yield put(CONVERSATION_ACTIONS.otherUserTyping(conversationId, messages));
   }
 }
 
@@ -169,9 +169,9 @@ function* userJoinConversation({ payload }) {
 }
 
 function* userTyping({ payload }) {
-  const { conversationId, message } = payload;
+  const { conversationId, messages } = payload;
   const userId = yield select(getUserId);
-  socketConnection.emit('USER_TYPING', { conversationId, userId, message });
+  socketConnection.emit('USER_TYPING', { conversationId, userId, messages });
 }
 
 function* socketIOFlow() {
@@ -181,12 +181,12 @@ function* socketIOFlow() {
   yield takeLatest(USER_TYPING, userTyping);
 }
 
-export function emitReply(from, to, conversation, message) {
+export function emitReply(from, to, conversation, messages) {
   socketConnection.emit(REPLY_MESSAGE, {
     from,
     to,
     conversation,
-    message,
+    messages,
   });
 }
 

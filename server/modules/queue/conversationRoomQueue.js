@@ -20,14 +20,14 @@ class ConversationRoomQueue {
 
   getRoom = conversationId => this.queue[conversationId];
 
-  observeUserTypingMessage = (conversationId, userId, message) => {
+  observeUserTypingMessage = (conversationId, userId, messages) => {
     const room = this.getRoom(conversationId) || {};
     if (!_isEmpty(room)) {
       const { [userId]: _, ...otherUser } = room;
       if (otherUser) {
         Object.keys(otherUser).forEach((otherUserId) => {
           const otherSocket = room[otherUserId];
-          otherSocket.emit('RECEIVE_USER_TYPING', { conversationId, userId, message });
+          otherSocket.emit('RECEIVE_USER_TYPING', { conversationId, userId, messages });
         });
       }
     }

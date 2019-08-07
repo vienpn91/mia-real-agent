@@ -79,8 +79,8 @@ class SocketIOServer {
       ConversationRoomQueue.newUser(conversationId, userId, socket);
     });
 
-    socket.on('USER_TYPING', async ({ conversationId, userId, message }) => {
-      ConversationRoomQueue.observeUserTypingMessage(conversationId, userId, message);
+    socket.on('USER_TYPING', async ({ conversationId, userId, messages }) => {
+      ConversationRoomQueue.observeUserTypingMessage(conversationId, userId, messages);
     });
   }
 }

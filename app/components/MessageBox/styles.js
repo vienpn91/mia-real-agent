@@ -21,6 +21,7 @@ export const MessageBoxContent = styled.div`
   flex: 1;
   height: 100%;
   background-color: #f5f6f7;
+  padding-bottom: 15px;
 `;
 
 export const MessageBoxItem = styled.div`

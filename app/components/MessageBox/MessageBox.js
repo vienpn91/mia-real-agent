@@ -33,7 +33,7 @@ import LoadingSpin from '../Loading';
 import ConversationDetail from '../ConversationDetail/ConversationDetail';
 import { TICKET_STATUS, ROLES } from '../../../common/enums';
 import FormInput from '../FormInput/FormInput';
-import { insertSystemMessageToRepliesChat } from './utils';
+import { insertSystemMessageToRepliesChat, combineChat } from './utils';
 
 const scrollStyle = {
   height: '94%',
@@ -108,27 +108,27 @@ export default class MessageBox extends Component {
     }
   }
 
-  renderOtherUserMessageContent = (msgId, message) => (
+  renderOtherUserMessageContent = (msgId, contents) => (
     <MessageBoxItem left key={msgId}>
       <Avatar icon="user" size={35} />
       <MessageText>
-        <p>{message}</p>
+        {contents.map(({ _id, messages }) => (<p key={_id}>{messages}</p>))}
       </MessageText>
     </MessageBoxItem>
   )
 
   renderOtherUserTypingContent = () => {
     const { otherUserTyping, conversationId } = this.props;
-    const { conversationId: _id, message } = otherUserTyping;
+    const { conversationId: _id, messages = '' } = otherUserTyping || {};
     if (!_isEmpty(otherUserTyping)
       && _id === conversationId
-      && !_isEmpty(message.trim())
+      && !_isEmpty(messages.trim())
     ) {
       return (
         <MessageBoxItemIsTyping left key={_id}>
           <Avatar icon="user" size={35} />
           <MessageText>
-            <p>{message.trim()}</p>
+            <p>{messages.trim()}</p>
             <IsTypingWrapper />
           </MessageText>
         </MessageBoxItemIsTyping>
@@ -137,10 +137,10 @@ export default class MessageBox extends Component {
     return false;
   }
 
-  renderUserMessageContent = (msgId, message, isPending = false) => (
+  renderUserMessageContent = (msgId, contents, isPending = false) => (
     <MessageBoxItem right key={msgId}>
       <MessageText>
-        <UserMessage pending={isPending}>{message}</UserMessage>
+        {contents.map(({ _id, messages }) => (<UserMessage key={_id} pending={isPending}>{messages}</UserMessage>))}
       </MessageText>
       <Avatar icon="user" size={35} />
     </MessageBoxItem>
@@ -156,20 +156,25 @@ export default class MessageBox extends Component {
   }
 
   renderMessageContent = () => {
-    const { replyMessages, userId, systemMessage } = this.props;
+    const {
+      replyMessages, userId, systemMessage,
+    } = this.props;
     if (!replyMessages || !replyMessages.length) {
       return (<MessageEmpty>No Message</MessageEmpty>);
     }
-    return [insertSystemMessageToRepliesChat(replyMessages, systemMessage).map(({
-      from, _id: msgId, messages, isSystemMessage,
+    const refinedMessages = combineChat(
+      insertSystemMessageToRepliesChat(replyMessages, systemMessage)
+    );
+    return [refinedMessages.map(({
+      from, _id: msgId, contents, isSystemMessage,
     }) => {
       if (isSystemMessage) {
         return this.renderSystemMessage();
       }
       if (from === userId) {
-        return this.renderUserMessageContent(msgId, messages);
+        return this.renderUserMessageContent(msgId, contents);
       }
-      return this.renderOtherUserMessageContent(msgId, messages);
+      return this.renderOtherUserMessageContent(msgId, contents);
     }),
     this.renderOtherUserTypingContent(),
     ];
@@ -179,7 +184,7 @@ export default class MessageBox extends Component {
     const { sendingMessages } = this.props;
     if (!sendingMessages || !sendingMessages.length) return null;
 
-    return sendingMessages.map(({ id: msgId, message }) => this.renderUserMessageContent(msgId, message, true));
+    return combineChat(sendingMessages).map(({ id: msgId, contents }) => this.renderUserMessageContent(msgId, contents, true));
   }
 
   renderGroupAction = () => (

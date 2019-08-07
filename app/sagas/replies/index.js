@@ -16,7 +16,7 @@ import { sendReplyMessage as sendReplyMessageAPI } from '../../api/reply';
 function* sendReplyMessage({ payload }) {
   const {
     conversationId,
-    message,
+    messages,
     localMessageId,
   } = payload;
   const { owner, members, ticketId } = yield select(getCurrentConveration);
@@ -24,7 +24,7 @@ function* sendReplyMessage({ payload }) {
   const to = userId !== owner ? owner : members[0];
   // from, to, conversation, message
   try {
-    const { response, error } = yield call(sendReplyMessageAPI, userId, to, conversationId, message);
+    const { response, error } = yield call(sendReplyMessageAPI, userId, to, conversationId, messages);
     if (error) throw new Error(error);
     const { reply } = get(response, 'data', {});
 
