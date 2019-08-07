@@ -13,7 +13,7 @@ import {
   actions,
 } from '../../reducers/ticket';
 import {
-  getCurrentTicket,
+  getTicketById, getCurrentTicket,
 } from '../../selectors/ticket';
 import {
   getCurrentConveration,
@@ -34,7 +34,7 @@ const mapStateToProps = (state) => {
     conversationId,
     userId: getUserId(state),
     currentConversation: getCurrentConveration(state),
-    currentTicket: getCurrentTicket(state),
+    currentTicket: getTicketById(state, getCurrentTicket(state)),
     isFetchingReplies: isFetchingReplies(state, conversationId),
     errorMessage: getErrorMessage(state, conversationId),
     replyMessages: getReplyMessagesByConversationId(state, conversationId),

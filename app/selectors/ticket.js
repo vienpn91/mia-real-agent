@@ -29,7 +29,7 @@ const getTicketIdList = createSelector(
   ticketList => ticketList.map(ticket => ticket._id)
 );
 
-const getTicketById = ({ ticket }, _id) => ticket.get('tickets').get(_id);
+const getTicketById = ({ ticket }, _id) => (ticket.get('tickets').get(_id) || fromJS({})).toJS();
 
 const getTicketIsArchiving = ({ ticket }) => ticket.get('isArchiving');
 const getTicketArchiveError = ({ ticket }) => ticket.get('archiveError');
@@ -70,9 +70,8 @@ const getTicketDetailFromRoute = createSelector(
   (path, tickets) => tickets.get(path, emptyMap).toJS(),
 );
 
-const getCurrentTicket = ({ ticket }) => ticket.get('currentTicket') ? ticket.get('currentTicket').toJS() : null;
+const getCurrentTicket = ({ ticket }) => ticket.get('currentTicket');
 // eslint-disable-next-line no-underscore-dangle
-const getCurrentTicketId = ({ ticket }) => ticket.getIn(['currentTicket', '_id']) || null;
 
 export {
   reselectSorting,
@@ -100,5 +99,4 @@ export {
   getTotalCount,
   getTicketById,
   getCurrentTicket,
-  getCurrentTicketId,
 };

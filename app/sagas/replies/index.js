@@ -8,6 +8,7 @@ import {
   sendReplyMessageSuccess,
   sendReplyMessageFailed,
 } from '../../reducers/replies';
+import { actions as TICKET_ACTIONS } from '../../reducers/ticket';
 import { getCurrentConveration } from '../../reducers/conversations';
 import { getUserId } from '../../reducers/auth';
 import { sendReplyMessage as sendReplyMessageAPI } from '../../api/reply';
@@ -18,7 +19,7 @@ function* sendReplyMessage({ payload }) {
     message,
     localMessageId,
   } = payload;
-  const { owner, members } = yield select(getCurrentConveration);
+  const { owner, members, ticketId } = yield select(getCurrentConveration);
   const userId = yield select(getUserId);
   const to = userId !== owner ? owner : members[0];
   // from, to, conversation, message
@@ -28,6 +29,7 @@ function* sendReplyMessage({ payload }) {
     const { reply } = get(response, 'data', {});
 
     yield put(sendReplyMessageSuccess(conversationId, reply, localMessageId));
+    yield put(TICKET_ACTIONS.getAction(ticketId));
   } catch (error) {
     console.log('[REPLY SAGA] ERROR: ', error.message || error);
     yield put(sendReplyMessageFailed(conversationId, error.message || error, localMessageId));

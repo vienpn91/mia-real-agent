@@ -12,6 +12,7 @@ import {
 } from '../../reducers/auth';
 import { agentNewRequest } from '../../reducers/agents';
 import { addNewMessage } from '../../reducers/replies';
+import { actions as TICKET_ACTIONS } from '../../reducers/ticket';
 import {
   actions as CONVERSATION_ACTIONS,
   USER_JOIN_CONVERSATION, USER_TYPING, getCurrentConveration,
@@ -68,8 +69,10 @@ function* handleNewMessage() {
   // watch message and relay the action
   while (true) {
     const { metadata, reply } = yield take(socketChannel);
-
+    const { conversation } = metadata;
+    const { ticketId } = conversation;
     yield put(addNewMessage(metadata.conversation, reply));
+    yield put(TICKET_ACTIONS.getAction(ticketId));
   }
 }
 
@@ -105,8 +108,10 @@ function* otherJoinConversation() {
     const conversation = yield select(getCurrentConveration);
     // eslint-disable-next-line no-underscore-dangle
     if (conversation && conversationId === conversation._id) {
-      const role = (conversation.owner === userId) ? 'User' : 'Agent';
+      const { owner, ticketId } = conversation;
+      const role = (owner === userId) ? 'User' : 'Agent';
       yield put(CONVERSATION_ACTIONS.notifiSystemMessage(`${role} has join conversation`));
+      yield put(TICKET_ACTIONS.getAction(ticketId));
     }
   }
 }
@@ -120,8 +125,10 @@ function* otherLeftConversation() {
     const conversation = yield select(getCurrentConveration);
     // eslint-disable-next-line no-underscore-dangle
     if (conversation && conversationId === conversation._id) {
-      const role = (conversation.owner === userId) ? 'User' : 'Agent';
+      const { owner, ticketId } = conversation;
+      const role = (owner === userId) ? 'User' : 'Agent';
       yield put(CONVERSATION_ACTIONS.notifiSystemMessage(`${role} has left conversation`));
+      yield put(TICKET_ACTIONS.getAction(ticketId));
     }
   }
 }

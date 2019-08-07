@@ -7,6 +7,7 @@ import _get from 'lodash/get';
 import _assign from 'lodash/assign';
 import _pick from 'lodash/pick';
 import _pickBy from 'lodash/pickBy';
+import _isEmpty from 'lodash/isEmpty';
 // utils
 import { getSkipLimit } from 'utils/func-utils';
 
@@ -200,13 +201,8 @@ function* ticketFetchSingle({ id }) {
 function* setCurrentTicket({ payload }) {
   const { ticketId } = payload;
   const ticket = yield select(getTicketById, ticketId);
-  if (!ticket) {
+  if (_isEmpty(ticket)) {
     yield put(actions.getAction(ticketId));
-    const { payload: fetchData } = yield take(TICKET_GET_DETAIL_SUCCESS);
-    const { ticket: fetchedTicket } = fetchData;
-    yield put(actions.selectTicketSuccess(fetchedTicket));
-  } else {
-    yield put(actions.selectTicketSuccess(ticket));
   }
 }
 
