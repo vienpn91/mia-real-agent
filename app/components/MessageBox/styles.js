@@ -1,5 +1,7 @@
-import styled, { css } from 'styled-components';
+import { Divider } from 'antd';
+import styled, { css, keyframes } from 'styled-components';
 import FormInput from '../FormInput/FormInput';
+import { COLOR_BY_STATUS } from '../../../common/enums';
 
 export const InfoNotification = styled.h2`
   margin: 50%;
@@ -19,6 +21,7 @@ export const MessageBoxContent = styled.div`
   flex: 1;
   height: 100%;
   background-color: #f5f6f7;
+  padding-bottom: 15px;
 `;
 
 export const MessageBoxItem = styled.div`
@@ -183,5 +186,43 @@ export const CommentInputWrapper = styled.div`
   }
   button{
     margin-left: 10px;
+  }
+`;
+
+export const TicketStatus = styled.div`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-table;
+  background: ${({ status }) => [COLOR_BY_STATUS[status]]};
+`;
+
+export const MessageBoxSystemNotification = styled(Divider)`
+  span{
+    font-size: 0.9em;
+    color: #828282;
+  }
+`;
+const loading = keyframes`
+  0% {
+    color: #828282;
+  }
+
+  50% {
+    color: #ffff;
+  }
+`;
+
+export const MessageBoxItemIsTyping = styled(MessageBoxItem)`
+  .ant-avatar{
+    margin-bottom: 20px;
+  }
+`;
+
+export const IsTypingWrapper = styled.div`
+  animation: ${loading} 2s linear infinite;
+  margin-left: 5px;
+  ::before{
+    content: 'Typing...'
   }
 `;

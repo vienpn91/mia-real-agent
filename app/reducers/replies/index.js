@@ -15,20 +15,20 @@ export const REPLIES_SEND_MESSAGE_FAILED = 'replies/REPLIES_SEND_MESSAGE_FAILED'
 export const REPLIES_ADD_MESSAGE = 'replies/REPLIES_ADD_MESSAGE';
 
 // action creator
-export const sendReplyMessage = (conversationId, message) => ({
+export const sendReplyMessage = (conversationId, messages) => ({
   type: REPLIES_SEND_MESSAGE,
   payload: {
     conversationId,
-    message,
+    messages,
     localMessageId: cuid(),
   },
 });
 
-export const sendReplyMessageSuccess = (conversationId, message, localMessageId) => ({
+export const sendReplyMessageSuccess = (conversationId, messages, localMessageId) => ({
   type: REPLIES_SEND_MESSAGE_SUCCESS,
   payload: {
     conversationId,
-    message,
+    messages,
     localMessageId,
   },
 });
@@ -189,7 +189,7 @@ function repliesReducer(state = initialState, action) {
      * }
      */
     case REPLIES_SEND_MESSAGE: {
-      const { message, localMessageId, conversationId } = action.payload;
+      const { messages, localMessageId, conversationId } = action.payload;
       let sendingList = state.getIn(['sendingMessage', conversationId]);
       const error = state.get('error').delete(conversationId);
 
@@ -197,13 +197,13 @@ function repliesReducer(state = initialState, action) {
         sendingList = new Map({
           [localMessageId]: {
             id: localMessageId,
-            message,
+            messages,
           },
         });
       } else {
         sendingList = sendingList.set(localMessageId, {
           id: localMessageId,
-          message,
+          messages,
         });
       }
 
@@ -213,17 +213,17 @@ function repliesReducer(state = initialState, action) {
     }
 
     case REPLIES_SEND_MESSAGE_SUCCESS: {
-      const { message, localMessageId, conversationId } = action.payload;
-      const { _id: msgId } = message;
+      const { messages, localMessageId, conversationId } = action.payload;
+      const { _id: msgId } = messages;
       const allIds = state.get('allIds').add(conversationId);
       const sendingList = state.getIn(['sendingMessage', conversationId]).delete(localMessageId);
       let currentReplies = state.getIn(['byId', conversationId]);
       if (!currentReplies) {
         currentReplies = new OrderedMap({
-          [msgId]: message,
+          [msgId]: messages,
         });
       } else {
-        currentReplies = currentReplies.set(msgId, message);
+        currentReplies = currentReplies.set(msgId, messages);
       }
 
       return state
@@ -273,8 +273,8 @@ function repliesReducer(state = initialState, action) {
     }
 
     case REPLIES_ADD_MESSAGE: {
-      const { message, conversationId } = action.payload;
-      const { _id: msgId } = message;
+      const { message } = action.payload;
+      const { _id: msgId, conversationId } = message;
       let currentReplies = state.getIn(['byId', conversationId]);
       const allIds = state.get('allIds').add(conversationId);
 

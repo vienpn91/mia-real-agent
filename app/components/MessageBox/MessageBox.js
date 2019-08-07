@@ -24,11 +24,16 @@ import {
   RatingWrapper,
   RatingContent,
   CommentInputWrapper,
+  TicketStatus,
+  MessageBoxSystemNotification,
+  IsTypingWrapper,
+  MessageBoxItemIsTyping,
 } from './styles';
 import LoadingSpin from '../Loading';
 import ConversationDetail from '../ConversationDetail/ConversationDetail';
-import { TICKET_STATUS } from '../../../common/enums';
+import { TICKET_STATUS, ROLES } from '../../../common/enums';
 import FormInput from '../FormInput/FormInput';
+import { insertSystemMessageToRepliesChat, combineChat } from './utils';
 
 const scrollStyle = {
   height: '94%',
@@ -39,17 +44,13 @@ const initialValues = {
   content: '',
 };
 
-const commentInitialValues = {
-  score: 0,
-  comment: '',
-};
-
 export default class MessageBox extends Component {
   messagesEndRef = React.createRef();
 
   static propTypes = {
     userId: PropTypes.string.isRequired,
     conversationId: PropTypes.string,
+    systemMessage: PropTypes.object,
     fetchReplyMessages: PropTypes.func.isRequired,
     currentConversation: PropTypes.object,
     currentTicket: PropTypes.object,
@@ -58,9 +59,14 @@ export default class MessageBox extends Component {
     replyMessages: PropTypes.arrayOf(PropTypes.shape()),
     sendingMessages: PropTypes.arrayOf(PropTypes.shape()),
     sendingMessageErrors: PropTypes.objectOf(PropTypes.any),
+    otherUserTyping: PropTypes.object,
+
     findAgentRequest: PropTypes.func.isRequired,
     sendReplyMessage: PropTypes.func.isRequired,
     setCurrentTicket: PropTypes.func.isRequired,
+    joinConversation: PropTypes.func.isRequired,
+    userTyping: PropTypes.func.isRequired,
+
     submitRating: PropTypes.func.isRequired,
     userRole: PropTypes.string.isRequired,
   }
@@ -77,10 +83,14 @@ export default class MessageBox extends Component {
   }
 
   componentDidMount = () => {
-    const { fetchReplyMessages, currentConversation, setCurrentTicket } = this.props;
+    const {
+      fetchReplyMessages, currentConversation,
+      setCurrentTicket, joinConversation,
+    } = this.props;
     // eslint-disable-next-line no-underscore-dangle
     if (!_isEmpty(currentConversation)) {
       const { ticketId, _id } = currentConversation;
+      joinConversation(_id);
       fetchReplyMessages(_id);
       setCurrentTicket(ticketId);
     }
@@ -98,43 +108,83 @@ export default class MessageBox extends Component {
     }
   }
 
-  renderOtherUserMessageContent = (msgId, message) => (
+  renderOtherUserMessageContent = (msgId, contents) => (
     <MessageBoxItem left key={msgId}>
       <Avatar icon="user" size={35} />
       <MessageText>
-        <p>{message}</p>
+        {contents.map(({ _id, messages }) => (<p key={_id}>{messages}</p>))}
       </MessageText>
     </MessageBoxItem>
   )
 
-  renderUserMessageContent = (msgId, message, isPending = false) => (
+  renderOtherUserTypingContent = () => {
+    const { otherUserTyping, conversationId } = this.props;
+    const { conversationId: _id, messages = '' } = otherUserTyping || {};
+    if (!_isEmpty(otherUserTyping)
+      && _id === conversationId
+      && !_isEmpty(messages.trim())
+    ) {
+      return (
+        <MessageBoxItemIsTyping left key={_id}>
+          <Avatar icon="user" size={35} />
+          <MessageText>
+            <p>{messages.trim()}</p>
+            <IsTypingWrapper />
+          </MessageText>
+        </MessageBoxItemIsTyping>
+      );
+    }
+    return false;
+  }
+
+  renderUserMessageContent = (msgId, contents, isPending = false) => (
     <MessageBoxItem right key={msgId}>
       <MessageText>
-        <UserMessage pending={isPending}>{message}</UserMessage>
+        {contents.map(({ _id, messages }) => (<UserMessage key={_id} pending={isPending}>{messages}</UserMessage>))}
       </MessageText>
       <Avatar icon="user" size={35} />
     </MessageBoxItem>
   )
 
+  renderSystemMessage = () => {
+    const { systemMessage } = this.props;
+    return !_isEmpty(systemMessage) && !_isEmpty(systemMessage.message) && (
+      <MessageBoxSystemNotification>
+        {systemMessage.message}
+      </MessageBoxSystemNotification>
+    );
+  }
+
   renderMessageContent = () => {
-    const { replyMessages, userId } = this.props;
+    const {
+      replyMessages, userId, systemMessage,
+    } = this.props;
     if (!replyMessages || !replyMessages.length) {
       return (<MessageEmpty>No Message</MessageEmpty>);
     }
-
-    return replyMessages.map(({ from, _id: msgId, messages }) => {
-      if (from === userId) {
-        return this.renderUserMessageContent(msgId, messages);
+    const refinedMessages = combineChat(
+      insertSystemMessageToRepliesChat(replyMessages, systemMessage)
+    );
+    return [refinedMessages.map(({
+      from, _id: msgId, contents, isSystemMessage,
+    }) => {
+      if (isSystemMessage) {
+        return this.renderSystemMessage();
       }
-      return this.renderOtherUserMessageContent(msgId, messages);
-    });
+      if (from === userId) {
+        return this.renderUserMessageContent(msgId, contents);
+      }
+      return this.renderOtherUserMessageContent(msgId, contents);
+    }),
+    this.renderOtherUserTypingContent(),
+    ];
   }
 
   renderPendingMessageContent = () => {
     const { sendingMessages } = this.props;
     if (!sendingMessages || !sendingMessages.length) return null;
 
-    return sendingMessages.map(({ id: msgId, message }) => this.renderUserMessageContent(msgId, message, true));
+    return combineChat(sendingMessages).map(({ id: msgId, contents }) => this.renderUserMessageContent(msgId, contents, true));
   }
 
   renderGroupAction = () => (
@@ -148,11 +198,16 @@ export default class MessageBox extends Component {
   );
 
   handleChatSubmit = (values) => {
-    const { sendReplyMessage, conversationId } = this.props;
+    const {
+      sendReplyMessage, conversationId, userTyping, userRole,
+    } = this.props;
     const { content } = values;
     const trimmedContent = content.trim();
     if (trimmedContent) {
       sendReplyMessage(conversationId, trimmedContent);
+      if (userRole !== ROLES.FREELANCER && userRole !== ROLES.FULLTIME) {
+        userTyping(conversationId, '');
+      }
       this.formik.getFormikContext().resetForm();
     }
   }
@@ -161,6 +216,14 @@ export default class MessageBox extends Component {
     const { findAgentRequest, conversationId } = this.props;
 
     findAgentRequest(conversationId);
+  }
+
+  handleTyping = (e) => {
+    const { userTyping, conversationId, userRole } = this.props;
+    if (userRole !== ROLES.FREELANCER && userRole !== ROLES.FULLTIME) {
+      const { value } = e.target;
+      userTyping(conversationId, value);
+    }
   }
 
   renderMessageInput = () => {
@@ -177,19 +240,26 @@ export default class MessageBox extends Component {
             onChange={this.handleChangeValues}
           >
             <MessageInputWrapper>
-              <MessageInput type="text" name="content" placeholder="Type message ..." autoComplete="off" />
+              <MessageInput
+                onChange={this.handleTyping}
+                type="text"
+                name="content"
+                placeholder="Type message ..."
+                autoComplete="off"
+              />
               {this.renderGroupAction()}
               <InputAction onClick={handleSubmit} className="mia-enter" />
-              {userRole !== 'agent' && (
-                <Button
-                  loading={isFindingAgent}
-                  key="button"
-                  type="primary"
-                  onClick={this.handleFindAgent}
-                >
-                  Find Agent
-                </Button>
-              )}
+              {(userRole !== ROLES.FREELANCER && userRole !== ROLES.FULLTIME)
+                && (
+                  <Button
+                    loading={isFindingAgent}
+                    key="button"
+                    type="primary"
+                    onClick={this.handleFindAgent}
+                  >
+                    Find Agent
+                  </Button>
+                )}
             </MessageInputWrapper>
           </Form>
         )}
@@ -199,12 +269,17 @@ export default class MessageBox extends Component {
 
   renderMessageHeader = () => {
     const { currentTicket } = this.props;
-    const { assignee = {}, title } = currentTicket || {};
+    const { assignee = {}, title, status } = currentTicket || {};
     const { firstName = '', lastName = '' } = assignee;
     return (
       <MessageBoxHeaderWrapper>
         <Breadcrumb separator="-">
-          <Breadcrumb.Item>{title}</Breadcrumb.Item>
+          <Breadcrumb.Item>
+            <TicketStatus status={status} />
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
+            {title}
+          </Breadcrumb.Item>
           <Breadcrumb.Item>{`${firstName} ${lastName}`}</Breadcrumb.Item>
         </Breadcrumb>
       </MessageBoxHeaderWrapper>
@@ -256,10 +331,13 @@ export default class MessageBox extends Component {
 
 
   render() {
-    const { isFetchingReplies, replyMessages, currentTicket } = this.props;
+    const {
+      isFetchingReplies, isFindingAgent,
+      replyMessages, currentTicket,
+    } = this.props;
     const { status } = currentTicket || {};
     return (
-      <LoadingSpin loading={isFetchingReplies}>
+      <LoadingSpin loading={isFetchingReplies || isFindingAgent}>
         {this.renderMessageHeader()}
         <MessageBoxWrapper>
           <MessageBoxContent>

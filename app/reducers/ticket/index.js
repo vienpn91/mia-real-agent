@@ -37,29 +37,12 @@ export const TICKET_FETCH_SINGLE_FAIL = 'ticket/TICKET_FETCH_SINGLE_FAIL';
 export const TICKET_CHANGE_PAGE = 'ticket/TICKET_CHANGE_PAGE';
 export const TICKET_ADMIN_GET_ALL = 'ticket/ADMIN_GET_ALL';
 export const TICKET_SET_CURRENT = 'ticket/TICKET_SET_CURRENT';
-export const TICKET_SET_CURRENT_SUCCESS = 'ticket/TICKET_SET_CURRENT_SUCCESS';
-export const TICKET_SET_CURRENT_FAIL = 'ticket/TICKET_SET_CURRENT_FAIL';
-
 // action creator
 
 const selectTicket = ticketId => ({
   type: TICKET_SET_CURRENT,
   payload: {
     ticketId,
-  },
-});
-
-const selectTicketSuccess = ticket => ({
-  type: TICKET_SET_CURRENT_SUCCESS,
-  payload: {
-    ticket,
-  },
-});
-
-const selectTicketFail = error => ({
-  type: TICKET_SET_CURRENT_FAIL,
-  payload: {
-    error,
   },
 });
 
@@ -245,9 +228,6 @@ export const initialState = fromJS({
     order: -1,
   }),
 
-  currentticket: fromJS({}),
-
-  ticketDetail: null,
   // processing value
   isCreating: false,
   isUpdating: false,
@@ -260,9 +240,9 @@ export const initialState = fromJS({
 
 function ticketReducer(state = initialState, action) {
   switch (action.type) {
-    case TICKET_SET_CURRENT_SUCCESS: {
-      const { ticket } = action.payload;
-      return state.set('currentTicket', fromJS(ticket));
+    case TICKET_SET_CURRENT: {
+      const { ticketId } = action.payload;
+      return state.set('currentTicket', ticketId);
     }
 
     case TICKET_CREATE:
@@ -434,6 +414,4 @@ export const actions = {
   fetchTicketSingleSuccess,
 
   selectTicket,
-  selectTicketSuccess,
-  selectTicketFail,
 };

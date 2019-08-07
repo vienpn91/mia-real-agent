@@ -7,6 +7,7 @@ import { ROLES } from '../../common/enums';
 import { register, unregister } from '../modules/chat/chat.socket';
 import DisconnectQueue from '../modules/queue/disconnectQueue';
 import { closeTicketTimeOut } from './timer';
+import ConversationRoomQueue from '../modules/queue/conversationRoomQueue';
 
 const ACTION_MESSAGE = 'ACTION_MESSAGE';
 let socketIO;
@@ -56,6 +57,7 @@ class SocketIOServer {
           TicketService.handleTicketOffline(user);
           const timer = closeTicketTimeOut(user);
           DisconnectQueue.addTimer(timer, id);
+          ConversationRoomQueue.removeUser(id);
         });
         connected[socketId] = socket;
         DisconnectQueue.destroyTimer(id);
@@ -65,10 +67,21 @@ class SocketIOServer {
           AgentQueue.add({ ..._doc, socketId });
         } else {
           Logger.info(`[Socket.io]: The Foul [${email}] has join the fray`);
-          register(id.toString(), socket);
         }
+        register(id.toString(), socket);
         TicketService.handleTicketOnline(user);
+        this.setUpConversationRoom(socket);
       });
+  }
+
+  setUpConversationRoom = (socket) => {
+    socket.on('JOIN_CONVERSATION', async ({ conversationId, userId }) => {
+      ConversationRoomQueue.newUser(conversationId, userId, socket);
+    });
+
+    socket.on('USER_TYPING', async ({ conversationId, userId, messages }) => {
+      ConversationRoomQueue.observeUserTypingMessage(conversationId, userId, messages);
+    });
   }
 }
 

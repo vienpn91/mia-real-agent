@@ -68,7 +68,7 @@ class AgentController {
         });
         IdleQueue.addTimer(ticketId);
       } else {
-        _assign.assign(ticket, { status: TICKET_STATUS.OPEN });
+        _assign(ticket, { status: TICKET_STATUS.OPEN });
         ticket.save({});
       }
       return res.status(httpStatus.OK).send();

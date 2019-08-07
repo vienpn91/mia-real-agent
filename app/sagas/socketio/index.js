@@ -1,5 +1,5 @@
 import {
-  take, takeEvery, call, put, select, all,
+  take, takeEvery, call, put, select, all, takeLatest,
 } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import socketIOClient from 'socket.io-client';
@@ -8,15 +8,25 @@ import {
   getToken,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
+  getUserId,
 } from '../../reducers/auth';
 import { agentNewRequest } from '../../reducers/agents';
 import { addNewMessage } from '../../reducers/replies';
+import { actions as TICKET_ACTIONS } from '../../reducers/ticket';
+import {
+  actions as CONVERSATION_ACTIONS,
+  USER_JOIN_CONVERSATION, USER_TYPING, getCurrentConveration,
+} from '../../reducers/conversations';
 
 /* events */
 const NEW_MESSAGE = 'NEW_MESSAGE';
 const REPLY_MESSAGE = 'REPLY_MESSAGE';
 const REQUEST_AVAILABLE = 'REQUEST_AVAILABLE';
 const REQUEST_CONFIRM = 'REQUEST_CONFIRM';
+// conversation room
+const OTHER_JOIN_ROOM = 'OTHER_JOIN_ROOM';
+const OTHER_LEFT_ROOM = 'OTHER_LEFT_ROOM';
+const RECEIVE_USER_TYPING = 'RECEIVE_USER_TYPING';
 
 let socketConnection;
 
@@ -59,8 +69,9 @@ function* handleNewMessage() {
   // watch message and relay the action
   while (true) {
     const { metadata, reply } = yield take(socketChannel);
-
-    yield put(addNewMessage(metadata.conversation, reply));
+    const { conversationId, ticketId } = metadata;
+    yield put(addNewMessage(conversationId, reply));
+    yield put(TICKET_ACTIONS.getAction(ticketId));
   }
 }
 
@@ -87,6 +98,49 @@ function* requestConfirm() {
     }
   }
 }
+function* otherJoinConversation() {
+  const socketChannel = yield call(createSocketChannel, socketConnection, OTHER_JOIN_ROOM);
+
+  // watch message and relay the action
+  while (true) {
+    const { conversationId, userId } = yield take(socketChannel);
+    const conversation = yield select(getCurrentConveration);
+    // eslint-disable-next-line no-underscore-dangle
+    if (conversation && conversationId === conversation._id) {
+      const { owner, ticketId } = conversation;
+      const role = (owner === userId) ? 'User' : 'Agent';
+      yield put(CONVERSATION_ACTIONS.notifiSystemMessage(`${role} has join conversation`));
+      yield put(TICKET_ACTIONS.getAction(ticketId));
+    }
+  }
+}
+
+function* otherLeftConversation() {
+  const socketChannel = yield call(createSocketChannel, socketConnection, OTHER_LEFT_ROOM);
+
+  // watch message and relay the action
+  while (true) {
+    const { conversationId, userId } = yield take(socketChannel);
+    const conversation = yield select(getCurrentConveration);
+    // eslint-disable-next-line no-underscore-dangle
+    if (conversation && conversationId === conversation._id) {
+      const { owner, ticketId } = conversation;
+      const role = (owner === userId) ? 'User' : 'Agent';
+      yield put(CONVERSATION_ACTIONS.notifiSystemMessage(`${role} has left conversation`));
+      yield put(TICKET_ACTIONS.getAction(ticketId));
+    }
+  }
+}
+
+function* observeUserTypingConversation() {
+  const socketChannel = yield call(createSocketChannel, socketConnection, RECEIVE_USER_TYPING);
+
+  // watch message and relay the action
+  while (true) {
+    const { conversationId, messages } = yield take(socketChannel);
+    yield put(CONVERSATION_ACTIONS.otherUserTyping(conversationId, messages));
+  }
+}
 
 function* connectFlow() {
   const token = yield select(getToken);
@@ -98,6 +152,9 @@ function* connectFlow() {
     handleNewMessage(),
     requestAgent(),
     requestConfirm(),
+    otherJoinConversation(),
+    otherLeftConversation(),
+    observeUserTypingConversation(),
   ]);
 }
 
@@ -105,17 +162,31 @@ function* disconnectFlow() {
   if (socketConnection) socketConnection.disconnect();
 }
 
+function* userJoinConversation({ payload }) {
+  const { conversationId } = payload;
+  const userId = yield select(getUserId);
+  socketConnection.emit('JOIN_CONVERSATION', { conversationId, userId });
+}
+
+function* userTyping({ payload }) {
+  const { conversationId, messages } = payload;
+  const userId = yield select(getUserId);
+  socketConnection.emit('USER_TYPING', { conversationId, userId, messages });
+}
+
 function* socketIOFlow() {
   yield takeEvery([AUTH_LOGIN_SUCCESS], connectFlow);
   yield takeEvery(AUTH_LOGOUT, disconnectFlow);
+  yield takeLatest(USER_JOIN_CONVERSATION, userJoinConversation);
+  yield takeLatest(USER_TYPING, userTyping);
 }
 
-export function emitReply(from, to, conversation, message) {
+export function emitReply(from, to, conversation, messages) {
   socketConnection.emit(REPLY_MESSAGE, {
     from,
     to,
     conversation,
-    message,
+    messages,
   });
 }
 

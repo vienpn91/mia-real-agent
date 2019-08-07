@@ -17,8 +17,45 @@ export const CONVERSATION_RATING_SUBMIT = 'conversations/CONVERSATION_RATING_SUB
 export const CONVERSATION_RATING_SUBMIT_SUCCESS = 'conversations/CONVERSATION_RATING_SUBMIT_SUCCESS';
 export const CONVERSATION_RATING_SUBMIT_FAIL = 'conversations/CONVERSATION_RATING_SUBMIT_FAIL';
 
+export const USER_JOIN_CONVERSATION = 'conversations/USER_JOIN_CONVERSATION';
+
+export const USER_TYPING = 'conversations/USER_TYPING';
+
+export const OTHER_USER_TYPING = 'conversations/OTHER_USER_TYPING';
+
+export const SYSTEM_MESSAGE = 'conversations/SYSTEM_MESSAGE';
 
 // action creator
+
+const userJoinConversation = conversationId => ({
+  type: USER_JOIN_CONVERSATION,
+  payload: {
+    conversationId,
+  },
+});
+
+const userTyping = (conversationId, messages) => ({
+  type: USER_TYPING,
+  payload: {
+    conversationId,
+    messages,
+  },
+});
+
+const otherUserTyping = (conversationId, messages) => ({
+  type: OTHER_USER_TYPING,
+  payload: {
+    conversationId,
+    messages,
+  },
+});
+
+const notifiSystemMessage = systemMessage => ({
+  type: SYSTEM_MESSAGE,
+  payload: {
+    systemMessage,
+  },
+});
 
 // SUBMIT CONVERSATION RATING
 
@@ -144,6 +181,9 @@ export const getConversationListByTicketList = ({ conversations }, ticketIdList)
 };
 export const getConversationById = ({ conversations }, conversationId) => conversations.getIn(['byId', conversationId]);
 
+export const getSystemMessage = ({ conversations }) => conversations.get('systemMessage');
+
+export const getOtherUserTyping = ({ conversations }) => conversations.get('otherUserTyping');
 
 const initialState = fromJS({
   byId: {},
@@ -153,10 +193,24 @@ const initialState = fromJS({
   isFetchingAll: false,
   isFetchingSingleItem: false,
   currentConversation: null,
+  systemMessage: {},
+  otherUserTyping: {},
 });
 
 function conversationReducer(state = initialState, action) {
   switch (action.type) {
+    case SYSTEM_MESSAGE: {
+      const { systemMessage } = action.payload;
+      const sentAt = new Date();
+      return state
+        .set('systemMessage', { message: systemMessage, sentAt });
+    }
+    case OTHER_USER_TYPING: {
+      const { conversationId, messages } = action.payload;
+      return state
+        .set('otherUserTyping', { conversationId, messages });
+    }
+
     case CONVERSATION_FETCH: {
       return state
         .set('isFetchingAll', true)
@@ -237,6 +291,11 @@ export const actions = {
   submitConversationRatingFailed,
 
   selectConversation,
+
+  userJoinConversation,
+  userTyping,
+  notifiSystemMessage,
+  otherUserTyping,
 };
 
 export const selectors = {

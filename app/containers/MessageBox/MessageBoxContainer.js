@@ -13,12 +13,14 @@ import {
   actions,
 } from '../../reducers/ticket';
 import {
-  getCurrentTicket,
+  getTicketById, getCurrentTicket,
 } from '../../selectors/ticket';
 import {
   getCurrentConveration,
   getCurrentConverationId,
-  actions as CONVERSATION_ACTIONS
+  actions as CONVERSATION_ACTIONS,
+  getSystemMessage,
+  getOtherUserTyping,
 } from '../../reducers/conversations';
 import {
   isFindingAgent,
@@ -33,7 +35,7 @@ const mapStateToProps = (state) => {
     conversationId,
     userId: getUserId(state),
     currentConversation: getCurrentConveration(state),
-    currentTicket: getCurrentTicket(state),
+    currentTicket: getTicketById(state, getCurrentTicket(state)),
     isFetchingReplies: isFetchingReplies(state, conversationId),
     errorMessage: getErrorMessage(state, conversationId),
     replyMessages: getReplyMessagesByConversationId(state, conversationId),
@@ -41,6 +43,8 @@ const mapStateToProps = (state) => {
     sendingMessageErrors: getSendingMessagesError(state, conversationId),
     isFindingAgent: isFindingAgent(state, conversationId),
     userRole: getUserRole(state),
+    systemMessage: getSystemMessage(state),
+    otherUserTyping: getOtherUserTyping(state),
   });
 };
 
@@ -50,6 +54,8 @@ const mapDispatchToProps = {
   sendReplyMessage,
   findAgentRequest,
   submitRating: CONVERSATION_ACTIONS.submitConversationRating,
+  joinConversation: CONVERSATION_ACTIONS.userJoinConversation,
+  userTyping: CONVERSATION_ACTIONS.userTyping,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageBox);

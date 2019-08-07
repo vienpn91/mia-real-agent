@@ -38,12 +38,11 @@ export const TICKET_STATUS = {
 
 export const COLOR_BY_STATUS = {
   Open: '#449bea',
-  Resolved: '#05ca05',
   Closed: '#d4101e',
   Pending: '#e5cc94',
-  Processing: '#9ccd44',
-  Searching: '#69889d',
-  Assigned: '',
+  Processing: '#05ca05',
+  Idle: '#f7d00f',
+  Offline: '#8e8e8e',
 };
 
 export const POPUP_TYPE = {

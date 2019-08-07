@@ -216,7 +216,6 @@ export const ConversationStatus = styled.div`
       `};
     } 
   }
-
 `;
 
 export const TickerActionWrapper = styled.div``;
