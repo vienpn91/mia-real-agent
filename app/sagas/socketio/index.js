@@ -69,9 +69,8 @@ function* handleNewMessage() {
   // watch message and relay the action
   while (true) {
     const { metadata, reply } = yield take(socketChannel);
-    const { conversation } = metadata;
-    const { ticketId } = conversation;
-    yield put(addNewMessage(metadata.conversation, reply));
+    const { conversationId, ticketId } = metadata;
+    yield put(addNewMessage(conversationId, reply));
     yield put(TICKET_ACTIONS.getAction(ticketId));
   }
 }
@@ -138,8 +137,8 @@ function* observeUserTypingConversation() {
 
   // watch message and relay the action
   while (true) {
-    const data = yield take(socketChannel);
-    console.log('observe', data);
+    const { conversationId, message } = yield take(socketChannel);
+    yield put(CONVERSATION_ACTIONS.otherUserTyping(conversationId, message));
   }
 }
 

@@ -1,5 +1,5 @@
 import { Divider } from 'antd';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import FormInput from '../FormInput/FormInput';
 import { COLOR_BY_STATUS } from '../../../common/enums';
 
@@ -200,5 +200,28 @@ export const MessageBoxSystemNotification = styled(Divider)`
   span{
     font-size: 0.9em;
     color: #828282;
+  }
+`;
+const loading = keyframes`
+  0% {
+    color: #828282;
+  }
+
+  50% {
+    color: #ffff;
+  }
+`;
+
+export const MessageBoxItemIsTyping = styled(MessageBoxItem)`
+  .ant-avatar{
+    margin-bottom: 20px;
+  }
+`;
+
+export const IsTypingWrapper = styled.div`
+  animation: ${loading} 2s linear infinite;
+  margin-left: 5px;
+  ::before{
+    content: 'Typing...'
   }
 `;

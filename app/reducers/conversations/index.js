@@ -21,6 +21,8 @@ export const USER_JOIN_CONVERSATION = 'conversations/USER_JOIN_CONVERSATION';
 
 export const USER_TYPING = 'conversations/USER_TYPING';
 
+export const OTHER_USER_TYPING = 'conversations/OTHER_USER_TYPING';
+
 export const SYSTEM_MESSAGE = 'conversations/SYSTEM_MESSAGE';
 
 // action creator
@@ -34,6 +36,14 @@ const userJoinConversation = conversationId => ({
 
 const userTyping = (conversationId, message) => ({
   type: USER_TYPING,
+  payload: {
+    conversationId,
+    message,
+  },
+});
+
+const otherUserTyping = (conversationId, message) => ({
+  type: OTHER_USER_TYPING,
   payload: {
     conversationId,
     message,
@@ -173,6 +183,8 @@ export const getConversationById = ({ conversations }, conversationId) => conver
 
 export const getSystemMessage = ({ conversations }) => conversations.get('systemMessage');
 
+export const getOtherUserTyping = ({ conversations }) => conversations.get('otherUserTyping');
+
 const initialState = fromJS({
   byId: {},
   allIds: new ISet(),
@@ -181,7 +193,8 @@ const initialState = fromJS({
   isFetchingAll: false,
   isFetchingSingleItem: false,
   currentConversation: null,
-  systemMessage: '',
+  systemMessage: {},
+  otherUserTyping: {},
 });
 
 function conversationReducer(state = initialState, action) {
@@ -189,7 +202,12 @@ function conversationReducer(state = initialState, action) {
     case SYSTEM_MESSAGE: {
       const { systemMessage } = action.payload;
       return state
-        .set('systemMessage', systemMessage);
+        .set('systemMessage', { message: systemMessage, sentAt: new Date() });
+    }
+    case OTHER_USER_TYPING: {
+      const { conversationId, message } = action.payload;
+      return state
+        .set('otherUserTyping', { conversationId, message });
     }
 
     case CONVERSATION_FETCH: {
@@ -276,6 +294,7 @@ export const actions = {
   userJoinConversation,
   userTyping,
   notifiSystemMessage,
+  otherUserTyping,
 };
 
 export const selectors = {

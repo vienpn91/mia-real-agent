@@ -26,11 +26,14 @@ import {
   CommentInputWrapper,
   TicketStatus,
   MessageBoxSystemNotification,
+  IsTypingWrapper,
+  MessageBoxItemIsTyping,
 } from './styles';
 import LoadingSpin from '../Loading';
 import ConversationDetail from '../ConversationDetail/ConversationDetail';
 import { TICKET_STATUS, ROLES } from '../../../common/enums';
 import FormInput from '../FormInput/FormInput';
+import { insertSystemMessageToRepliesChat } from './utils';
 
 const scrollStyle = {
   height: '94%',
@@ -47,7 +50,7 @@ export default class MessageBox extends Component {
   static propTypes = {
     userId: PropTypes.string.isRequired,
     conversationId: PropTypes.string,
-    systemMessage: PropTypes.string,
+    systemMessage: PropTypes.object,
     fetchReplyMessages: PropTypes.func.isRequired,
     currentConversation: PropTypes.object,
     currentTicket: PropTypes.object,
@@ -56,6 +59,7 @@ export default class MessageBox extends Component {
     replyMessages: PropTypes.arrayOf(PropTypes.shape()),
     sendingMessages: PropTypes.arrayOf(PropTypes.shape()),
     sendingMessageErrors: PropTypes.objectOf(PropTypes.any),
+    otherUserTyping: PropTypes.object,
 
     findAgentRequest: PropTypes.func.isRequired,
     sendReplyMessage: PropTypes.func.isRequired,
@@ -113,6 +117,26 @@ export default class MessageBox extends Component {
     </MessageBoxItem>
   )
 
+  renderOtherUserTypingContent = () => {
+    const { otherUserTyping, conversationId } = this.props;
+    const { conversationId: _id, message } = otherUserTyping;
+    if (!_isEmpty(otherUserTyping)
+      && _id === conversationId
+      && !_isEmpty(message.trim())
+    ) {
+      return (
+        <MessageBoxItemIsTyping left key={_id}>
+          <Avatar icon="user" size={35} />
+          <MessageText>
+            <p>{message.trim()}</p>
+            <IsTypingWrapper />
+          </MessageText>
+        </MessageBoxItemIsTyping>
+      );
+    }
+    return false;
+  }
+
   renderUserMessageContent = (msgId, message, isPending = false) => (
     <MessageBoxItem right key={msgId}>
       <MessageText>
@@ -124,27 +148,31 @@ export default class MessageBox extends Component {
 
   renderSystemMessage = () => {
     const { systemMessage } = this.props;
-    return systemMessage && (
+    return !_isEmpty(systemMessage) && !_isEmpty(systemMessage.message) && (
       <MessageBoxSystemNotification>
-        {systemMessage}
+        {systemMessage.message}
       </MessageBoxSystemNotification>
     );
   }
 
   renderMessageContent = () => {
-    const { replyMessages, userId } = this.props;
+    const { replyMessages, userId, systemMessage } = this.props;
     if (!replyMessages || !replyMessages.length) {
       return (<MessageEmpty>No Message</MessageEmpty>);
     }
-
-    return [replyMessages.map(({ from, _id: msgId, messages }) => {
+    return [insertSystemMessageToRepliesChat(replyMessages, systemMessage).map(({
+      from, _id: msgId, messages, isSystemMessage,
+    }) => {
+      if (isSystemMessage) {
+        return this.renderSystemMessage();
+      }
       if (from === userId) {
         return this.renderUserMessageContent(msgId, messages);
       }
       return this.renderOtherUserMessageContent(msgId, messages);
-    }), (
-      this.renderSystemMessage()
-    )];
+    }),
+    this.renderOtherUserTypingContent(),
+    ];
   }
 
   renderPendingMessageContent = () => {
@@ -165,11 +193,12 @@ export default class MessageBox extends Component {
   );
 
   handleChatSubmit = (values) => {
-    const { sendReplyMessage, conversationId } = this.props;
+    const { sendReplyMessage, conversationId, userTyping } = this.props;
     const { content } = values;
     const trimmedContent = content.trim();
     if (trimmedContent) {
       sendReplyMessage(conversationId, trimmedContent);
+      userTyping(conversationId, '');
       this.formik.getFormikContext().resetForm();
     }
   }

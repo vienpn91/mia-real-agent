@@ -58,15 +58,15 @@ class ReplyController extends BaseController {
         messages,
       };
       const newReply = await this.service.insert(reply);
-
-      if (userReply.to) {
-        emitNewMessage(userReply, newReply);
-      } else {
-        setTimeout(() => this.getResponseFromMia(userReply), 0);
-      }
       const { ticketId } = await ConversationService.getOneByQuery({ _id: conversationId });
       TicketService.update(ticketId, { status: TICKET_STATUS.PROCESSING });
       IdleQueue.resetTimer(ticketId);
+      if (userReply.to) {
+        emitNewMessage({ ...userReply, ticketId }, newReply);
+      } else {
+        setTimeout(() => this.getResponseFromMia(userReply), 0);
+      }
+
 
       return res.status(httpStatus.OK).send({ reply: newReply });
     } catch (error) {
