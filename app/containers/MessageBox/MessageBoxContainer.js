@@ -55,6 +55,7 @@ const mapDispatchToProps = {
   findAgentRequest,
   submitRating: CONVERSATION_ACTIONS.submitConversationRating,
   joinConversation: CONVERSATION_ACTIONS.userJoinConversation,
+  leftConversation: CONVERSATION_ACTIONS.userLeftConversation,
   userTyping: CONVERSATION_ACTIONS.userTyping,
 };
 

@@ -17,6 +17,8 @@ export const CONVERSATION_RATING_SUBMIT_FAIL = 'conversations/CONVERSATION_RATIN
 
 export const USER_JOIN_CONVERSATION = 'conversations/USER_JOIN_CONVERSATION';
 
+export const USER_LEFT_CONVERSATION = 'conversations/USER_LEFT_CONVERSATION';
+
 export const USER_TYPING = 'conversations/USER_TYPING';
 
 export const OTHER_USER_TYPING = 'conversations/OTHER_USER_TYPING';
@@ -27,6 +29,13 @@ export const SYSTEM_MESSAGE = 'conversations/SYSTEM_MESSAGE';
 
 const userJoinConversation = conversationId => ({
   type: USER_JOIN_CONVERSATION,
+  payload: {
+    conversationId,
+  },
+});
+
+const userLeftConversation = conversationId => ({
+  type: USER_LEFT_CONVERSATION,
   payload: {
     conversationId,
   },
@@ -278,6 +287,7 @@ export const actions = {
   selectConversation,
 
   userJoinConversation,
+  userLeftConversation,
   userTyping,
   notifiSystemMessage,
   otherUserTyping,

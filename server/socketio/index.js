@@ -79,6 +79,10 @@ class SocketIOServer {
       ConversationRoomQueue.newUser(conversationId, userId, socket);
     });
 
+    socket.on('LEFT_CONVERSATION', async ({ conversationId, userId }) => {
+      ConversationRoomQueue.removeUserFromConversation(conversationId, userId);
+    });
+
     socket.on('USER_TYPING', async ({ conversationId, userId, messages }) => {
       ConversationRoomQueue.observeUserTypingMessage(conversationId, userId, messages);
     });

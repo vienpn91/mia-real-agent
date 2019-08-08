@@ -68,6 +68,21 @@ class ConversationRoomQueue {
       }
     );
   }
+
+  removeUserFromConversation = (conversationId, userId) => {
+    const room = this.getRoom(conversationId);
+    const { [userId]: _, ...otherUser } = room;
+    if (_isEmpty(otherUser)) {
+      this.queue[conversationId] = otherUser;
+      Object.keys(otherUser).forEach((otherUserId) => {
+        const otherSocket = room[otherUserId];
+        otherSocket.emit('OTHER_LEFT_ROOM', { conversationId, userId });
+      });
+    } else {
+      const { [conversationId]: removeConversation, ...rest } = this.queue;
+      this.queue = rest;
+    }
+  }
 }
 
 // eslint-disable-next-line import/no-mutable-exports

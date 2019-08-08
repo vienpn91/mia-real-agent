@@ -66,6 +66,7 @@ export default class MessageBox extends Component {
     sendReplyMessage: PropTypes.func.isRequired,
     setCurrentTicket: PropTypes.func.isRequired,
     joinConversation: PropTypes.func.isRequired,
+    leftConversation: PropTypes.func.isRequired,
     userTyping: PropTypes.func.isRequired,
 
     submitRating: PropTypes.func.isRequired,
@@ -100,7 +101,7 @@ export default class MessageBox extends Component {
   componentDidUpdate = (prevProps) => {
     this.scrollChatToBottom();
     const {
-      currentConversation, setCurrentTicket, joinConversation,
+      currentConversation, setCurrentTicket, joinConversation, leftConversation,
     } = this.props;
     if (!_isEmpty(currentConversation)) {
       const { _id } = currentConversation;
@@ -111,6 +112,9 @@ export default class MessageBox extends Component {
       }
       if (_id !== prevConversationId) {
         joinConversation(_id);
+        if (prevConversationId) {
+          leftConversation(prevConversationId);
+        }
       }
     }
   }

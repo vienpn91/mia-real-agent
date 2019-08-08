@@ -16,9 +16,6 @@ import {
   CONVERSATION_RATING_SUBMIT,
 } from '../../reducers/conversations';
 import {
-  TICKET_GET_ALL_SUCCESS,
-} from '../../reducers/ticket';
-import {
   REPLIES_FETCH,
   fetchReplyMessagesSuccess,
   fetchReplyMessagesFailed,
@@ -67,19 +64,19 @@ function* fetchConversation({ payload }) {
   }
 }
 
-function* fetchAllConversationBasedOnTicket({ data }) {
-  for (let i = 0; i < data.length; i += 1) {
-    const ticket = data[i];
-    const { conversationId } = ticket;
-    if (!_isEmpty(conversationId)) {
-      yield put(actions.fetchConversation(conversationId));
-      yield take([
-        CONVERSATION_FETCH_FAILED,
-        CONVERSATION_FETCH_SUCCESS,
-      ]);
-    }
-  }
-}
+// function* fetchAllConversationBasedOnTicket({ data }) {
+//   for (let i = 0; i < data.length; i += 1) {
+//     const ticket = data[i];
+//     const { conversationId } = ticket;
+//     if (!_isEmpty(conversationId)) {
+//       yield put(actions.fetchConversation(conversationId));
+//       yield take([
+//         CONVERSATION_FETCH_FAILED,
+//         CONVERSATION_FETCH_SUCCESS,
+//       ]);
+//     }
+//   }
+// }
 
 function* submitConversationRating({ payload }) {
   const { conversationId, rating } = payload;

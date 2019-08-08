@@ -15,7 +15,7 @@ import { addNewMessage } from '../../reducers/replies';
 import { actions as TICKET_ACTIONS } from '../../reducers/ticket';
 import {
   actions as CONVERSATION_ACTIONS, fetchConversation,
-  USER_JOIN_CONVERSATION, USER_TYPING, getConverationById, getCurrentConveration,
+  USER_JOIN_CONVERSATION, USER_TYPING, getConverationById, getCurrentConveration, USER_LEFT_CONVERSATION,
 } from '../../reducers/conversations';
 
 /* events */
@@ -128,12 +128,15 @@ function* otherLeftConversation() {
   while (true) {
     const { conversationId, userId } = yield take(socketChannel);
     const conversation = yield select(getConverationById, conversationId);
-    // eslint-disable-next-line no-underscore-dangle
-    if (conversation && conversationId === conversation._id) {
-      const { owner, ticketId } = conversation;
-      const role = (owner === userId) ? 'User' : 'Agent';
-      yield put(CONVERSATION_ACTIONS.notifiSystemMessage(`${role} has left conversation`, conversationId));
-      yield put(TICKET_ACTIONS.getAction(ticketId));
+    const currentUser = yield select(getUserId);
+    if (currentUser !== userId) {
+      // eslint-disable-next-line no-underscore-dangle
+      if (conversation && conversationId === conversation._id) {
+        const { owner, ticketId } = conversation;
+        const role = (owner === userId) ? 'User' : 'Agent';
+        yield put(CONVERSATION_ACTIONS.notifiSystemMessage(`${role} has left conversation`, conversationId));
+        yield put(TICKET_ACTIONS.getAction(ticketId));
+      }
     }
   }
 }
@@ -174,6 +177,12 @@ function* userJoinConversation({ payload }) {
   socketConnection.emit('JOIN_CONVERSATION', { conversationId, userId });
 }
 
+function* userLeftConversation({ payload }) {
+  const { conversationId } = payload;
+  const userId = yield select(getUserId);
+  socketConnection.emit('LEFT_CONVERSATION', { conversationId, userId });
+}
+
 function* userTyping({ payload }) {
   const { conversationId, messages } = payload;
   const userId = yield select(getUserId);
@@ -184,6 +193,7 @@ function* socketIOFlow() {
   yield takeEvery([AUTH_LOGIN_SUCCESS], connectFlow);
   yield takeEvery(AUTH_LOGOUT, disconnectFlow);
   yield takeLatest(USER_JOIN_CONVERSATION, userJoinConversation);
+  yield takeLatest(USER_LEFT_CONVERSATION, userLeftConversation);
   yield takeLatest(USER_TYPING, userTyping);
 }
 
