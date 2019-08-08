@@ -154,8 +154,9 @@ export default class MessageBox extends Component {
   )
 
   renderSystemMessage = () => {
-    const { systemMessage } = this.props;
-    return shouldShowSystemMessage(systemMessage) && (
+    const { systemMessage, currentConversation } = this.props;
+    const { _id } = currentConversation;
+    return shouldShowSystemMessage(systemMessage, _id) && (
       <MessageBoxSystemNotification>
         {systemMessage.message}
       </MessageBoxSystemNotification>
@@ -169,8 +170,6 @@ export default class MessageBox extends Component {
     const refinedMessages = combineChat(
       insertSystemMessageToRepliesChat(replyMessages, systemMessage)
     );
-    console.log(refinedMessages);
-
     return [refinedMessages.map(({
       from, _id: msgId, contents, isSystemMessage,
     }) => {
@@ -340,9 +339,13 @@ export default class MessageBox extends Component {
     const {
       isFetchingReplies, isFindingAgent, otherUserTyping,
       replyMessages, currentTicket, systemMessage,
+      currentConversation,
     } = this.props;
+    const { _id } = currentConversation;
     const { status } = currentTicket || {};
-    const hasChatData = !_isEmpty(replyMessages) || shouldShowSystemMessage(systemMessage) || !_isEmpty(otherUserTyping);
+    const hasChatData = !_isEmpty(replyMessages)
+      || shouldShowSystemMessage(systemMessage, _id)
+      || !_isEmpty(otherUserTyping);
     return (
       <LoadingSpin loading={isFetchingReplies || isFindingAgent}>
         {this.renderMessageHeader()}

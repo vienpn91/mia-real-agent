@@ -48,9 +48,10 @@ const otherUserTyping = (conversationId, messages) => ({
   },
 });
 
-const notifiSystemMessage = systemMessage => ({
+const notifiSystemMessage = (systemMessage, conversationId) => ({
   type: SYSTEM_MESSAGE,
   payload: {
+    conversationId,
     systemMessage,
   },
 });
@@ -167,7 +168,7 @@ export const getConversationById = ({ conversations }, conversationId) => conver
 
 export const getSystemMessage = ({ conversations }) => conversations.get('systemMessage');
 
-export const getOtherUserTyping = ({ conversations }) => conversations.get('otherUserTyping');
+export const getOtherUserTyping = ({ conversations }) => conversations.get('otherUserTyping').toJS();
 
 const initialState = fromJS({
   byId: {},
@@ -178,21 +179,21 @@ const initialState = fromJS({
   isFetchingSingleItem: false,
   currentConversation: null,
   systemMessage: {},
-  otherUserTyping: {},
+  otherUserTyping: fromJS({}),
 });
 
 function conversationReducer(state = initialState, action) {
   switch (action.type) {
     case SYSTEM_MESSAGE: {
-      const { systemMessage } = action.payload;
+      const { systemMessage, conversationId } = action.payload;
       const sentAt = new Date();
       return state
-        .set('systemMessage', { message: systemMessage, sentAt });
+        .set('systemMessage', { message: systemMessage, sentAt, conversationId });
     }
     case OTHER_USER_TYPING: {
       const { conversationId, messages } = action.payload;
       return state
-        .set('otherUserTyping', { conversationId, messages });
+        .set('otherUserTyping', fromJS({ conversationId, messages }));
     }
 
     case CONVERSATION_FETCH: {

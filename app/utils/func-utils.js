@@ -16,12 +16,12 @@ export function isAgent(role) {
   return role === ROLES.FREELANCER || role === ROLES.FULLTIME;
 }
 
-export function shouldShowSystemMessage(systemMessage) {
+export function shouldShowSystemMessage(systemMessage, currentConversationId) {
   if (_isEmpty(systemMessage)) {
     return false;
   }
-  const { message } = systemMessage;
-  if (_isEmpty(message)) {
+  const { message, conversationId } = systemMessage;
+  if (_isEmpty(message) || currentConversationId !== conversationId) {
     return false;
   }
   return true;

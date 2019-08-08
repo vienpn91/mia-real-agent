@@ -114,7 +114,7 @@ function* otherJoinConversation() {
       if (conversation && conversationId === conversation._id) {
         const { owner, ticketId } = conversation;
         const role = (owner === userId) ? 'User' : 'Agent';
-        yield put(CONVERSATION_ACTIONS.notifiSystemMessage(`${role} has join conversation`));
+        yield put(CONVERSATION_ACTIONS.notifiSystemMessage(`${role} has join conversation`, conversationId));
         yield put(TICKET_ACTIONS.getAction(ticketId));
       }
     }
@@ -132,7 +132,7 @@ function* otherLeftConversation() {
     if (conversation && conversationId === conversation._id) {
       const { owner, ticketId } = conversation;
       const role = (owner === userId) ? 'User' : 'Agent';
-      yield put(CONVERSATION_ACTIONS.notifiSystemMessage(`${role} has left conversation`));
+      yield put(CONVERSATION_ACTIONS.notifiSystemMessage(`${role} has left conversation`, conversationId));
       yield put(TICKET_ACTIONS.getAction(ticketId));
     }
   }
