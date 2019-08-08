@@ -10,14 +10,14 @@ export const CONVERSATION_GET_DETAIL_SUCCESS = 'conversations/CONVERSATION_GET_D
 export const CONVERSATION_GET_DETAIL_FAILED = 'conversations/CONVERSATION_GET_DETAIL_FAILED';
 
 export const CONVERSATION_SET_CURRENT = 'conversations/CONVERSATION_SET_CURRENT';
-export const CONVERSATION_SET_CURRENT_SUCCESS = 'conversations/CONVERSATION_SET_CURRENT_SUCCESS';
-export const CONVERSATION_SET_CURRENT_FAIL = 'conversations/CONVERSATION_SET_CURRENT_FAIL';
 
 export const CONVERSATION_RATING_SUBMIT = 'conversations/CONVERSATION_RATING_SUBMIT';
 export const CONVERSATION_RATING_SUBMIT_SUCCESS = 'conversations/CONVERSATION_RATING_SUBMIT_SUCCESS';
 export const CONVERSATION_RATING_SUBMIT_FAIL = 'conversations/CONVERSATION_RATING_SUBMIT_FAIL';
 
 export const USER_JOIN_CONVERSATION = 'conversations/USER_JOIN_CONVERSATION';
+
+export const USER_LEFT_CONVERSATION = 'conversations/USER_LEFT_CONVERSATION';
 
 export const USER_TYPING = 'conversations/USER_TYPING';
 
@@ -29,6 +29,13 @@ export const SYSTEM_MESSAGE = 'conversations/SYSTEM_MESSAGE';
 
 const userJoinConversation = conversationId => ({
   type: USER_JOIN_CONVERSATION,
+  payload: {
+    conversationId,
+  },
+});
+
+const userLeftConversation = conversationId => ({
+  type: USER_LEFT_CONVERSATION,
   payload: {
     conversationId,
   },
@@ -50,9 +57,10 @@ const otherUserTyping = (conversationId, messages) => ({
   },
 });
 
-const notifiSystemMessage = systemMessage => ({
+const notifiSystemMessage = (systemMessage, conversationId) => ({
   type: SYSTEM_MESSAGE,
   payload: {
+    conversationId,
     systemMessage,
   },
 });
@@ -139,19 +147,6 @@ export const selectConversation = conversationId => ({
   },
 });
 
-export const selectConversationSuccess = conversation => ({
-  type: CONVERSATION_SET_CURRENT_SUCCESS,
-  payload: {
-    conversation,
-  },
-});
-
-export const selectConversationFail = error => ({
-  type: CONVERSATION_SET_CURRENT_FAIL,
-  payload: {
-    error,
-  },
-});
 
 // selector
 export const getConverationList = ({ conversations }) => {
@@ -161,7 +156,6 @@ export const getConverationList = ({ conversations }) => {
 };
 export const getCurrentConveration = ({ conversations }) => conversations.get('currentConversation');
 export const getConverationById = ({ conversations }, _id) => conversations.get('byId').get(_id);
-export const getCurrentConverationId = ({ conversations }) => (conversations.get('currentConversation') || {})._id;
 export const getTotalConverations = ({ conversations }) => conversations.get('total');
 export const getErrorMessage = ({ conversations }) => conversations.get('errorMsg');
 export const isFetchingList = ({ conversations }) => conversations.get('isFetchingAll');
@@ -183,7 +177,7 @@ export const getConversationById = ({ conversations }, conversationId) => conver
 
 export const getSystemMessage = ({ conversations }) => conversations.get('systemMessage');
 
-export const getOtherUserTyping = ({ conversations }) => conversations.get('otherUserTyping');
+export const getOtherUserTyping = ({ conversations }) => conversations.get('otherUserTyping').toJS();
 
 const initialState = fromJS({
   byId: {},
@@ -200,15 +194,15 @@ const initialState = fromJS({
 function conversationReducer(state = initialState, action) {
   switch (action.type) {
     case SYSTEM_MESSAGE: {
-      const { systemMessage } = action.payload;
+      const { systemMessage, conversationId } = action.payload;
       const sentAt = new Date();
       return state
-        .set('systemMessage', { message: systemMessage, sentAt });
+        .set('systemMessage', { message: systemMessage, sentAt, conversationId });
     }
     case OTHER_USER_TYPING: {
       const { conversationId, messages } = action.payload;
       return state
-        .set('otherUserTyping', { conversationId, messages });
+        .set('otherUserTyping', fromJS({ conversationId, messages }));
     }
 
     case CONVERSATION_FETCH: {
@@ -249,9 +243,9 @@ function conversationReducer(state = initialState, action) {
         .set('errorMsg', '');
     }
 
-    case CONVERSATION_SET_CURRENT_SUCCESS: {
-      const { conversation } = action.payload;
-      return state.set('currentConversation', conversation);
+    case CONVERSATION_SET_CURRENT: {
+      const { conversationId } = action.payload;
+      return state.set('currentConversation', conversationId);
     }
 
     case CONVERSATION_GET_DETAIL_SUCCESS: {
@@ -293,6 +287,7 @@ export const actions = {
   selectConversation,
 
   userJoinConversation,
+  userLeftConversation,
   userTyping,
   notifiSystemMessage,
   otherUserTyping,

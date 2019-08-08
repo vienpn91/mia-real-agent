@@ -13,7 +13,12 @@ import {
 } from '../../reducers/agents';
 import {
   getConversationById,
+  fetchConversation,
+  selectConversation,
 } from '../../reducers/conversations';
+import {
+  actions,
+} from '../../reducers/ticket';
 import { findAgent } from '../../api/ticket';
 import { acceptAgent } from '../../api/agent';
 
@@ -46,6 +51,9 @@ export function* confirmRequest({ payload }) {
       throw new Error(error);
     }
     yield put(agentConfirmSuccessAction());
+    yield put(actions.getAllTicketAction());
+    yield put(fetchConversation(conversationId));
+    yield put(selectConversation(conversationId));
 
     if (isConfirm) yield put(push(`/conversation/${conversationId}`));
   } catch (error) {

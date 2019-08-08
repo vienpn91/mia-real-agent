@@ -6,7 +6,7 @@ import {
 } from 'antd';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
-import ConversationList from 'containers/ConversationList';
+import TicketList from 'containers/TicketList';
 import history from 'utils/history';
 import { Return } from 'components/Generals/General.styled';
 import MessageBoxContainer from '../../containers/MessageBox';
@@ -124,7 +124,7 @@ export default class ChatbotComponent extends Component {
         <ChatbotConversationListWrapper>
           {this.renderConversationHeader()}
           {this.renderSearchConversation()}
-          <ConversationList
+          <TicketList
             openSetting={this.handleOpenSettingModal}
           />
         </ChatbotConversationListWrapper>

@@ -38,10 +38,9 @@ export const combineChat = (replyMessages = []) => {
           combined.push({ _id: combined.length, from, contents: [{ _id, messages, sentAt }] });
         }
       }
-    } else {
-      if (isSystemMessage) {
-        combined.push({ _id: combined.length, isSystemMessage: true });
-      }
+    } else if (isSystemMessage) {
+      combined.push({ _id: combined.length, isSystemMessage: true });
+    } else if (messages) {
       combined.push({ _id: combined.length, from, contents: [{ _id, messages, sentAt }] });
     }
   });

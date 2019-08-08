@@ -9,7 +9,7 @@ import {
   sendReplyMessageFailed,
 } from '../../reducers/replies';
 import { actions as TICKET_ACTIONS } from '../../reducers/ticket';
-import { getCurrentConveration } from '../../reducers/conversations';
+import { getConverationById } from '../../reducers/conversations';
 import { getUserId } from '../../reducers/auth';
 import { sendReplyMessage as sendReplyMessageAPI } from '../../api/reply';
 
@@ -19,7 +19,7 @@ function* sendReplyMessage({ payload }) {
     messages,
     localMessageId,
   } = payload;
-  const { owner, members, ticketId } = yield select(getCurrentConveration);
+  const { owner, members, ticketId } = yield select(getConverationById, conversationId);
   const userId = yield select(getUserId);
   const to = userId !== owner ? owner : members[0];
   // from, to, conversation, message

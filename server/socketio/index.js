@@ -3,11 +3,11 @@ import socketioJwt from 'socketio-jwt';
 import Logger from '../logger';
 import AgentQueue from '../modules/queue/agentQueue';
 import TicketService from '../modules/ticket/ticket.service';
-import { ROLES } from '../../common/enums';
 import { register, unregister } from '../modules/chat/chat.socket';
 import DisconnectQueue from '../modules/queue/disconnectQueue';
 import { closeTicketTimeOut } from './timer';
 import ConversationRoomQueue from '../modules/queue/conversationRoomQueue';
+import { isAgent } from '../../app/utils/func-utils';
 
 const ACTION_MESSAGE = 'ACTION_MESSAGE';
 let socketIO;
@@ -50,7 +50,7 @@ class SocketIOServer {
         socket.on('disconnect', async () => {
           Logger.info(`[Socket.io]: The foul [${email}] has exit the fray`);
           unregister(id.toString(), socket);
-          if (role === ROLES.FREELANCER || role === ROLES.FULLTIME) {
+          if (isAgent(role)) {
             AgentQueue.remove(user);
           }
           // if user/agent goes offline
@@ -61,7 +61,7 @@ class SocketIOServer {
         });
         connected[socketId] = socket;
         DisconnectQueue.destroyTimer(id);
-        if (role === ROLES.FREELANCER || role === ROLES.FULLTIME) {
+        if (isAgent(role)) {
           Logger.info(`[Socket.io]: The Mercenary [${email}] has join the fray`);
           const { _doc } = user;
           AgentQueue.add({ ..._doc, socketId });
@@ -77,6 +77,10 @@ class SocketIOServer {
   setUpConversationRoom = (socket) => {
     socket.on('JOIN_CONVERSATION', async ({ conversationId, userId }) => {
       ConversationRoomQueue.newUser(conversationId, userId, socket);
+    });
+
+    socket.on('LEFT_CONVERSATION', async ({ conversationId, userId }) => {
+      ConversationRoomQueue.removeUserFromConversation(conversationId, userId);
     });
 
     socket.on('USER_TYPING', async ({ conversationId, userId, messages }) => {

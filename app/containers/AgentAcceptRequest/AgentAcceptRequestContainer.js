@@ -9,13 +9,13 @@ import {
   isSendingConfirmation,
 } from '../../reducers/agents';
 import { getUserId } from '../../reducers/auth';
-import { getCurrentConverationId } from '../../reducers/conversations';
+import { getCurrentConveration } from '../../reducers/conversations';
 
 const mapStateToProps = state => ({
   isOpen: isWaitingForComfirm(state),
   isConfirming: isSendingConfirmation(state),
   userId: getUserId(state),
-  conversationId: getCurrentConverationId(state),
+  conversationId: getCurrentConveration(state),
   requestData: getRequestData(state),
 });
 

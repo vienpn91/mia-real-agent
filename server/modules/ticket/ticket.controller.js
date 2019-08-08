@@ -7,8 +7,9 @@ import UserService from '../user/user.service';
 import ConversationService from '../conversation/conversation.service';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import AgentQueue from '../queue/agentQueue';
-import { ROLES, TICKET_STATUS } from '../../../common/enums';
 import { getSocketByUser } from '../../socketio';
+import { isAgent } from '../../../app/utils/func-utils';
+import { TICKET_STATUS } from '../../../common/enums';
 
 const { CONTENT_NOT_FOUND } = ERROR_MESSAGE;
 const emptyObjString = '{}';
@@ -113,7 +114,7 @@ class TicketController extends BaseController {
       }
       const { _id: userId, role } = user;
 
-      const condition = (role === ROLES.FREELANCER || role === ROLES.FULLTIME)
+      const condition = isAgent(role)
         ? { assignee: userId, _id: id }
         : { owner: userId, _id: id };
       const model = await this.service.getByCondition(condition);
@@ -181,7 +182,7 @@ class TicketController extends BaseController {
         throw new APIError(ERROR_MESSAGE.UNAUTHORIZED, httpStatus.UNAUTHORIZED);
       }
       const { _id, role } = user;
-      const condition = (role === ROLES.AGENT)
+      const condition = (isAgent(role))
         ? { assignee: _id }
         : { owner: _id };
 
