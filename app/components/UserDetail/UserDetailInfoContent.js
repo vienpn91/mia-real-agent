@@ -13,6 +13,7 @@ import {
 import { DATE_TIME_FORMAT, COLUMN_TYPE } from 'utils/constants';
 import TableDetail from 'components/Generals/TableDetail';
 import { ROLES } from '../../../common/enums';
+import { isAgent } from '../../utils/func-utils';
 
 const defaultColumns = [
   {
@@ -197,7 +198,7 @@ class UserDetailInfoContent extends PureComponent {
           type: COLUMN_TYPE.STATUS,
         },
       ];
-    } else if (role === ROLES.AGENT || role === ROLES.FREELANCER) {
+    } else if (isAgent(role)) {
       columns = [
         ...defaultColumns,
         {

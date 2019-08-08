@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { ROLES } from '../../common/enums';
 
 export function getSkipLimit(pageIndex, sizePerPage) {
   const skip = (pageIndex - 1) * sizePerPage;
@@ -8,4 +9,8 @@ export function getSkipLimit(pageIndex, sizePerPage) {
 
 export function compareDate(a, b) {
   return moment(a).diff(moment(b));
+}
+
+export function isAgent(role) {
+  return role === ROLES.FREELANCER || role === ROLES.FULLTIME;
 }
