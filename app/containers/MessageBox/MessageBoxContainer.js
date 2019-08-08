@@ -17,7 +17,7 @@ import {
 } from '../../selectors/ticket';
 import {
   getCurrentConveration,
-  getCurrentConverationId,
+  getConverationById,
   actions as CONVERSATION_ACTIONS,
   getSystemMessage,
   getOtherUserTyping,
@@ -29,12 +29,12 @@ import {
 import MessageBox from '../../components/MessageBox';
 
 const mapStateToProps = (state) => {
-  const conversationId = getCurrentConverationId(state);
+  const conversationId = getCurrentConveration(state);
 
   return ({
     conversationId,
     userId: getUserId(state),
-    currentConversation: getCurrentConveration(state),
+    currentConversation: getConverationById(state, conversationId),
     currentTicket: getTicketById(state, getCurrentTicket(state)),
     isFetchingReplies: isFetchingReplies(state, conversationId),
     errorMessage: getErrorMessage(state, conversationId),

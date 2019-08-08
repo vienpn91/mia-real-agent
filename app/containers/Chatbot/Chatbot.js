@@ -7,6 +7,7 @@ import {
   getTotalConverations,
   getErrorMessage,
   getCurrentConveration,
+  getConverationById,
   selectConversation,
 } from '../../reducers/conversations';
 import { getUserRole } from '../../reducers/auth';
@@ -17,7 +18,7 @@ const mapStateToProps = state => ({
   isFetchingConversation: isFetchingSingleItem(state),
   total: getTotalConverations(state),
   errorMsg: getErrorMessage(state),
-  currentConversation: getCurrentConveration(state),
+  currentConversation: getConverationById(state, getCurrentConveration(state)),
 });
 
 const mapDispatchToProps = {

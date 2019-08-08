@@ -34,6 +34,7 @@ import ConversationDetail from '../ConversationDetail/ConversationDetail';
 import { TICKET_STATUS, ROLES } from '../../../common/enums';
 import FormInput from '../FormInput/FormInput';
 import { insertSystemMessageToRepliesChat, combineChat } from './utils';
+import { shouldShowSystemMessage, isAgent } from '../../utils/func-utils';
 
 const scrollStyle = {
   height: '94%',
@@ -98,12 +99,18 @@ export default class MessageBox extends Component {
 
   componentDidUpdate = (prevProps) => {
     this.scrollChatToBottom();
-    const { currentConversation, setCurrentTicket } = this.props;
+    const {
+      currentConversation, setCurrentTicket, joinConversation,
+    } = this.props;
     if (!_isEmpty(currentConversation)) {
-      const { ticketId: prevTicketId } = prevProps.currentConversation;
+      const { _id } = currentConversation;
+      const { ticketId: prevTicketId, _id: prevConversationId } = prevProps.currentConversation;
       const { ticketId } = currentConversation;
       if (ticketId !== prevTicketId) {
         setCurrentTicket(ticketId);
+      }
+      if (_id !== prevConversationId) {
+        joinConversation(_id);
       }
     }
   }
@@ -148,7 +155,7 @@ export default class MessageBox extends Component {
 
   renderSystemMessage = () => {
     const { systemMessage } = this.props;
-    return !_isEmpty(systemMessage) && !_isEmpty(systemMessage.message) && (
+    return shouldShowSystemMessage(systemMessage) && (
       <MessageBoxSystemNotification>
         {systemMessage.message}
       </MessageBoxSystemNotification>
@@ -159,12 +166,11 @@ export default class MessageBox extends Component {
     const {
       replyMessages, userId, systemMessage,
     } = this.props;
-    if (!replyMessages || !replyMessages.length) {
-      return (<MessageEmpty>No Message</MessageEmpty>);
-    }
     const refinedMessages = combineChat(
       insertSystemMessageToRepliesChat(replyMessages, systemMessage)
     );
+    console.log(refinedMessages);
+
     return [refinedMessages.map(({
       from, _id: msgId, contents, isSystemMessage,
     }) => {
@@ -205,7 +211,7 @@ export default class MessageBox extends Component {
     const trimmedContent = content.trim();
     if (trimmedContent) {
       sendReplyMessage(conversationId, trimmedContent);
-      if (userRole !== ROLES.FREELANCER && userRole !== ROLES.FULLTIME) {
+      if (!isAgent(userRole)) {
         userTyping(conversationId, '');
       }
       this.formik.getFormikContext().resetForm();
@@ -220,7 +226,7 @@ export default class MessageBox extends Component {
 
   handleTyping = (e) => {
     const { userTyping, conversationId, userRole } = this.props;
-    if (userRole !== ROLES.FREELANCER && userRole !== ROLES.FULLTIME) {
+    if (!isAgent(userRole)) {
       const { value } = e.target;
       userTyping(conversationId, value);
     }
@@ -332,10 +338,11 @@ export default class MessageBox extends Component {
 
   render() {
     const {
-      isFetchingReplies, isFindingAgent,
-      replyMessages, currentTicket,
+      isFetchingReplies, isFindingAgent, otherUserTyping,
+      replyMessages, currentTicket, systemMessage,
     } = this.props;
     const { status } = currentTicket || {};
+    const hasChatData = !_isEmpty(replyMessages) || shouldShowSystemMessage(systemMessage) || !_isEmpty(otherUserTyping);
     return (
       <LoadingSpin loading={isFetchingReplies || isFindingAgent}>
         {this.renderMessageHeader()}
@@ -348,7 +355,7 @@ export default class MessageBox extends Component {
                     autoHide
                     style={scrollStyle}
                   >
-                    {!replyMessages || !replyMessages.length
+                    {!hasChatData
                       ? <MessageEmpty>No Chat Data</MessageEmpty>
                       : this.renderMessageContent()
                     }

@@ -14,8 +14,8 @@ import { agentNewRequest } from '../../reducers/agents';
 import { addNewMessage } from '../../reducers/replies';
 import { actions as TICKET_ACTIONS } from '../../reducers/ticket';
 import {
-  actions as CONVERSATION_ACTIONS,
-  USER_JOIN_CONVERSATION, USER_TYPING, getCurrentConveration,
+  actions as CONVERSATION_ACTIONS, fetchConversation,
+  USER_JOIN_CONVERSATION, USER_TYPING, getConverationById, getCurrentConveration,
 } from '../../reducers/conversations';
 
 /* events */
@@ -92,7 +92,10 @@ function* requestConfirm() {
   while (true) {
     const { ticketId, isConfirm } = yield take(socketChannel);
     if (isConfirm) {
+      const conversationId = yield select(getCurrentConveration);
       notification.success({ message: `The Agent had accepted ticket: #${ticketId}` });
+      yield put(TICKET_ACTIONS.getAction(ticketId));
+      yield put(fetchConversation(conversationId));
     } else {
       notification.error({ message: 'The Agent had declined the request' });
     }
@@ -104,13 +107,16 @@ function* otherJoinConversation() {
   // watch message and relay the action
   while (true) {
     const { conversationId, userId } = yield take(socketChannel);
-    const conversation = yield select(getCurrentConveration);
-    // eslint-disable-next-line no-underscore-dangle
-    if (conversation && conversationId === conversation._id) {
-      const { owner, ticketId } = conversation;
-      const role = (owner === userId) ? 'User' : 'Agent';
-      yield put(CONVERSATION_ACTIONS.notifiSystemMessage(`${role} has join conversation`));
-      yield put(TICKET_ACTIONS.getAction(ticketId));
+    const currentUser = yield select(getUserId);
+    if (currentUser !== userId) {
+      const conversation = yield select(getConverationById, conversationId);
+      // eslint-disable-next-line no-underscore-dangle
+      if (conversation && conversationId === conversation._id) {
+        const { owner, ticketId } = conversation;
+        const role = (owner === userId) ? 'User' : 'Agent';
+        yield put(CONVERSATION_ACTIONS.notifiSystemMessage(`${role} has join conversation`));
+        yield put(TICKET_ACTIONS.getAction(ticketId));
+      }
     }
   }
 }
@@ -121,7 +127,7 @@ function* otherLeftConversation() {
   // watch message and relay the action
   while (true) {
     const { conversationId, userId } = yield take(socketChannel);
-    const conversation = yield select(getCurrentConveration);
+    const conversation = yield select(getConverationById, conversationId);
     // eslint-disable-next-line no-underscore-dangle
     if (conversation && conversationId === conversation._id) {
       const { owner, ticketId } = conversation;

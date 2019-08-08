@@ -10,8 +10,6 @@ export const CONVERSATION_GET_DETAIL_SUCCESS = 'conversations/CONVERSATION_GET_D
 export const CONVERSATION_GET_DETAIL_FAILED = 'conversations/CONVERSATION_GET_DETAIL_FAILED';
 
 export const CONVERSATION_SET_CURRENT = 'conversations/CONVERSATION_SET_CURRENT';
-export const CONVERSATION_SET_CURRENT_SUCCESS = 'conversations/CONVERSATION_SET_CURRENT_SUCCESS';
-export const CONVERSATION_SET_CURRENT_FAIL = 'conversations/CONVERSATION_SET_CURRENT_FAIL';
 
 export const CONVERSATION_RATING_SUBMIT = 'conversations/CONVERSATION_RATING_SUBMIT';
 export const CONVERSATION_RATING_SUBMIT_SUCCESS = 'conversations/CONVERSATION_RATING_SUBMIT_SUCCESS';
@@ -139,19 +137,6 @@ export const selectConversation = conversationId => ({
   },
 });
 
-export const selectConversationSuccess = conversation => ({
-  type: CONVERSATION_SET_CURRENT_SUCCESS,
-  payload: {
-    conversation,
-  },
-});
-
-export const selectConversationFail = error => ({
-  type: CONVERSATION_SET_CURRENT_FAIL,
-  payload: {
-    error,
-  },
-});
 
 // selector
 export const getConverationList = ({ conversations }) => {
@@ -161,7 +146,6 @@ export const getConverationList = ({ conversations }) => {
 };
 export const getCurrentConveration = ({ conversations }) => conversations.get('currentConversation');
 export const getConverationById = ({ conversations }, _id) => conversations.get('byId').get(_id);
-export const getCurrentConverationId = ({ conversations }) => (conversations.get('currentConversation') || {})._id;
 export const getTotalConverations = ({ conversations }) => conversations.get('total');
 export const getErrorMessage = ({ conversations }) => conversations.get('errorMsg');
 export const isFetchingList = ({ conversations }) => conversations.get('isFetchingAll');
@@ -249,9 +233,9 @@ function conversationReducer(state = initialState, action) {
         .set('errorMsg', '');
     }
 
-    case CONVERSATION_SET_CURRENT_SUCCESS: {
-      const { conversation } = action.payload;
-      return state.set('currentConversation', conversation);
+    case CONVERSATION_SET_CURRENT: {
+      const { conversationId } = action.payload;
+      return state.set('currentConversation', conversationId);
     }
 
     case CONVERSATION_GET_DETAIL_SUCCESS: {

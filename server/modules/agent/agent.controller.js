@@ -29,6 +29,7 @@ class AgentController {
         TicketService.get(ticketId),
         ConversationService.get(conversationId),
       ]);
+      console.log(TICKET_STATUS);
       // eslint-disable-next-line no-underscore-dangle
       const agentId = agent._id;
 
@@ -64,7 +65,7 @@ class AgentController {
         const ownerSocket = UserQueue.getUser(owner);
         ownerSocket.emit('REQUEST_CONFIRM', {
           isConfirm,
-          ticketId: ticket.ticketId,
+          ticketId,
         });
         IdleQueue.addTimer(ticketId);
       } else {

@@ -9,6 +9,7 @@ import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import AgentQueue from '../queue/agentQueue';
 import { getSocketByUser } from '../../socketio';
 import { isAgent } from '../../../app/utils/func-utils';
+import { TICKET_STATUS } from '../../../common/enums';
 
 const { CONTENT_NOT_FOUND } = ERROR_MESSAGE;
 const emptyObjString = '{}';

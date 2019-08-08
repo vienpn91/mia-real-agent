@@ -12,7 +12,6 @@ import {
   actions,
   CONVERSATION_SET_CURRENT,
   getConverationById,
-  selectConversationSuccess,
   fetchConversation as fetchConversationAction,
   CONVERSATION_RATING_SUBMIT,
 } from '../../reducers/conversations';
@@ -23,6 +22,8 @@ import {
   REPLIES_FETCH,
   fetchReplyMessagesSuccess,
   fetchReplyMessagesFailed,
+  getReplyMessagesByConversationId,
+  fetchReplyMessages,
 } from '../../reducers/replies';
 
 function* fetchConversationMessages({ payload }) {
@@ -43,13 +44,12 @@ function* fetchConversationMessages({ payload }) {
 function* setCurrentConversation({ payload }) {
   const { conversationId } = payload;
   const conversation = yield select(getConverationById, conversationId);
-  if (!conversation) {
+  const replies = yield select(getReplyMessagesByConversationId, conversationId);
+  if (_isEmpty(conversation)) {
     yield put(fetchConversationAction(conversationId));
-    const { payload: fetchData } = yield take(CONVERSATION_FETCH_SUCCESS);
-    const { conversation: fetchedConversation } = fetchData;
-    yield put(selectConversationSuccess(fetchedConversation));
-  } else {
-    yield put(selectConversationSuccess(conversation));
+  }
+  if (_isEmpty(replies)) {
+    yield put(fetchReplyMessages(conversationId));
   }
 }
 
@@ -99,7 +99,7 @@ function* submitConversationRating({ payload }) {
 function* conversationFlow() {
   yield takeLatest(CONVERSATION_FETCH, fetchConversation);
   yield takeLatest(CONVERSATION_SET_CURRENT, setCurrentConversation);
-  yield takeLatest(TICKET_GET_ALL_SUCCESS, fetchAllConversationBasedOnTicket);
+  // yield takeLatest(TICKET_GET_ALL_SUCCESS, fetchAllConversationBasedOnTicket);
   yield takeLatest(REPLIES_FETCH, fetchConversationMessages);
   yield takeLatest(CONVERSATION_RATING_SUBMIT, submitConversationRating);
 }
