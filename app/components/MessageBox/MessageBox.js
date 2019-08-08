@@ -104,14 +104,14 @@ export default class MessageBox extends Component {
       currentConversation, setCurrentTicket, joinConversation, leftConversation,
     } = this.props;
     if (!_isEmpty(currentConversation)) {
-      const { _id } = currentConversation;
+      const { _id: currentConvId } = currentConversation;
       const { ticketId: prevTicketId, _id: prevConversationId } = prevProps.currentConversation;
       const { ticketId } = currentConversation;
       if (ticketId !== prevTicketId) {
         setCurrentTicket(ticketId);
       }
-      if (_id !== prevConversationId) {
-        joinConversation(_id);
+      if (currentConvId !== prevConversationId) {
+        joinConversation(currentConvId);
         if (prevConversationId) {
           leftConversation(prevConversationId);
         }
@@ -159,8 +159,8 @@ export default class MessageBox extends Component {
 
   renderSystemMessage = () => {
     const { systemMessage, currentConversation } = this.props;
-    const { _id } = currentConversation;
-    return shouldShowSystemMessage(systemMessage, _id) && (
+    const { _id: currentConvId } = currentConversation;
+    return shouldShowSystemMessage(systemMessage, currentConvId) && (
       <MessageBoxSystemNotification>
         {systemMessage.message}
       </MessageBoxSystemNotification>
@@ -345,10 +345,10 @@ export default class MessageBox extends Component {
       replyMessages, currentTicket, systemMessage,
       currentConversation,
     } = this.props;
-    const { _id } = currentConversation;
+    const { _id: currentConvId } = currentConversation;
     const { status } = currentTicket || {};
     const hasChatData = !_isEmpty(replyMessages)
-      || shouldShowSystemMessage(systemMessage, _id)
+      || shouldShowSystemMessage(systemMessage, currentConvId)
       || !_isEmpty(otherUserTyping);
     return (
       <LoadingSpin loading={isFetchingReplies || isFindingAgent}>
