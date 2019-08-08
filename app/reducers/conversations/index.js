@@ -188,7 +188,7 @@ const initialState = fromJS({
   isFetchingSingleItem: false,
   currentConversation: null,
   systemMessage: {},
-  otherUserTyping: fromJS({}),
+  otherUserTyping: {},
 });
 
 function conversationReducer(state = initialState, action) {

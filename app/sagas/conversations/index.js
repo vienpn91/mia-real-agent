@@ -1,5 +1,5 @@
 import {
-  takeLatest, call, put, take, select,
+  takeLatest, call, put, select,
 } from 'redux-saga/effects';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
@@ -7,8 +7,6 @@ import { notification } from 'antd';
 import { getConversation, getConversationMessage, submitRating } from '../../api/conversation';
 import {
   CONVERSATION_FETCH,
-  CONVERSATION_FETCH_FAILED,
-  CONVERSATION_FETCH_SUCCESS,
   actions,
   CONVERSATION_SET_CURRENT,
   getConverationById,
