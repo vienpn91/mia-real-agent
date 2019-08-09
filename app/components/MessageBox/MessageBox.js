@@ -51,7 +51,6 @@ export default class MessageBox extends Component {
     userId: PropTypes.string.isRequired,
     conversationId: PropTypes.string,
     systemMessage: PropTypes.object,
-    fetchReplyMessages: PropTypes.func.isRequired,
     currentConversation: PropTypes.object,
     currentTicket: PropTypes.object,
     isFetchingReplies: PropTypes.bool,
@@ -81,18 +80,6 @@ export default class MessageBox extends Component {
     conversationId: '',
     sendingMessages: [],
     // sendingMessageErrors: {},
-  }
-
-  componentDidMount = () => {
-    const {
-      fetchReplyMessages, currentConversation,
-      setCurrentTicket, conversationId,
-    } = this.props;
-    fetchReplyMessages(conversationId);
-    if (!_isEmpty(currentConversation)) {
-      const { ticketId } = currentConversation;
-      setCurrentTicket(ticketId);
-    }
   }
 
   componentDidUpdate = (prevProps) => {

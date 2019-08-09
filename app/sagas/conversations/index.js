@@ -22,6 +22,7 @@ import {
 } from '../../reducers/replies';
 
 function* fetchConversationMessages({ payload }) {
+  console.log(payload);
   const { conversationId } = payload;
   if (!conversationId) return;
   try {

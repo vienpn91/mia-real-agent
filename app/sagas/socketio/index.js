@@ -95,7 +95,9 @@ function* requestConfirm() {
       const conversationId = yield select(getCurrentConveration);
       notification.success({ message: `The Agent had accepted ticket: #${ticketId}` });
       yield put(TICKET_ACTIONS.getAction(ticketId));
+      // Update conversation
       yield put(fetchConversation(conversationId));
+      yield put(CONVERSATION_ACTIONS.userJoinConversation(conversationId));
     } else {
       notification.error({ message: 'The Agent had declined the request' });
     }
