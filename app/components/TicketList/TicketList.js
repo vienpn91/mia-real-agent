@@ -1,4 +1,5 @@
 import React from 'react';
+import _isNumber from 'lodash/isNumber';
 import PropTypes, { string, func, bool } from 'prop-types';
 import SpinnerLoading from 'components/PageLoading';
 import ShadowScrollbars from 'components/Scrollbar';
@@ -31,10 +32,37 @@ const scrollStyleMobile = {
   width: '100%',
 };
 
+const PAGE_SIZE = 10;
+
 class TicketList extends React.PureComponent {
+  state = {
+    page: 0,
+  }
+
   componentDidMount = () => {
-    const { fetchListAction } = this.props;
-    fetchListAction();
+    const { getAllTicketAction } = this.props;
+    getAllTicketAction({ skip: 0, limit: PAGE_SIZE });
+  }
+
+  componentDidUpdate = () => {
+    const { page } = this.state;
+    const { total } = this.props;
+    if (page === 0 && total > 0) {
+      this.setState({
+        page: 1,
+      });
+    }
+  }
+
+  handleChangePage = (current) => {
+    const { page } = this.state;
+    const { getAllTicketAction } = this.props;
+    if (page && _isNumber(page)) {
+      getAllTicketAction({ skip: (current - 1) * PAGE_SIZE, limit: PAGE_SIZE });
+    }
+    this.setState({
+      page: current,
+    });
   }
 
   handleSelectTicket = (conversationId) => {
@@ -98,17 +126,22 @@ class TicketList extends React.PureComponent {
   )
 
   // should apply later
-  renderTicketPagination = () => (
-    <TicketPaginationWrapper>
-      <Pagination
-        current={1}
-        showLessItems
-        size="small"
-        pageSize={5}
-        total={this.props.total}
-      />
-    </TicketPaginationWrapper>
-  )
+  renderTicketPagination = () => {
+    const { total } = this.props;
+    const { page } = this.state;
+    return (
+      <TicketPaginationWrapper>
+        <Pagination
+          onChange={this.handleChangePage}
+          current={_isNumber(page) ? page : 0}
+          showLessItems
+          size="small"
+          pageSize={10}
+          total={total}
+        />
+      </TicketPaginationWrapper>
+    );
+  }
 
   render() {
     const { isFetchingList = {} } = this.props;
@@ -133,7 +166,7 @@ TicketList.propTypes = {
   selectConversation: PropTypes.func.isRequired,
   openSetting: PropTypes.func.isRequired,
   closeAction: PropTypes.func.isRequired,
-  fetchListAction: PropTypes.func.isRequired,
+  getAllTicketAction: PropTypes.func.isRequired,
   ticketList: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 

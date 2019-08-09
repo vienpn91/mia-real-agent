@@ -253,9 +253,11 @@ function ticketReducer(state = initialState, action) {
       const { payload } = action;
       const { _id } = payload;
       const visibleTicketIds = state.get('visibleTicketIds').toJS();
+      const totalRecord = state.get('totalRecord');
       const newVisibleTicketIds = [_id, ...visibleTicketIds];
       return state
         .set('isCreating', false)
+        .set('totalRecord', totalRecord + 1)
         .setIn(['tickets', _id], fromJS(payload))
         .set('visibleTicketIds', fromJS(newVisibleTicketIds));
     }
