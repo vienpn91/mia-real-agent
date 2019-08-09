@@ -39,10 +39,13 @@ class TicketList extends React.PureComponent {
 
   handleSelectTicket = (conversationId) => {
     const { selectConversation } = this.props;
-    selectConversation(conversationId);
-    history.push(`/conversation/${conversationId}`);
+    const { location } = history;
+    const url = `/conversation/${conversationId}`;
+    if (url !== location.pathname) {
+      selectConversation(conversationId);
+      history.push(url);
+    }
   }
-
 
   renderTicketItem = (ticket, index) => {
     const { openSetting, userRole, closeAction } = this.props;
@@ -54,9 +57,9 @@ class TicketList extends React.PureComponent {
           userRole={userRole}
           ticket={ticket}
           onClose={closeAction}
-          // onRemove={() => this.handleRemoveTicket(ticketId)}
-          // onArchive={() => this.handleArchiveTicket(ticketId)}
-          openSetting={openSetting}
+        // onRemove={() => this.handleRemoveTicket(ticketId)}
+        // onArchive={() => this.handleArchiveTicket(ticketId)}
+        // openSetting={openSetting}
         />
       </Menu.Item>
     );
