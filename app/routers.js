@@ -1,7 +1,7 @@
 /* eslint-disable react/prefer-stateless-function */
 import React from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { isPageLoading } from './reducers/system';
 import MainLayout from './components/MainLayout';
@@ -29,6 +29,7 @@ import ApplicationDetail from './containers/ApplicationDetail';
 
 import AdminDashboard from './pages/AdminDashboard';
 import ApplicationForm from './pages/Application';
+import AdminRoute from './containers/Route/AdminRoute';
 
 class Router extends React.PureComponent {
   static propTypes = {
@@ -46,17 +47,21 @@ class Router extends React.PureComponent {
 
     return (
       <Switch>
-        <Route path="/admin">
-          <AdminMainLayout>
-            <AuthenticatedRoute exact path="/admin/dashboard" component={AdminDashboard} />
-            <AuthenticatedRoute exact path="/admin/tickets" component={TicketManagement} />
-            <AuthenticatedRoute path="/admin/tickets/:id" component={TicketDetail} />
-            <AuthenticatedRoute exact path="/admin/applications" component={ApplicationManagement} />
-            <AuthenticatedRoute path="/admin/applications/:id" component={ApplicationDetail} />
-            <AuthenticatedRoute exact path="/admin/user" component={UserManagement} />
-            <AuthenticatedRoute path="/admin/user/:id" component={UserDetail} />
-          </AdminMainLayout>
-        </Route>
+        <AdminRoute
+          path="/admin"
+          component={() => (
+            <AdminMainLayout>
+              <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
+              <AdminRoute exact path="/admin/tickets" component={TicketManagement} />
+              <AdminRoute path="/admin/tickets/:id" component={TicketDetail} />
+              <AdminRoute exact path="/admin/applications" component={ApplicationManagement} />
+              <AdminRoute path="/admin/applications/:id" component={ApplicationDetail} />
+              <AdminRoute exact path="/admin/user" component={UserManagement} />
+              <AdminRoute path="/admin/user/:id" component={UserDetail} />
+              <AdminRoute exact path="/admin" component={() => <Redirect to="/admin/user" />} />
+            </AdminMainLayout>
+          )}
+        />
         <UnauthRoute exact path="/" component={HomePage} />
         <UnauthRoute exact path="/login" component={Login} />
         <UnauthRoute exact path="/register" component={Registration} />

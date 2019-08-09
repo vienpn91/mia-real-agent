@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import AuthenticatedRoute from '../../../components/Route/AuthenticatedRoute';
+import AdminRoute from '../../../components/Route/AdminRoute';
 import { checkAuthenticatedStatus, getUserRole } from '../../../reducers/auth';
 
 const mapStateToProps = state => ({
@@ -7,4 +7,4 @@ const mapStateToProps = state => ({
   userRole: getUserRole(state),
 });
 
-export default connect(mapStateToProps)(AuthenticatedRoute);
+export default connect(mapStateToProps)(AdminRoute);

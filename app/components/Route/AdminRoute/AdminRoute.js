@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 import { ROLES } from '../../../../common/enums';
 
-const AuthenticatedRoute = ({
+const AdminRoute = ({
   authenticated,
   userRole,
   component: Component,
@@ -12,31 +12,31 @@ const AuthenticatedRoute = ({
   <Route
     {...rest}
     render={(props) => {
-      const toAdminObj = {
-        pathname: '/admin',
-        state: { from: props.location },
-      };
-
-      if (authenticated) {
-        if (userRole === ROLES.ADMIN) return <Redirect to={toAdminObj} />;
-        return <Component {...props} authenticated />;
-      }
-      const toObj = {
+      const toUnauthenticatedObj = {
         pathname: '/login',
         state: { from: props.location },
       };
 
-      if (!authenticated) return <Redirect to={toObj} />;
+      const toUnauthorizedObj = {
+        pathname: '/dashboard',
+        state: { from: props.location },
+      };
+      if (authenticated) {
+        if (userRole !== ROLES.ADMIN) return <Redirect to={toUnauthorizedObj} />;
+        return <Component {...props} authenticated />;
+      }
+      if (!authenticated) return <Redirect to={toUnauthenticatedObj} />;
+
       return <Redirect to="/error/404" />;
     }}
   />
 );
 
-AuthenticatedRoute.propTypes = {
+AdminRoute.propTypes = {
   authenticated: PropTypes.bool.isRequired,
   userRole: PropTypes.string,
   component: PropTypes.any,
   location: PropTypes.any,
 };
 
-export default AuthenticatedRoute;
+export default AdminRoute;
