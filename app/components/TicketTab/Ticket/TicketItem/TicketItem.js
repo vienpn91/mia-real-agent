@@ -16,6 +16,7 @@ import {
 } from '../../../TableComponent/TableComponent.styled';
 import { TableContent } from '../../../TableComponent/TableComponent';
 import { columnSizeContent } from '../ColumnSize';
+import { TicketStatus } from './TicketItem.styled';
 
 class TicketItem extends Component {
   static propTypes = {
@@ -56,19 +57,20 @@ class TicketItem extends Component {
     );
   }
 
-  renderTicketStatus = () => (
+  renderTicketStatus = status => (
     <DashboardStatus>
-      <Icon twoToneColor="#28a745" type="exclamation-circle" theme="twoTone" />
+      <TicketStatus status={status} />
     </DashboardStatus>
   )
 
 
   render() {
-    const { index } = this.props;
+    const { index, ticket } = this.props;
+    const { status } = ticket;
     return (
       <TableContentItem key={index} ticket>
         <TableContent {...columnSizeContent[0]}>
-          {this.renderTicketStatus()}
+          {this.renderTicketStatus(status)}
         </TableContent>
         <TableContent {...columnSizeContent[1]}>
           {this.renderTicketContent()}
