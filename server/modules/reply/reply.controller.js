@@ -16,33 +16,36 @@ class ReplyController extends BaseController {
     this.getResponseFromMia = this.getResponseFromMia.bind(this);
   }
 
-  async getResponseFromMia(userReply) {
+  async getResponseFromMia(userReply, ticketId) {
     const { WEBHOOK_ENDPOINT } = process.env;
     if (!WEBHOOK_ENDPOINT) {
       Logger.error('WEBHOOK_ENDPOINT not found');
       return;
     }
     try {
-      const response = await axios.post(`${WEBHOOK_ENDPOINT}/api/chats/diagram`, userReply);
+      const { messages, conversationId, from } = userReply;
+      const response = await axios.post(`${WEBHOOK_ENDPOINT}/api/chats/dialog`, { content: messages });
       const { data: miaReply } = response;
 
-      console.log(miaReply);
+      // Get mia full fillment text
+      const { data: { queryResult } } = miaReply;
+      const { fulfillmentText } = queryResult;
 
       const reply = {
-        conversationId: userReply.conversation,
+        conversationId,
         from: null,
-        messages: 'Message from mia', // miaReply.message
+        messages: `Mia: "${fulfillmentText}"`, // miaReply.message
       };
 
       const newReplyMetadata = {
         from: 'MIA',
-        to: userReply.from,
+        to: from,
         message: 'Message from mia', // miaReply.message
-        conversation: userReply.conversation,
+        conversation: conversationId,
       };
 
       const newReply = await this.service.insert(reply);
-      emitNewMessage(newReplyMetadata, newReply);
+      emitNewMessage({ ...newReplyMetadata, ticketId }, newReply);
     } catch (error) {
       Logger.error('Error while trying to fetch response from mia', error);
     }
@@ -64,7 +67,7 @@ class ReplyController extends BaseController {
       if (userReply.to) {
         emitNewMessage({ ...userReply, ticketId }, newReply);
       } else {
-        setTimeout(() => this.getResponseFromMia(userReply), 0);
+        setTimeout(() => this.getResponseFromMia(userReply, ticketId), 0);
       }
 
 
