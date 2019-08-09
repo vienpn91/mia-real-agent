@@ -6,6 +6,7 @@ import { shape } from 'prop-types';
 import ShadowScrollbars from 'components/Scrollbar';
 import Activity from 'components/ActivityTab';
 import TicketTab from 'containers/TicketTab';
+import RequestTab from 'containers/RequestTab';
 import {
   DashboardContainer,
   DashboardItem,
@@ -21,6 +22,7 @@ const scrollStyle = {
 const TAB = {
   Activity: 'activity',
   Ticket: 'ticket',
+  Requests: 'requests',
 };
 
 export default class Dashboard extends Component {
@@ -69,6 +71,12 @@ export default class Dashboard extends Component {
     </TabPane>
   )
 
+  renderRequestItem = () => (
+    <TabPane tab="Requests" key={TAB.Requests}>
+      <RequestTab />
+    </TabPane>
+  )
+
   handleChangeTab = (activeTab) => {
     const { history } = this.props;
     history.push(`/dashboard/${activeTab}`);
@@ -92,6 +100,7 @@ export default class Dashboard extends Component {
                 >
                   {this.renderTicketItem()}
                   {this.renderActivityItem()}
+                  {this.renderRequestItem()}
                 </Tabs>
               </Col>
             </Row>
