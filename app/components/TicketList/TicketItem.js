@@ -13,10 +13,16 @@ class TicketItem extends React.PureComponent {
     openSetting(ticket);
   }
 
+  handleOnClose = () => {
+    const { onClose, ticket } = this.props;
+    const { _id } = ticket;
+    onClose(_id);
+  }
+
   renderGroupAction = () => (
     <ActionList>
       <Button>Archive</Button>
-      <Button>Close</Button>
+      <Button onClick={this.handleOnClose}>Close</Button>
       <Button>Report</Button>
     </ActionList>
   )
@@ -56,6 +62,7 @@ class TicketItem extends React.PureComponent {
 TicketItem.propTypes = {
   ticket: PropTypes.object,
   openSetting: func,
+  onClose: func,
   number: PropTypes.number.isRequired,
 };
 

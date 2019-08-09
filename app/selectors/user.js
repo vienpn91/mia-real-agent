@@ -28,7 +28,7 @@ const getSizePerPage = ({ user: userState }) => userState.getIn(['pagination', '
 
 const reselectUpdateContext = createSelector(getUpdateContext, update => update.toJS());
 
-const reselectAddNewContext = createSelector(getAddNewContext, addNew => addNew.toJS(),);
+const reselectAddNewContext = createSelector(getAddNewContext, addNew => addNew.toJS());
 
 const reselectSorting = createSelector(getSorting, sorting => sorting.toJS());
 
@@ -36,7 +36,7 @@ const reselectUsers = createSelector(
   getUsers,
   getVisibleUserIds,
   (users, visibleUserIds) => {
-    const plainUserById = users.toJS();
+    const plainUserById = users;
     const plainVisibleUserIds = visibleUserIds.toJS();
     return plainVisibleUserIds.map(id => plainUserById[id]);
   },

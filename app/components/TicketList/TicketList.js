@@ -43,8 +43,9 @@ class TicketList extends React.PureComponent {
     history.push(`/conversation/${conversationId}`);
   }
 
+
   renderTicketItem = (ticket, index) => {
-    const { openSetting, userRole } = this.props;
+    const { openSetting, userRole, closeAction } = this.props;
     const { _id: ticketId, conversationId } = ticket;
     return (
       <Menu.Item key={ticketId} onClick={() => this.handleSelectTicket(conversationId)}>
@@ -52,8 +53,9 @@ class TicketList extends React.PureComponent {
           number={index + 1}
           userRole={userRole}
           ticket={ticket}
-          onRemove={() => this.handleRemoveTicket(ticketId)}
-          onArchive={() => this.handleArchiveTicket(ticketId)}
+          onClose={closeAction}
+          // onRemove={() => this.handleRemoveTicket(ticketId)}
+          // onArchive={() => this.handleArchiveTicket(ticketId)}
           openSetting={openSetting}
         />
       </Menu.Item>
@@ -127,6 +129,7 @@ TicketList.propTypes = {
   total: PropTypes.number,
   selectConversation: PropTypes.func.isRequired,
   openSetting: PropTypes.func.isRequired,
+  closeAction: PropTypes.func.isRequired,
   fetchListAction: PropTypes.func.isRequired,
   ticketList: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
