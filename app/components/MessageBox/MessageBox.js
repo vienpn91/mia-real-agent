@@ -7,7 +7,6 @@ import {
 import _isEmpty from 'lodash/isEmpty';
 import { Formik } from 'formik';
 import ShadowScrollbars from 'components/Scrollbar';
-// import ConversationDetail from '../ConversationDetail';
 import {
   MessageBoxWrapper,
   MessageBoxContent,
@@ -31,7 +30,7 @@ import {
 } from './styles';
 import LoadingSpin from '../Loading';
 import ConversationDetail from '../ConversationDetail/ConversationDetail';
-import { TICKET_STATUS, ROLES } from '../../../common/enums';
+import { TICKET_STATUS } from '../../../common/enums';
 import FormInput from '../FormInput/FormInput';
 import { insertSystemMessageToRepliesChat, combineChat } from './utils';
 import { shouldShowSystemMessage, isAgent } from '../../utils/func-utils';
@@ -87,13 +86,11 @@ export default class MessageBox extends Component {
   componentDidMount = () => {
     const {
       fetchReplyMessages, currentConversation,
-      setCurrentTicket, joinConversation,
+      setCurrentTicket, conversationId,
     } = this.props;
-    // eslint-disable-next-line no-underscore-dangle
+    fetchReplyMessages(conversationId);
     if (!_isEmpty(currentConversation)) {
-      const { ticketId, _id } = currentConversation;
-      joinConversation(_id);
-      fetchReplyMessages(_id);
+      const { ticketId } = currentConversation;
       setCurrentTicket(ticketId);
     }
   }
@@ -101,20 +98,21 @@ export default class MessageBox extends Component {
   componentDidUpdate = (prevProps) => {
     this.scrollChatToBottom();
     const {
+      conversationId,
       currentConversation, setCurrentTicket, joinConversation, leftConversation,
     } = this.props;
+    const { conversationId: prevConversationId } = prevProps;
+    if (conversationId !== prevConversationId) {
+      joinConversation(conversationId);
+      if (prevConversationId) {
+        leftConversation(prevConversationId);
+      }
+    }
     if (!_isEmpty(currentConversation)) {
-      const { _id: currentConvId } = currentConversation;
-      const { ticketId: prevTicketId, _id: prevConversationId } = prevProps.currentConversation;
+      const { ticketId: prevTicketId } = prevProps.currentConversation;
       const { ticketId } = currentConversation;
       if (ticketId !== prevTicketId) {
         setCurrentTicket(ticketId);
-      }
-      if (currentConvId !== prevConversationId) {
-        joinConversation(currentConvId);
-        if (prevConversationId) {
-          leftConversation(prevConversationId);
-        }
       }
     }
   }
@@ -158,9 +156,8 @@ export default class MessageBox extends Component {
   )
 
   renderSystemMessage = () => {
-    const { systemMessage, currentConversation } = this.props;
-    const { _id: currentConvId } = currentConversation;
-    return shouldShowSystemMessage(systemMessage, currentConvId) && (
+    const { systemMessage, conversationId } = this.props;
+    return shouldShowSystemMessage(systemMessage, conversationId) && (
       <MessageBoxSystemNotification>
         {systemMessage.message}
       </MessageBoxSystemNotification>
@@ -236,7 +233,8 @@ export default class MessageBox extends Component {
   }
 
   renderMessageInput = () => {
-    const { isFindingAgent, userRole } = this.props;
+    const { isFindingAgent, userRole, currentTicket } = this.props;
+    const { assignee } = currentTicket;
     return (
       <Formik
         ref={(formik) => { this.formik = formik; }}
@@ -258,7 +256,7 @@ export default class MessageBox extends Component {
               />
               {this.renderGroupAction()}
               <InputAction onClick={handleSubmit} className="mia-enter" />
-              {(userRole !== ROLES.FREELANCER && userRole !== ROLES.FULLTIME)
+              {(!isAgent(userRole)) && !assignee
                 && (
                   <Button
                     loading={isFindingAgent}
@@ -343,12 +341,11 @@ export default class MessageBox extends Component {
     const {
       isFetchingReplies, isFindingAgent, otherUserTyping,
       replyMessages, currentTicket, systemMessage,
-      currentConversation,
+      conversationId,
     } = this.props;
-    const { _id: currentConvId } = currentConversation;
     const { status } = currentTicket || {};
     const hasChatData = !_isEmpty(replyMessages)
-      || shouldShowSystemMessage(systemMessage, currentConvId)
+      || shouldShowSystemMessage(systemMessage, conversationId)
       || !_isEmpty(otherUserTyping);
     return (
       <LoadingSpin loading={isFetchingReplies || isFindingAgent}>

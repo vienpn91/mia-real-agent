@@ -36,6 +36,7 @@ class SocketIOServer {
           timeout: 15000, // 15 seconds to send the authentication message
         }))
       .on('authenticated', async (socket) => {
+        this.setUpConversationRoom(socket);
         const { data: user } = await this.authenticate(socket);
         if (!user) {
           // HMR error
@@ -70,7 +71,6 @@ class SocketIOServer {
         }
         register(id.toString(), socket);
         TicketService.handleTicketOnline(user);
-        this.setUpConversationRoom(socket);
       });
   }
 

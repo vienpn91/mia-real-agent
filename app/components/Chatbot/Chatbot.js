@@ -5,7 +5,6 @@ import {
   Layout, Icon, Input, Tooltip, Tabs,
 } from 'antd';
 import _get from 'lodash/get';
-import _isEmpty from 'lodash/isEmpty';
 import TicketList from 'containers/TicketList';
 import history from 'utils/history';
 import { Return } from 'components/Generals/General.styled';
@@ -15,7 +14,6 @@ import {
   ChatbotConversationListWrapper,
   ChatbotContentWrapper,
   ConversationHeaderWrapper,
-  ConversationEmpty,
 } from './Chatbot.styled';
 import CreateConversationFormContainer from '../../containers/Chatbot/CreateTicket';
 import EditConversationContainer from '../../containers/Chatbot/EditTicket';
@@ -117,7 +115,7 @@ export default class ChatbotComponent extends Component {
 
   render() {
     const { isOpenCreateModal, isOpenSettingModal, settingChosenConversation } = this.state;
-    const { currentConversation, errorMsg } = this.props;
+    const { currentConversation } = this.props;
 
     return (
       <ChatbotWrapper>
@@ -130,11 +128,7 @@ export default class ChatbotComponent extends Component {
         </ChatbotConversationListWrapper>
         <ChatbotContentWrapper>
           <Content>
-            {
-              (!_isEmpty(currentConversation) && !errorMsg)
-                ? <MessageBoxContainer ticket={currentConversation} />
-                : <ConversationEmpty>Please select a ticket</ConversationEmpty>
-            }
+            <MessageBoxContainer ticket={currentConversation} />
           </Content>
         </ChatbotContentWrapper>
         <CreateConversationFormContainer
