@@ -175,6 +175,7 @@ function* userJoinConversation({ payload }) {
   const { conversationId } = payload;
   const userId = yield select(getUserId);
   socketConnection.emit('JOIN_CONVERSATION', { conversationId, userId });
+  // socketConnection.emit('JOIN_CONVERSATION', { conversationId, userId });
 }
 
 function* userLeftConversation({ payload }) {

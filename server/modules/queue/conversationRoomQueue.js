@@ -55,7 +55,7 @@ class ConversationRoomQueue {
       (conversationId) => {
         const room = this.getRoom(conversationId);
         const { [userId]: _, ...otherUser } = room;
-        if (otherUser) {
+        if (!_isEmpty(otherUser)) {
           this.queue[conversationId] = otherUser;
           Object.keys(room).forEach((otherUserId) => {
             const otherSocket = room[otherUserId];
@@ -71,8 +71,11 @@ class ConversationRoomQueue {
 
   removeUserFromConversation = (conversationId, userId) => {
     const room = this.getRoom(conversationId);
+    if (_isEmpty(room)) {
+      return;
+    }
     const { [userId]: _, ...otherUser } = room;
-    if (_isEmpty(otherUser)) {
+    if (!_isEmpty(otherUser)) {
       this.queue[conversationId] = otherUser;
       Object.keys(otherUser).forEach((otherUserId) => {
         const otherSocket = room[otherUserId];

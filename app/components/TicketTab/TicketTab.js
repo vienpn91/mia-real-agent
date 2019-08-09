@@ -56,6 +56,11 @@ class TicketTab extends PureComponent {
     if (prevProps.match.params.page !== page) {
       getAllTicketAction({ skip: (page - 1) * PAGE_SIZE, limit: PAGE_SIZE });
     }
+    // if (page === 0 && totalRecord > 0) {
+    //   this.setState({
+    //     page: 1,
+    //   });
+    // }
   }
 
   handleChangePage = (current) => {
@@ -136,6 +141,7 @@ class TicketTab extends PureComponent {
     const { totalRecord, match } = this.props;
     const { params } = match;
     const { page } = params;
+    const current = parseInt(page, 0);
     return (
       <TicketTabWrapper>
         {this.renderFilterTicket()}
@@ -143,7 +149,7 @@ class TicketTab extends PureComponent {
         <TicketPaginationWrapper>
           <Pagination
             onChange={this.handleChangePage}
-            current={_isNumber(page) ? page : 0}
+            current={_isNumber(current) ? current : 0}
             showLessItems
             size="small"
             pageSize={PAGE_SIZE}
