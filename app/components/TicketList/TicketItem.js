@@ -6,6 +6,7 @@ import { Popover, Icon, Button } from 'antd';
 import {
   TicketItemStyled, ActionList, TicketStatus, TicketName,
 } from './TicketList.styled';
+import { TICKET_STATUS } from '../../../common/enums';
 
 class TicketItem extends React.PureComponent {
   handleOpenSetting = () => {
@@ -13,13 +14,38 @@ class TicketItem extends React.PureComponent {
     openSetting(ticket);
   }
 
-  renderGroupAction = () => (
-    <ActionList>
-      <Button>Archive</Button>
-      <Button>Close</Button>
-      <Button>Report</Button>
-    </ActionList>
-  )
+  handleOnClose = () => {
+    const { onClose, ticket } = this.props;
+    const { _id } = ticket;
+    onClose(_id);
+  }
+
+  handleStopPropagation = (e) => {
+    e.stopPropagation();
+  }
+
+  renderGroupAction = () => {
+    const { ticket } = this.props;
+    const { status } = ticket;
+    switch (status) {
+      case TICKET_STATUS.CLOSED:
+        return (
+          <ActionList>
+            <Button>Archive</Button>
+            <Button>Re-open</Button>
+            <Button>Report</Button>
+          </ActionList>
+        );
+      default:
+        return (
+          <ActionList>
+            <Button>Archive</Button>
+            <Button onClick={this.handleOnClose}>Close</Button>
+            <Button>Report</Button>
+          </ActionList>
+        );
+    }
+  }
 
   render() {
     const {
@@ -38,10 +64,10 @@ class TicketItem extends React.PureComponent {
           <Popover
             content={this.renderGroupAction()}
             trigger="click"
-            placement="bottom"
+            placement="right"
             onVisibleChange={this.handleVisibleChange}
           >
-            <Icon type="setting" />
+            <Icon type="setting" onClick={this.handleStopPropagation} />
           </Popover>
           <span>
             {`#${number}`}
@@ -56,6 +82,7 @@ class TicketItem extends React.PureComponent {
 TicketItem.propTypes = {
   ticket: PropTypes.object,
   openSetting: func,
+  onClose: func,
   number: PropTypes.number.isRequired,
 };
 

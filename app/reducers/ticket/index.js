@@ -22,9 +22,9 @@ export const TICKET_UPDATE = 'ticket/UPDATE';
 export const TICKET_UPDATE_SUCCESS = 'ticket/UPDATE_SUCCESS';
 export const UPDATE_FAIL = 'ticket/UPDATE_FAIL';
 
-export const TICKET_REMOVE = 'ticket/REMOVE';
-export const TICKET_REMOVE_SUCCESS = 'ticket/REMOVE_SUCCESS';
-export const TICKET_REMOVE_FAIL = 'ticket/REMOVE_FAIL';
+export const TICKET_CLOSE = 'ticket/CLOSE';
+export const TICKET_CLOSE_SUCCESS = 'ticket/CLOSE_SUCCESS';
+export const TICKET_CLOSE_FAIL = 'ticket/CLOSE_FAIL';
 
 export const TICKET_SORTING = 'ticket/TICKET_SORTING';
 export const TICKET_FILTER = 'ticket/TICKET_FILTER';
@@ -144,20 +144,20 @@ const updateFailAction = errorMessage => ({
   },
 });
 
-const removeAction = ticketId => ({
-  type: TICKET_REMOVE,
+const closeAction = ticketId => ({
+  type: TICKET_CLOSE,
   payload: {
     ticketId,
   },
 });
 
-const removeCompleteAction = ticket => ({
-  type: TICKET_REMOVE_SUCCESS,
+const closeCompleteAction = ticket => ({
+  type: TICKET_CLOSE_SUCCESS,
   payload: ticket,
 });
 
-const removeFailAction = errorMessage => ({
-  type: TICKET_REMOVE_FAIL,
+const closeFailAction = errorMessage => ({
+  type: TICKET_CLOSE_FAIL,
   payload: {
     errorMessage,
   },
@@ -211,7 +211,7 @@ export const initialState = fromJS({
   createError: '',
   updateError: '',
   archiveError: '',
-  removeError: '',
+  closeError: '',
   getError: '',
 
   ticket: {},
@@ -232,7 +232,7 @@ export const initialState = fromJS({
   isCreating: false,
   isUpdating: false,
   isArchiving: false,
-  isRemoving: false,
+  isClosing: false,
   isGetting: false,
   fetching: fetchingObj,
   currentTicket: null,
@@ -253,9 +253,11 @@ function ticketReducer(state = initialState, action) {
       const { payload } = action;
       const { _id } = payload;
       const visibleTicketIds = state.get('visibleTicketIds').toJS();
+      const totalRecord = state.get('totalRecord');
       const newVisibleTicketIds = [_id, ...visibleTicketIds];
       return state
         .set('isCreating', false)
+        .set('totalRecord', totalRecord + 1)
         .setIn(['tickets', _id], fromJS(payload))
         .set('visibleTicketIds', fromJS(newVisibleTicketIds));
     }
@@ -310,24 +312,21 @@ function ticketReducer(state = initialState, action) {
       return state.set('isUpdating', false)
         .set('updateError', action.payload.errorMessage);
 
-    case TICKET_REMOVE:
-      return state.set('isRemoving', true)
-        .set('removeError', '');
+    case TICKET_CLOSE:
+      return state.set('isClosing', true)
+        .set('closeError', '');
 
-    case TICKET_REMOVE_SUCCESS: {
+    case TICKET_CLOSE_SUCCESS: {
       const { payload } = action;
       const { _id } = payload;
-      const visibleTicketIds = state.get('visibleTicketIds').toJS();
-      const newVisibleTicketIds = visibleTicketIds.filter(id => id !== _id);
       return state
-        .set('isRemoving', false)
-        .removeIn(['tickets', _id])
-        .set('visibleTicketIds', fromJS(newVisibleTicketIds));
+        .set('isClosing', false)
+        .setIn(['tickets', _id], fromJS(payload));
     }
 
-    case TICKET_REMOVE_FAIL:
-      return state.set('isRemoving', false)
-        .set('removeError', action.payload.errorMessage);
+    case TICKET_CLOSE_FAIL:
+      return state.set('isClosing', false)
+        .set('closeError', action.payload.errorMessage);
 
     case TICKET_ADMIN_GET_ALL:
     case TICKET_GET_ALL:
@@ -397,9 +396,9 @@ export const actions = {
   updateCompleteAction,
   updateFailAction,
 
-  removeAction,
-  removeCompleteAction,
-  removeFailAction,
+  closeAction,
+  closeCompleteAction,
+  closeFailAction,
 
   sortTicket,
   filterTicket,

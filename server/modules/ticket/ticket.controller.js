@@ -209,6 +209,21 @@ class TicketController extends BaseController {
       return this.handleError(res, error);
     }
   }
+
+
+  async closeTicket(req, res) {
+    try {
+      const { model: ticket } = req;
+      if (!ticket) {
+        throw new APIError(CONTENT_NOT_FOUND, httpStatus.NOT_FOUND);
+      }
+      _.assign(ticket, { status: TICKET_STATUS.CLOSED });
+      const result = await ticket.save({});
+      return res.status(httpStatus.OK).send(result);
+    } catch (error) {
+      return this.handleError(res, error);
+    }
+  }
 }
 
 export default new TicketController(TicketService);

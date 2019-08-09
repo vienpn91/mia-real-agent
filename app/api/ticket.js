@@ -31,8 +31,8 @@ export const findAgent = ticketId => axios
   .then(response => ({ response }))
   .catch(error => handleError(error));
 
-export const removeTicket = id => axios
-  .delete(`tickets/${id}`)
+export const closeTicket = id => axios
+  .post(`tickets/${id}/close`)
   .then(response => ({ response }))
   .catch(error => ({ error }));
 

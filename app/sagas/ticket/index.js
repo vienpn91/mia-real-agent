@@ -17,8 +17,9 @@ import {
 } from 'selectors/ticket';
 import {
   actions, TICKET_CREATE, TICKET_GET_ALL,
-  TICKET_GET_DETAIL, TICKET_UPDATE, TICKET_REMOVE, TICKET_ARCHIVE,
-  TICKET_ADMIN_GET_ALL, TICKET_SORTING, TICKET_CHANGE_PAGE, TICKET_FETCH_SINGLE, TICKET_SET_CURRENT, TICKET_GET_DETAIL_SUCCESS,
+  TICKET_GET_DETAIL, TICKET_UPDATE, TICKET_ARCHIVE,
+  TICKET_ADMIN_GET_ALL, TICKET_SORTING, TICKET_CHANGE_PAGE,
+  TICKET_FETCH_SINGLE, TICKET_SET_CURRENT, TICKET_CLOSE,
 } from '../../reducers/ticket';
 import {
   AUTH_LOGIN_SUCCESS,
@@ -167,20 +168,20 @@ function* updateTicket({ payload }) {
   yield put(actions.updateCompleteAction(data));
 }
 
-function* removeTicket({ payload }) {
+function* closeTicket({ payload }) {
   const { ticketId } = payload;
-  const { response, error } = yield call(TicketApi.removeTicket, ticketId);
+  const { response, error } = yield call(TicketApi.closeTicket, ticketId);
   if (error) {
     const message = _get(
       error, 'response.data.message', error.message
     );
-    yield put(actions.removeFailAction(message));
+    yield put(actions.closeFailAction(message));
     notification.error({ message });
     return;
   }
   const { data } = response;
-  yield put(actions.removeCompleteAction(data));
-  notification.success({ message: 'Ticket removed' });
+  yield put(actions.closeCompleteAction(data));
+  notification.success({ message: 'Ticket closed' });
 }
 
 function* ticketFetchSingle({ id }) {
@@ -214,7 +215,7 @@ function* ticketFlow() {
     takeLatest(TICKET_GET_ALL, getAllTicket),
     takeLatest(TICKET_GET_DETAIL, getTicket),
     takeLatest(TICKET_UPDATE, updateTicket),
-    takeLatest(TICKET_REMOVE, removeTicket),
+    takeLatest(TICKET_CLOSE, closeTicket),
     takeLatest(TICKET_ARCHIVE, archiveTicket),
     takeLatest([TICKET_CHANGE_PAGE, TICKET_SORTING], queryTickets),
     takeLatest(TICKET_ADMIN_GET_ALL, adminGetAllTicket),

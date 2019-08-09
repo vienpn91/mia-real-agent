@@ -22,7 +22,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   selectConversation,
-  fetchListAction: actions.getAllTicketAction,
+  getAllTicketAction: actions.getAllTicketAction,
+  closeAction: actions.closeAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TicketList);
