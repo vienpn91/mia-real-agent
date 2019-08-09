@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { getUserId, getUserRole } from 'reducers/auth';
 import {
-  fetchReplyMessages,
   isFetchingReplies,
   getErrorMessage,
   getReplyMessagesByConversationId,
@@ -49,7 +48,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  fetchReplyMessages,
   setCurrentTicket: actions.selectTicket,
   sendReplyMessage,
   findAgentRequest,
