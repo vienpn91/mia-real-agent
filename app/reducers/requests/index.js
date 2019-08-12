@@ -36,12 +36,16 @@ const initialState = fromJS({
 
 function repliesReducer(state = initialState, action) {
   switch (action.type) {
-    // case SAVE_REQUEST: {
-    //   const { request } = action.payload;
-    //   const requests = getRequestList(state);
-    //   return state
-    //     .set('requests', { ...requests, request });
-    // }
+    case SAVE_REQUEST: {
+      const { request } = action.payload;
+      const { _id } = request;
+      const allIds = state.get('allIds');
+      const total = state.get('total');
+      return state
+        .setIn(['byId', _id], request)
+        .set('allIds', allIds.add(_id))
+        .set('total', total + 1);
+    }
 
     default: {
       return state;

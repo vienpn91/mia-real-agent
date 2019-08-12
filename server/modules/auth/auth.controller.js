@@ -102,7 +102,7 @@ class AuthController {
     try {
       const { data } = req.body;
       const {
-        email, password, username, role, ...rest
+        email, password, username, role, profile,
       } = data;
       await check(email, VALIDATION_TYPE.EMAIL);
       await check(password, VALIDATION_TYPE.PASSWORD);
@@ -112,7 +112,7 @@ class AuthController {
         password: hash,
         role,
         username,
-        profile: rest,
+        profile,
       };
       const userDoc = await UserService.insert(user);
       const { _id } = userDoc;

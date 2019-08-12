@@ -51,6 +51,11 @@ export const get = id => axios
   .then(response => ({ response }))
   .catch(error => ({ error }));
 
+export const getProfile = id => axios
+  .get(`tickets/${id}/profile`)
+  .then(response => ({ response }))
+  .catch(error => ({ error }));
+
 export const getActivity = () => axios
   .get('admin/tickets/dashboard/activity')
   .then(response => ({ response }))

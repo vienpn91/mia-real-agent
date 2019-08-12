@@ -122,6 +122,15 @@ class TicketService extends BaseService {
     const tickets = await this.collection.update(query, { status: TICKET_STATUS.IDLE }).exec();
     return tickets;
   }
+
+  async handleTicketOpen(ticketId) {
+    const query = {
+      status: TICKET_STATUS.PENDING,
+      _id: ticketId,
+    };
+    const tickets = await this.collection.update(query, { status: TICKET_STATUS.OPEN }).exec();
+    return tickets;
+  }
 }
 
 export const closeTicketOfflineQuery = ({ _id: userId }) => ({

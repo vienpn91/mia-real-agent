@@ -1,4 +1,5 @@
 import _isEmpty from 'lodash/isEmpty';
+import { SOCKET_EMIT } from '../../../common/enums';
 
 // Dump data
 // [conversationId]: {
@@ -27,7 +28,7 @@ class ConversationRoomQueue {
       if (otherUser) {
         Object.keys(otherUser).forEach((otherUserId) => {
           const otherSocket = room[otherUserId];
-          otherSocket.emit('RECEIVE_USER_TYPING', { conversationId, userId, messages });
+          otherSocket.emit(SOCKET_EMIT.RECEIVE_USER_TYPING, { conversationId, userId, messages });
         });
       }
     }
@@ -38,7 +39,7 @@ class ConversationRoomQueue {
     if (!_isEmpty(room)) {
       Object.keys(room).forEach((otherUserId) => {
         const otherSocket = room[otherUserId];
-        otherSocket.emit('OTHER_JOIN_ROOM', { conversationId, userId });
+        otherSocket.emit(SOCKET_EMIT.OTHER_JOIN_ROOM, { conversationId, userId });
       });
     }
     this.queue = {
@@ -59,7 +60,7 @@ class ConversationRoomQueue {
           this.queue[conversationId] = otherUser;
           Object.keys(room).forEach((otherUserId) => {
             const otherSocket = room[otherUserId];
-            otherSocket.emit('OTHER_LEFT_ROOM', { conversationId, userId });
+            otherSocket.emit(SOCKET_EMIT.OTHER_LEFT_ROOM, { conversationId, userId });
           });
         } else {
           const { [conversationId]: removeConversation, ...rest } = this.queue;
@@ -79,7 +80,7 @@ class ConversationRoomQueue {
       this.queue[conversationId] = otherUser;
       Object.keys(otherUser).forEach((otherUserId) => {
         const otherSocket = room[otherUserId];
-        otherSocket.emit('OTHER_LEFT_ROOM', { conversationId, userId });
+        otherSocket.emit(SOCKET_EMIT.OTHER_LEFT_ROOM, { conversationId, userId });
       });
     } else {
       const { [conversationId]: removeConversation, ...rest } = this.queue;

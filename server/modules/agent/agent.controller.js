@@ -1,6 +1,6 @@
 import httpStatus from 'http-status';
 import _assign from 'lodash/assign';
-import { TICKET_STATUS } from '../../../common/enums';
+import { TICKET_STATUS, SOCKET_EMIT } from '../../../common/enums';
 import TicketService from '../ticket/ticket.service';
 import ConversationService from '../conversation/conversation.service';
 import AgentQueue from '../queue/agentQueue';
@@ -62,7 +62,7 @@ class AgentController {
         ]);
         const { owner } = ticket;
         const ownerSocket = UserQueue.getUser(owner);
-        ownerSocket.emit('REQUEST_CONFIRM', {
+        ownerSocket.emit(SOCKET_EMIT.REQUEST_CONFIRM, {
           isConfirm,
           ticketId,
         });

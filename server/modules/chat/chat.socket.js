@@ -1,10 +1,11 @@
 import UserQueue from '../queue/userQueue';
+import { SOCKET_EMIT } from '../../../common/enums';
 
 export const emitNewMessage = (metadata, reply) => {
   const { to } = metadata;
   const toUser = UserQueue.getUser(to);
   if (!toUser) return;
-  toUser.emit('NEW_MESSAGE', {
+  toUser.emit(SOCKET_EMIT.NEW_MESSAGE, {
     metadata,
     reply,
   });
@@ -16,7 +17,7 @@ export const unregister = (id, socket) => {
 };
 
 export const deaf = (socket) => {
-  socket.off('REPLY_MESSAGE', emitNewMessage);
+  socket.off(SOCKET_EMIT.REPLY_MESSAGE, emitNewMessage);
 };
 
 export const register = (id, socket) => {
@@ -37,5 +38,5 @@ export const listen = (socket) => {
    *  message
    * }
    */
-  socket.on('REPLY_MESSAGE', emitNewMessage);
+  socket.on(SOCKET_EMIT.REPLY_MESSAGE, emitNewMessage);
 };

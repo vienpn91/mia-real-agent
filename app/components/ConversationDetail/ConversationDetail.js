@@ -23,7 +23,6 @@ export default class ConversationDetail extends Component {
   renderOwnerInfo = () => {
     const { ticket } = this.props;
     const { owner, ownerProfile } = ticket;
-
     if (!owner) {
       return 'No Owner';
     }
