@@ -116,17 +116,9 @@ export const isWaitingForComfirm = ({ requests }) => requests.get('isWaitingForC
 export const isSendingConfirmation = ({ requests }) => requests.get('isSendingConfirmation');
 export const getRequestData = ({ requests }) => requests.get('requestData');
 
-const list = [
-  { ticketId: 1, title: 'ticket 1', description: 'ccc', category: ['IT', 'PC'], },
-  { ticketId: 2, title: 'ticket 2', description: 'ccc', category: ['IT', 'PC'], },
-  { ticketId: 3, title: 'ticket 3', description: 'ccc', category: ['IT', 'PC'], },
-  { ticketId: 4, title: 'ticket 4', description: 'ccc', category: ['IT', 'PC'], },
-  { ticketId: 5, title: 'ticket 5', description: 'ccc', category: ['IT', 'PC'], },
-];
-
 const initialState = fromJS({
-  byId: _keyBy(list, 'ticketId'),
-  allIds: new ISet(['1', '2', '3', '4', '5']),
+  byId: {},
+  allIds: new ISet(),
   total: 0,
   isRequestingList: new ISet(),
   error: {},
