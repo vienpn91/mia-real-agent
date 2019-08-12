@@ -1,14 +1,6 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import RequestList from '../../containers/RequestList';
 
-export class RequestTab extends PureComponent {
-  render() {
-    return (
-      <div>
-        <RequestList />
-      </div>
-    );
-  }
-}
+const RequestTab = (<RequestList />);
 
 export default RequestTab;
