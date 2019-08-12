@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   Row, Col, Tabs,
 } from 'antd';
-import { shape } from 'prop-types';
+import { shape, string } from 'prop-types';
 import ShadowScrollbars from 'components/Scrollbar';
 import Activity from 'components/ActivityTab';
 import TicketTab from 'containers/TicketTab';
@@ -11,6 +11,7 @@ import {
   DashboardContainer,
   DashboardItem,
 } from './Dashboard.styled';
+import { isAgent } from '../../utils/func-utils';
 
 const { TabPane } = Tabs;
 
@@ -26,6 +27,10 @@ const TAB = {
 };
 
 export default class Dashboard extends Component {
+  static propTypes = {
+    userRole: string.isRequired,
+  }
+
   state = {
     activeTab: '',
   }
@@ -36,16 +41,16 @@ export default class Dashboard extends Component {
   }
 
   componentDidMount = () => {
-    const { match, history } = this.props;
+    const { match, history, userRole } = this.props;
     const { params } = match;
     const { tab } = params;
-    if (!tab) {
+    if (!tab || (tab === TAB.Requests && !isAgent(userRole))) {
       history.push(`/dashboard/${TAB.Ticket}/1`);
-    } else {
-      this.setState({
-        activeTab: tab,
-      });
+      return;
     }
+    this.setState({
+      activeTab: tab,
+    });
   }
 
   componentDidUpdate = (prevProps) => {
@@ -84,6 +89,7 @@ export default class Dashboard extends Component {
 
   render() {
     const { activeTab } = this.state;
+    const { userRole } = this.props;
     return (
       <ShadowScrollbars
         autoHide
@@ -100,7 +106,7 @@ export default class Dashboard extends Component {
                 >
                   {this.renderTicketItem()}
                   {this.renderActivityItem()}
-                  {this.renderRequestItem()}
+                  {isAgent(userRole) && this.renderRequestItem()}
                 </Tabs>
               </Col>
             </Row>
