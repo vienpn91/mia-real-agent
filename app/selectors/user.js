@@ -50,10 +50,7 @@ const getUserIdFromRoute = createSelector(
 const getUserDetailFromRoute = createSelector(
   getUserIdFromRoute,
   getUsers,
-  (selectedId, users) => {
-    console.log('users', users);
-    return users.get(selectedId, emptyMap).toJS();
-  },
+  (selectedId, users) => users.get(selectedId, emptyMap).toJS(),
 );
 
 const getCurrentUserRole = createSelector(
