@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
+import _keyBy from 'lodash/keyBy';
 import {
-  fromJS,
+  fromJS, Set as ISet,
 } from 'immutable';
 export const SAVE_REQUEST = 'requests/SAVE_REQUEST';
 
@@ -13,20 +14,34 @@ const saveRequest = request => ({
 });
 
 // selector
-const getRequests = ({ requests }) => requests.get('requests').toJS();
+export const getRequestList = ({ requests }) => {
+  const byId = requests.get('byId').toJS();
+  const allIds = requests.get('allIds').toJS();
+  return allIds.map(id => byId[id]);
+};
+
+const list = [
+  { ticketId: 1, title: 'cc', description: 'ccc' },
+  { ticketId: 2, title: 'cc', description: 'ccc' },
+  { ticketId: 3, title: 'cc', description: 'ccc' },
+  { ticketId: 4, title: 'cc', description: 'ccc' },
+  { ticketId: 5, title: 'cc', description: 'ccc' },
+];
 
 const initialState = fromJS({
-  requests: {},
+  byId: _keyBy(list, 'ticketId'),
+  allIds: new ISet(['1', '2', '3', '4', '5']),
+  total: 0,
 });
 
 function repliesReducer(state = initialState, action) {
   switch (action.type) {
-    case SAVE_REQUEST: {
-      const { request } = action.payload;
-      const requests = getRequests(state);
-      return state
-        .set('requests', { ...requests, request });
-    }
+    // case SAVE_REQUEST: {
+    //   const { request } = action.payload;
+    //   const requests = getRequestList(state);
+    //   return state
+    //     .set('requests', { ...requests, request });
+    // }
 
     default: {
       return state;
@@ -41,5 +56,5 @@ export const actions = {
 };
 
 export const selectors = {
-  getRequests,
+  getRequestList,
 };

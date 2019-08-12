@@ -6,7 +6,7 @@ import { shape } from 'prop-types';
 import ShadowScrollbars from 'components/Scrollbar';
 import Activity from 'components/ActivityTab';
 import TicketTab from 'containers/TicketTab';
-import RequestTab from 'containers/RequestTab';
+import RequestTab from 'components/RequestTab';
 import {
   DashboardContainer,
   DashboardItem,
