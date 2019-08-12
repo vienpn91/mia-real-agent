@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/no-array-index-key */
 import React, { PureComponent } from 'react';
-import PropTypes, { number, shape } from 'prop-types';
+import PropTypes, { number, shape, string } from 'prop-types';
 import {
   Menu, Dropdown, Icon,
   Pagination,
@@ -16,15 +16,11 @@ import {
   Filter,
   CreateItem,
   TicketPaginationWrapper,
+  TicketStatus,
 } from './TicketTab.styles';
 import CreateTicketFormContainer from '../../containers/Chatbot/CreateTicket';
-import { PAGE_SIZE } from '../../../common/enums';
-
-const activityData = [
-  'Created',
-  'Closed',
-  'Assigned',
-];
+import { PAGE_SIZE, TICKET_STATUS } from '../../../common/enums';
+import { isAgent } from '../../utils/func-utils';
 
 const categories = [
   'Finance',
@@ -84,8 +80,9 @@ class TicketTab extends PureComponent {
 
   filterStatus = () => (
     <Menu>
-      {activityData.map((status, index) => (
+      {Object.values(TICKET_STATUS).map((status, index) => (
         <Menu.Item key={index}>
+          <TicketStatus status={status} />
           <span>{status}</span>
         </Menu.Item>
       ))}
@@ -94,7 +91,7 @@ class TicketTab extends PureComponent {
 
   filterCategory = () => (
     <Menu>
-      {categories.map((status, index) => (
+      {Object.values(categories).map((status, index) => (
         <Menu.Item key={index}>
           <span>{status}</span>
         </Menu.Item>
@@ -121,20 +118,25 @@ class TicketTab extends PureComponent {
     </Dropdown>
   )
 
-  renderFilterTicket = () => (
-    <TicketFilterWrapper>
-      <FilterItem>
-        <Filter>
-          {this.renderSelectStatus()}
-          {this.renderSelectCategory()}
-        </Filter>
-        <input type="text" placeholder="Search ticket ..." />
-      </FilterItem>
-      <CreateItem>
-        <DefaultButton onClick={this.handleOpenCreateModal}>Create Ticket</DefaultButton>
-      </CreateItem>
-    </TicketFilterWrapper>
-  )
+  renderFilterTicket = () => {
+    const { userRole } = this.props;
+    return (
+      <TicketFilterWrapper>
+        <FilterItem isAgent={isAgent(userRole)}>
+          <Filter>
+            {this.renderSelectStatus()}
+            {this.renderSelectCategory()}
+          </Filter>
+          <input type="text" placeholder="Search ticket ..." />
+        </FilterItem>
+        {!isAgent(userRole) && (
+          <CreateItem>
+            <DefaultButton onClick={this.handleOpenCreateModal}>Create Ticket</DefaultButton>
+          </CreateItem>
+        )}
+      </TicketFilterWrapper>
+    );
+  }
 
   render() {
     const { isOpenCreateModal } = this.state;
@@ -168,6 +170,7 @@ class TicketTab extends PureComponent {
 TicketTab.propTypes = {
   getAllTicketAction: PropTypes.func,
   totalRecord: number.isRequired,
+  userRole: string.isRequired,
   history: shape(),
   match: shape(),
 };

@@ -297,3 +297,17 @@ export const ConversationTimelineWrapper = styled.div`
     }
   }
 `;
+
+export const TicketStatus = styled.div`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 10px;
+  margin-left: 5px;
+  display: inline-table;
+  background: ${({ status }) => [COLOR_BY_STATUS[status]]};
+`;
+
+export const NoInformationText = styled.span`
+  color: red;
+`;

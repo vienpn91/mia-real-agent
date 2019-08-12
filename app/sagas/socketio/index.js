@@ -10,23 +10,15 @@ import {
   AUTH_LOGOUT,
   getUserId,
 } from '../../reducers/auth';
-import { agentNewRequest } from '../../reducers/agents';
 import { addNewMessage } from '../../reducers/replies';
 import { actions as TICKET_ACTIONS } from '../../reducers/ticket';
+import { actions as REQUEST_ACTIONS } from '../../reducers/requests';
 import {
   actions as CONVERSATION_ACTIONS, fetchConversation,
   USER_JOIN_CONVERSATION, USER_TYPING, getConverationById, getCurrentConveration, USER_LEFT_CONVERSATION,
 } from '../../reducers/conversations';
+import { SOCKET_EMIT } from '../../../common/enums';
 
-/* events */
-const NEW_MESSAGE = 'NEW_MESSAGE';
-const REPLY_MESSAGE = 'REPLY_MESSAGE';
-const REQUEST_AVAILABLE = 'REQUEST_AVAILABLE';
-const REQUEST_CONFIRM = 'REQUEST_CONFIRM';
-// conversation room
-const OTHER_JOIN_ROOM = 'OTHER_JOIN_ROOM';
-const OTHER_LEFT_ROOM = 'OTHER_LEFT_ROOM';
-const RECEIVE_USER_TYPING = 'RECEIVE_USER_TYPING';
 
 let socketConnection;
 
@@ -64,7 +56,7 @@ function createSocketConnection(token) {
 }
 
 function* handleNewMessage() {
-  const socketChannel = yield call(createSocketChannel, socketConnection, NEW_MESSAGE);
+  const socketChannel = yield call(createSocketChannel, socketConnection, SOCKET_EMIT.NEW_MESSAGE);
 
   // watch message and relay the action
   while (true) {
@@ -76,17 +68,17 @@ function* handleNewMessage() {
 }
 
 function* requestAgent() {
-  const socketChannel = yield call(createSocketChannel, socketConnection, REQUEST_AVAILABLE);
+  const socketChannel = yield call(createSocketChannel, socketConnection, SOCKET_EMIT.REQUEST_AVAILABLE);
 
   // watch message and relay the action
   while (true) {
     const data = yield take(socketChannel);
-    yield put(agentNewRequest(data));
+    yield put(REQUEST_ACTIONS.saveRequest(data));
   }
 }
 
 function* requestConfirm() {
-  const socketChannel = yield call(createSocketChannel, socketConnection, REQUEST_CONFIRM);
+  const socketChannel = yield call(createSocketChannel, socketConnection, SOCKET_EMIT.REQUEST_CONFIRM);
 
   // watch message and relay the action
   while (true) {
@@ -104,7 +96,7 @@ function* requestConfirm() {
   }
 }
 function* otherJoinConversation() {
-  const socketChannel = yield call(createSocketChannel, socketConnection, OTHER_JOIN_ROOM);
+  const socketChannel = yield call(createSocketChannel, socketConnection, SOCKET_EMIT.OTHER_JOIN_ROOM);
 
   // watch message and relay the action
   while (true) {
@@ -124,7 +116,7 @@ function* otherJoinConversation() {
 }
 
 function* otherLeftConversation() {
-  const socketChannel = yield call(createSocketChannel, socketConnection, OTHER_LEFT_ROOM);
+  const socketChannel = yield call(createSocketChannel, socketConnection, SOCKET_EMIT.OTHER_LEFT_ROOM);
 
   // watch message and relay the action
   while (true) {
@@ -144,12 +136,22 @@ function* otherLeftConversation() {
 }
 
 function* observeUserTypingConversation() {
-  const socketChannel = yield call(createSocketChannel, socketConnection, RECEIVE_USER_TYPING);
+  const socketChannel = yield call(createSocketChannel, socketConnection, SOCKET_EMIT.RECEIVE_USER_TYPING);
 
   // watch message and relay the action
   while (true) {
     const { conversationId, messages } = yield take(socketChannel);
     yield put(CONVERSATION_ACTIONS.otherUserTyping(conversationId, messages));
+  }
+}
+
+function* removeRequest() {
+  const socketChannel = yield call(createSocketChannel, socketConnection, SOCKET_EMIT.REMOVE_REQUEST);
+
+  // watch message and relay the action
+  while (true) {
+    const { ticketId } = yield take(socketChannel);
+    yield put(REQUEST_ACTIONS.removeRequest(ticketId));
   }
 }
 
@@ -166,6 +168,7 @@ function* connectFlow() {
     otherJoinConversation(),
     otherLeftConversation(),
     observeUserTypingConversation(),
+    removeRequest(),
   ]);
 }
 
@@ -176,20 +179,20 @@ function* disconnectFlow() {
 function* userJoinConversation({ payload }) {
   const { conversationId } = payload;
   const userId = yield select(getUserId);
-  socketConnection.emit('JOIN_CONVERSATION', { conversationId, userId });
+  socketConnection.emit(SOCKET_EMIT.JOIN_CONVERSATION, { conversationId, userId });
   // socketConnection.emit('JOIN_CONVERSATION', { conversationId, userId });
 }
 
 function* userLeftConversation({ payload }) {
   const { conversationId } = payload;
   const userId = yield select(getUserId);
-  socketConnection.emit('LEFT_CONVERSATION', { conversationId, userId });
+  socketConnection.emit(SOCKET_EMIT.LEFT_CONVERSATION, { conversationId, userId });
 }
 
 function* userTyping({ payload }) {
   const { conversationId, messages } = payload;
   const userId = yield select(getUserId);
-  socketConnection.emit('USER_TYPING', { conversationId, userId, messages });
+  socketConnection.emit(SOCKET_EMIT.USER_TYPING, { conversationId, userId, messages });
 }
 
 function* socketIOFlow() {
@@ -201,7 +204,7 @@ function* socketIOFlow() {
 }
 
 export function emitReply(from, to, conversation, messages) {
-  socketConnection.emit(REPLY_MESSAGE, {
+  socketConnection.emit(SOCKET_EMIT.REPLY_MESSAGE, {
     from,
     to,
     conversation,

@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import {
   Row, Col, Tabs,
 } from 'antd';
-import { shape } from 'prop-types';
+import { shape, string } from 'prop-types';
 import ShadowScrollbars from 'components/Scrollbar';
 import Activity from 'components/ActivityTab';
 import TicketTab from 'containers/TicketTab';
+import RequestTab from 'components/RequestTab';
 import {
   DashboardContainer,
   DashboardItem,
 } from './Dashboard.styled';
+import { isAgent } from '../../utils/func-utils';
 
 const { TabPane } = Tabs;
 
@@ -19,11 +21,16 @@ const scrollStyle = {
 };
 
 const TAB = {
-  Activity: 'activity',
+  // Activity: 'activity',
   Ticket: 'ticket',
+  Requests: 'requests',
 };
 
 export default class Dashboard extends Component {
+  static propTypes = {
+    userRole: string.isRequired,
+  }
+
   state = {
     activeTab: '',
   }
@@ -34,16 +41,16 @@ export default class Dashboard extends Component {
   }
 
   componentDidMount = () => {
-    const { match, history } = this.props;
+    const { match, history, userRole } = this.props;
     const { params } = match;
     const { tab } = params;
-    if (!tab) {
+    if (!tab || (tab === TAB.Requests && !isAgent(userRole))) {
       history.push(`/dashboard/${TAB.Ticket}/1`);
-    } else {
-      this.setState({
-        activeTab: tab,
-      });
+      return;
     }
+    this.setState({
+      activeTab: tab,
+    });
   }
 
   componentDidUpdate = (prevProps) => {
@@ -69,6 +76,12 @@ export default class Dashboard extends Component {
     </TabPane>
   )
 
+  renderRequestItem = () => (
+    <TabPane tab="Requests" key={TAB.Requests}>
+      <RequestTab />
+    </TabPane>
+  )
+
   handleChangeTab = (activeTab) => {
     const { history } = this.props;
     history.push(`/dashboard/${activeTab}`);
@@ -76,6 +89,7 @@ export default class Dashboard extends Component {
 
   render() {
     const { activeTab } = this.state;
+    const { userRole } = this.props;
     return (
       <ShadowScrollbars
         autoHide
@@ -91,7 +105,8 @@ export default class Dashboard extends Component {
                   onChange={this.handleChangeTab}
                 >
                   {this.renderTicketItem()}
-                  {this.renderActivityItem()}
+                  {/* {this.renderActivityItem()} */}
+                  {isAgent(userRole) && this.renderRequestItem()}
                 </Tabs>
               </Col>
             </Row>

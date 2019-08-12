@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { COLOR_BY_STATUS } from '../../../common/enums';
 
 export const TicketTabWrapper = styled.div`
   max-width: 980px;
@@ -19,7 +20,7 @@ export const FilterItem = styled.div`
   align-items: center;
   border-radius: 3px;
   height: 32px;
-  flex: 0 0 70%;
+  flex: ${({ isAgent }) => isAgent ? '0 0 100%' : '0 0 85%'};
   font-size: 13px;
   > * {
     height: 100%;
@@ -124,4 +125,13 @@ export const TicketPaginationWrapper = styled.div`
   @media (max-width: 768px) {
     display: none;
   }
+`;
+
+export const TicketStatus = styled.div`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 10px;
+  display: inline-table;
+  background: ${({ status }) => [COLOR_BY_STATUS[status]]};
 `;

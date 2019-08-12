@@ -6,3 +6,7 @@ export const ActionBar = styled.div`
     margin-right: 15px;
   }
 `;
+
+export const DescriptionTextAreaStyled = {
+  height: '120px',
+};

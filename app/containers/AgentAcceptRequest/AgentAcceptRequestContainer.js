@@ -7,7 +7,7 @@ import {
   agentConfirmAction,
   isWaitingForComfirm,
   isSendingConfirmation,
-} from '../../reducers/agents';
+} from '../../reducers/requests';
 import { getUserId } from '../../reducers/auth';
 import { getCurrentConveration } from '../../reducers/conversations';
 

@@ -8,6 +8,7 @@ import DisconnectQueue from '../modules/queue/disconnectQueue';
 import { closeTicketTimeOut } from './timer';
 import ConversationRoomQueue from '../modules/queue/conversationRoomQueue';
 import { isAgent } from '../../app/utils/func-utils';
+import { SOCKET_EMIT } from '../../common/enums';
 
 const ACTION_MESSAGE = 'ACTION_MESSAGE';
 let socketIO;
@@ -52,7 +53,7 @@ class SocketIOServer {
           Logger.info(`[Socket.io]: The foul [${email}] has exit the fray`);
           unregister(id.toString(), socket);
           if (isAgent(role)) {
-            AgentQueue.remove(user);
+            AgentQueue.removeBySocket(socketId);
           }
           // if user/agent goes offline
           TicketService.handleTicketOffline(user);
@@ -75,15 +76,15 @@ class SocketIOServer {
   }
 
   setUpConversationRoom = (socket) => {
-    socket.on('JOIN_CONVERSATION', async ({ conversationId, userId }) => {
+    socket.on(SOCKET_EMIT.JOIN_CONVERSATION, async ({ conversationId, userId }) => {
       ConversationRoomQueue.newUser(conversationId, userId, socket);
     });
 
-    socket.on('LEFT_CONVERSATION', async ({ conversationId, userId }) => {
+    socket.on(SOCKET_EMIT.LEFT_CONVERSATION, async ({ conversationId, userId }) => {
       ConversationRoomQueue.removeUserFromConversation(conversationId, userId);
     });
 
-    socket.on('USER_TYPING', async ({ conversationId, userId, messages }) => {
+    socket.on(SOCKET_EMIT.USER_TYPING, async ({ conversationId, userId, messages }) => {
       ConversationRoomQueue.observeUserTypingMessage(conversationId, userId, messages);
     });
   }

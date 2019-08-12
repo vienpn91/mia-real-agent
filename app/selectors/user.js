@@ -8,7 +8,7 @@ import { getRouteMatch } from './router';
 const emptyMap = fromJS({});
 const emptyList = fromJS([]);
 
-const getUsers = ({ user: userState }) => userState.get('user', emptyMap).toJS();
+const getUsers = ({ user: userState }) => userState.get('user', emptyMap);
 
 const getIsLoading = ({ user: userState }) => userState.get('isLoading', false);
 
@@ -36,7 +36,7 @@ const reselectUsers = createSelector(
   getUsers,
   getVisibleUserIds,
   (users, visibleUserIds) => {
-    const plainUserById = users;
+    const plainUserById = users.toJS();
     const plainVisibleUserIds = visibleUserIds.toJS();
     return plainVisibleUserIds.map(id => plainUserById[id]);
   },

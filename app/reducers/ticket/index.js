@@ -37,7 +37,34 @@ export const TICKET_FETCH_SINGLE_FAIL = 'ticket/TICKET_FETCH_SINGLE_FAIL';
 export const TICKET_CHANGE_PAGE = 'ticket/TICKET_CHANGE_PAGE';
 export const TICKET_ADMIN_GET_ALL = 'ticket/ADMIN_GET_ALL';
 export const TICKET_SET_CURRENT = 'ticket/TICKET_SET_CURRENT';
+
+export const GET_TIKCET_PROFILE = 'ticket/GET_TIKCET_PROFILE';
+export const GET_TIKCET_PROFILE_SUCCESS = 'ticket/GET_TIKCET_PROFILE_SUCCESS';
+export const GET_TIKCET_PROFILE_FAIL = 'ticket/GET_TIKCET_PROFILE_FAIL';
 // action creator
+
+const getTicketProfile = ticketId => ({
+  type: GET_TIKCET_PROFILE,
+  payload: {
+    ticketId,
+  },
+});
+
+const getTicketProfileSuccess = (ticketId, ownerProfile, assigneeProfile) => ({
+  type: GET_TIKCET_PROFILE_SUCCESS,
+  payload: {
+    ticketId,
+    ownerProfile,
+    assigneeProfile,
+  },
+});
+
+const getTicketProfileFail = errorMessage => ({
+  type: GET_TIKCET_PROFILE_FAIL,
+  payload: {
+    errorMessage,
+  },
+});
 
 const selectTicket = ticketId => ({
   type: TICKET_SET_CURRENT,
@@ -271,8 +298,9 @@ function ticketReducer(state = initialState, action) {
     case TICKET_GET_DETAIL_SUCCESS: {
       const { ticket } = action.payload;
       const { _id } = ticket;
+      const tmpTicket = state.get('tickets').get(_id).toJS();
       return state.set('isGetting', false)
-        .setIn(['tickets', _id], fromJS(ticket));
+        .setIn(['tickets', _id], fromJS({ ...tmpTicket, ...ticket }));
     }
     case TICKET_GET_DETAIL_FAIL:
       return state.set('isGetting', false)
@@ -304,13 +332,22 @@ function ticketReducer(state = initialState, action) {
     case TICKET_UPDATE_SUCCESS: {
       const { payload } = action;
       const { _id } = payload;
+      const tmpTicket = state.get('tickets').get(_id).toJS();
       return state.set('isUpdating', false)
-        .setIn(['tickets', _id], fromJS(payload));
+        .setIn(['tickets', _id], fromJS({ ...tmpTicket, ...payload }));
     }
 
     case UPDATE_FAIL:
       return state.set('isUpdating', false)
         .set('updateError', action.payload.errorMessage);
+
+    case GET_TIKCET_PROFILE_SUCCESS: {
+      const { payload } = action;
+      const { ticketId, ownerProfile, assigneeProfile } = payload;
+      const ticket = state.get('tickets').get(ticketId).toJS();
+      return state.set('isUpdating', false)
+        .setIn(['tickets', ticketId], fromJS({ ...ticket, ownerProfile, assigneeProfile }));
+    }
 
     case TICKET_CLOSE:
       return state.set('isClosing', true)
@@ -359,7 +396,9 @@ function ticketReducer(state = initialState, action) {
     case TICKET_FETCH_SINGLE_SUCCESS: {
       const { payload } = action;
       const { _id } = payload;
-      return state.setIn(['ticket', _id], fromJS(payload));
+      const tmpTicket = state.get('tickets').get(_id).toJS();
+      return state
+        .setIn(['tickets', _id], fromJS({ ...tmpTicket, ...payload }));
     }
 
     case TICKET_FETCH_SINGLE_FAIL: {
@@ -413,4 +452,8 @@ export const actions = {
   fetchTicketSingleSuccess,
 
   selectTicket,
+
+  getTicketProfile,
+  getTicketProfileSuccess,
+  getTicketProfileFail,
 };

@@ -12,9 +12,13 @@ class AgentQueue {
   remove = (agent) => {
     const { queue } = this;
     const { _id } = agent;
-    queue.filter(({ _id: removeAgentId }) => _id !== removeAgentId);
-    this.queue = queue;
+    this.queue = queue.filter(({ _id: removeAgentId }) => _id !== removeAgentId);
   };
+
+  removeBySocket = (socketId) => {
+    const { queue } = this;
+    this.queue = queue.filter(({ socketId: removeSocketId }) => removeSocketId !== socketId);
+  }
 }
 
 // eslint-disable-next-line import/no-mutable-exports

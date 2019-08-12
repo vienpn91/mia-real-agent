@@ -1,11 +1,15 @@
 /* eslint-disable no-underscore-dangle */
+import _keyBy from 'lodash/keyBy';
 import {
   fromJS, Set as ISet,
 } from 'immutable';
+export const SAVE_REQUEST = 'requests/SAVE_REQUEST';
+export const REMOVE_REQUEST = 'requests/REMOVE_REQUEST';
 
-export const AGENTS_FIND = 'agents/AGENTS_FIND';
-export const AGENTS_FIND_SUCCESS = 'agents/AGENTS_FIND_SUCCESS';
-export const AGENTS_FIND_FAILED = 'agents/AGENTS_FIND_FAILED';
+
+export const AGENTS_FIND = 'requests/AGENTS_FIND';
+export const AGENTS_FIND_SUCCESS = 'requests/AGENTS_FIND_SUCCESS';
+export const AGENTS_FIND_FAILED = 'requests/AGENTS_FIND_FAILED';
 
 export const AGENT_NEW_REQUEST = 'chat/AGENT_NEW_REQUEST';
 
@@ -14,6 +18,13 @@ export const AGENT_CONFIRM_SUCCESS = 'chat/AGENT_CONFIRM_SUCCESS';
 export const AGENT_CONFIRM_FAIL = 'chat/AGENT_CONFIRM_FAIL';
 
 // action creator
+
+export const removeRequest = ticketId => ({
+  type: REMOVE_REQUEST,
+  payload: {
+    ticketId,
+  },
+});
 
 export const findAgentRequest = (conversationId, isConfirm) => ({
   type: AGENTS_FIND,
@@ -72,27 +83,43 @@ export const agentConfirmFailAction = error => ({
   },
 });
 
+// action creator
+const saveRequest = request => ({
+  type: SAVE_REQUEST,
+  payload: {
+    request,
+  },
+});
+
 // selector
-export const getErrorMessage = ({ agents }, conversationId) => {
+export const getRequestList = ({ requests }) => {
+  const byId = requests.get('byId').toJS();
+  const allIds = requests.get('allIds').toJS();
+  return allIds.map(id => byId[id]);
+};
+
+export const getErrorMessage = ({ requests }, conversationId) => {
   if (!conversationId) return '';
-  const error = agents.getIn(['error', conversationId]);
+  const error = requests.getIn(['error', conversationId]);
   if (!error) return '';
 
   return error;
 };
 
-export const isFindingAgent = ({ agents }, conversationId) => {
+export const isFindingAgent = ({ requests }, conversationId) => {
   if (!conversationId) return false;
-  const isRequestingList = agents.get('isRequestingList');
+  const isRequestingList = requests.get('isRequestingList');
   return isRequestingList.has(conversationId);
 };
 
-export const isWaitingForComfirm = ({ agents }) => agents.get('isWaitingForComfirm');
-export const isSendingConfirmation = ({ agents }) => agents.get('isSendingConfirmation');
-export const getRequestData = ({ agents }) => agents.get('requestData');
+export const isWaitingForComfirm = ({ requests }) => requests.get('isWaitingForComfirm');
+export const isSendingConfirmation = ({ requests }) => requests.get('isSendingConfirmation');
+export const getRequestData = ({ requests }) => requests.get('requestData');
 
-// initial state
 const initialState = fromJS({
+  byId: {},
+  allIds: new ISet(),
+  total: 0,
   isRequestingList: new ISet(),
   error: {},
   isWaitingForComfirm: false,
@@ -101,8 +128,28 @@ const initialState = fromJS({
   requestData: null,
 });
 
-function agentsReducer(state = initialState, action) {
+function repliesReducer(state = initialState, action) {
   switch (action.type) {
+    case SAVE_REQUEST: {
+      const { request } = action.payload;
+      const { _id } = request;
+      const allIds = state.get('allIds');
+      const total = state.get('total');
+      return state
+        .setIn(['byId', _id], request)
+        .set('allIds', allIds.add(_id))
+        .set('total', total + 1);
+    }
+
+    case REMOVE_REQUEST: {
+      const { ticketId } = action.payload;
+      const allIds = state.get('allIds').toJS();
+      const newAllIds = allIds.filter(id => id !== ticketId);
+      return state
+        .removeIn(['byId', ticketId])
+        .set('allIds', fromJS(newAllIds));
+    }
+
     case AGENTS_FIND: {
       const { conversationId } = action.payload;
       const isRequestingList = state.get('isRequestingList').add(conversationId);
@@ -163,9 +210,12 @@ function agentsReducer(state = initialState, action) {
   }
 }
 
-export default agentsReducer;
+export default repliesReducer;
 
 export const actions = {
+  saveRequest,
+  removeRequest,
+
   findAgentRequest,
   findAgentRequestSuccess,
   findAgentRequestFailed,
@@ -175,6 +225,8 @@ export const actions = {
 };
 
 export const selectors = {
+  getRequestList,
+
   getErrorMessage,
   isFindingAgent,
 };

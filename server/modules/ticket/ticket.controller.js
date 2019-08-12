@@ -6,10 +6,9 @@ import TicketService from './ticket.service';
 import UserService from '../user/user.service';
 import ConversationService from '../conversation/conversation.service';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
-import AgentQueue from '../queue/agentQueue';
-import { getSocketByUser } from '../../socketio';
 import { isAgent } from '../../../app/utils/func-utils';
 import { TICKET_STATUS } from '../../../common/enums';
+import RequestQueue from '../queue/requestQueue';
 
 const { CONTENT_NOT_FOUND } = ERROR_MESSAGE;
 const emptyObjString = '{}';
@@ -22,6 +21,7 @@ class TicketController extends BaseController {
     this.insert = this.insert.bind(this);
     this.getAll = this.getAll.bind(this);
     this.getAllConversations = this.getAllConversations.bind(this);
+    this.getOwnerAndAssigneeProfile = this.getOwnerAndAssigneeProfile.bind(this);
   }
 
 
@@ -29,31 +29,9 @@ class TicketController extends BaseController {
     try {
       const { model: ticket } = req;
       // const replyMessages = await ReplyService.getByConversation(id);
-      const { category: ticketCategories = [] } = ticket;
-      // Get owner information
-      const queue = AgentQueue.get();
-      const agents = queue.filter(
-        ({ categories }) => {
-          if (!categories) {
-            return false;
-          }
-          return categories
-            .some(category => ticketCategories.includes(category));
-        }
-      );
-      if (!agents.length) {
-        return res.status(httpStatus.NOT_FOUND).send('Agent not found!');
-      }
-      let hadSentToAgent = false;
-      agents.forEach((agent) => {
-        // eslint-disable-next-line no-underscore-dangle
-        const socket = getSocketByUser(agent);
-        if (socket) {
-          hadSentToAgent = true;
-          socket.emit('REQUEST_AVAILABLE', ticket.toObject());
-        }
-      });
-      if (!hadSentToAgent) {
+
+      const request = RequestQueue.addRequest(ticket);
+      if (!request) {
         return res.status(httpStatus.NOT_FOUND).send('Agent not found!');
       }
 
@@ -76,35 +54,29 @@ class TicketController extends BaseController {
     }
   }
 
-  async get(req, res) {
-    try {
-      const { model } = req;
-      const ticket = model.toObject();
-      const { assignee, owner: ticketOwnerId } = ticket;
-      const ticketOwner = await UserService.get(ticketOwnerId);
-      const { profile, role: ownerRole } = ticketOwner;
-      let assigneeProfile = null;
+  async getOwnerAndAssigneeProfile(req, res) {
+    const { id } = req.params;
+    const ticket = await this.service.get({ _id: id });
+    const { _id: ticketId, assignee, owner: ticketOwnerId } = ticket;
+    const ticketOwner = await UserService.get(ticketOwnerId);
+    const { profile, role: ownerRole } = ticketOwner;
+    let assigneeProfile = null;
 
-      if (assignee) {
-        assigneeProfile = (await UserService.get(assignee)).profile;
-      }
-      return res.status(httpStatus.OK).send(
-        {
-          ...model,
-          _doc: {
-            ...ticket,
-            ownerProfile: {
-              role: ownerRole,
-              profile,
-            },
-            assigneeProfile,
-          },
-        }
-      );
-    } catch (error) {
-      return this.handleError(res, error);
+    if (assignee) {
+      assigneeProfile = (await UserService.get(assignee)).profile;
     }
+    return res.status(httpStatus.OK).send(
+      {
+        ticketId,
+        ownerProfile: {
+          role: ownerRole,
+          profile,
+        },
+        assigneeProfile,
+      },
+    );
   }
+
 
   async load(req, res, next, id) {
     try {

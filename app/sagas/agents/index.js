@@ -10,7 +10,8 @@ import {
   findAgentRequestSuccess,
   agentConfirmSuccessAction,
   agentConfirmFailAction,
-} from '../../reducers/agents';
+  actions as REQUEST_ACTIONS,
+} from '../../reducers/requests';
 import {
   getConversationById,
   actions as CONVERSATION_ACTIONS,
@@ -54,7 +55,11 @@ export function* confirmRequest({ payload }) {
     yield put(actions.getAllTicketAction());
     yield put(selectConversation(conversationId));
     yield put(CONVERSATION_ACTIONS.userJoinConversation(conversationId));
-    if (isConfirm) yield put(push(`/conversation/${conversationId}`));
+    if (isConfirm) {
+      yield put(push(`/conversation/${conversationId}`));
+    } else {
+      yield put(REQUEST_ACTIONS.removeRequest(ticketId));
+    }
   } catch (error) {
     const errorMsg = error.message || error;
     yield put(agentConfirmFailAction(errorMsg));
