@@ -4,9 +4,11 @@ import { getTicketTotalRecord } from 'selectors/ticket';
 import { getAllTicketAction } from 'reducers/ticket';
 import { compose } from 'redux';
 import TicketTab from '../../components/TicketTab';
+import { getUserRole } from '../../reducers/auth';
 
 const mapStateToProps = state => ({
   totalRecord: getTicketTotalRecord(state),
+  userRole: getUserRole(state),
 });
 
 const mapDispatchToProps = {

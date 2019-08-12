@@ -10,7 +10,7 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { DefaultButton } from 'components/Generals/General.styled';
 import FormInput from '../FormInput/FormInput';
-import { ActionBar } from './styles';
+import { ActionBar, DescriptionTextAreaStyled } from './styles';
 import { CATEGORY_OPTIONS } from '../../../common/enums';
 import LoadingSpin from '../Loading';
 
@@ -126,8 +126,9 @@ export default class CreateTicketForm extends PureComponent {
                   <Col sm={24} xs={24}>
                     <FormInput
                       name="description"
-                      type="text"
+                      type="textarea"
                       label="Description"
+                      style={DescriptionTextAreaStyled}
                     />
                   </Col>
                 </Row>

@@ -7,6 +7,8 @@ import {
   ConversationInfoWrapper,
   ConversationTimelineWrapper,
   ChatbotConversationDetailWrapper,
+  TicketStatus,
+  NoInformationText,
 } from './styles';
 import { ROLES } from '../../../common/enums';
 
@@ -24,10 +26,10 @@ export default class ConversationDetail extends Component {
     const { ticket } = this.props;
     const { owner, ownerProfile } = ticket;
     if (!owner) {
-      return 'No Owner';
+      return (<NoInformationText>No Owner</NoInformationText>);
     }
     if (!ownerProfile) {
-      return 'No Profile';
+      return (<NoInformationText>No Profile</NoInformationText>);
     }
     const { role, profile = {} } = ownerProfile;
     const { firstName, lastName, company = 'N/A' } = profile;
@@ -44,10 +46,10 @@ export default class ConversationDetail extends Component {
     const { ticket } = this.props;
     const { assignee, assigneeProfile } = ticket;
     if (!assignee) {
-      return 'No Assignee';
+      return (<NoInformationText>No Assignee</NoInformationText>);
     }
     if (!assigneeProfile) {
-      return 'No Profile';
+      return (<NoInformationText>No Profile</NoInformationText>);
     }
     const { firstName, lastName, company } = assigneeProfile;
     return `${firstName} ${lastName} - ${company}`;
@@ -74,7 +76,10 @@ export default class ConversationDetail extends Component {
           <Descriptions.Item label="Description">{description}</Descriptions.Item>
           <Descriptions.Item label="Owner">{this.renderOwnerInfo()}</Descriptions.Item>
           <Descriptions.Item label="Assignee">{this.renderAssigneeInfo()}</Descriptions.Item>
-          <Descriptions.Item label="Status">{status}</Descriptions.Item>
+          <Descriptions.Item label="Status">
+            <TicketStatus status={status} />
+            {status}
+          </Descriptions.Item>
         </Descriptions>
       </ConversationInfoWrapper>
     );
@@ -82,7 +87,7 @@ export default class ConversationDetail extends Component {
 
   renderConversationTimeline = () => (
     <ConversationTimelineWrapper>
-      <Timeline>
+      {/* <Timeline>
         <Timeline.Item dot={<Icon type="check-circle" style={{ fontSize: '16px' }} />} color="green">
           Con Luong opened 3 minutes ago
         </Timeline.Item>
@@ -92,7 +97,7 @@ export default class ConversationDetail extends Component {
         <Timeline.Item dot={<Icon type="exclamation-circle" style={{ fontSize: '16px' }} />} color="blue">
           Con Luong assigned Tri Nguyen
         </Timeline.Item>
-      </Timeline>
+      </Timeline> */}
     </ConversationTimelineWrapper>
   )
 

@@ -28,7 +28,6 @@ export const ROLES = {
 
 export const TICKET_STATUS = {
   OPEN: 'Open',
-  RESOLVED: 'Resolved',
   CLOSED: 'Closed',
   PENDING: 'Pending',
   IDLE: 'Idle',
@@ -129,10 +128,6 @@ export const CATEGORY_OPTIONS = [
   {
     label: 'Consultant',
     value: 'Consultant',
-  },
-  {
-    label: 'Accounting',
-    value: 'Accounting',
   },
   {
     label: 'Accounting',

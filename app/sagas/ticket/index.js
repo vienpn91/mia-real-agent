@@ -10,6 +10,7 @@ import _pickBy from 'lodash/pickBy';
 import _isEmpty from 'lodash/isEmpty';
 // utils
 import { getSkipLimit } from 'utils/func-utils';
+import history from 'utils/history';
 
 import { notification } from 'antd';
 import {
@@ -21,6 +22,7 @@ import {
   TICKET_ADMIN_GET_ALL, TICKET_SORTING, TICKET_CHANGE_PAGE,
   TICKET_FETCH_SINGLE, TICKET_SET_CURRENT, TICKET_CLOSE, GET_TIKCET_PROFILE,
 } from '../../reducers/ticket';
+import { actions as CONVERSATION_ACTIONS } from '../../reducers/conversations';
 import {
   AUTH_LOGIN_SUCCESS,
 } from '../../reducers/auth';
@@ -63,8 +65,10 @@ function* createTicket({ payload }) {
   }
 
   const { data } = response;
-
   yield put(actions.createCompleteAction(data));
+  const { conversationId } = data;
+  yield put(CONVERSATION_ACTIONS.selectConversation(conversationId));
+  history.push(`/conversation/${conversationId}`);
 }
 
 function* getAllTicket({ payload }) {
