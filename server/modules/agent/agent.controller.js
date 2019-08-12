@@ -1,5 +1,4 @@
 import httpStatus from 'http-status';
-import _assign from 'lodash/assign';
 import { TICKET_STATUS, SOCKET_EMIT } from '../../../common/enums';
 import TicketService from '../ticket/ticket.service';
 import ConversationService from '../conversation/conversation.service';
@@ -8,6 +7,7 @@ import UserQueue from '../queue/userQueue';
 import IdleQueue from '../queue/idleQueue';
 import Logger from '../../logger';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
+import RequestQueue from '../queue/requestQueue';
 
 class AgentController {
   constructor() {
@@ -44,7 +44,6 @@ class AgentController {
       }
       if (isConfirm) {
         AgentQueue.remove(agentId);
-
         // update assign and members for tickets and conversations
         ticket.assignee = agentId;
         ticket.status = TICKET_STATUS.PROCESSING;
@@ -66,10 +65,8 @@ class AgentController {
           isConfirm,
           ticketId,
         });
+        RequestQueue.acceptRequest(ticketId);
         IdleQueue.addTimer(ticketId);
-      } else {
-        _assign(ticket, { status: TICKET_STATUS.OPEN });
-        ticket.save({});
       }
       return res.status(httpStatus.OK).send();
     } catch (error) {

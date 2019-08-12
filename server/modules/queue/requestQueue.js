@@ -6,8 +6,7 @@ import { SOCKET_EMIT } from '../../../common/enums';
 /* eslint-disable no-underscore-dangle */
 
 const requestAgentTimeOut = ticketId => setTimeout(() => {
-  console.log('[Open]: ', ticketId);
-  // TicketService.handleTicketOpen(ticketId);
+  TicketService.handleTicketOpen(ticketId);
 }, 300000);
 
 class RequestQueue {
@@ -54,12 +53,19 @@ class RequestQueue {
     return { [ticketId]: { agents, timer } };
   };
 
-  acceptRequest = (ticketId, agentId) => {
-    console.log(ticketId, agentId);
+  acceptRequest = (ticketId) => {
+    const { agents } = this.getRequest(ticketId);
     // Emit remove request to other agent
+    agents.forEach((agent) => {
+      const socket = getSocketByUser(agent);
+      if (socket) {
+        socket.emit(SOCKET_EMIT.REMOVE_REQUEST, { ticketId });
+      }
+    });
+    this.removeRequest(ticketId);
   }
 
-  removeReq = (ticketId) => {
+  removeRequest = (ticketId) => {
     const { [ticketId]: _, ...rest } = this.queue;
     this.queue = rest;
   };

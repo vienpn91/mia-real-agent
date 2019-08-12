@@ -145,6 +145,16 @@ function* observeUserTypingConversation() {
   }
 }
 
+function* removeRequest() {
+  const socketChannel = yield call(createSocketChannel, socketConnection, SOCKET_EMIT.REMOVE_REQUEST);
+
+  // watch message and relay the action
+  while (true) {
+    const { ticketId } = yield take(socketChannel);
+    yield put(REQUEST_ACTIONS.removeRequest(ticketId));
+  }
+}
+
 function* connectFlow() {
   const token = yield select(getToken);
   // user is not logged in
@@ -158,6 +168,7 @@ function* connectFlow() {
     otherJoinConversation(),
     otherLeftConversation(),
     observeUserTypingConversation(),
+    removeRequest(),
   ]);
 }
 

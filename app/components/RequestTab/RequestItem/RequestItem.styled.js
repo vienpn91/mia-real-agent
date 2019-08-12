@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import { Row } from 'antd';
 
-export const RowStyled = styled(Row)`
-
+export const ActionWrapper = styled.div`
+ button{
+   margin-right: 15px;
+ }
 `;

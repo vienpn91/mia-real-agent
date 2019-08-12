@@ -24,7 +24,7 @@ import {
 import {
   isFindingAgent,
   findAgentRequest,
-} from '../../reducers/agents';
+} from '../../reducers/requests';
 import MessageBox from '../../components/MessageBox';
 
 const mapStateToProps = (state) => {

@@ -298,8 +298,9 @@ function ticketReducer(state = initialState, action) {
     case TICKET_GET_DETAIL_SUCCESS: {
       const { ticket } = action.payload;
       const { _id } = ticket;
+      const tmpTicket = state.get('tickets').get(_id).toJS();
       return state.set('isGetting', false)
-        .setIn(['tickets', _id], fromJS(ticket));
+        .setIn(['tickets', _id], fromJS({ ...tmpTicket, ...ticket }));
     }
     case TICKET_GET_DETAIL_FAIL:
       return state.set('isGetting', false)
@@ -331,8 +332,9 @@ function ticketReducer(state = initialState, action) {
     case TICKET_UPDATE_SUCCESS: {
       const { payload } = action;
       const { _id } = payload;
+      const tmpTicket = state.get('tickets').get(_id).toJS();
       return state.set('isUpdating', false)
-        .setIn(['tickets', _id], fromJS(payload));
+        .setIn(['tickets', _id], fromJS({ ...tmpTicket, ...payload }));
     }
 
     case UPDATE_FAIL:
@@ -394,7 +396,9 @@ function ticketReducer(state = initialState, action) {
     case TICKET_FETCH_SINGLE_SUCCESS: {
       const { payload } = action;
       const { _id } = payload;
-      return state.setIn(['ticket', _id], fromJS(payload));
+      const tmpTicket = state.get('tickets').get(_id).toJS();
+      return state
+        .setIn(['tickets', _id], fromJS({ ...tmpTicket, ...payload }));
     }
 
     case TICKET_FETCH_SINGLE_FAIL: {

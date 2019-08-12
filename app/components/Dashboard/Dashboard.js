@@ -21,7 +21,7 @@ const scrollStyle = {
 };
 
 const TAB = {
-  Activity: 'activity',
+  // Activity: 'activity',
   Ticket: 'ticket',
   Requests: 'requests',
 };
@@ -105,7 +105,7 @@ export default class Dashboard extends Component {
                   onChange={this.handleChangeTab}
                 >
                   {this.renderTicketItem()}
-                  {this.renderActivityItem()}
+                  {/* {this.renderActivityItem()} */}
                   {isAgent(userRole) && this.renderRequestItem()}
                 </Tabs>
               </Col>

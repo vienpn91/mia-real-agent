@@ -145,10 +145,10 @@ export default class CreateTicketForm extends PureComponent {
                 </Row>
                 <Row gutter={32}>
                   <ActionBar>
-                    <DefaultButton cancel onClick={this.handleCancel}>
+                    <DefaultButton type="button" cancel onClick={this.handleCancel}>
                       Cancel
                     </DefaultButton>
-                    <DefaultButton submit onClick={handleSubmit}>
+                    <DefaultButton onClick={handleSubmit}>
                       Submit
                     </DefaultButton>
                   </ActionBar>

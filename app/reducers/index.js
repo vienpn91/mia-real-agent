@@ -15,7 +15,6 @@ import admin from './admin';
 import system from './system';
 import conversations from './conversations';
 import replies from './replies';
-import agents from './agents';
 import requests from './requests';
 
 export const REHYDRATE_COMPLETE = 'root/REHYDRATE_COMPLETE';
@@ -36,7 +35,6 @@ export default function createReducer(injectedReducers = {}) {
     system,
     conversations,
     replies,
-    agents,
     requests,
     router: connectRouter(history),
     ...injectedReducers,
