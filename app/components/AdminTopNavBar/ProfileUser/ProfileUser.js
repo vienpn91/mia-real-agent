@@ -6,46 +6,24 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   ProfileUserInfoWrapper,
-  ProfileUserHead,
-  ProfileUserAvatar,
-  ProfileUserName,
-  ProfileUserEmail,
   ProfileUserAction,
-  CloseAction,
+  ProfileUserHead,
 } from './ProfileUser.styled';
-
-const src = false;
 
 class ProfileUser extends React.PureComponent {
   render() {
     const {
-      onLogout, onToggleUserInfo, username, email,
+      onLogout,
     } = this.props;
     return (
       <ProfileUserInfoWrapper>
         <ProfileUserHead>
-          {/* <ProfileUserAvatar>
-            {src ? (
-              <img src="/assets/images/user-live.jpeg" />
-            ) : (
-              <img
-                src="https://cdn1.thr.com/sites/default/files/imagecache/landscape_928x523/2017/09/gettyimages-801080928_-_h_2017.jpg"
-              />
-            )
-            }
-          </ProfileUserAvatar> */}
-          <ProfileUserName>{username}</ProfileUserName>
-          <ProfileUserEmail>{email}</ProfileUserEmail>
           <ProfileUserAction>
-            <Link to="/profile">My Account</Link>
-            <span>|</span>
+            <Link to="/profile" className="my-account">My Account</Link>
             <button className="sign-out" onClick={onLogout}>
               Sign Out
             </button>
           </ProfileUserAction>
-          <CloseAction onClick={onToggleUserInfo}>
-            <i className="icon-close" />
-          </CloseAction>
         </ProfileUserHead>
       </ProfileUserInfoWrapper>
     );
@@ -54,9 +32,6 @@ class ProfileUser extends React.PureComponent {
 
 ProfileUser.propTypes = {
   onLogout: PropTypes.func,
-  onToggleUserInfo: PropTypes.func,
-  username: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
 };
 
 export default ProfileUser;

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Icon } from 'antd';
 
 export const TopNavBarWrapper = styled.div`
   .ant-layout-header {
@@ -131,4 +132,13 @@ export const ProfileImageStyled = styled.img`
   height: 35px;
   cursor: pointer;
   border-radius: 100%;
+`;
+
+export const MenuStyled = styled(Icon)`
+  svg{
+    color: ${props => props.theme.textColorSecondary};
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-left: 10px;
+  }
 `;
