@@ -91,8 +91,9 @@ export default class ChatbotComponent extends Component {
         <Icon type="left" />
         <span>MENU</span>
       </Return>
-      <Tooltip title="Create ticket">
-        <Icon type="edit" onClick={this.handleOpenCreateModal} />
+      <Tooltip title="Create ticket" onClick={this.handleOpenCreateModal}>
+        <Icon type="copy" />
+        <span className="create-ticket">Create Ticket</span>
       </Tooltip>
     </ConversationHeaderWrapper>
   );

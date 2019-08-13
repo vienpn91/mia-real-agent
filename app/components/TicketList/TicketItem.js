@@ -4,7 +4,13 @@ import PropTypes, { func } from 'prop-types';
 import { DATE_TIME_FORMAT } from 'utils/constants';
 import { Popover, Icon, Button } from 'antd';
 import {
-  TicketItemStyled, ActionList, TicketStatus, TicketName,
+  TicketItemStyled,
+  ActionList,
+  TicketStatus,
+  TicketName,
+  TicketGroup,
+  TicketAction,
+  TimeCreateTicket,
 } from './TicketList.styled';
 import { TICKET_STATUS } from '../../../common/enums';
 
@@ -58,22 +64,25 @@ class TicketItem extends React.PureComponent {
     const timeFormat = moment(createdAt).format(DATE_TIME_FORMAT.DATE);
     return (
       <TicketItemStyled>
-        <TicketName>
+        <TicketGroup>
           <TicketStatus status={status} />
-          {title}
-          <Popover
-            content={this.renderGroupAction()}
-            trigger="click"
-            placement="right"
-            onVisibleChange={this.handleVisibleChange}
-          >
-            <Icon type="setting" onClick={this.handleStopPropagation} />
-          </Popover>
-          <span>
-            {`#${number}`}
-          </span>
-        </TicketName>
-        <p>{timeFormat}</p>
+          <TicketName className={status}>{title}</TicketName>
+          <TicketAction>
+            <span>
+              {`#${number}`}
+            </span>
+            <Popover
+              content={this.renderGroupAction()}
+              trigger="click"
+              placement="right"
+              onVisibleChange={this.handleVisibleChange}
+            >
+              <Icon type="setting" onClick={this.handleStopPropagation} />
+            </Popover>
+          </TicketAction>
+          
+        </TicketGroup>
+        <TimeCreateTicket>{timeFormat}</TimeCreateTicket>
       </TicketItemStyled>
     );
   }

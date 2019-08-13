@@ -68,14 +68,25 @@ export const MessageBoxItem = styled.div`
   }
 `;
 
-export const MessageBoxHeaderWrapper = styled.div`
+export const ConversationHeaderTitle = styled.div`
   display: flex;
   flex-direction: column;
   .ant-breadcrumb-link {
     color: ${props => props.theme.textColor};
   }
+
 `;
 
+export const ConversationTitle = styled.div`
+  text-align: center;
+  padding: 1em;
+  background-color: #fff;
+  span{
+    font-size: 1.3em;
+    margin: 0 1em;
+    font-weight: 600;
+  }
+`;
 
 export const MessageText = styled.div`
   width: fit-content;

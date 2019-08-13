@@ -11,7 +11,7 @@ import {
   MessageBoxWrapper,
   MessageBoxContent,
   MessageBoxItem,
-  MessageBoxHeaderWrapper,
+  ConversationHeaderTitle,
   MessageText,
   MessageInputWrapper,
   MessageActionWrapper,
@@ -20,6 +20,7 @@ import {
   InputAction,
   UserMessage,
   InfoNotification,
+  ConversationTitle,
   RatingWrapper,
   RatingContent,
   CommentInputWrapper,
@@ -266,8 +267,13 @@ export default class MessageBox extends Component {
     const { assignee = {}, title, status } = currentTicket || {};
     const { firstName = '', lastName = '' } = assignee;
     return (
-      <MessageBoxHeaderWrapper>
-        <Breadcrumb separator="-">
+      <ConversationHeaderTitle>
+        <ConversationTitle>
+          <TicketStatus status={status} />
+          <span>{title}</span>
+        </ConversationTitle>
+        
+        {/* <Breadcrumb separator="">
           <Breadcrumb.Item>
             <TicketStatus status={status} />
           </Breadcrumb.Item>
@@ -275,8 +281,8 @@ export default class MessageBox extends Component {
             {title}
           </Breadcrumb.Item>
           <Breadcrumb.Item>{`${firstName} ${lastName}`}</Breadcrumb.Item>
-        </Breadcrumb>
-      </MessageBoxHeaderWrapper>
+        </Breadcrumb> */}
+      </ConversationHeaderTitle>
     );
   }
 
