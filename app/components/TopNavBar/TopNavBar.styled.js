@@ -4,8 +4,8 @@ export const TopNavBarWrapper = styled.div`
   .ant-layout-header {
     display: flex;
     align-items: center;
-    height: 64px;
-    padding: 0px 15px;
+    height: 4.5em;
+    padding: 0px 1.5em;
     background-color: ${props => props.theme.textColor};
     box-shadow: 0px 0px 6px -1px ${props => props.theme.textColorSecondary};
     position: relative;
@@ -85,6 +85,7 @@ export const Logo = styled.div`
       border-radius: 0;
       img{
         object-fit: contain;
+        padding-bottom: .5em;
       }
     }
   }
@@ -119,30 +120,15 @@ export const TopbarRight = styled.div`
   justify-content: flex-end;
 `;
 
-export const ActionsStyled = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  i {
-    line-height: 21px;
-    font-size: 18px;
-    margin-left: 15px;
-    cursor: pointer;
-    &:hover {
-      color: #41a0d9;
-    }
-  }
-`;
-
 export const ProfileStyled = styled.div`
   display: flex;
   align-items: center;
-  text-align: center;
-  padding: 0px 20px;
+  text-align: center;  
   position: relative;
 `;
 
 export const ProfileImageStyled = styled.img`
-  height: 30px;
+  height: 35px;
   cursor: pointer;
+  border-radius: 100%;
 `;

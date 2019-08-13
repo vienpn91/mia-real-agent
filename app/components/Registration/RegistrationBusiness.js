@@ -20,8 +20,8 @@ import FormInput from '../FormInput/FormInput';
 import { FIELD_OPTIONS, SIZE_OPTIONS, ROLES } from '../../../common/enums';
 
 const scrollStyle = {
-  height: 'calc(100vh - 400px)',
-  margin: '0 -20px 0 -10px',
+  // height: 'calc(100vh - 400px)',
+  // margin: '0 -20px 0 -10px',
 };
 
 const initialValues = {

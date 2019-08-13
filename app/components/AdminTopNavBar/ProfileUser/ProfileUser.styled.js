@@ -7,7 +7,7 @@ export const ProfileUserInfoWrapper = styled.div`
   transition: all 300ms ease-in-out;
   box-shadow: -2px 5px 10px 1px rgba(0, 0, 0, 0.176);
   width: 360px;
-  min-height: 200px;
+  min-height: 125px;
   z-index: 1;
   background-color: ${props => props.theme.secondaryColor};
 `;

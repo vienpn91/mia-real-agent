@@ -4,7 +4,7 @@ import FormInput from '../FormInput/FormInput';
 
 export const ChatbotWrapper = styled.div`
   display: flex;
-  height: 100vh;
+  height: calc(100vh - 4.5em);
 `;
 
 export const ChatbotConversationListWrapper = styled.div`

@@ -10,7 +10,6 @@ import {
   NavBar,
   Nav,
   TopbarRight,
-  ActionsStyled,
   ProfileStyled,
   ProfileImageStyled,
 } from './TopNavBar.styled';
@@ -55,7 +54,7 @@ export default class TopNavBar extends Component {
           <TopbarRight>
             <ProfileStyled>
               <ProfileImageStyled
-                src="/assets/images/user.svg"
+                src="/assets/images/user-live.jpeg"
                 onClick={this.onToggleUserInfo}
               />
               {isUserInfoOpen && (

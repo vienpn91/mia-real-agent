@@ -7,9 +7,9 @@ export const DefaultButton = styled.button`
   text-align: center;
   border: 1px solid transparent;
   border-radius: 3px;
-  padding: 6px 12px;
-  font-size: 14px;
-  min-width: 70px;
+  padding: 0.3em 1em;
+  font-size: 1em;
+  min-width: 3em;
   &:hover {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     opacity: 0.8;

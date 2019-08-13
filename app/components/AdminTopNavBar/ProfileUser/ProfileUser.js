@@ -24,16 +24,16 @@ class ProfileUser extends React.PureComponent {
     return (
       <ProfileUserInfoWrapper>
         <ProfileUserHead>
-          <ProfileUserAvatar>
+          {/* <ProfileUserAvatar>
             {src ? (
-              <img src="#" />
+              <img src="/assets/images/user-live.jpeg" />
             ) : (
               <img
                 src="https://cdn1.thr.com/sites/default/files/imagecache/landscape_928x523/2017/09/gettyimages-801080928_-_h_2017.jpg"
               />
             )
             }
-          </ProfileUserAvatar>
+          </ProfileUserAvatar> */}
           <ProfileUserName>{username}</ProfileUserName>
           <ProfileUserEmail>{email}</ProfileUserEmail>
           <ProfileUserAction>
