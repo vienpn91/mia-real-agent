@@ -13,7 +13,7 @@ import {
 import { ROLES } from '../../../common/enums';
 
 const scrollStyle = {
-  height: 'calc(100vh - 120px)',
+  height: 'calc(100vh - 125px)',
   width: '100%',
 };
 

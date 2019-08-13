@@ -243,17 +243,6 @@ export default class MessageBox extends Component {
               />
               {this.renderGroupAction()}
               <InputAction onClick={handleSubmit} className="mia-enter" />
-              {(!isAgent(userRole)) && !assignee
-                && (
-                  <Button
-                    loading={isFindingAgent}
-                    key="button"
-                    type="primary"
-                    onClick={this.handleFindAgent}
-                  >
-                    Find Agent
-                  </Button>
-                )}
             </MessageInputWrapper>
           </Form>
         )}
@@ -262,14 +251,24 @@ export default class MessageBox extends Component {
   }
 
   renderMessageHeader = () => {
-    const { currentTicket } = this.props;
+    const { currentTicket, userRole, isFindingAgent } = this.props;
     const { assignee = {}, title, status } = currentTicket || {};
-    const { firstName = '', lastName = '' } = assignee;
     return (
       <ConversationHeaderTitle>
         <ConversationTitle>
           <TicketStatus status={status} />
           <span>{title}</span>
+          {!isAgent(userRole) && _isEmpty(assignee)
+            && (
+              <Button
+                loading={isFindingAgent}
+                key="button"
+                type="primary"
+                onClick={this.handleFindAgent}
+              >
+                Find Agent
+              </Button>
+            )}
         </ConversationTitle>
       </ConversationHeaderTitle>
     );

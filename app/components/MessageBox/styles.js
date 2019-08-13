@@ -6,7 +6,7 @@ import { COLOR_BY_STATUS } from '../../../common/enums';
 
 export const MessageBoxWrapper = styled.div`
   display: flex;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 130px);
   background: ${props => props.theme.secondaryColor};
   position: relative;
 `;
@@ -80,6 +80,10 @@ export const ConversationTitle = styled.div`
     font-size: 1.3em;
     margin: 0 1em;
     font-weight: 600;
+  }
+
+  button {
+    float: right;
   }
 `;
 
