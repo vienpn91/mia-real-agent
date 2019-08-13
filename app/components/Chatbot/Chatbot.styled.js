@@ -283,14 +283,15 @@ export const ConversationInfoWrapper = styled.div`
         border-bottom: none;
       }
       .ant-descriptions-item-label {
-        font-size: 12px;
+        font-size: .8em;
+        margin-bottom: .5em;
         color: #808080;
         &:after {
           content: none;
         }
       }
       .ant-descriptions-item-content {
-        font-size: 15px;
+        font-size: 1em;
         color: ${props => props.theme.textColor};
       }
     }

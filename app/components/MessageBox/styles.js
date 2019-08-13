@@ -3,12 +3,6 @@ import styled, { css, keyframes } from 'styled-components';
 import FormInput from '../FormInput/FormInput';
 import { COLOR_BY_STATUS } from '../../../common/enums';
 
-export const InfoNotification = styled.h2`
-  margin: 50%;
-  width: 200px;
-  margin-left: calc(50% - 50px);
-`;
-
 
 export const MessageBoxWrapper = styled.div`
   display: flex;
@@ -21,7 +15,6 @@ export const MessageBoxContent = styled.div`
   flex: 1;
   height: 100%;
   background-color: #f5f6f7;
-  padding-bottom: 15px;
 `;
 
 export const MessageBoxItem = styled.div`
@@ -79,8 +72,10 @@ export const ConversationHeaderTitle = styled.div`
 
 export const ConversationTitle = styled.div`
   text-align: center;
-  padding: 1em;
+  padding: 1.2em 1em;
+  max-height: 60px;
   background-color: #fff;
+  border-bottom: 1px solid #d9d9d9;
   span{
     font-size: 1.3em;
     margin: 0 1em;
@@ -100,7 +95,7 @@ export const UserMessage = styled.p`
 `;
 
 export const MessageInputWrapper = styled.div`
-  position: absolute;
+  /* position: absolute; */
   bottom: 0px;
   display: flex;
   align-items: center;
@@ -108,7 +103,7 @@ export const MessageInputWrapper = styled.div`
   border-top: 1px solid #ddd;
   height: 60px;
   width: 100%;
-  padding: 0px 10px;
+  padding: 0px 1em;
 
   .ant-form-item{
     width: 100%;

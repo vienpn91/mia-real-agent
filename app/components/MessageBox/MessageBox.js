@@ -19,7 +19,6 @@ import {
   MessageEmpty,
   InputAction,
   UserMessage,
-  InfoNotification,
   ConversationTitle,
   RatingWrapper,
   RatingContent,
@@ -37,7 +36,7 @@ import { insertSystemMessageToRepliesChat, combineChat } from './utils';
 import { shouldShowSystemMessage, isAgent } from '../../utils/func-utils';
 
 const scrollStyle = {
-  height: '94%',
+  height: 'calc(100% - 60px)',
   width: '100%',
 };
 
@@ -272,16 +271,6 @@ export default class MessageBox extends Component {
           <TicketStatus status={status} />
           <span>{title}</span>
         </ConversationTitle>
-        
-        {/* <Breadcrumb separator="">
-          <Breadcrumb.Item>
-            <TicketStatus status={status} />
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>
-            {title}
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>{`${firstName} ${lastName}`}</Breadcrumb.Item>
-        </Breadcrumb> */}
       </ConversationHeaderTitle>
     );
   }
