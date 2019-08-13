@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import {
-  Row, Col, Form,
+  Row, Col, Form, Avatar,
 } from 'antd';
 import FormInput from '../FormInput/FormInput';
 import {
   LoginWrapper,
   LoginItem,
-  LoginTitle,
+  LoginLogo,
   LoginBtn,
   LoginFBBtn,
   LoginFooter,
@@ -84,7 +84,9 @@ class Login extends Component {
           >
             {({ handleSubmit }) => (
               <Form onSubmit={handleSubmit}>
-                <LoginTitle>Mia Consult</LoginTitle>
+                <LoginLogo>
+                  <img className="img" src="/assets/images/logo-small-black.png" alt="logo mia" />
+                </LoginLogo>
                 <Row gutter={32}>
                   <Col>
                     <FormInput

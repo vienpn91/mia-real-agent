@@ -33,7 +33,7 @@ export default class TopNavBar extends Component {
   renderLogo = () => (
     <Logo>
       <Link to="/dashboard">
-        <Avatar src="../../assets/images/logo-small-white.png" />
+        <Avatar src="/assets/images/logo-small-white.png" />
       </Link>
     </Logo>
   )

@@ -71,7 +71,7 @@ export const DropDown = styled.div`
 `;
 
 export const Logo = styled.div`
-  flex: 0 0 120px;
+  flex: 0 0 90px;
   height: 100%;
   display: flex;
   align-items: center;
@@ -81,8 +81,7 @@ export const Logo = styled.div`
     height: 100%;
     .ant-avatar {
       width: 100%;
-      height: 100%;
-      padding: 12px;
+      height: 100%;      
       border-radius: 0;
       img{
         object-fit: contain;
@@ -118,7 +117,6 @@ export const TopbarRight = styled.div`
   display: flex;
   flex: 1;
   justify-content: flex-end;
-  margin-right: 20px;
 `;
 
 export const ActionsStyled = styled.div`

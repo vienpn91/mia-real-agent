@@ -100,7 +100,9 @@ class Registration extends Component {
     return (
       <RegistrationWrapper>
         <RegistrationItem>
-          <RegistrationTitle>Mia Consult</RegistrationTitle>
+          <RegistrationTitle>
+            <img className="img" src="/assets/images/logo-small-black.png" alt="logo mia" />
+          </RegistrationTitle>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
