@@ -6,13 +6,14 @@ import ShadowScrollbars from 'components/Scrollbar';
 import MediaQuery from 'react-responsive';
 import history from 'utils/history';
 import {
-  Menu, Select, Pagination,
+  Menu, Select, Pagination, Icon,
 } from 'antd';
 import TicketItem from './TicketItem';
 import {
   TicketItemWrapper,
   TicketFilterWrapper,
   TicketPaginationWrapper,
+  FilterContainer,
 } from './TicketList.styled';
 
 const categories = [
@@ -37,6 +38,7 @@ const PAGE_SIZE = 10;
 class TicketList extends React.PureComponent {
   state = {
     page: 0,
+    isHide: false,
   }
 
   componentDidMount = () => {
@@ -62,6 +64,11 @@ class TicketList extends React.PureComponent {
     }
     this.setState({
       page: current,
+    });
+  }
+  handleToggleFilter = () =>{
+    this.setState({
+      isHide: !this.state.isHide,
     });
   }
 
@@ -112,16 +119,16 @@ class TicketList extends React.PureComponent {
 
   renderTicketFilter = () => (
     <TicketFilterWrapper>
-      <span>Filter by categories:</span>
       <Select
         mode="multiple"
-        style={{ width: '100%' }}
-        onChange={this.handleChangeFilter}
+        placeholder="Filter by categories"
+        onChange={this.handleChangeFilter}        
       >
         {categories.map((cat, index) => (
           <Select.Option key={index} value={cat}>{cat}</Select.Option> // eslint-disable-line
         ))}
       </Select>
+      <Icon type="filter" onClick={this.handleToggleFilter} />
     </TicketFilterWrapper>
   )
 
@@ -152,7 +159,9 @@ class TicketList extends React.PureComponent {
     return (
       <TicketItemWrapper>
         {this.renderTicketList()}
-        {this.renderTicketFilter()}
+        <FilterContainer className={this.state.isHide ? 'filter-show' : 'filter-hide'}>
+          {this.renderTicketFilter()}
+        </FilterContainer>
         {this.renderTicketPagination()}
       </TicketItemWrapper>
     );

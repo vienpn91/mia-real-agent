@@ -139,6 +139,7 @@ export const ConversationHeaderWrapper = styled.div`
   justify-content: space-between;
   padding: 1em 1.5em;
   height: 60px;
+  width: 90%;
   border-bottom: 1px solid #d9d9d9;
   span {
     cursor: pointer;

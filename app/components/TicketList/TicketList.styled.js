@@ -30,6 +30,9 @@ export const TimeCreateTicket = styled.span`
   font-size: .9em;
   padding-left: 1.35em;
 `;
+
+
+
 export const TicketAction = styled.div`
   span{
    
@@ -78,14 +81,35 @@ export const TicketItemStyled = styled.div`
 
 export const TicketItemWrapper = styled.div`
   height: calc(100% - 120px);
+  position: relative;
+`;
+export const FilterContainer = styled.div`
+  position: absolute;
+  top: -60px;
+  right: 0px;    
+  z-index: 9;
+  width : 100%;
+  overflow: hidden;
+  &.filter-hide{
+    .ant-select-enabled{
+      right: -110%;
+      
+    }
+  }
 `;
 
 export const TicketFilterWrapper = styled.div`
-  padding: 1em 2em;
-  border-top: 1px solid #d9d9d9;
-  .ant-select {
-    margin-top: 5px;
-    border-radius: 4px;
+  padding: 1em 1.5em;
+  border-top: 1px solid #d9d9d9;  
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  .anticon-filter{
+    margin-left: .75em;
+  }
+  .ant-select{
+    width: 100%;
   }
   .ant-select-selection--multiple {
     color: ${props => props.theme.secondaryColor};
