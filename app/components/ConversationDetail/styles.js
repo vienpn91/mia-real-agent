@@ -250,6 +250,17 @@ export const ConversationDetailAvatar = styled.div`
 `;
 
 export const ConversationInfoWrapper = styled.div`
+  .assignee{
+    span{
+      display: inline-block;
+      width: 100%;
+      font-weight: 600;
+      &.company{
+        font-weight: 400;
+      }
+    }
+    
+  }
   .ant-descriptions-row {
     display: flex;
     flex-direction: column;

@@ -31,8 +31,6 @@ export const TimeCreateTicket = styled.span`
   padding-left: 1.35em;
 `;
 
-
-
 export const TicketAction = styled.div`
   span{
    
@@ -122,6 +120,9 @@ export const TicketFilterWrapper = styled.div.attrs({
   .ant-select-selection--multiple {
     color: ${props => props.theme.secondaryColor};
     border: 1px solid #d9d9d9;
+    .ant-select-selection__rendered{
+      margin-bottom: 2px!important;
+    }
     &:hover {
       border-color: #b1b1b1;
     }

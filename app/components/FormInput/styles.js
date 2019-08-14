@@ -126,6 +126,7 @@ export const InputStyled = styled(Input)`
 
 export const InputWrapperStyled = styled(Form.Item)`
   color: ${props => props.theme.textColor};
+  margin-bottom: 10px!important;
   label{
     float: left;
     color: #000 !important;
@@ -139,7 +140,6 @@ export const InputWrapperStyled = styled(Form.Item)`
     padding: 2px !important;
     outline: 0 none !important;
     background-color: transparent;
-    border: 1px solid #000 !important;
     border-radius: 3px !important;
     &:focus {
       box-shadow: none;
@@ -159,7 +159,7 @@ export const InputWrapperStyled = styled(Form.Item)`
   }
   .ant-select-selection__rendered {
     outline: none;
-    height: 24px;
+    height: 26px!important;
     line-height: 26px;
     margin-top: 3px;
   }
@@ -181,8 +181,6 @@ export const InputWrapperStyled = styled(Form.Item)`
   }
   ${({ login }) => login && css`
     .ant-select-selection {
-      border: none !important;
-      border-bottom: 1px solid #000 !important;
       border-radius: 0px !important;
       &:focus {
         box-shadow: none;

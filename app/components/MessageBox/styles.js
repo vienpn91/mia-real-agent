@@ -6,7 +6,7 @@ import { COLOR_BY_STATUS } from '../../../common/enums';
 
 export const MessageBoxWrapper = styled.div`
   display: flex;
-  height: calc(100vh - 130px);
+  height: calc(100vh - 123px);
   background: ${props => props.theme.secondaryColor};
   position: relative;
 `;
@@ -14,7 +14,8 @@ export const MessageBoxWrapper = styled.div`
 export const MessageBoxContent = styled.div`
   flex: 1;
   height: 100%;
-  background-color: #f5f6f7;
+  color: #000;
+  background-color: #fff;
 `;
 
 export const MessageBoxItem = styled.div`
@@ -38,7 +39,7 @@ export const MessageBoxItem = styled.div`
     }
     p {
       float: left;
-      background-color: #e2e2e2;
+      background-color: #f5f5f5;
     }
   `}
   ${({ right }) => right && css`
