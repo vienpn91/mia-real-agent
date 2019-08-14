@@ -62,11 +62,11 @@ export const ProfileUserEmail = styled.div`
 
 export const ProfileUserAction = styled.div`
   line-height: 30px;
-  a{
+  a.my-account{
     height: 3em;
     display: flex;
     justify-content: center;
-    color: #010101;
+    color: #010101!important;
     align-items: center;
     &:hover {
       opacity: .7;

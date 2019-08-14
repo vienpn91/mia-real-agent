@@ -53,7 +53,12 @@ export default class ConversationDetail extends Component {
       return (<NoInformationText>No Profile</NoInformationText>);
     }
     const { firstName, lastName, company } = assigneeProfile;
-    return `${firstName} ${lastName} - ${company}`;
+    return (
+      <div className="assignee">
+        <span>{firstName} {lastName} </span>
+        <span className="company">{company}</span>
+      </div>
+    );
   }
 
   renderConversationInfo = () => {

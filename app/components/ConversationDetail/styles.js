@@ -250,6 +250,17 @@ export const ConversationDetailAvatar = styled.div`
 `;
 
 export const ConversationInfoWrapper = styled.div`
+  .assignee{
+    span{
+      display: inline-block;
+      width: 100%;
+      font-weight: 600;
+      &.company{
+        font-weight: 400;
+      }
+    }
+    
+  }
   .ant-descriptions-row {
     display: flex;
     flex-direction: column;
@@ -302,9 +313,10 @@ export const ConversationTimelineWrapper = styled.div`
 export const TicketStatus = styled.div`
   width: 10px;
   height: 10px;
+  margin-top: 2px;
   border-radius: 50%;
   margin-right: 10px; 
-  display: inline-table;
+  display: inline-block;
   background: ${({ status }) => [COLOR_BY_STATUS[status]]};
 `;
 

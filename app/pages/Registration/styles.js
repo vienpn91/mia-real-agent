@@ -18,7 +18,7 @@ export const RegistrationItem = styled.div`
   flex-direction: column;
   background-color: ${props => props.theme.secondaryColor};
   box-shadow: 0px 0px 12px -2px #2a3a51;
-  padding: 50px;
+  padding: 50px 50px 85px 50px;
   color: #6e6c83fa;
   position: relative;
   z-index: 1;
@@ -26,9 +26,8 @@ export const RegistrationItem = styled.div`
 
 export const RegistrationTitle = styled.div`
   text-align: center;
-  font-size: 32px;
-  font-family: Countryside, sans-serif;
-  margin-bottom: 55px;
+  font-size: 18px;
+  margin-bottom: 40px;
 `;
 
 export const LinkWrapper = styled.div`
@@ -41,6 +40,9 @@ export const LinkWrapper = styled.div`
   a {
     width: 100%;
     text-align: center;
+    color: ${props => props.theme.cancelColor};
+    color: #2f2f2f;
+    font-size: 22px;
     i {
       width: 100%;
       height: 35px;
@@ -49,7 +51,7 @@ export const LinkWrapper = styled.div`
         height: 40px;
       }
     }
-    color: ${props => props.theme.cancelColor};
+    
     :hover {
       color: ${props => props.theme.submitColor};
     }

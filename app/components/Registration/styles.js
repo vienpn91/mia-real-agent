@@ -20,7 +20,7 @@ export const RegistrationItem = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background-color: ${props => props.theme.secondaryColor};
+  background-color: #ffffff;
   box-shadow: 0px 0px 17px -3px #2a3a516e;
   padding: 50px;
   color: #6e6c83fa;

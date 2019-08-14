@@ -160,6 +160,22 @@ html, body, div, span, applet, object, iframe,
   .ant-select-selection--single {
     height: 36px !important;
   }
+  .modal-customize {
+    .ant-modal-header{
+      padding: 2em 3em;
+      border: none;
+      .ant-modal-title{
+        font-weight: 600;
+        font-size: 1.4em;
+      }
+    }   
+    .ant-modal-body{  
+      padding: 0em 3em 3em 3em;
+    }
+    .ant-modal-footer{
+      display: none!important;
+    }
+  }
 `;
 
 export default GlobalStyle;

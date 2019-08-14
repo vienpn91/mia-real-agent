@@ -16,7 +16,7 @@ export const LoginItem = styled.div`
   width: 32.250em;
   display: flex;
   flex-direction: column;
-  background-color: #ffffffe0;
+  background-color: #ffffff;
   box-shadow: 0px 0px 17px -3px #2a3a516e;
   padding: 2em;
   color: #6e6c83fa;

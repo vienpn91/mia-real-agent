@@ -16,7 +16,7 @@ export const ProfileCard = styled.div`
   width: 720px;
   display: flex;
   flex-direction: column;
-  background-color: ${props => props.theme.secondaryColor}
+  background-color: #ffffff;
   box-shadow: 0 3px 10px 3px #e7e7e7;
   padding: 50px;
   color: ${props => props.theme.textColor};

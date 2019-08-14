@@ -18,12 +18,13 @@ export const ApplicationWrapper = styled.div`
 `;
 
 export const ApplicationItem = styled.div`
+  
+  padding: 2em;
   width: 850px;
   display: flex;
   flex-direction: column;
-  background-color: ${props => props.theme.secondaryColor};
+  background-color: #ffffff;
   box-shadow: 0px 0px 12px -2px #2a3a51;
-  padding: 50px;
   color: #6e6c83fa;
   position: relative;
   z-index: 1;
@@ -115,10 +116,27 @@ export const ApplicationItem = styled.div`
 
 export const ApplicationTitle = styled.div`
   text-align: center;
-  font-size: 32px;
-  font-family: Countryside, sans-serif;
-  margin-bottom: 55px;
-  color: #000;
+  font-size: 2em;
+  width: 14.125em;
+  height: 5.063em;
+  margin: 0 auto 1.5em;
+  color: ${props => props.theme.textColor};
+  span{
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 40px;
+    display: inline-block;
+    color: #6e6c83fa;
+    width: 100%;
+  }
+  img{
+    width: 100%;
+    object-position: bottom;
+    height: 100%;
+    max-height: 115px;
+    max-width: 175px;
+    object-fit: contain;
+  }
 `;
 
 export const ApplicationInputWrapper = styled.div`
@@ -238,6 +256,7 @@ export const SelectStyled = { width: '100%' };
 export const ArrayInputWrapper = styled.div`
   overflow: hidden;
   margin-bottom: 20px;
+  margin-top: 20px;
   color: ${props => props.theme.textColor};
 
   p{
@@ -250,40 +269,140 @@ export const ArrayInputWrapper = styled.div`
 `;
 
 export const ArrayWrapper = styled.div`
-  float: left;
+  display: flex;
   width: 100%;
-  padding: 10px 0;
-  margin: 0 -10px;
+  padding: 10px 0;  
+  flex-direction: column;
 `;
 
 export const ArrayTagWrapper = styled.div`
-  width: 240px;
-  padding: 15px 20px;
-  margin: 10px;
-  float: left;
-  box-shadow: 4px 4px 10px #d8d8d8;
-  border: 1px solid #efeaea;
+  width: 100%;
+  padding: 15px 0px;    
+  border-bottom: 1px solid #efeaea;
   position: relative;
   color: ${props => props.theme.textColorTertiary};
 
-  h2 {
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: calc(100% - 40px);
-    font-weight: 600;
-    font-size: 1.1em;
+  .WorkEducation{
+    align-items: center;
+    display: flex;
+    .WorkEducationText{
+      flex: 1; 
+    }
+    .language{
+      strong{
+        position: relative;
+        margin: 0px 5px 0px 5px;
+        padding-right: 10px;
+        margin-right: 8px;
+        &:after{
+          content: '';
+          width: 3px;
+          height: 3px;
+          background: #858585;
+          border-radius: 100%;
+          display: inline-block;
+          position: absolute;
+          top: 9px;
+          right: 0px;
+                  
+        }
+      }
+    }
+    a{
+      color: #4a4a4a;
+      &:hover{
+        color: #ff5402;
+      }
+    }
+    h2 {
+      white-space: nowrap; 
+      margin: 0px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      font-weight: 600;
+      font-size: 1.1em;
+      span{
+        font-weight: 400;
+        position: relative;
+        margin: 0px 5px 0px 5px;
+        padding-left: 10px;
+        margin-left: 8px;
+        &:after{
+          content: '';
+          width: 3px;
+          height: 3px;
+          background: #858585;
+          border-radius: 100%;
+          display: inline-block;
+          position: absolute;
+          top: 9px;
+          left: 0px
+                  
+        }
+      }
+    }
   }
 
-  i:first-child {
-    margin-left: 10px;
+  .WorkExperience{
+    align-items: center;
+    display: flex;
+    .WorkExperienceText{
+      flex: 1; 
+    }
+    h2 {
+      white-space: nowrap; 
+      margin: 0px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      font-weight: 600;
+      font-size: 1.1em;
+      span{
+        font-weight: 400;
+        margin: 0px 5px 0px 5px;
+      }
+    }
+    .time{
+      display: flex;
+      align-items: center;
+      span{
+        display: inline;        
+      }
+      .from{
+        margin-right: 3px;
+        text{
+          font-size: 13px;
+          font-style: italic;
+          margin-right: 5px;
+        }
+      }
+      .to{
+        text{
+          font-style: italic;
+          font-size: 13px;
+        }
+      }
+      .location{
+        padding-right: 13px;
+        position: relative;
+        margin-right: 10px;
+        &:after{
+          content: '';
+          width: 3px;
+          height: 3px;
+          background: #858585;
+          border-radius: 100%;
+          display: inline-block;
+          position: absolute;
+          top: 9px;
+          right: 0px
+                  
+        }
+      }
+    }
   }
-  i {
-    margin-right: 5px;
-  }
-  i:last-child {
-    margin-right: 0;
-  }
+ 
 `;
 
 export const DescriptionWrapper = styled.div`
@@ -299,31 +418,54 @@ export const DescriptionWrapper = styled.div`
   }
 `;
 
-export const DescriptionNumber = styled.p`
-  position: absolute;
-  top: -8px;
-  font-size: 1.6em;
-  right: 0;
-  text-align: right;
-  margin-top: 0 !important;
+export const DescriptionNumber = styled.span`
+  font-weight: 400;
+  position: relative;
+  margin: 0px 5px 0px 5px;
+  padding-left: 10px;
+  margin-left: 8px;
+  &:after{
+    content: '';
+    width: 3px;
+    height: 3px;
+    background: #858585;
+    border-radius: 100%;
+    display: inline-block;
+    position: absolute;
+    top: 9px;
+    left: 0px
+            
+  }
 `;
 
-export const TagAction = styled.div`
-  position: absolute;
-  top: 15px;
-    right: 15px;
+export const TagAction = styled.div`  
+  padding-right: 20px;
+  i{
+    color: #d2d2d2;
+    &:hover{
+      color: #000;
+    }
+  }
+  .anticon-close{
+    margin-left: 15px;
+    &:hover{
+      color: red;
+    }
+  }
 `;
 
 export const ArrayAddButton = styled.button`
   display: flex;
   align-items: center;
   margin-right: 5px;
-  padding: 5px 20px;
   border-radius: 5px;
-  border: 1px solid ${props => props.theme.textColor};
-  background-color: ${props => props.theme.secondaryColor};
+  padding: 5px 10px 5px 5px;
+  font-size: 13px;
+  border-radius: 3px;
+  color: #ff5402;
+  border: 1px solid #ff5402;
   i {
-    margin-right: 5px;
+    margin-right: 3px;
   }
   &:hover {
     border-color: ${props => props.theme.primaryColor};
@@ -334,9 +476,8 @@ export const ArrayAddButton = styled.button`
 export const RoleWrapper = styled.div`
   > button {
     width: calc(50% - 10px);
-    border-radius: 3px;
-    border: 1px solid ${props => props.theme.borderColor};
-    background-color: ${props => props.theme.secondaryColor};
+    background: transparent;
+    border: none;
     height: 200px;
     &:first-child {
       margin-right: 10px;
@@ -355,8 +496,10 @@ export const RoleWrapper = styled.div`
       display: flex;
       flex-direction: column;
       text-align: center;
-      font-size: 2em;
       color: ${props => props.theme.cancelColor};
+      color: #2f2f2f;
+      font-size: 22px;
+      
       i {
         width: 100%;
         height: 35px;

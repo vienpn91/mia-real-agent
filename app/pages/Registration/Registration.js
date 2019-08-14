@@ -11,7 +11,7 @@ import {
 const Registration = () => (
   <RegistrationWrapper>
     <RegistrationItem>
-      <RegistrationTitle>Are you a</RegistrationTitle>
+      <RegistrationTitle>WHO ARE YOU?</RegistrationTitle>
       <LinkWrapper>
         <div>
           <Link to="/register/individual">

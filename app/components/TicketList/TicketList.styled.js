@@ -31,8 +31,6 @@ export const TimeCreateTicket = styled.span`
   padding-left: 1.35em;
 `;
 
-
-
 export const TicketAction = styled.div`
   span{
    
@@ -122,6 +120,9 @@ export const TicketFilterWrapper = styled.div.attrs({
   .ant-select-selection--multiple {
     color: ${props => props.theme.secondaryColor};
     border: 1px solid #d9d9d9;
+    .ant-select-selection__rendered{
+      margin-bottom: 2px!important;
+    }
     &:hover {
       border-color: #b1b1b1;
     }
@@ -178,8 +179,9 @@ export const ActionList = styled.div`
 export const TicketStatus = styled.div`
   width: .75em;
   height: .75em;
-  border-radius: 50%;
-  margin-right: .5em;
-  display: inline-table;
+  margin-top: 2px;
+  border-radius: 50%;  
+  margin-right: 10px;
+  display: inline-block;
   background: ${({ status }) => [COLOR_BY_STATUS[status]]};
 `;
