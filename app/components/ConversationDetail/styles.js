@@ -313,9 +313,10 @@ export const ConversationTimelineWrapper = styled.div`
 export const TicketStatus = styled.div`
   width: 10px;
   height: 10px;
+  margin-top: 2px;
   border-radius: 50%;
   margin-right: 10px; 
-  display: inline-table;
+  display: inline-block;
   background: ${({ status }) => [COLOR_BY_STATUS[status]]};
 `;
 

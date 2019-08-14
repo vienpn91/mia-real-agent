@@ -212,7 +212,9 @@ export const TicketStatus = styled.div`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  display: inline-table;
+  display: inline-block;
+      margin-top: 2px;
+  margin-right: 10px;
   background: ${({ status }) => [COLOR_BY_STATUS[status]]};
 `;
 

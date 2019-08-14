@@ -6,6 +6,7 @@ export const TicketStatus = styled.div`
   height: 10px;
   border-radius: 50%;
   margin-right: 10px;
-  display: inline-table;
+  margin-top: 2px;
+  display: inline-block;
   background: ${({ status }) => [COLOR_BY_STATUS[status]]};
 `;

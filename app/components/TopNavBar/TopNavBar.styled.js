@@ -15,7 +15,7 @@ export const TopNavBarWrapper = styled.div`
   .ant-dropdown-link {
     color: ${props => props.theme.textColor};
   }
-  &.agent{
+  &.user{
     .ant-layout-header{
       background-color: #ff5502
     }

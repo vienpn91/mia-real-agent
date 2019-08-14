@@ -179,8 +179,9 @@ export const ActionList = styled.div`
 export const TicketStatus = styled.div`
   width: .75em;
   height: .75em;
-  border-radius: 50%;
-  margin-right: .5em;
-  display: inline-table;
+  margin-top: 2px;
+  border-radius: 50%;  
+  margin-right: 10px;
+  display: inline-block;
   background: ${({ status }) => [COLOR_BY_STATUS[status]]};
 `;

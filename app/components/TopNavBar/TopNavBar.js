@@ -53,10 +53,9 @@ export default class TopNavBar extends Component {
   render() {
     const { isUserInfoOpen } = this.state;
     const { email, userRole } = this.props;
-    console.log(this.props);
     return (
       
-      <TopNavBarWrapper className={isAgent(userRole) ? 'user' : 'agent'}>
+      <TopNavBarWrapper className={!isAgent(userRole) ? 'user' : 'agent'}>
         <Header>
           {this.renderLogo()}
           <NavBar>
@@ -83,7 +82,7 @@ export default class TopNavBar extends Component {
               )}
               <UserName onClick={this.onToggleUserInfo}>
                 <span>{email}</span>
-                <span>User</span>
+                <span>{!isAgent(userRole) ? 'User' : 'Agent'}</span>
               </UserName>
               <MenuStyled
                 type="down"
