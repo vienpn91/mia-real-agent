@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Avatar, Breadcrumb,
+  Avatar,
   Button, Form,
 } from 'antd';
 import _isEmpty from 'lodash/isEmpty';
