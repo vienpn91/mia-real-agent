@@ -22,7 +22,7 @@ const { Step } = Steps;
 const { TabPane } = Tabs;
 
 const scrollStyle = {
-  height: 'calc(100vh - 275px)',
+  // height: 'calc(100vh - 275px)',
   margin: '0 -20px 0 -10px',
 };
 
@@ -165,7 +165,11 @@ export class ApplicationForm extends Component {
     return (
       <ApplicationWrapper>
         <ApplicationItem>
-          <ApplicationTitle>Mia Consult</ApplicationTitle>
+          <ApplicationTitle>
+            <img className="img" src="/assets/images/logo-small-black.png" alt="logo mia" />
+            <span className="ApplicationText">AGENT REGISTRATION</span>
+          </ApplicationTitle>
+          
           {step !== 5
             && (
               <Steps current={step}>
@@ -177,9 +181,9 @@ export class ApplicationForm extends Component {
               </Steps>
             )}
           <LoadingSpin loading={isSubmitting}>
-            <ShadowScrollbars autoHide style={scrollStyle}>
-              {this.handleRenderForm()}
-            </ShadowScrollbars>
+            {/* <ShadowScrollbars autoHide style={scrollStyle}>
+            </ShadowScrollbars> */}
+            {this.handleRenderForm()}
           </LoadingSpin>
         </ApplicationItem>
       </ApplicationWrapper>

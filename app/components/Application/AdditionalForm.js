@@ -136,8 +136,13 @@ export class AdditionalForm extends Component {
     return (
       <Modal
         visible={isLanguageFormOpen}
+        centered
         onCancel={() => this.handleToggleLanguageModal(false)}
         footer={[]}
+        title="Languages"
+        wrapClassName="modal-customize"
+        width="640px"
+        forceRender
       >
         <Formik
           ref={(formik) => { this.educationformik = formik; }}
@@ -152,6 +157,7 @@ export class AdditionalForm extends Component {
                   <FormInput
                     name="name"
                     type="select"
+                    className="vienpn"
                     options={LANGUAGE_OPTIONS}
                     label="Name"
                     login={1}
@@ -238,43 +244,51 @@ export class AdditionalForm extends Component {
     } = education;
     return (
       <ArrayTagWrapper key={index}>
-        <h2>
-          {name}
-        </h2>
-        <TagAction>
-          <Icon
-            onClick={() => arrayHelpers.remove(index)}
-            type="close"
-          />
-          <Icon
-            onClick={() => this.handleToggleLanguageModal(true, education, index)}
-            type="edit"
-          />
-        </TagAction>
-        <DescriptionWrapper>
-          <p>
-            Writing:
-          </p>
-          <DescriptionNumber>{writing}</DescriptionNumber>
-        </DescriptionWrapper>
-        <DescriptionWrapper>
-          <p>
-            Reading:
-          </p>
-          <DescriptionNumber>{reading}</DescriptionNumber>
-        </DescriptionWrapper>
-        <DescriptionWrapper>
-          <p>
-            Speaking:
-          </p>
-          <DescriptionNumber>{speaking}</DescriptionNumber>
-        </DescriptionWrapper>
-        <DescriptionWrapper>
-          <p>
-            Overall:
-          </p>
-          <DescriptionNumber>{overall}</DescriptionNumber>
-        </DescriptionWrapper>
+        <div className="WorkEducation">
+          <div className="WorkEducationText">
+            <h2>
+              {name}
+            </h2>
+            <div className="language">
+              <span className="label">Writing:</span>
+              <strong>
+                {writing}
+                {' '}
+                /5
+              </strong>
+              <span className="label">Reading:</span>
+              <strong>
+                {reading}
+                {' '}
+                /5
+              </strong>
+              <span className="label">writing:</span>
+              <strong>
+                {writing}
+                {' '}
+                /5
+              </strong>
+              <span className="label">Overall:</span>
+              <strong>
+                {overall}
+                {' '}
+                /5
+              </strong>
+            </div>
+          </div>
+          <div>
+            <TagAction>
+              <Icon
+                onClick={() => this.handleToggleLanguageModal(true, education, index)}
+                type="edit"
+              />
+              <Icon
+                onClick={() => arrayHelpers.remove(index)}
+                type="close"
+              />
+            </TagAction>
+          </div>
+        </div>
       </ArrayTagWrapper>
     );
   };

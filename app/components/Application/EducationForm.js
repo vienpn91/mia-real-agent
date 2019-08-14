@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _isEmpty from 'lodash/isEmpty';
 import {
   Row, Col, Form, Icon, Modal,
 } from 'antd';
@@ -171,33 +172,44 @@ export class EducationForm extends Component {
   }
 
   renderEducation = (education, arrayHelpers, index) => {
-    const { school, degree, gpa } = education;
+    const {
+      school, degree, gpa, certificate, fieldOfStudies
+    } = education;
     return (
       <ArrayTagWrapper key={index}>
-        <h2>
-          {school}
-        </h2>
-        <TagAction>
-          <Icon
-            onClick={() => arrayHelpers.remove(index)}
-            type="close"
-          />
-          <Icon
-            onClick={() => this.handleToggleEducationModal(true, education, index)}
-            type="edit"
-          />
-        </TagAction>
-        <DescriptionWrapper>
-          <p>
-            {degree}
-          </p>
-        </DescriptionWrapper>
-        <DescriptionWrapper>
-          <p>
-            GPA:
-          </p>
-          <DescriptionNumber>{gpa}</DescriptionNumber>
-        </DescriptionWrapper>
+        <div className="WorkEducation">
+          <div className="WorkEducationText">
+            <h2>
+              {school}
+              <span>{degree}</span>
+            </h2>
+            <div className="GPA">
+              {fieldOfStudies.join(', ')}
+              <DescriptionNumber>
+                <span>GPA :</span>
+                {' '}
+                {gpa}
+              </DescriptionNumber>
+            </div>
+            <div>
+              {!_isEmpty(certificate) && (
+                <a href={certificate}>{certificate}</a>
+              )}
+            </div>
+          </div>
+          <div>
+            <TagAction>
+              <Icon
+                onClick={() => this.handleToggleEducationModal(true, education, index)}
+                type="edit"
+              />
+              <Icon
+                onClick={() => arrayHelpers.remove(index)}
+                type="close"
+              />
+            </TagAction>
+          </div>
+        </div>
       </ArrayTagWrapper>
     );
   };

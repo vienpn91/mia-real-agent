@@ -1,18 +1,16 @@
 import styled from 'styled-components';
 
 export const ArrayWrapper = styled.div`
-  float: left;
+  display: flex;
   width: 100%;
   padding: 10px 0;
   margin: 0 -10px;
 `;
 
 export const ArrayTagWrapper = styled.div`
-  width: 240px;
+  width: 100%;
   padding: 15px 20px;
-  margin: 10px;
-  float: left;
-  box-shadow: 4px 4px 10px #d8d8d8;
+  margin: 10px;  
   border: 1px solid #efeaea;
   position: relative;
   color: ${props => props.theme.textColorTertiary};

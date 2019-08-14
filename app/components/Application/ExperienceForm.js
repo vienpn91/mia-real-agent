@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import {
   Row, Col, Form, Icon, Modal,
 } from 'antd';
@@ -12,6 +13,7 @@ import {
   ArrayAddButton, ArrayInputWrapper, ArrayWrapper, TagAction,
 } from './styles';
 import { POSITION_OPTIONS, CATEGORY_OPTIONS } from '../../../common/enums';
+import { DATE_TIME_FORMAT } from '../../utils/constants';
 
 const experienceInititalValues = {
   title: '',
@@ -216,25 +218,45 @@ export class ExperienceForm extends Component {
   }
 
   renderWorkExperience = (experience, arrayHelpers, index) => {
-    const { title, company } = experience;
+    const {
+      title, company, from, to, isWorking, roleDescription, location
+    } = experience;
     return (
       <ArrayTagWrapper key={index}>
-        <h2>
-          {title}
-        </h2>
-        <TagAction>
-          <Icon
-            onClick={() => arrayHelpers.remove(index)}
-            type="close"
-          />
-          <Icon
-            onClick={() => this.handleToggleExperienceModal(true, experience, index)}
-            type="edit"
-          />
-        </TagAction>
-        <p>
-          {company}
-        </p>
+        <div className="WorkExperience">
+          <div className="WorkExperienceText">
+            <h2>
+              {title}
+              <span>at</span>
+              {company}
+            </h2>
+            <div className="time">
+              <span className="location">
+                {location}
+              </span>
+              <span className="from">
+                <text>From</text>
+                {moment(from).format('DD-MM-YYYY')}
+              </span>
+              <span className="to">{isWorking ? <text>to present</text> : <span> <text>to </text>{ moment(to).format('DD-MM-YYYY') }</span> }</span>
+            </div>
+            <div className="desc">
+              {roleDescription}
+            </div>
+          </div>
+          <div>
+            <TagAction>
+              <Icon
+                onClick={() => this.handleToggleExperienceModal(true, experience, index)}
+                type="edit"
+              />
+              <Icon
+                onClick={() => arrayHelpers.remove(index)}
+                type="close"
+              />              
+            </TagAction>
+          </div>
+        </div>
       </ArrayTagWrapper>
     );
   };

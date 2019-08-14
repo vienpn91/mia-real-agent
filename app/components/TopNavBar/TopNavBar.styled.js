@@ -15,13 +15,41 @@ export const TopNavBarWrapper = styled.div`
   .ant-dropdown-link {
     color: ${props => props.theme.textColor};
   }
+  &.agent{
+    .ant-layout-header{
+      background-color: #ff5502
+    }
+    .drop-vienpn{
+      color: #fff!important;
+    }
+    a{
+      color: #fff!important;
+      &:hover{
+        color: #ffda9f!important;
+      }
+    }
+  }
+
 `;
 
-export const UserName = styled.span`
+export const UserName = styled.span.attrs({
+  className: 'drop-vienpn',
+})`
+
   margin: 0 .5em;
   font-weight: 400;
   font-size: .85em;
   color: ${props => props.theme.textColorSecondary};
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-right: 12px;
+  span{
+   line-height: 20px;
+    display: inline-block;
+    width: 100%;
+    text-align: left;
+  }
 `;
 
 export const UserProfile = styled.div`

@@ -110,6 +110,8 @@ export const InputStyled = styled(Input)`
   border-radius: 3px !important;
   background: transparent !important;
   color: #000 !important;
+  font-size: 15px!important;
+  font-weight: 600;
   &:focus {
     box-shadow: none !important;
   }
@@ -119,7 +121,7 @@ export const InputStyled = styled(Input)`
   }
   ${({ login }) => login && css`
     border: 0 !important;
-    border-bottom: 1px solid #000 !important;
+    border-bottom: 1px solid #d2d2d2 !important;
     border-radius: 0 !important;
   `};
 `;
@@ -127,20 +129,29 @@ export const InputStyled = styled(Input)`
 export const InputWrapperStyled = styled(Form.Item)`
   color: ${props => props.theme.textColor};
   margin-bottom: 10px!important;
+  .ant-select-selection__choice__content{
+    font-weight: 600;
+  }
   label{
     float: left;
-    color: #000 !important;
+    color: #6e6c83fa!important;
     ::after{
       content: '' !important;
     }
   }
-  
+  .vienpn{
+    .ant-select-selection{}
+  }
   .ant-select-selection {
     width: 100% !important;
+    position: relative;
+    top: -5px;
     padding: 2px !important;
     outline: 0 none !important;
     background-color: transparent;
     border-radius: 3px !important;
+    border: none!important;
+    border-bottom: 1px solid #d2d2d2!important;
     &:focus {
       box-shadow: none;
       border-radius: 3px !important;
@@ -159,6 +170,7 @@ export const InputWrapperStyled = styled(Form.Item)`
   }
   .ant-select-selection__rendered {
     outline: none;
+    margin-bottom: 8px!important;
     height: 26px!important;
     line-height: 26px;
     margin-top: 3px;

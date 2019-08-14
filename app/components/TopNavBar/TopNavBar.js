@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import {
   Layout, Avatar,
 } from 'antd';
+
 import { string } from 'prop-types';
 import { Link } from 'react-router-dom';
 import {
@@ -18,12 +19,14 @@ import {
 } from './TopNavBar.styled';
 import ProfileUser from '../../containers/ProfileUser';
 import { PopupOverlayStyled } from '../Generals/General.styled';
+import { isAgent } from '../../utils/func-utils';
 
 const { Header } = Layout;
 
 export default class TopNavBar extends Component {
   static propTypes = {
     email: string.isRequired,
+    userRole: string.isRequired,
   };
 
   state = {
@@ -36,19 +39,24 @@ export default class TopNavBar extends Component {
     }));
   };
 
-  renderLogo = () => (
-    <Logo>
-      <Link to="/dashboard">
-        <Avatar src="/assets/images/logo-small-white.png" />
-      </Link>
-    </Logo>
-  )
+  renderLogo = () => {
+    const { userRole } = this.props;
+    return (
+      <Logo>
+        <Link to="/dashboard">
+          <Avatar src={isAgent(userRole) ? '/assets/images/logo-small-white.png' : '/assets/images/user-mia-logo.svg'} />
+        </Link>
+      </Logo>
+    )
+  }
 
   render() {
     const { isUserInfoOpen } = this.state;
-    const { email } = this.props;
+    const { email, userRole } = this.props;
+    console.log(this.props);
     return (
-      <TopNavBarWrapper>
+      
+      <TopNavBarWrapper className={isAgent(userRole) ? 'user' : 'agent'}>
         <Header>
           {this.renderLogo()}
           <NavBar>
@@ -74,7 +82,8 @@ export default class TopNavBar extends Component {
                 </React.Fragment>
               )}
               <UserName onClick={this.onToggleUserInfo}>
-                {email}
+                <span>{email}</span>
+                <span>User</span>
               </UserName>
               <MenuStyled
                 type="down"
