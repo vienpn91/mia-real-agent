@@ -219,36 +219,33 @@ export default class MessageBox extends Component {
     }
   }
 
-  renderMessageInput = () => {
-    const { isFindingAgent, userRole, currentTicket } = this.props;
-    const { assignee } = currentTicket;
-    return (
-      <Formik
-        ref={(formik) => { this.formik = formik; }}
-        initialValues={initialValues}
-        onSubmit={this.handleChatSubmit}
-      >
-        {({ handleSubmit }) => (
-          <Form
-            onSubmit={handleSubmit}
-            onChange={this.handleChangeValues}
-          >
-            <MessageInputWrapper>
-              <MessageInput
-                onChange={this.handleTyping}
-                type="text"
-                name="content"
-                placeholder="Type message ..."
-                autoComplete="off"
-              />
-              {this.renderGroupAction()}
-              <InputAction onClick={handleSubmit} className="mia-enter" />
-            </MessageInputWrapper>
-          </Form>
-        )}
-      </Formik>
-    );
-  }
+  renderMessageInput = () => (
+    <Formik
+      ref={(formik) => { this.formik = formik; }}
+      initialValues={initialValues}
+      onSubmit={this.handleChatSubmit}
+    >
+      {({ handleSubmit }) => (
+        <Form
+          onSubmit={handleSubmit}
+          onChange={this.handleChangeValues}
+        >
+          <MessageInputWrapper>
+            <MessageInput
+              onChange={this.handleTyping}
+              type="text"
+              name="content"
+              placeholder="Type message ..."
+              autoComplete="off"
+            />
+            {this.renderGroupAction()}
+            <InputAction onClick={handleSubmit} className="mia-enter" />
+          </MessageInputWrapper>
+        </Form>
+      )}
+    </Formik>
+  );
+
 
   renderMessageHeader = () => {
     const { currentTicket, userRole, isFindingAgent } = this.props;
@@ -333,23 +330,28 @@ export default class MessageBox extends Component {
         {this.renderMessageHeader()}
         <MessageBoxWrapper>
           <MessageBoxContent>
-            {status === TICKET_STATUS.CLOSED ? this.renderRating()
-              : (
-                <>
-                  <ShadowScrollbars
-                    autoHide
-                    style={scrollStyle}
-                  >
-                    {!hasChatData
-                      ? <MessageEmpty>No Chat Data</MessageEmpty>
-                      : this.renderMessageContent()
-                    }
-                    {this.renderPendingMessageContent()}
-                    <div ref={this.messagesEndRef} />
-                  </ShadowScrollbars>
-                  {this.renderMessageInput()}
-                </>
-              )}
+            {/* {status === TICKET_STATUS.CLOSED ? this.renderRating()
+              : ( */}
+            <>
+              <ShadowScrollbars
+                autoHide
+                style={scrollStyle}
+              >
+                {!hasChatData
+                  ? <MessageEmpty>No Chat Data</MessageEmpty>
+                  : this.renderMessageContent()
+                }
+                {this.renderPendingMessageContent()}
+                <div ref={this.messagesEndRef} />
+              </ShadowScrollbars>
+              {status === TICKET_STATUS.CLOSED ? (
+                <MessageBoxSystemNotification>
+                  Ticket Closed
+                </MessageBoxSystemNotification>
+              ) : this.renderMessageInput()
+              }
+            </>
+            {/* )} */}
           </MessageBoxContent>
           <ConversationDetail ticket={currentTicket} />
         </MessageBoxWrapper>

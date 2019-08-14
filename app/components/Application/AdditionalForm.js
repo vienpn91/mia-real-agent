@@ -353,14 +353,14 @@ export class AdditionalForm extends Component {
                     login={1}
                   />
                 </Col>
-                <Col sm={12} xs={24}>
+                {/* <Col sm={12} xs={24}>
                   <FormInput
                     name="social"
                     type="text"
                     label="Social"
                     login={1}
                   />
-                </Col>
+                </Col> */}
               </Row>
               <Row gutter={32}>
                 <Col sm={24} xs={24}>

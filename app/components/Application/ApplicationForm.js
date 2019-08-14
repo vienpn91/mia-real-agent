@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Steps, Tabs, Icon,
   notification,
@@ -128,7 +129,7 @@ export class ApplicationForm extends Component {
             >
               <div>
                 <Icon type="usergroup-add" />
-                Full-time
+                Dedicated
               </div>
             </button>
           </RoleWrapper>
@@ -148,7 +149,9 @@ export class ApplicationForm extends Component {
         <TabPane tab="" key="5">
           <SubmitSuccess>
             <i className="mia-check" />
-            Submit Application Success
+            Submit Application Success. Please wait for approval.
+            <br />
+            <Link to="/login">To Login</Link>
           </SubmitSuccess>
         </TabPane>
       </Tabs>

@@ -17,6 +17,7 @@ import {
 } from './Chatbot.styled';
 import CreateConversationFormContainer from '../../containers/Chatbot/CreateTicket';
 import EditConversationContainer from '../../containers/Chatbot/EditTicket';
+import { isAgent } from '../../utils/func-utils';
 
 const { Content } = Layout;
 const { Search } = Input;
@@ -31,6 +32,7 @@ export default class ChatbotComponent extends Component {
 
   static propTypes = {
     errorMsg: PropTypes.string,
+    userRole: PropTypes.string,
     currentConversation: PropTypes.objectOf(PropTypes.any),
     selectConversation: PropTypes.func.isRequired,
   }
@@ -85,24 +87,29 @@ export default class ChatbotComponent extends Component {
     history.push('/dashboard/ticket/1');
   }
 
-  renderConversationHeader = () => (
-    <ConversationHeaderWrapper>
-      <Return onClick={this.goToDashboard}>
-        <Icon type="left" />
-        <span>MENU</span>
-      </Return>
-      <Tooltip title="Create ticket" onClick={this.handleOpenCreateModal}>
-        <Icon type="copy" />
-        <span className="create-ticket">Create Ticket</span>
-      </Tooltip>
-    </ConversationHeaderWrapper>
-  );
+  renderConversationHeader = () => {
+    const { userRole } = this.props;
+    return (
+      <ConversationHeaderWrapper>
+        <Return onClick={this.goToDashboard}>
+          <Icon type="left" />
+          <span>MENU</span>
+        </Return>
+        {!isAgent(userRole) && (
+          <Tooltip title="Create ticket" onClick={this.handleOpenCreateModal}>
+            <Icon type="copy" />
+            <span className="create-ticket">Create Ticket</span>
+          </Tooltip>
+        )}
+      </ConversationHeaderWrapper>
+    );
+  }
 
   renderSearchConversation = () => (
     <ConversationHeaderWrapper search>
       <Search
-        placeholder="Search on Conversation"
-        onSearch={value => console.log(value)}
+        placeholder="Search"
+      // onSearch={value => console.log(value)}
       />
     </ConversationHeaderWrapper>
   );

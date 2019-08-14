@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   Row, Col, Tabs,
 } from 'antd';
-import { shape, string } from 'prop-types';
+import { shape, string, number } from 'prop-types';
 import ShadowScrollbars from 'components/Scrollbar';
 import Activity from 'components/ActivityTab';
 import TicketTab from 'containers/TicketTab';
@@ -29,6 +29,7 @@ const TAB = {
 export default class Dashboard extends Component {
   static propTypes = {
     userRole: string.isRequired,
+    totalRequest: number.isRequired,
   }
 
   state = {
@@ -76,11 +77,14 @@ export default class Dashboard extends Component {
     </TabPane>
   )
 
-  renderRequestItem = () => (
-    <TabPane tab="Requests" key={TAB.Requests}>
-      <RequestTab />
-    </TabPane>
-  )
+  renderRequestItem = () => {
+    const { totalRequest } = this.props;
+    return (
+      <TabPane tab={`Requests (${totalRequest})`} key={TAB.Requests}>
+        <RequestTab />
+      </TabPane>
+    );
+  }
 
   handleChangeTab = (activeTab) => {
     const { history } = this.props;
