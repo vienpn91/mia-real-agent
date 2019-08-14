@@ -90,6 +90,10 @@ export const FilterContainer = styled.div`
   z-index: 9;
   width : 100%;
   overflow: hidden;
+  .ant-select-enabled{
+    right: 0px;
+    transition: right ease 300ms;
+  }
   &.filter-hide{
     .ant-select-enabled{
       right: -110%;
@@ -98,7 +102,9 @@ export const FilterContainer = styled.div`
   }
 `;
 
-export const TicketFilterWrapper = styled.div`
+export const TicketFilterWrapper = styled.div.attrs({
+  className: 'filter-vienpn',
+})`
   padding: 1em 1.5em;
   border-top: 1px solid #d9d9d9;  
   display: flex;
@@ -107,6 +113,8 @@ export const TicketFilterWrapper = styled.div`
 
   .anticon-filter{
     margin-left: .75em;
+    position: relative;
+    z-index: 10;
   }
   .ant-select{
     width: 100%;

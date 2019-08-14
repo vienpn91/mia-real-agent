@@ -73,11 +73,11 @@ export default class TopNavBar extends Component {
                   />
                 </React.Fragment>
               )}
-              <UserName>
+              <UserName onClick={this.onToggleUserInfo}>
                 {email}
               </UserName>
               <MenuStyled
-                type="menu"
+                type="down"
                 onClick={this.onToggleUserInfo}
               />
             </ProfileStyled>

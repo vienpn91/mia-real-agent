@@ -18,9 +18,9 @@ export const TopNavBarWrapper = styled.div`
 `;
 
 export const UserName = styled.span`
-  margin: 0 10px;
-  font-weight: 600;
-  font-size: 16px;
+  margin: 0 .5em;
+  font-weight: 400;
+  font-size: .85em;
   color: ${props => props.theme.textColorSecondary};
 `;
 
@@ -126,6 +126,7 @@ export const ProfileStyled = styled.div`
   align-items: center;
   text-align: center;  
   position: relative;
+  cursor: pointer;
 `;
 
 export const ProfileImageStyled = styled.img`
@@ -137,8 +138,6 @@ export const ProfileImageStyled = styled.img`
 export const MenuStyled = styled(Icon)`
   svg{
     color: ${props => props.theme.textColorSecondary};
-    font-size: 1.5em;
-    font-weight: 600;
-    margin-left: 10px;
+    font-size: 0.85em;
   }
 `;
