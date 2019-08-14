@@ -2,22 +2,18 @@ import styled from 'styled-components';
 
 export const ProfileUserInfoWrapper = styled.div`
   position: absolute;
-  top: 50px;
-  right: -10px;
+  top: 58px;
+  right: -7px;
   transition: all 300ms ease-in-out;
   box-shadow: -2px 5px 10px 1px rgba(0, 0, 0, 0.176);
-  width: 150px;
-  min-height: 100px;
+  width: 13em;
   z-index: 1;
   background-color: ${props => props.theme.secondaryColor};
 `;
 
 export const ProfileUserHead = styled.div`
-  padding: 10px 20px;
-  border-bottom: 1px solid #ededed;
   background-color: #f7f7f8;
   position: relative;
-  padding-top: 15px;
 `;
 
 export const ProfileUserAvatar = styled.div`
@@ -66,29 +62,34 @@ export const ProfileUserEmail = styled.div`
 
 export const ProfileUserAction = styled.div`
   line-height: 30px;
-  
+  a{
+    height: 3em;
+    display: flex;
+    justify-content: center;
+    color: #010101;
+    align-items: center;
+    &:hover {
+      opacity: .7;
+      background-color: #fff;
+    }
+}
+  }
   button {
+    padding: 0px;        
     cursor: pointer;
     background-color: transparent;
+    align-items: center;
     border: none;
-  }
-  /* span {
-    padding: 0px 10px;
-  } */
-  .my-account {
-    &:hover {
-      color: #5b77bd;
-    }
-  }
+  }  
   .sign-out {
     color: #e4585a;
     width:100%;
-    height: 50px;
+    height: 3em;
     &:hover {
+      background-color: #fff;
       color: #b32628;
     }
   }
-
 `;
 
 export const CloseAction = styled.div`

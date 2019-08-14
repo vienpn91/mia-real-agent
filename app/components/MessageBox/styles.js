@@ -71,22 +71,30 @@ export const ConversationHeaderTitle = styled.div`
 `;
 
 export const ConversationTitle = styled.div`
-  text-align: center;
   padding: 1.2em 1em;
   max-height: 60px;
+  display: flex;
   background-color: #fff;
   border-bottom: 1px solid #d9d9d9;
-  span{
-    font-size: 1.3em;
-    margin: 0 1em;
-    font-weight: 600;
-  }
-
+  align-items: center;
+  justify-content: center;
   button {
-    float: right;
+    font-size: .85em;
+    border-radius: .3em;
   }
 `;
 
+export const ConversationTitleInfo = styled.div`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  span{
+    font-size: 1.3em;
+    margin: 0 .5em;
+    font-weight: 600;
+  }
+`;
 export const MessageText = styled.div`
   width: fit-content;
   max-width: 60%;
@@ -164,7 +172,7 @@ export const RatingWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
 `;
 
@@ -207,11 +215,28 @@ export const TicketStatus = styled.div`
   background: ${({ status }) => [COLOR_BY_STATUS[status]]};
 `;
 
-export const MessageBoxSystemNotification = styled(Divider)`
-  span{
-    font-size: 0.9em;
+export const MessageBoxSystemNotification = styled.span`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  padding: 1em;
+  font-size: 0.85em;
+  color: #828282;
+  opacity: .7;
+`;
+export const LineDivider = styled.span`
+    display: flex;
+    align-items: center;
+    flex: 0 0 20%;
+    background-color: #828282;
+    justify-content: center;
+    font-size: 0.75em;
     color: #828282;
-  }
+    margin: 0 2em;
+    height: 1px;
+    opacity: .7;
+}
 `;
 const loading = keyframes`
   0% {

@@ -139,8 +139,7 @@ export const ConversationHeaderWrapper = styled.div`
   justify-content: space-between;
   padding: 1em 1.5em;
   height: 60px;
-  width: 90%;
-  border-bottom: 1px solid #d9d9d9;
+  width: 100%;
   span {
     cursor: pointer;
     font-weight: 600;
@@ -154,6 +153,7 @@ export const ConversationHeaderWrapper = styled.div`
   }
   ${({ search }) => search && css`
     border-bottom: none;
+    width: 94%;
     @media (max-width: 840px) {
       display: none;
     }

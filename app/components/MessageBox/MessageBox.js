@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Avatar, Breadcrumb,
+  Avatar,
   Button, Form,
 } from 'antd';
 import _isEmpty from 'lodash/isEmpty';
@@ -20,7 +20,9 @@ import {
   InputAction,
   UserMessage,
   ConversationTitle,
+  ConversationTitleInfo,
   RatingWrapper,
+  LineDivider,
   RatingContent,
   CommentInputWrapper,
   TicketStatus,
@@ -146,7 +148,9 @@ export default class MessageBox extends Component {
     const { systemMessage, conversationId } = this.props;
     return shouldShowSystemMessage(systemMessage, conversationId) && (
       <MessageBoxSystemNotification>
+        <LineDivider />
         {systemMessage.message}
+        <LineDivider />
       </MessageBoxSystemNotification>
     );
   }
@@ -256,8 +260,10 @@ export default class MessageBox extends Component {
     return (
       <ConversationHeaderTitle>
         <ConversationTitle>
-          <TicketStatus status={status} />
-          <span>{title}</span>
+          <ConversationTitleInfo>
+            <TicketStatus status={status} />
+            <span>{title}</span>
+          </ConversationTitleInfo>
           {!isAgent(userRole) && _isEmpty(assignee)
             && (
               <Button
