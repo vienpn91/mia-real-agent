@@ -4,7 +4,7 @@ import FormInput from '../FormInput/FormInput';
 
 export const ChatbotWrapper = styled.div`
   display: flex;
-  height: 100vh;
+  height: calc(100vh - 4.5em);
 `;
 
 export const ChatbotConversationListWrapper = styled.div`
@@ -42,11 +42,7 @@ export const ChatbotConversationListWrapper = styled.div`
       .anticon-setting {
         visibility: visible;
       }
-    }
-    .anticon {
-      margin-right: 0px;
-      margin-top: 5px;
-    }
+    }    
   }
   .ant-avatar {
     display: flex;
@@ -141,11 +137,20 @@ export const ConversationHeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 24px;
+  padding: 1em 1.5em;
   height: 60px;
+  width: 90%;
   border-bottom: 1px solid #d9d9d9;
   span {
-    font-weight: 700;
+    cursor: pointer;
+    font-weight: 600;
+    &.create-ticket{
+      font-weight: 400;
+      margin-left: .5em;
+    }
+    &:hover{
+      color: #ff5502;
+    }
   }
   ${({ search }) => search && css`
     border-bottom: none;
@@ -163,8 +168,6 @@ export const ConversationHeaderWrapper = styled.div`
     }
   }
 `;
-
-
 
 export const ConversationGroup = styled.div`
   flex: 1;
@@ -281,14 +284,15 @@ export const ConversationInfoWrapper = styled.div`
         border-bottom: none;
       }
       .ant-descriptions-item-label {
-        font-size: 12px;
+        font-size: .8em;
+        margin-bottom: .5em;
         color: #808080;
         &:after {
           content: none;
         }
       }
       .ant-descriptions-item-content {
-        font-size: 15px;
+        font-size: 1em;
         color: ${props => props.theme.textColor};
       }
     }

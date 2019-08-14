@@ -20,8 +20,8 @@ import FormInput from '../FormInput/FormInput';
 import { FIELD_OPTIONS, SIZE_OPTIONS, ROLES } from '../../../common/enums';
 
 const scrollStyle = {
-  height: 'calc(100vh - 300px)',
-  margin: '0 -20px 0 -10px',
+  // height: 'calc(100vh - 400px)',
+  // margin: '0 -20px 0 -10px',
 };
 
 const initialValues = {
@@ -92,7 +92,9 @@ class Registration extends Component {
     return (
       <RegistrationWrapper>
         <RegistrationItem>
-          <RegistrationTitle>Mia Consult</RegistrationTitle>
+          <RegistrationTitle>
+            <img className="img" src="/assets/images/logo-small-black.png" alt="logo mia" />
+          </RegistrationTitle>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}

@@ -9,7 +9,7 @@ export const DashboardContainer = styled.section`
 
 export const DashboardItem = styled.div`
   width: calc(100% - 30px);
-  max-width: 960px;
+  max-width: 1280px;
   height: 100%;
   margin: 0 auto;
   background-color: ${props => props.theme.secondaryColor}

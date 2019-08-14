@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import TopNavBar from 'components/TopNavBar/TopNavBar';
+import TopNavBar from 'components/TopNavBar';
 import { actions, getUserEmail } from '../../reducers/auth';
 
 const mapStateToProps = state => ({

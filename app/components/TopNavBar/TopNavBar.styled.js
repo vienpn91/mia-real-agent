@@ -1,11 +1,12 @@
 import styled from 'styled-components';
+import { Icon } from 'antd';
 
 export const TopNavBarWrapper = styled.div`
   .ant-layout-header {
     display: flex;
     align-items: center;
-    height: 64px;
-    padding: 0px 15px;
+    height: 4.5em;
+    padding: 0px 1.5em;
     background-color: ${props => props.theme.textColor};
     box-shadow: 0px 0px 6px -1px ${props => props.theme.textColorSecondary};
     position: relative;
@@ -71,7 +72,7 @@ export const DropDown = styled.div`
 `;
 
 export const Logo = styled.div`
-  flex: 0 0 120px;
+  flex: 0 0 90px;
   height: 100%;
   display: flex;
   align-items: center;
@@ -81,11 +82,11 @@ export const Logo = styled.div`
     height: 100%;
     .ant-avatar {
       width: 100%;
-      height: 100%;
-      padding: 12px;
+      height: 100%;      
       border-radius: 0;
       img{
         object-fit: contain;
+        padding-bottom: .5em;
       }
     }
   }
@@ -118,33 +119,26 @@ export const TopbarRight = styled.div`
   display: flex;
   flex: 1;
   justify-content: flex-end;
-  margin-right: 20px;
-`;
-
-export const ActionsStyled = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  i {
-    line-height: 21px;
-    font-size: 18px;
-    margin-left: 15px;
-    cursor: pointer;
-    &:hover {
-      color: #41a0d9;
-    }
-  }
 `;
 
 export const ProfileStyled = styled.div`
   display: flex;
   align-items: center;
-  text-align: center;
-  padding: 0px 20px;
+  text-align: center;  
   position: relative;
 `;
 
 export const ProfileImageStyled = styled.img`
-  height: 30px;
+  height: 35px;
   cursor: pointer;
+  border-radius: 100%;
+`;
+
+export const MenuStyled = styled(Icon)`
+  svg{
+    color: ${props => props.theme.textColorSecondary};
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-left: 10px;
+  }
 `;

@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import { Input } from 'antd';
+import { LoginLogo } from '../Login/styles';
 
 export const RegistrationWrapper = styled.div`
   height: 100vh;
@@ -20,18 +21,15 @@ export const RegistrationItem = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${props => props.theme.secondaryColor};
-  box-shadow: 0px 0px 12px -2px #2a3a51;
+  box-shadow: 0px 0px 17px -3px #2a3a516e;
   padding: 50px;
   color: #6e6c83fa;
   position: relative;
   z-index: 1;
 `;
 
-export const RegistrationTitle = styled.div`
-  text-align: center;
-  font-size: 32px;
-  font-family: Countryside, sans-serif;
-  margin-bottom: 55px;
+export const RegistrationTitle = styled(LoginLogo)`
+  
 `;
 
 export const RegistrationInputWrapper = styled.div`

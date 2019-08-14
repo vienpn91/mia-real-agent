@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { COLOR_BY_STATUS } from '../../../common/enums';
 
 export const TicketTabWrapper = styled.div`
-  max-width: 980px;
   width: 100%;
   margin: 0 auto;
 `;

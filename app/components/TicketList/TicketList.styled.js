@@ -24,25 +24,46 @@ export const MenuStyled = styled(Menu)`
   }
 `;
 
-export const TicketGroup = styled.div`
-  flex: 1;
-  line-height: normal;
-  @media (max-width: 768px) {
-    display: none;
+
+export const TimeCreateTicket = styled.span`
+  opacity: 0.5;
+  font-size: .9em;
+  padding-left: 1.35em;
+`;
+
+
+
+export const TicketAction = styled.div`
+  span{
+   
+  }
+  .anticon{
+    opacity: .7;
+    margin-left: .7em;
+    font-size: 1em;
+    &:hover {      
+      font-size: 1em;      
+      opacity: 1;
+    }
   }
 `;
 
-export const TicketName = styled.div`
-  font-size: 15px;
-  font-weight: 700;
-  margin-bottom: 5px;
+export const TicketGroup = styled.div`
+  font-size: 1em;
+  margin-bottom: .2em;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  text-overflow: ellipsis;  
+`;
 
-  span, i{
-    padding-right: 10px;
-    float: right;
+export const TicketName = styled.div`
+  font-weight: 600;
+  flex: 1;
+  font-size: 1.1em;
+  &.Closed{
+    font-weight: 400;
   }
 `;
 
@@ -51,34 +72,44 @@ export const TicketItemStyled = styled.div`
   margin-left: 10px;
   display: flex;
   flex-direction: column;
-  /* align-items: center;
-  justify-content: space-between; */
-  line-height: normal;
-  i {
-    &:hover {
-      color: #f9ba59;
-    }
-  }
+  line-height: normal;  
   @media (max-width: 768px) {
     display: none;
-  }
-  p {
-    padding-left: 20px;
-    padding-top: 5px;
-  }
+  } 
 `;
 
 
 export const TicketItemWrapper = styled.div`
   height: calc(100% - 120px);
+  position: relative;
+`;
+export const FilterContainer = styled.div`
+  position: absolute;
+  top: -60px;
+  right: 0px;    
+  z-index: 9;
+  width : 100%;
+  overflow: hidden;
+  &.filter-hide{
+    .ant-select-enabled{
+      right: -110%;
+      
+    }
+  }
 `;
 
 export const TicketFilterWrapper = styled.div`
-  padding: 15px 24px;
-  border-top: 1px solid #d9d9d9;
-  .ant-select {
-    margin-top: 5px;
-    border-radius: 4px;
+  padding: 1em 1.5em;
+  border-top: 1px solid #d9d9d9;  
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  .anticon-filter{
+    margin-left: .75em;
+  }
+  .ant-select{
+    width: 100%;
   }
   .ant-select-selection--multiple {
     color: ${props => props.theme.secondaryColor};
@@ -137,10 +168,10 @@ export const ActionList = styled.div`
 
 
 export const TicketStatus = styled.div`
-  width: 10px;
-  height: 10px;
+  width: .75em;
+  height: .75em;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: .5em;
   display: inline-table;
   background: ${({ status }) => [COLOR_BY_STATUS[status]]};
 `;

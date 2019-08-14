@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import {
   Layout, Avatar,
 } from 'antd';
+import { string } from 'prop-types';
 import { Link } from 'react-router-dom';
 import {
   TopNavBarWrapper,
@@ -10,9 +11,10 @@ import {
   NavBar,
   Nav,
   TopbarRight,
-  ActionsStyled,
   ProfileStyled,
   ProfileImageStyled,
+  UserName,
+  MenuStyled,
 } from './TopNavBar.styled';
 import ProfileUser from '../../containers/ProfileUser';
 import { PopupOverlayStyled } from '../Generals/General.styled';
@@ -20,6 +22,10 @@ import { PopupOverlayStyled } from '../Generals/General.styled';
 const { Header } = Layout;
 
 export default class TopNavBar extends Component {
+  static propTypes = {
+    email: string.isRequired,
+  };
+
   state = {
     isUserInfoOpen: false,
   };
@@ -33,13 +39,14 @@ export default class TopNavBar extends Component {
   renderLogo = () => (
     <Logo>
       <Link to="/dashboard">
-        <Avatar src="../../assets/images/logo-small-white.png" />
+        <Avatar src="/assets/images/logo-small-white.png" />
       </Link>
     </Logo>
   )
 
   render() {
     const { isUserInfoOpen } = this.state;
+    const { email } = this.props;
     return (
       <TopNavBarWrapper>
         <Header>
@@ -55,7 +62,7 @@ export default class TopNavBar extends Component {
           <TopbarRight>
             <ProfileStyled>
               <ProfileImageStyled
-                src="/assets/images/user.svg"
+                src="/assets/images/user-live.jpeg"
                 onClick={this.onToggleUserInfo}
               />
               {isUserInfoOpen && (
@@ -66,6 +73,13 @@ export default class TopNavBar extends Component {
                   />
                 </React.Fragment>
               )}
+              <UserName>
+                {email}
+              </UserName>
+              <MenuStyled
+                type="menu"
+                onClick={this.onToggleUserInfo}
+              />
             </ProfileStyled>
           </TopbarRight>
         </Header>

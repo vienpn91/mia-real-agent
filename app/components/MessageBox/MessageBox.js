@@ -11,7 +11,7 @@ import {
   MessageBoxWrapper,
   MessageBoxContent,
   MessageBoxItem,
-  MessageBoxHeaderWrapper,
+  ConversationHeaderTitle,
   MessageText,
   MessageInputWrapper,
   MessageActionWrapper,
@@ -19,7 +19,7 @@ import {
   MessageEmpty,
   InputAction,
   UserMessage,
-  InfoNotification,
+  ConversationTitle,
   RatingWrapper,
   RatingContent,
   CommentInputWrapper,
@@ -36,7 +36,7 @@ import { insertSystemMessageToRepliesChat, combineChat } from './utils';
 import { shouldShowSystemMessage, isAgent } from '../../utils/func-utils';
 
 const scrollStyle = {
-  height: '94%',
+  height: 'calc(100% - 60px)',
   width: '100%',
 };
 
@@ -243,17 +243,6 @@ export default class MessageBox extends Component {
               />
               {this.renderGroupAction()}
               <InputAction onClick={handleSubmit} className="mia-enter" />
-              {(!isAgent(userRole)) && !assignee
-                && (
-                  <Button
-                    loading={isFindingAgent}
-                    key="button"
-                    type="primary"
-                    onClick={this.handleFindAgent}
-                  >
-                    Find Agent
-                  </Button>
-                )}
             </MessageInputWrapper>
           </Form>
         )}
@@ -262,21 +251,26 @@ export default class MessageBox extends Component {
   }
 
   renderMessageHeader = () => {
-    const { currentTicket } = this.props;
+    const { currentTicket, userRole, isFindingAgent } = this.props;
     const { assignee = {}, title, status } = currentTicket || {};
-    const { firstName = '', lastName = '' } = assignee;
     return (
-      <MessageBoxHeaderWrapper>
-        <Breadcrumb separator="-">
-          <Breadcrumb.Item>
-            <TicketStatus status={status} />
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>
-            {title}
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>{`${firstName} ${lastName}`}</Breadcrumb.Item>
-        </Breadcrumb>
-      </MessageBoxHeaderWrapper>
+      <ConversationHeaderTitle>
+        <ConversationTitle>
+          <TicketStatus status={status} />
+          <span>{title}</span>
+          {!isAgent(userRole) && _isEmpty(assignee)
+            && (
+              <Button
+                loading={isFindingAgent}
+                key="button"
+                type="primary"
+                onClick={this.handleFindAgent}
+              >
+                Find Agent
+              </Button>
+            )}
+        </ConversationTitle>
+      </ConversationHeaderTitle>
     );
   }
 

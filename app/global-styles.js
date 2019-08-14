@@ -48,14 +48,28 @@ html, body, div, span, applet, object, iframe,
   body *{
     box-sizing: border-box;
   }
-  body {
+  html{
     font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
-    color: #000;
-    @media (max-width: 480px){
-      font-size: 12px;
+    font-size: 16px;
+    transition: font-size 1000ms ease;
+    color: #010101;
+    @media(max-width: 1490px){
+        font-size: 14px;
+    }
+     @media(max-width: 1490px){
+        font-size: 14px;
+    }
+    @media(max-width: 1170px){
+        font-size: 12px;
+    }
+    @media(max-width: 1024px){
+        font-size: 11px;
+    }
+    @media(max-width: 840px){
+        font-size: 10px;
     }
   }
+ 
   body.fontLoaded {
     font-family: 'Open Sans', sans-serif;
   }

@@ -13,12 +13,12 @@ export const LoginWrapper = styled.div`
 `;
 
 export const LoginItem = styled.div`
-  width: 420px;
+  width: 32.250em;
   display: flex;
   flex-direction: column;
   background-color: #ffffffe0;
-  box-shadow: 0px 0px 12px -2px #2a3a51;;
-  padding: 50px;
+  box-shadow: 0px 0px 17px -3px #2a3a516e;
+  padding: 2em;
   color: #6e6c83fa;
   position: relative;
   z-index: 1;
@@ -27,12 +27,18 @@ export const LoginItem = styled.div`
   `};
 `;
 
-export const LoginTitle = styled.div`
+export const LoginLogo = styled.div`
   text-align: center;
-  font-size: 32px;
-  font-family: Countryside, sans-serif;
-  margin-bottom: 55px;
+  font-size: 2em;
+  width: 6.125em;
+  height: 4.063em;
+  margin: 0 auto 1em;
   color: ${props => props.theme.textColor};
+  img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 `;
 
 export const LoginInputWrapper = styled.div`

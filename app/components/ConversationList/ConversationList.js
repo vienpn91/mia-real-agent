@@ -22,7 +22,7 @@ const categories = [
 
 const widthBreakpoint = 768;
 const scrollStyle = {
-  height: 'calc(100vh - 250px)',
+  height: 'calc(100vh - 225px)',
   width: '100%',
 };
 

@@ -6,8 +6,8 @@ export const ProfileUserInfoWrapper = styled.div`
   right: -10px;
   transition: all 300ms ease-in-out;
   box-shadow: -2px 5px 10px 1px rgba(0, 0, 0, 0.176);
-  width: 360px;
-  min-height: 200px;
+  width: 150px;
+  min-height: 100px;
   z-index: 1;
   background-color: ${props => props.theme.secondaryColor};
 `;
@@ -17,6 +17,7 @@ export const ProfileUserHead = styled.div`
   border-bottom: 1px solid #ededed;
   background-color: #f7f7f8;
   position: relative;
+  padding-top: 15px;
 `;
 
 export const ProfileUserAvatar = styled.div`
@@ -64,8 +65,6 @@ export const ProfileUserEmail = styled.div`
 `;
 
 export const ProfileUserAction = styled.div`
-  margin-bottom: 10px;
-  height: 30px;
   line-height: 30px;
   
   button {
@@ -73,21 +72,23 @@ export const ProfileUserAction = styled.div`
     background-color: transparent;
     border: none;
   }
-  span {
+  /* span {
     padding: 0px 10px;
-  }
+  } */
   .my-account {
-    color: #206ec5;
     &:hover {
-      color: #095cb7;
+      color: #5b77bd;
     }
   }
   .sign-out {
     color: #e4585a;
+    width:100%;
+    height: 50px;
     &:hover {
       color: #b32628;
     }
   }
+
 `;
 
 export const CloseAction = styled.div`

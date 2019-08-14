@@ -264,15 +264,16 @@ export const ConversationInfoWrapper = styled.div`
       &:last-child {
         border-bottom: none;
       }
-      .ant-descriptions-item-label {
-        font-size: 12px;
+        .ant-descriptions-item-label {
+        font-size: .8em;
+        margin-bottom: .5em;
         color: #808080;
         &:after {
           content: none;
         }
       }
       .ant-descriptions-item-content {
-        font-size: 15px;
+        font-size: 1em;
         color: ${props => props.theme.textColor};
       }
     }
@@ -302,8 +303,7 @@ export const TicketStatus = styled.div`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  margin-right: 10px;
-  margin-left: 5px;
+  margin-right: 10px; 
   display: inline-table;
   background: ${({ status }) => [COLOR_BY_STATUS[status]]};
 `;
