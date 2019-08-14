@@ -9,6 +9,7 @@ import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import { isAgent } from '../../../app/utils/func-utils';
 import { TICKET_STATUS } from '../../../common/enums';
 import RequestQueue from '../queue/requestQueue';
+import ConversationRoomQueue from '../queue/conversationRoomQueue';
 
 const { CONTENT_NOT_FOUND } = ERROR_MESSAGE;
 const emptyObjString = '{}';
@@ -190,6 +191,8 @@ class TicketController extends BaseController {
         throw new APIError(CONTENT_NOT_FOUND, httpStatus.NOT_FOUND);
       }
       _.assign(ticket, { status: TICKET_STATUS.CLOSED });
+      const { conversationId, _id } = ticket;
+      ConversationRoomQueue.ticketClosedNotification(conversationId, _id);
       const result = await ticket.save({});
       return res.status(httpStatus.OK).send(result);
     } catch (error) {

@@ -1,6 +1,7 @@
 import pick from 'lodash/pick';
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
+import _isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
 import bcrypt from 'bcrypt';
 import { hashFunc } from '../../utils/bcrypt';
@@ -85,6 +86,14 @@ class UserService extends BaseService {
 
   delete(id) {
     return this.collection.updateOne({ _id: id }, { deletedAt: new Date(), token: null }).exec();
+  }
+
+  async provideAccessToken(user) {
+    if (!_isEmpty(user)) {
+      const { _id } = user;
+      const token = jwt.sign({ _id }, SECRET_KEY_JWT);
+      this.collection.updateOne({ _id }, { token }).exec();
+    }
   }
 
   async getUserCount(query) {

@@ -73,6 +73,7 @@ function* requestAgent() {
   // watch message and relay the action
   while (true) {
     const data = yield take(socketChannel);
+    notification.success({ message: 'You got a new request' });
     yield put(REQUEST_ACTIONS.saveRequest(data));
   }
 }
@@ -155,6 +156,16 @@ function* removeRequest() {
   }
 }
 
+function* closeTicketNotification() {
+  const socketChannel = yield call(createSocketChannel, socketConnection, SOCKET_EMIT.CLOSE_TICKET_NOTIFICATION);
+
+  // watch message and relay the action
+  while (true) {
+    const { ticketId } = yield take(socketChannel);
+    yield put(TICKET_ACTIONS.getAction(ticketId));
+  }
+}
+
 function* connectFlow() {
   const token = yield select(getToken);
   // user is not logged in
@@ -169,6 +180,7 @@ function* connectFlow() {
     otherLeftConversation(),
     observeUserTypingConversation(),
     removeRequest(),
+    closeTicketNotification(),
   ]);
 }
 

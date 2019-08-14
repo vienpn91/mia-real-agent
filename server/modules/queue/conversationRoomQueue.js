@@ -87,6 +87,16 @@ class ConversationRoomQueue {
       this.queue = rest;
     }
   }
+
+  ticketClosedNotification = (conversationId, ticketId) => {
+    const room = this.getRoom(conversationId) || {};
+    if (!_isEmpty(room)) {
+      Object.keys(room).forEach((userId) => {
+        const otherSocket = room[userId];
+        otherSocket.emit(SOCKET_EMIT.CLOSE_TICKET_NOTIFICATION, { ticketId });
+      });
+    }
+  }
 }
 
 // eslint-disable-next-line import/no-mutable-exports

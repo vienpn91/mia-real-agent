@@ -11,7 +11,7 @@ import {
   ApplicationBtn, ArrayTagWrapper,
   ArrayAddButton, ArrayInputWrapper, ArrayWrapper, TagAction,
 } from './styles';
-import { POSITION_OPTIONS } from '../../../common/enums';
+import { POSITION_OPTIONS, CATEGORY_OPTIONS } from '../../../common/enums';
 
 const experienceInititalValues = {
   title: '',
@@ -290,7 +290,7 @@ export class ExperienceForm extends Component {
                     name="categories"
                     type="select"
                     mode="multiple"
-                    options={POSITION_OPTIONS}
+                    options={CATEGORY_OPTIONS}
                     label="Category"
                     login={1}
                   />

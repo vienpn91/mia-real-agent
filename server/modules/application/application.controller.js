@@ -1,10 +1,13 @@
 import httpStatus from 'http-status';
+import jwt from 'jsonwebtoken';
+import moment from 'moment';
+
 import BaseController from '../base/base.controller';
 import ApplicationService from './application.service';
 import UserService from '../user/user.service';
 // import { randomPassword } from '../../utils/utils';
 import { hashFunc } from '../../utils/bcrypt';
-import { ROLES, APPLICATION_STATUS } from '../../../common/enums';
+import { APPLICATION_STATUS } from '../../../common/enums';
 
 class ApplicationController extends BaseController {
   constructor(service) {
@@ -18,21 +21,21 @@ class ApplicationController extends BaseController {
   async approveApplication(req, res) {
     try {
       const { model: application } = req;
-      const { email, _id } = application;
+      const { email, _id, role } = application;
       const passwordString = '123456789'; // should generate random password and send email to user
       const hashPassword = await hashFunc(passwordString);
       const newUserPayload = {
         username: email,
         email,
         password: hashPassword,
-        role: ROLES.AGENT,
+        role,
         application: _id,
+        verifiedAt: moment().utc().format(),
       };
 
-      await UserService.insert(newUserPayload);
-
+      const user = await UserService.insert(newUserPayload);
+      UserService.provideAccessToken(user);
       const result = await this.updateStatus(application, APPLICATION_STATUS.APPROVED);
-
       return res.status(httpStatus.OK).send(result);
     } catch (error) {
       return this.handleError(res, error);

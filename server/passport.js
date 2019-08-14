@@ -1,5 +1,6 @@
 import passport from 'passport';
 import passportJWT from 'passport-jwt';
+import _isEmpty from 'lodash/isEmpty';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
 import AuthController from './modules/auth/auth.controller';
@@ -63,8 +64,9 @@ passport.use(
       const tokenReq = getTokenFromReq(req);
       const { _id } = payload;
       UserModel.findById(_id).exec((err, user) => {
-        if (err || !user) {
+        if (err || _isEmpty(user)) {
           done(err, false, { message: 'Something is wrong' });
+          return;
         }
         const { token } = user;
 

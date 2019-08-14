@@ -111,7 +111,7 @@ class UserController extends BaseController {
         role: {
           $in: [
             ROLES.FREELANCER,
-            ROLES.FULLTIME,
+            ROLES.DEDICATED,
           ],
         },
       };

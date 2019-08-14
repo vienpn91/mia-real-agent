@@ -167,7 +167,7 @@ class ApplicationDetailInfoContent extends PureComponent {
     const {
       applicationDetail: {
         firstName, lastName, email, cv,
-        type, categories, skills, createdAt,
+        role, categories, skills, createdAt,
       },
     } = this.props;
     return (
@@ -176,7 +176,7 @@ class ApplicationDetailInfoContent extends PureComponent {
         {this.renderOverviewInfo('First name', firstName)}
         {this.renderOverviewInfo('Last name', lastName)}
         {this.renderOverviewInfo('Email', email)}
-        {this.renderOverviewInfo('Type', type)}
+        {this.renderOverviewInfo('Role', role)}
         {this.renderOverviewInfo('Categories', categories)}
         {this.renderOverviewInfo('Skills', skills)}
         {this.renderOverviewInfo('Created at', moment(createdAt).format(DATE_TIME_FORMAT.DATE))}

@@ -32,7 +32,7 @@ class applicationDetailInfo extends PureComponent {
 
   render() {
     const {
- applicationDetail,
+      applicationDetail,
       applicationApprove,
       applicationReject,
       applicationReview,

@@ -20,8 +20,8 @@ export const ROLES = {
   INDIVIDUAL: 'individual',
   AGENT: 'agent',
   BUSINESS: 'business',
-  FREELANCER: 'freelancer',
-  FULLTIME: 'fulltime',
+  FREELANCER: 'Freelancer',
+  DEDICATED: 'Dedicated',
   EMPLOYEE: 'employee',
   MIA_AGENT: 'mia_agent',
 };
@@ -64,7 +64,6 @@ export const POSITION_OPTIONS = [
     value: 'John Wick',
   },
 ];
-
 
 export const SIZE_OPTIONS = [
   {
@@ -122,29 +121,36 @@ export const FIELD_OPTIONS = [
 
 export const CATEGORY_OPTIONS = [
   {
-    label: 'IT',
-    value: 'IT',
+    label: 'Tax',
+    value: 'Tax',
   },
   {
-    label: 'Consultant',
-    value: 'Consultant',
+    label: 'Payroll',
+    value: 'Payroll',
   },
   {
-    label: 'Accounting',
-    value: 'Accounting',
+    label: 'HR',
+    value: 'HR',
+  },
+  {
+    label: 'Legal',
+    value: 'Legal',
+  },
+  {
+    label: 'Other',
+    value: 'Other',
   },
 ];
 
 export const APPLICATION_STATUS = {
   PENDING: 'Pending',
-  REVIEWING: 'Reviewing',
   REJECTED: 'Rejected',
   APPROVED: 'Approved',
 };
 
 export const APPLICATION_TYPE = {
   FREELANCER: 'Freelancer',
-  FULLTIME: 'Fulltime',
+  DEDICATED: 'Dedicated',
 };
 
 export const APPLICATION_LANGUAGE = {
@@ -179,8 +185,390 @@ export const SOCKET_EMIT = {
   OTHER_JOIN_ROOM: 'OTHER_JOIN_ROOM',
   OTHER_LEFT_ROOM: 'OTHER_LEFT_ROOM',
   RECEIVE_USER_TYPING: 'RECEIVE_USER_TYPING',
+  CLOSE_TICKET_NOTIFICATION: 'CLOSE_TICKET_NOTIFICATION',
 
   JOIN_CONVERSATION: 'JOIN_CONVERSATION',
   LEFT_CONVERSATION: 'LEFT_CONVERSATION',
   USER_TYPING: 'USER_TYPING',
 };
+
+export const FIELD_OF_STUDY = [{
+  label: 'Accounting',
+  value: 'Accounting',
+}, {
+  label: 'Actuarial Science',
+  value: 'Actuarial Science',
+}, {
+  label: 'Advertising',
+  value: 'Advertising',
+}, {
+  label: 'Aerospace Engineering',
+  value: 'Aerospace Engineering',
+}, {
+  label: 'African-American Studies',
+  value: 'African-American Studies',
+}, {
+  label: 'African Languages, Literatures, and Linguistics',
+  value: 'African Languages, Literatures, and Linguistics',
+}, {
+  label: 'African Studies',
+  value: 'African Studies',
+}, {
+  label: 'Agricultural/Biological Engineering and Bioengineering',
+  value: 'Agricultural/Biological Engineering and Bioengineering',
+}, {
+  label: 'Agricultural Business and Management',
+  value: 'Agricultural Business and Management',
+}, {
+  label: 'Agricultural Economics',
+  value: 'Agricultural Economics',
+}, {
+  label: 'Agricultural Education',
+  value: 'Agricultural Education',
+}, {
+  label: 'Agricultural Journalism',
+  value: 'Agricultural Journalism',
+}, {
+  label: 'Agricultural Mechanization',
+  value: 'Agricultural Mechanization',
+}, {
+  label: 'Agricultural Technology Management',
+  value: 'Agricultural Technology Management',
+}, {
+  label: 'Agriculture',
+  value: 'Agriculture',
+}, {
+  label: 'Agronomy and Crop Science',
+  value: 'Agronomy and Crop Science',
+}, {
+  label: 'Air Traffic Control',
+  value: 'Air Traffic Control',
+}, {
+  label: 'American History',
+  value: 'American History',
+}, {
+  label: 'American Literature',
+  value: 'American Literature',
+}, {
+  label: 'American Sign Language',
+  value: 'American Sign Language',
+}, {
+  label: 'American Studies',
+  value: 'American Studies',
+}, {
+  label: 'Anatomy',
+  value: 'Anatomy',
+}, {
+  label: 'Ancient Studies',
+  value: 'Ancient Studies',
+}, {
+  label: 'Animal Behavior and Ethology',
+  value: 'Animal Behavior and Ethology',
+}, {
+  label: 'Animal Science',
+  value: 'Animal Science',
+}, {
+  label: 'Animation and Special Effects',
+  value: 'Animation and Special Effects',
+}, {
+  label: 'Anthropology',
+  value: 'Anthropology',
+}, {
+  label: 'Applied Mathematics',
+  value: 'Applied Mathematics',
+}, {
+  label: 'Applied Physics',
+  value: 'Applied Physics',
+}, {
+  label: 'Aquaculture',
+  value: 'Aquaculture',
+}, {
+  label: 'Aquatic Biology',
+  value: 'Aquatic Biology',
+}, {
+  label: 'Arabic',
+  value: 'Arabic',
+}, {
+  label: 'Archeology',
+  value: 'Archeology',
+}, {
+  label: 'Architectural Engineering',
+  value: 'Architectural Engineering',
+}, {
+  label: 'Architectural History',
+  value: 'Architectural History',
+}, {
+  label: 'Architecture',
+  value: 'Architecture',
+}, {
+  label: 'Art',
+  value: 'Art',
+}, {
+  label: 'Art Education',
+  value: 'Art Education',
+}, {
+  label: 'Art History',
+  value: 'Art History',
+}, {
+  label: 'Artificial Intelligence and Robotics',
+  value: 'Artificial Intelligence and Robotics',
+}, {
+  label: 'Art Therapy',
+  value: 'Art Therapy',
+}, {
+  label: 'Asian-American Studies',
+  value: 'Asian-American Studies',
+}, {
+  label: 'Astronomy',
+  value: 'Astronomy',
+}, {
+  label: 'Astrophysics',
+  value: 'Astrophysics',
+}, {
+  label: 'Athletic Training',
+  value: 'Athletic Training',
+}, {
+  label: 'Atmospheric Science',
+  value: 'Atmospheric Science',
+}, {
+  label: 'Automotive Engineering',
+  value: 'Automotive Engineering',
+}, {
+  label: 'Aviation',
+  value: 'Aviation',
+}, {
+  label: 'Bakery Science',
+  value: 'Bakery Science',
+}, {
+  label: 'Biblical Studies',
+  value: 'Biblical Studies',
+},
+{
+  label: 'Biochemistry',
+  value: 'Biochemistry',
+}, {
+  label: 'Bioethics',
+  value: 'Bioethics',
+}, {
+  label: 'Biology',
+  value: 'Biology',
+}, {
+  label: 'Biomedical Engineering',
+  value: 'Biomedical Engineering',
+}, {
+  label: 'Biomedical Science',
+  value: 'Biomedical Science',
+}, {
+  label: 'Biopsychology',
+  value: 'Biopsychology',
+}, {
+  label: 'Biotechnology',
+  value: 'Biotechnology',
+}, {
+  label: 'Botany/Plant Biology',
+  value: 'Botany/Plant Biology',
+}, {
+  label: 'Business Administration',
+  value: 'Business Administration',
+}, {
+  label: 'Business Administration/Management',
+  value: 'Business Administration/Management',
+}, {
+  label: 'Business Communications',
+  value: 'Business Communications',
+}, {
+  label: 'Business Education',
+  value: 'Business Education',
+}, {
+  label: 'Canadian Studies',
+  value: 'Canadian Studies',
+}, {
+  label: 'Caribbean Studies',
+  value: 'Caribbean Studies',
+}, {
+  label: 'Cell Biology',
+  value: 'Cell Biology',
+}, {
+  label: 'Ceramic Engineering',
+  value: 'Ceramic Engineering',
+}, {
+  label: 'Ceramics',
+  value: 'Ceramics',
+}, {
+  label: 'Chemical Engineering',
+  value: 'Chemical Engineering',
+}, {
+  label: 'Chemical Physics',
+  value: 'Chemical Physics',
+}, {
+  label: 'Chemistry',
+  value: 'Chemistry',
+}, {
+  label: 'Child Care',
+  value: 'Child Care',
+}, {
+  label: 'Child Development',
+  value: 'Child Development',
+}, {
+  label: 'Chinese',
+  value: 'Chinese',
+}, {
+  label: 'Chiropractic',
+  value: 'Chiropractic',
+}, {
+  label: 'Church Music',
+  value: 'Church Music',
+}, {
+  label: 'Cinematography and Film/Video Production',
+  value: 'Cinematography and Film/Video Production',
+}, {
+  label: 'Circulation Technology',
+  value: 'Circulation Technology',
+}, {
+  label: 'Civil Engineering',
+  value: 'Civil Engineering',
+}, {
+  label: 'Classics',
+  value: 'Classics',
+}, {
+  label: 'Clinical Psychology',
+  value: 'Clinical Psychology',
+}, {
+  label: 'Cognitive Psychology',
+  value: 'Cognitive Psychology',
+}, {
+  label: 'Communication Disorders',
+  value: 'Communication Disorders',
+}, {
+  label: 'Communications Studies/Speech Communication and Rhetoric',
+  value: 'Communications Studies/Speech Communication and Rhetoric',
+}, {
+  label: 'Comparative Literature',
+  value: 'Comparative Literature',
+}, {
+  label: 'Computer and Information Science',
+  value: 'Computer and Information Science',
+}, {
+  label: 'Computer Engineering',
+  value: 'Computer Engineering',
+}, {
+  label: 'Computer Graphics',
+  value: 'Computer Graphics',
+}, {
+  label: 'Computer Systems Analysis',
+  value: 'Computer Systems Analysis',
+}, {
+  label: 'Construction Management',
+  value: 'Construction Management',
+}, {
+  label: 'Counseling',
+  value: 'Counseling',
+}, {
+  label: 'Crafts',
+  value: 'Crafts',
+}, {
+  label: 'Creative Writing',
+  value: 'Creative Writing',
+}, {
+  label: 'Criminal Science',
+  value: 'Criminal Science',
+}, {
+  label: 'Criminology',
+  value: 'Criminology',
+}, {
+  label: 'Culinary Arts',
+  value: 'Culinary Arts',
+}, {
+  label: 'Dance',
+  value: 'Dance',
+}, {
+  label: 'Data Processing',
+  value: 'Data Processing',
+}, {
+  label: 'Dental Hygiene',
+  value: 'Dental Hygiene',
+}, {
+  label: 'Developmental Psychology',
+  value: 'Developmental Psychology',
+}, {
+  label: 'Diagnostic Medical Sonography',
+  value: 'Diagnostic Medical Sonography',
+}];
+
+export const AGENT_SKILL = [{
+  label: 'Auditing',
+  value: 'Auditing',
+}, {
+  label: 'Internal Controls',
+  value: 'Internal Controls',
+}, {
+  label: 'Financial Reporting',
+  value: 'Financial Reporting',
+}, {
+  label: 'Budgets',
+  value: 'Budgets',
+}, {
+  label: 'Analysis',
+  value: 'Analysis',
+}, {
+  label: 'Analytical Skills',
+  value: 'Analytical Skills',
+}, {
+  label: 'Controlling',
+  value: 'Controlling',
+}, {
+  label: 'Accounting',
+  value: 'Accounting',
+}, {
+  label: 'Business Planning',
+  value: 'Business Planning',
+}, {
+  label: 'Corporate Finance',
+  value: 'Corporate Finance',
+}, {
+  label: 'Department Budget',
+  value: 'Department Budget',
+}, {
+  label: 'Financial Controlling and etc.',
+  value: 'Financial Controlling and etc.',
+}, {
+  label: 'Excellent Relationship Management Skills',
+  value: 'Excellent Relationship Management Skills',
+}, {
+  label: 'Proactive and Prompt Action',
+  value: 'Proactive and Prompt Action',
+}, {
+  label: 'Team Player and etc.',
+  value: 'Team Player and etc.',
+},
+{
+  label: 'Customer Handling',
+  value: 'Customer Handling',
+}, {
+  label: 'Negotiation Skills',
+  value: 'Negotiation Skills',
+}, {
+  label: 'People Management',
+  value: 'People Management',
+}, {
+  label: 'Problem Solving',
+  value: 'Problem Solving',
+}, {
+  label: 'Project Coordination',
+  value: 'Project Coordination',
+}, {
+  label: 'Planning And Organizing',
+  value: 'Planning And Organizing',
+}, {
+  label: 'Recruitment And Selection',
+  value: 'Recruitment And Selection',
+}, {
+  label: 'English Communication',
+  value: 'English Communication',
+}, {
+  label: 'Employee Relations',
+  value: 'Employee Relations',
+}, {
+  label: 'Change Management',
+  value: 'Change Management',
+}];

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Steps, Tabs, Icon,
   notification,
@@ -15,6 +16,7 @@ import ExperienceForm from './ExperienceForm';
 import EducationForm from './EducationForm';
 import AdditionalForm from './AdditionalForm';
 import LoadingSpin from '../Loading';
+import { APPLICATION_TYPE } from '../../../common/enums';
 
 const { Step } = Steps;
 const { TabPane } = Tabs;
@@ -115,7 +117,7 @@ export class ApplicationForm extends Component {
           <RoleWrapper>
             <button
               type="button"
-              onClick={() => this.handleNextStep('freelancer')}
+              onClick={() => this.handleNextStep(APPLICATION_TYPE.FREELANCER)}
             >
               <div>
                 <Icon type="user" />
@@ -124,11 +126,11 @@ export class ApplicationForm extends Component {
             </button>
             <button
               type="button"
-              onClick={() => this.handleNextStep('fullTime')}
+              onClick={() => this.handleNextStep(APPLICATION_TYPE.DEDICATED)}
             >
               <div>
                 <Icon type="usergroup-add" />
-                Full-time
+                Dedicated
               </div>
             </button>
           </RoleWrapper>
@@ -148,7 +150,9 @@ export class ApplicationForm extends Component {
         <TabPane tab="" key="5">
           <SubmitSuccess>
             <i className="mia-check" />
-            Submit Application Success
+            Submit Application Success. Please wait for approval.
+            <br />
+            <Link to="/login">To Login</Link>
           </SubmitSuccess>
         </TabPane>
       </Tabs>

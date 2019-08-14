@@ -115,10 +115,11 @@ export const isFindingAgent = ({ requests }, conversationId) => {
 export const isWaitingForComfirm = ({ requests }) => requests.get('isWaitingForComfirm');
 export const isSendingConfirmation = ({ requests }) => requests.get('isSendingConfirmation');
 export const getRequestData = ({ requests }) => requests.get('requestData');
+export const getRequestTotal = ({ requests }) => requests.get('total');
 
 const initialState = fromJS({
   byId: {},
-  allIds: new ISet(),
+  allIds: [],
   total: 0,
   isRequestingList: new ISet(),
   error: {},
@@ -133,12 +134,12 @@ function repliesReducer(state = initialState, action) {
     case SAVE_REQUEST: {
       const { request } = action.payload;
       const { _id } = request;
-      const allIds = state.get('allIds');
-      const total = state.get('total');
+      const allIds = state.get('allIds').push(_id);
+
       return state
         .setIn(['byId', _id], request)
-        .set('allIds', allIds.add(_id))
-        .set('total', total + 1);
+        .set('allIds', fromJS(allIds))
+        .set('total', allIds.size);
     }
 
     case REMOVE_REQUEST: {
@@ -147,7 +148,8 @@ function repliesReducer(state = initialState, action) {
       const newAllIds = allIds.filter(id => id !== ticketId);
       return state
         .removeIn(['byId', ticketId])
-        .set('allIds', fromJS(newAllIds));
+        .set('allIds', fromJS(newAllIds))
+        .set('total', newAllIds.length);
     }
 
     case AGENTS_FIND: {
