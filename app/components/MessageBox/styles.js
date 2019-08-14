@@ -142,6 +142,7 @@ export const MessageInput = styled(FormInput)`
   flex: 1;
   border: none;
   height: 100%;
+  font-weight: 300;
   &::placeholder {
     font-style: normal;
     color: #ccc;

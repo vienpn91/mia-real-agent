@@ -99,6 +99,7 @@ class Registration extends Component {
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={this.register}
+            className="form-mik-vienpn"
           >
             {({ handleSubmit }) => (
               <Form onSubmit={handleSubmit}>
