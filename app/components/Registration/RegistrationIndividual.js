@@ -8,9 +8,6 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import {
   LoginBtn,
-  LoginFooter,
-  LoginFooterText,
-  LoginFooterLink,
   LoginSpinner,
   LoginErrorMessage,
 } from '../Login/styles';
@@ -18,7 +15,7 @@ import FormInput from '../FormInput/FormInput';
 import { POSITION_OPTIONS } from '../../../common/enums';
 import {
   RegistrationTitle, RegistrationWrapper, RegistrationItem,
-  InputWrapper,
+  InputWrapper, RegistrationFooter, RegistrationFooterText, RegistrationFooterLink,
 } from './styles';
 
 const scrollStyle = {
@@ -110,131 +107,131 @@ class Registration extends Component {
           >
             {({ handleSubmit }) => (
               <Form onSubmit={handleSubmit}>
-                <ShadowScrollbars autoHide style={scrollStyle}>
-                  <InputWrapper>
-                    <Row gutter={32}>
-                      <Col sm={12} xs={24}>
-                        <FormInput
-                          name="username"
-                          type="text"
-                          label="Username"
-                          login={1}
-                        />
-                      </Col>
-                      <Col sm={12} xs={24}>
-                        <FormInput
-                          name="email"
-                          type="text"
-                          label="Email"
-                          login={1}
-                        />
-                      </Col>
-                    </Row>
-                    <Row gutter={32}>
-                      <Col sm={12} xs={24}>
-                        <FormInput
-                          name="firstName"
-                          type="text"
-                          label="First name"
-                          login={1}
-                        />
-                      </Col>
-                      <Col sm={12} xs={24}>
-                        <FormInput
-                          name="lastName"
-                          type="text"
-                          label="Last name"
-                          login={1}
-                        />
-                      </Col>
-                    </Row>
-                    <Row gutter={32}>
-                      <Col sm={12} xs={24}>
-                        <FormInput
-                          name="password"
-                          type="password"
-                          label="Password"
-                          login={1}
-                        />
-                      </Col>
-                      <Col sm={12} xs={24}>
-                        <FormInput
-                          name="rePassword"
-                          type="password"
-                          label="Re-password"
-                          login={1}
-                        />
-                      </Col>
-                    </Row>
-                    <Row gutter={32}>
-                      <Col sm={12} xs={24}>
-                        <FormInput
-                          name="dateOfBirth"
-                          type="date"
-                          label="Date of birth"
-                          login={1}
-                        />
-                      </Col>
-                      <Col sm={12} xs={24}>
-                        <FormInput
-                          name="phone"
-                          type="text"
-                          label="Phone No."
-                          login={1}
-                        />
-                      </Col>
-                    </Row>
-                    <Row gutter={32}>
-                      <Col sm={12} xs={24}>
-                        <FormInput
-                          name="company"
-                          type="text"
-                          label="Company"
-                          login={1}
-                        />
-                      </Col>
-                      <Col sm={12} xs={24}>
-                        <FormInput
-                          name="position"
-                          type="select"
-                          options={POSITION_OPTIONS}
-                          label="Position"
-                          login={1}
-                        />
-                      </Col>
-                    </Row>
-                    <Row gutter={32}>
-                      <Col sm={24} xs={24}>
-                        <FormInput
-                          name="address"
-                          type="text"
-                          label="Address"
-                          login={1}
-                        />
-                      </Col>
-                    </Row>
+                {/* <ShadowScrollbars autoHide style={scrollStyle}> */}
+                <InputWrapper>
+                  <Row gutter={32}>
+                    <Col sm={12} xs={24}>
+                      <FormInput
+                        name="username"
+                        type="text"
+                        label="Username"
+                        login={1}
+                      />
+                    </Col>
+                    <Col sm={12} xs={24}>
+                      <FormInput
+                        name="email"
+                        type="text"
+                        label="Email"
+                        login={1}
+                      />
+                    </Col>
+                  </Row>
+                  <Row gutter={32}>
+                    <Col sm={12} xs={24}>
+                      <FormInput
+                        name="firstName"
+                        type="text"
+                        label="First name"
+                        login={1}
+                      />
+                    </Col>
+                    <Col sm={12} xs={24}>
+                      <FormInput
+                        name="lastName"
+                        type="text"
+                        label="Last name"
+                        login={1}
+                      />
+                    </Col>
+                  </Row>
+                  <Row gutter={32}>
+                    <Col sm={12} xs={24}>
+                      <FormInput
+                        name="password"
+                        type="password"
+                        label="Password"
+                        login={1}
+                      />
+                    </Col>
+                    <Col sm={12} xs={24}>
+                      <FormInput
+                        name="rePassword"
+                        type="password"
+                        label="Re-password"
+                        login={1}
+                      />
+                    </Col>
+                  </Row>
+                  <Row gutter={32}>
+                    <Col sm={12} xs={24}>
+                      <FormInput
+                        name="dateOfBirth"
+                        type="date"
+                        label="Date of birth"
+                        login={1}
+                      />
+                    </Col>
+                    <Col sm={12} xs={24}>
+                      <FormInput
+                        name="phone"
+                        type="text"
+                        label="Phone No."
+                        login={1}
+                      />
+                    </Col>
+                  </Row>
+                  <Row gutter={32}>
+                    <Col sm={12} xs={24}>
+                      <FormInput
+                        name="company"
+                        type="text"
+                        label="Company"
+                        login={1}
+                      />
+                    </Col>
+                    <Col sm={12} xs={24}>
+                      <FormInput
+                        name="position"
+                        type="select"
+                        options={POSITION_OPTIONS}
+                        label="Position"
+                        login={1}
+                      />
+                    </Col>
+                  </Row>
+                  <Row gutter={32}>
+                    <Col sm={24} xs={24}>
+                      <FormInput
+                        name="address"
+                        type="text"
+                        label="Address"
+                        login={1}
+                      />
+                    </Col>
+                  </Row>
 
-                    <Row gutter={32}>
-                      <Col sm={24} xs={24}>
-                        {this.renderRegisterBtn()}
-                      </Col>
-                    </Row>
-                    {errorMessage && (
-                      <LoginErrorMessage>
-                        {errorMessage}
-                      </LoginErrorMessage>
-                    )}
-                  </InputWrapper>
-                </ShadowScrollbars>
+                  <Row gutter={32}>
+                    <Col sm={24} xs={24}>
+                      {this.renderRegisterBtn()}
+                    </Col>
+                  </Row>
+                  {errorMessage && (
+                    <LoginErrorMessage>
+                      {errorMessage}
+                    </LoginErrorMessage>
+                  )}
+                </InputWrapper>
+                {/* </ShadowScrollbars> */}
               </Form>
             )}
           </Formik>
-          <LoginFooter>
-            <LoginFooterText>Already had an account?</LoginFooterText>
-            <LoginFooterLink href="/login">
+          <RegistrationFooter>
+            <RegistrationFooterText>Already had an account?</RegistrationFooterText>
+            <RegistrationFooterLink href="/login">
               Login now!
-            </LoginFooterLink>
-          </LoginFooter>
+            </RegistrationFooterLink>
+          </RegistrationFooter>
         </RegistrationItem>
       </RegistrationWrapper>
     );

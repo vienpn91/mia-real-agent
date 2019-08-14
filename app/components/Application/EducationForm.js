@@ -11,7 +11,7 @@ import {
   ApplicationBtn, ArrayTagWrapper,
   ArrayInputWrapper, ArrayAddButton, TagAction, DescriptionWrapper, DescriptionNumber, ArrayWrapper,
 } from './styles';
-import { POSITION_OPTIONS } from '../../../common/enums';
+import { POSITION_OPTIONS, FIELD_OF_STUDY } from '../../../common/enums';
 
 const educationInititalValues = {
   school: '',
@@ -121,7 +121,7 @@ export class EducationForm extends Component {
                     name="fieldOfStudies"
                     type="select"
                     mode="multiple"
-                    options={POSITION_OPTIONS}
+                    options={FIELD_OF_STUDY}
                     label="Field of studies"
                     login={1}
                   />

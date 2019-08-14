@@ -23,18 +23,13 @@ class ApplicationDetailInfoHeader extends PureComponent {
     actions.applicationReject({ _id: applicationId });
   }
 
-  handleReview = () => {
-    const { applicationId, actions } = this.props;
-    actions.applicationReview({ _id: applicationId });
-  }
-
   render() {
     const { firstName, lastName, status } = this.props;
     return (
       <ItemDetailInfoHeaderWrapper>
         <ItemDetailInfoHeadTitle>{`${firstName} ${lastName} [${status}]`}</ItemDetailInfoHeadTitle>
         <ItemDetailInfoActionGroup noTitle>
-          {status === APPLICATION_STATUS.REVIEWING && [(<Button
+          {status === APPLICATION_STATUS.PENDING && [(<Button
             type="primary"
             onClick={this.handleApprove}
           >
@@ -43,11 +38,6 @@ class ApplicationDetailInfoHeader extends PureComponent {
           (<Button onClick={this.handleReject}>
             Reject
           </Button>)]}
-          {status === APPLICATION_STATUS.PENDING && (
-            <Button onClick={this.handleReview}>
-              Review
-            </Button>
-          )}
           <Link to="/admin/applications" className="close-action">
             <Icon type="close" />
           </Link>

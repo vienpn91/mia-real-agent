@@ -16,6 +16,7 @@ import ExperienceForm from './ExperienceForm';
 import EducationForm from './EducationForm';
 import AdditionalForm from './AdditionalForm';
 import LoadingSpin from '../Loading';
+import { APPLICATION_TYPE } from '../../../common/enums';
 
 const { Step } = Steps;
 const { TabPane } = Tabs;
@@ -116,7 +117,7 @@ export class ApplicationForm extends Component {
           <RoleWrapper>
             <button
               type="button"
-              onClick={() => this.handleNextStep('freelancer')}
+              onClick={() => this.handleNextStep(APPLICATION_TYPE.FREELANCER)}
             >
               <div>
                 <Icon type="user" />
@@ -125,7 +126,7 @@ export class ApplicationForm extends Component {
             </button>
             <button
               type="button"
-              onClick={() => this.handleNextStep('fullTime')}
+              onClick={() => this.handleNextStep(APPLICATION_TYPE.DEDICATED)}
             >
               <div>
                 <Icon type="usergroup-add" />

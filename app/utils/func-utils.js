@@ -13,7 +13,7 @@ export function compareDate(a, b) {
 }
 
 export function isAgent(role) {
-  return role === ROLES.FREELANCER || role === ROLES.FULLTIME;
+  return role === ROLES.FREELANCER || role === ROLES.DEDICATED;
 }
 
 export function shouldShowSystemMessage(systemMessage, currentConversationId) {

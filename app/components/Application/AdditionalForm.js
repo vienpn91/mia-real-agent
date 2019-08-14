@@ -10,7 +10,7 @@ import {
   ApplicationBtn,
   ArrayTagWrapper, ArrayInputWrapper, ArrayAddButton, ArrayWrapper, TagAction, DescriptionWrapper, DescriptionNumber,
 } from './styles';
-import { POSITION_OPTIONS, APPLICATION_LANGUAGE } from '../../../common/enums';
+import { AGENT_SKILL, APPLICATION_LANGUAGE } from '../../../common/enums';
 
 const languageInititalValues = {
   name: '',
@@ -338,7 +338,7 @@ export class AdditionalForm extends Component {
                     name="skills"
                     type="select"
                     mode="multiple"
-                    options={POSITION_OPTIONS}
+                    options={AGENT_SKILL}
                     label="Skills"
                     login={1}
                   />

@@ -15,7 +15,7 @@ const applicationSchema = new Schema(
       ],
       default: APPLICATION_STATUS.PENDING,
     },
-    type: { type: String, enum: [APPLICATION_TYPE.FREELANCER, APPLICATION_TYPE.FULLTIME] },
+    role: { type: String, enum: [APPLICATION_TYPE.FREELANCER, APPLICATION_TYPE.DEDICATED] },
     firstName: { type: String, trim: true },
     lastName: { type: String, trim: true },
     address: { type: String, trim: true },

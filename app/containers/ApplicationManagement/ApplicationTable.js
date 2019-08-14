@@ -55,6 +55,14 @@ const applicationColumns = [
     },
   },
   {
+    type: COLUMN_TYPE.TEXT,
+    dataKey: 'role',
+    columnAttr: {
+      value: 'Role',
+      percent: 5,
+    },
+  },
+  {
     type: COLUMN_TYPE.STATUS,
     dataKey: 'status',
     columnAttr: {
@@ -67,21 +75,15 @@ const applicationColumns = [
     actions: [
       {
         dataKey: 'status',
-        oneOf: [APPLICATION_STATUS.REVIEWING],
+        oneOf: [APPLICATION_STATUS.PENDING],
         action: 'applicationApprove',
         type: 'check',
       },
       {
         dataKey: 'status',
-        oneOf: [APPLICATION_STATUS.REVIEWING],
+        oneOf: [APPLICATION_STATUS.PENDING],
         action: 'applicationReject',
         type: 'close',
-      },
-      {
-        dataKey: 'status',
-        oneOf: [APPLICATION_STATUS.PENDING],
-        action: 'applicationReview',
-        type: 'audit',
       },
     ],
     columnAttr: {
