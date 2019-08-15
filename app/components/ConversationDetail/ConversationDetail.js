@@ -52,11 +52,12 @@ export default class ConversationDetail extends Component {
     if (!assigneeProfile) {
       return (<NoInformationText>No Profile</NoInformationText>);
     }
-    const { firstName, lastName, company } = assigneeProfile;
+    const { firstName, lastName } = assigneeProfile;
     return (
       <div className="assignee">
-        <span>{firstName} {lastName} </span>
-        <span className="company">{company}</span>
+        <span>
+          {`${firstName} ${lastName}`}
+        </span>
       </div>
     );
   }
@@ -73,12 +74,12 @@ export default class ConversationDetail extends Component {
       );
     }
     const {
-      title, description, status,
+      title, description, status, assignee,
     } = ticket;
     return (
       <ConversationInfoWrapper>
         <TimerWrapper />
-        <Descriptions column={5}>
+        <Descriptions column={assignee ? 5 : 4}>
           <Descriptions.Item label="Status">
             <TicketStatus status={status} />
             {status}
@@ -86,7 +87,7 @@ export default class ConversationDetail extends Component {
           <Descriptions.Item label="Ticket">{title}</Descriptions.Item>
           <Descriptions.Item label="Description">{description}</Descriptions.Item>
           <Descriptions.Item label="Owner">{this.renderOwnerInfo()}</Descriptions.Item>
-          <Descriptions.Item label="Assignee">{this.renderAssigneeInfo()}</Descriptions.Item>
+          {assignee ? (<Descriptions.Item label="Assignee">{this.renderAssigneeInfo()}</Descriptions.Item>) : <div />}
         </Descriptions>
       </ConversationInfoWrapper>
     );

@@ -32,6 +32,8 @@ export const TimeCreateTicket = styled.span`
 `;
 
 export const TicketAction = styled.div`
+  position: absolute;
+  right: 10px;
   span{
    
   }
@@ -60,6 +62,12 @@ export const TicketName = styled.div`
   font-weight: 600;
   flex: 1;
   font-size: 1.1em;
+  max-width: calc(100% - 72px);
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* position: absolute;
+  left: 45px; */
   &.Closed{
     font-weight: 400;
   }

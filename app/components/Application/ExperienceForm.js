@@ -53,15 +53,7 @@ const experienceValidationSchema = Yup.object().shape({
 
 const validationSchema = Yup.object().shape({
   categories: Yup.array().of(Yup.string()).required('Required'),
-  workExperiences: Yup.array().of(Yup.object().shape({
-    title: Yup.string().trim().required('Required'),
-    company: Yup.string().trim().required('Required'),
-    location: Yup.string().trim(),
-    isWorking: Yup.boolean(),
-    from: Yup.date(),
-    to: Yup.date(),
-    roleDescription: Yup.string().trim(),
-  })),
+  workExperiences: Yup.array().of(Yup.object()),
 });
 
 export class ExperienceForm extends Component {
@@ -245,7 +237,7 @@ export class ExperienceForm extends Component {
                     : (
                       <span>
                         <label htmlFor="vienpn">to </label>
-                        { moment(to).format('DD-MM-YYYY') }
+                        {moment(to).format('DD-MM-YYYY')}
                       </span>
                     )
                 }
@@ -264,7 +256,7 @@ export class ExperienceForm extends Component {
               <Icon
                 onClick={() => arrayHelpers.remove(index)}
                 type="close"
-              />              
+              />
             </TagAction>
           </div>
         </div>

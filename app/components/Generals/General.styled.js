@@ -7,7 +7,7 @@ export const DefaultButton = styled.button`
   text-align: center;
   border: 1px solid transparent;
   border-radius: 3px;
-  padding: 0.3em 1em;
+  padding: 4px 10px;
   font-size: 1em;
   min-width: 3em;
   &:hover {

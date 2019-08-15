@@ -463,6 +463,7 @@ export const ArrayAddButton = styled.button`
   font-size: 13px;
   border-radius: 3px;
   color: #ff5402;
+  background: white;
   border: 1px solid #ff5402;
   i {
     margin-right: 3px;

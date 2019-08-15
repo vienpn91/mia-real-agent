@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
   Avatar,
-  Button, Form,
+  Button, Form, Icon,
 } from 'antd';
 import _isEmpty from 'lodash/isEmpty';
 import { Formik } from 'formik';
@@ -30,6 +30,7 @@ import {
   IsTypingWrapper,
   MessageBoxItemIsTyping,
   FindAgentButton,
+  FindAgentWrapper,
 } from './styles';
 import LoadingSpin from '../Loading';
 import ConversationDetail from '../ConversationDetail/ConversationDetail';
@@ -37,6 +38,7 @@ import { TICKET_STATUS } from '../../../common/enums';
 import FormInput from '../FormInput/FormInput';
 import { insertSystemMessageToRepliesChat, combineChat } from './utils';
 import { shouldShowSystemMessage, isAgent } from '../../utils/func-utils';
+import { ProfileImageStyled } from '../TopNavBar/TopNavBar.styled';
 
 const scrollStyle = {
   height: 'calc(100% - 60px)',
@@ -110,32 +112,43 @@ export default class MessageBox extends Component {
 
   renderFindAgentForSolution = () => (
     <MessageBoxItem left key="solution">
-      <Avatar icon="user" size={35} />
-      <MessageText>
+      <ProfileImageStyled
+        src="/assets/images/mia-avatar.jpg"
+        onClick={this.onToggleUserInfo}
+      />
+      <FindAgentWrapper>
         <p key="solution">
           Not satisfy with MIA solution ?
-          <FindAgentButton
-            key="button"
-            type="primary"
-            onClick={this.handleFindAgent}
-          >
-            Find Agent
-          </FindAgentButton>
         </p>
-      </MessageText>
+        <FindAgentButton
+          key="button"
+          type="primary"
+          onClick={this.handleFindAgent}
+        >
+          <Icon type="search" />
+          Find Agent
+        </FindAgentButton>
+      </FindAgentWrapper>
     </MessageBoxItem>
   )
 
-  renderOtherUserMessageContent = (msgId, contents) => (
-    <MessageBoxItem left key={msgId}>
-      <Avatar icon="user" size={35} />
-      <MessageText>
-        {contents.map(({ _id, messages }) => (<p key={_id}>{messages}</p>))}
-      </MessageText>
-    </MessageBoxItem>
-  )
+  renderOtherUserMessageContent = (msgId, contents, from) => {
+    const { userRole } = this.props;
+    const src = isAgent(userRole) ? '/assets/images/user-live.jpeg' : '/assets/images/user.svg';
+    return (
+      <MessageBoxItem left key={msgId}>
+        <ProfileImageStyled
+          src={!from ? '/assets/images/mia-avatar.jpg' : src}
+          onClick={this.onToggleUserInfo}
+        />
+        <MessageText>
+          {contents.map(({ _id, messages }) => (<p key={_id}>{messages}</p>))}
+        </MessageText>
+      </MessageBoxItem>
+    );
+  }
 
-  renderOtherUserTypingContent = () => {
+  renderOtherUserTypingContent = (isAgentChat = true) => {
     const { otherUserTyping, conversationId } = this.props;
     const { conversationId: _id, messages = '' } = otherUserTyping || {};
     if (!_isEmpty(otherUserTyping)
@@ -144,7 +157,10 @@ export default class MessageBox extends Component {
     ) {
       return (
         <MessageBoxItemIsTyping left key={_id}>
-          <Avatar icon="user" size={35} />
+          <ProfileImageStyled
+            src={isAgentChat ? '/assets/images/user-live.jpeg' : '/assets/images/user.svg'}
+            onClick={this.onToggleUserInfo}
+          />
           <MessageText>
             <p>{messages.trim()}</p>
             <IsTypingWrapper />
@@ -155,12 +171,16 @@ export default class MessageBox extends Component {
     return false;
   }
 
-  renderUserMessageContent = (msgId, contents, isPending = false) => (
+  renderUserMessageContent = (msgId, contents, isPending = false, isAgentChat = true) => (
     <MessageBoxItem right key={msgId}>
       <MessageText>
         {contents.map(({ _id, messages }) => (<UserMessage key={_id} pending={isPending}>{messages}</UserMessage>))}
       </MessageText>
-      <Avatar icon="user" size={35} />
+      {/* <Avatar icon="user" size={35} />
+      <ProfileImageStyled
+        src={!isAgentChat ? '/assets/images/user-live.jpeg' : '/assets/images/user.svg'}
+        onClick={this.onToggleUserInfo}
+      /> */}
     </MessageBoxItem>
   )
 
@@ -177,7 +197,7 @@ export default class MessageBox extends Component {
 
   renderMessageContent = () => {
     const {
-      replyMessages, userId, systemMessage,
+      replyMessages, userId, systemMessage, userRole,
     } = this.props;
     const refinedMessages = combineChat(
       insertSystemMessageToRepliesChat(replyMessages, systemMessage)
@@ -189,19 +209,19 @@ export default class MessageBox extends Component {
         return this.renderSystemMessage();
       }
       if (from === userId) {
-        return this.renderUserMessageContent(msgId, contents);
+        return this.renderUserMessageContent(msgId, contents, false, isAgent(userRole));
       }
-      return this.renderOtherUserMessageContent(msgId, contents);
+      return this.renderOtherUserMessageContent(msgId, contents, from);
     }),
     this.renderOtherUserTypingContent(),
     ];
   }
 
   renderPendingMessageContent = () => {
-    const { sendingMessages } = this.props;
+    const { sendingMessages, userRole } = this.props;
     if (!sendingMessages || !sendingMessages.length) return null;
 
-    return combineChat(sendingMessages).map(({ id: msgId, contents }) => this.renderUserMessageContent(msgId, contents, true));
+    return combineChat(sendingMessages).map(({ id: msgId, contents }) => this.renderUserMessageContent(msgId, contents, true, isAgent(userRole)));
   }
 
   renderGroupAction = () => (

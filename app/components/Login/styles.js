@@ -99,6 +99,9 @@ export const LoginFBBtn = styled(LoginBtn)`
 export const LoginFooter = styled.div`
   margin-top: 15px;
   text-align: center;
+  div{
+    margin-top: 10px;
+  }
 `;
 
 export const LoginFooterText = styled.span`

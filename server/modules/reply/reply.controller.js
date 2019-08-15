@@ -41,7 +41,7 @@ class ReplyController extends BaseController {
       const reply = {
         conversationId,
         from: null,
-        messages: `Mia: "${fulfillmentText}"`, // miaReply.message
+        messages: fulfillmentText, // miaReply.message
       };
 
       const newReplyMetadata = {

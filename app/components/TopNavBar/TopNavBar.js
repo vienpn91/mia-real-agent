@@ -54,7 +54,7 @@ export default class TopNavBar extends Component {
     const { isUserInfoOpen } = this.state;
     const { email, userRole } = this.props;
     return (
-      
+
       <TopNavBarWrapper className={!isAgent(userRole) ? 'user' : 'agent'}>
         <Header>
           {this.renderLogo()}
@@ -69,7 +69,7 @@ export default class TopNavBar extends Component {
           <TopbarRight>
             <ProfileStyled>
               <ProfileImageStyled
-                src="/assets/images/user-live.jpeg"
+                src={!isAgent(userRole) ? '/assets/images/user-live.jpeg' : '/assets/images/user.svg'}
                 onClick={this.onToggleUserInfo}
               />
               {isUserInfoOpen && (
