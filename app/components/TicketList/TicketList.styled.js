@@ -89,7 +89,7 @@ export const FilterContainer = styled.div`
   width : 100%;
   overflow: hidden;
   .ant-select-enabled{
-    right: 0px;
+    right: 0%;
     transition: right ease 300ms;
   }
   &.filter-hide{

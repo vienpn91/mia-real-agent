@@ -34,11 +34,9 @@ export const InputStyled = styled.div`
   height: 27.5px !important;
   border: 0 !important;
   padding: 0 !important;
-  outline: 0 none !important;
-  -webkit-transition: border-color .2s linear !important;
+  outline: 0 none !important;  
   transition: border-color .2s linear !important;
   border-bottom: 1px solid #000 !important;
-  -webkit-font-smoothing: antialiased !important;
   border-radius: 0 !important;  
   :focus {
     box-shadow: none !important;

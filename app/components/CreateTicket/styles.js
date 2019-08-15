@@ -10,6 +10,8 @@ export const ActionBar = styled.div`
 
 export const DescriptionTextAreaStyled = {
   height: '120px',
+  border: 'none',
+  borderBottom: '1px solid #d2d2d2',
 };
 
 export const ModalCustomize = styled.div.attrs({

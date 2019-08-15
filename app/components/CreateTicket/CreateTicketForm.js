@@ -125,6 +125,7 @@ export default class CreateTicketForm extends PureComponent {
                       <FormInput
                         name="title"
                         type="text"
+                        className="vienpn-input"
                         label="Title"
                       />
                     </Col>
@@ -141,6 +142,7 @@ export default class CreateTicketForm extends PureComponent {
                       <FormInput
                         name="description"
                         type="textarea"
+                        className="vienpn-input"
                         label="Description"
                         style={DescriptionTextAreaStyled}
                       />

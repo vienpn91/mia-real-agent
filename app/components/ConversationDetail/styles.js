@@ -264,7 +264,7 @@ export const ConversationInfoWrapper = styled.div`
   .ant-descriptions-row {
     display: flex;
     flex-direction: column;
-    padding: 20px 25px;
+    padding: 0px 20px 25px;
     border-bottom: 1px solid #d9d9d9 !important;
     > td {
       padding-bottom: 16px;

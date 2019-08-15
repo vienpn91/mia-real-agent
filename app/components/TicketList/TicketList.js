@@ -6,7 +6,7 @@ import ShadowScrollbars from 'components/Scrollbar';
 import MediaQuery from 'react-responsive';
 import history from 'utils/history';
 import {
-  Menu, Select, Pagination, Icon,
+  Menu, Select, Pagination, Icon, TreeSelect
 } from 'antd';
 import TicketItem from './TicketItem';
 import {
@@ -15,6 +15,27 @@ import {
   TicketPaginationWrapper,
   FilterContainer,
 } from './TicketList.styled';
+
+const treeData = [
+  {
+    title: 'Finance',
+    value: 'Finance',
+    children: [
+      {
+        title: 'Finance-1',
+        value: 'Finance-1',
+      },
+    ],
+  },
+  {
+    title: 'Law',
+    value: 'Law',
+  },
+  {
+    title: 'Insurrance',
+    value: 'Insurrance',
+  },
+];
 
 const categories = [
   'Finance',
@@ -34,7 +55,7 @@ const scrollStyleMobile = {
 };
 
 const PAGE_SIZE = 10;
-
+const { SHOW_PARENT } = TreeSelect;
 class TicketList extends React.PureComponent {
   state = {
     page: 0,
@@ -117,20 +138,33 @@ class TicketList extends React.PureComponent {
     );
   }
 
-  renderTicketFilter = () => (
-    <TicketFilterWrapper>
-      <Select
-        mode="multiple"
-        placeholder="Filter by categories"
-        onChange={this.handleChangeFilter}        
-      >
-        {categories.map((cat, index) => (
-          <Select.Option key={index} value={cat}>{cat}</Select.Option> // eslint-disable-line
-        ))}
-      </Select>
-      <Icon type="filter" onClick={this.handleToggleFilter} />
-    </TicketFilterWrapper>
-  )
+  renderTicketFilter = () => {
+    const tProps = {
+      treeData,
+      onChange: this.onChange,
+      treeCheckable: true,
+      showCheckedStrategy: SHOW_PARENT,
+      searchPlaceholder: 'Please select',
+      style: {
+        width: 300,
+      },
+    };
+    return (
+      <TicketFilterWrapper>
+        {/* <TreeSelect {...tProps} /> */}
+        <Select
+          mode="multiple"
+          placeholder="Filter by categories"
+          onChange={this.handleChangeFilter}
+        >
+          {categories.map((cat, index) => (
+            <Select.Option key={index} value={cat}>{cat}</Select.Option> // eslint-disable-line
+          ))}
+        </Select>
+        <Icon type="filter" onClick={this.handleToggleFilter} />
+      </TicketFilterWrapper>
+    );
+  }
 
   // should apply later
   renderTicketPagination = () => {

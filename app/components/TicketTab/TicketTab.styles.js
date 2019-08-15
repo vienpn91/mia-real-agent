@@ -19,7 +19,7 @@ export const FilterItem = styled.div`
   align-items: center;
   border-radius: 3px;
   height: 32px;
-  flex: ${({ isAgent }) => isAgent ? '0 0 100%' : '0 0 85%'};
+  flex: ${({ isAgent }) => isAgent ? '0 0 100%' : '1'};
   font-size: 13px;
   > * {
     height: 100%;
@@ -105,7 +105,9 @@ export const Filter = styled.div`
   }
 `;
 
-export const CreateItem = styled.div``;
+export const CreateItem = styled.div`
+  margin-left: 20px;
+`;
 
 export const TicketWrapper = styled.div`
   height: calc(100vh - 300px);

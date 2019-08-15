@@ -109,9 +109,15 @@ export const InputStyled = styled(Input)`
   -webkit-font-smoothing: antialiased !important;
   border-radius: 3px !important;
   background: transparent !important;
+  border: none;
+  border-bottom: 1px solid #d9d9d9;
   color: #000 !important;
   font-size: 15px!important;
   font-weight: 600;
+  &.vienpn-input{
+    border: none;
+    border-bottom: 1px solid #d2d2d2;
+  }
   &:focus {
     box-shadow: none !important;
   }

@@ -235,10 +235,21 @@ export class ExperienceForm extends Component {
                 {location}
               </span>
               <span className="from">
-                <text>From</text>
+                <label htmlFor="vienpn">From</label>
                 {moment(from).format('DD-MM-YYYY')}
               </span>
-              <span className="to">{isWorking ? <text>to present</text> : <span> <text>to </text>{ moment(to).format('DD-MM-YYYY') }</span> }</span>
+              <span className="to">
+                {
+                  isWorking
+                    ? <label htmlFor="vienpn">to present</label>
+                    : (
+                      <span>
+                        <label htmlFor="vienpn">to </label>
+                        { moment(to).format('DD-MM-YYYY') }
+                      </span>
+                    )
+                }
+              </span>
             </div>
             <div className="desc">
               {roleDescription}
