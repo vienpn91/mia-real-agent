@@ -126,6 +126,11 @@ class Login extends Component {
             <LoginFooterLink href="/register">
               Register now!
             </LoginFooterLink>
+            <div />
+            <LoginFooterText>Want to be an agent?</LoginFooterText>
+            <LoginFooterLink href="/application">
+              Click here!
+            </LoginFooterLink>
           </LoginFooter>
         </LoginItem>
       </LoginWrapper>

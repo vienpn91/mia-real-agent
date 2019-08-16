@@ -13,9 +13,9 @@ const handleError = (error) => {
 export const hashFunc = plaintextPassword => bcrypt
   .hash(plaintextPassword, SALT_ROUND)
   .then(hash => hash)
-  .catch(error => handleError(error));
+  .catch(handleError);
 
 export const compareFunc = (plaintextPassword, hash) => bcrypt
   .compare(plaintextPassword, hash)
   .then(res => res)
-  .catch(error => handleError(error));
+  .catch(handleError);

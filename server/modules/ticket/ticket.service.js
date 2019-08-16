@@ -1,12 +1,14 @@
 import ticketCollection from './ticket.model';
 import BaseService from '../base/base.service';
-import { TICKET_STATUS } from '../../../common/enums';
+import { TICKET_STATUS, REPLY_TYPE } from '../../../common/enums';
+import ReplyService from '../reply/reply.service';
 
 class TicketService extends BaseService {
   constructor(collection) {
     super(collection);
     this.countDocument = this.countDocument.bind(this);
     this.getByCondition = this.getByCondition.bind(this);
+    this.handleTicketUpdateStatus(collection);
   }
 
   getByCondition(condition) {
@@ -92,7 +94,8 @@ class TicketService extends BaseService {
         { assignee: _id },
       ],
     };
-    const tickets = await this.collection.updateMany(query, { status: TICKET_STATUS.OFFLINE }).exec();
+    const tickets = await this.collection.find(query).exec();
+    await this.collection.updateMany(query, { status: TICKET_STATUS.OFFLINE }).exec();
     return tickets;
   }
 
@@ -131,6 +134,27 @@ class TicketService extends BaseService {
     };
     const tickets = await this.collection.update(query, { status: TICKET_STATUS.OPEN }).exec();
     return tickets;
+  }
+
+  handleTicketUpdateStatus(collection) {
+    collection.watch().on('change', async (change) => {
+      const { updateDescription, documentKey } = change;
+      if (updateDescription) {
+        const { updatedFields } = updateDescription;
+        const { status, updatedAt } = updatedFields;
+        if (status) {
+          const { _id } = documentKey;
+          const { conversationId } = await this.collection.findOne(_id);
+          ReplyService.insert({
+            conversationId,
+            messages: 'Ticket Update',
+            type: REPLY_TYPE.TICKET_STATUS,
+            params: { status },
+            sentAt: updatedAt,
+          });
+        }
+      }
+    });
   }
 }
 

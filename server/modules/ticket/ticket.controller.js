@@ -7,9 +7,10 @@ import UserService from '../user/user.service';
 import ConversationService from '../conversation/conversation.service';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import { isAgent } from '../../../app/utils/func-utils';
-import { TICKET_STATUS } from '../../../common/enums';
+import { TICKET_STATUS, REPLY_TYPE } from '../../../common/enums';
 import RequestQueue from '../queue/requestQueue';
 import ConversationRoomQueue from '../queue/conversationRoomQueue';
+import ReplyService from '../reply/reply.service';
 
 const { CONTENT_NOT_FOUND } = ERROR_MESSAGE;
 const emptyObjString = '{}';
@@ -130,8 +131,16 @@ class TicketController extends BaseController {
           ticketId,
         });
         // eslint-disable-next-line no-underscore-dangle
-        result.conversationId = conversation._id;
+        const { _id: conversationId } = conversation;
+        result.conversationId = conversationId;
         await result.save();
+        // Create first ticket status log
+        ReplyService.insert({
+          conversationId,
+          messages: 'Ticket Created',
+          type: REPLY_TYPE.TICKET_STATUS,
+          params: { status: TICKET_STATUS.OPEN },
+        });
       } catch (error) {
         this.service.delete(ticketId);
         throw new APIError('Unable to create ticket', httpStatus.INTERNAL_SERVER_ERROR);

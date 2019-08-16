@@ -101,9 +101,13 @@ export const MessageText = styled.div`
   max-width: 60%;
   display: flex;
   flex-direction: column;
+  p{
+    margin-left: 10px;  
+  }
 `;
 
 export const UserMessage = styled.p`
+  /* margin-right: 10px; */
   background-color: ${({ pending }) => pending && '#f78b5f !important'};
 `;
 
@@ -240,8 +244,8 @@ export const LineDivider = styled.span`
     margin: 0 2em;
     height: 1px;
     opacity: .7;
-}
 `;
+
 const loading = keyframes`
   0% {
     color: #828282;
@@ -253,7 +257,7 @@ const loading = keyframes`
 `;
 
 export const MessageBoxItemIsTyping = styled(MessageBoxItem)`
-  .ant-avatar{
+  img{
     margin-bottom: 20px;
   }
 `;
@@ -266,9 +270,34 @@ export const IsTypingWrapper = styled.div`
   }
 `;
 
+export const FindAgentWrapper = styled.div`
+  width: fit-content;
+  max-width: 60%;
+  display: flex;
+  flex-direction: column;
+  p{
+    border-radius: 15px 15px 0 0;
+    margin-left: 10px;  
+  }
+`;
+
 export const FindAgentButton = styled(DefaultButton)`
-  border-radius: 15px;
+  border-radius: 0 0 15px 15px;
   margin-left: 10px;
-  margin-right: -8px;
-  padding: 3px 10px;
+  padding: 10px 10px;
+  background: transparent;
+  color: #ff5504;
+  border: 1px solid #ff5504;
+  i{
+    margin-right: 5px;
+  }
+  :hover{
+    box-shadow: none;
+  }
+`;
+
+export const ProfileImageStyled = styled.img`
+  height: 35px;
+  cursor: pointer;
+  border-radius: 100%;
 `;

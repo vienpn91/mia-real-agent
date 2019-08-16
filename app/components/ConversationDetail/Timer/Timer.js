@@ -8,8 +8,8 @@ import {
 
 const TimerWrapper = () => (
   <TimerContainer>
-    <TimerStyled>
-      <TimerTitle>Waiting</TimerTitle>
+    <TimerStyled span={8}>
+      <TimerTitle>Total</TimerTitle>
       <TimerValue>
         <span>
           <Timer
@@ -17,14 +17,13 @@ const TimerWrapper = () => (
             formatValue={value => Numeral(value).format('00')}
           >
             <Timer.Minutes />
-            m:
+            :
             <Timer.Seconds />
-            s
           </Timer>
         </span>
       </TimerValue>
     </TimerStyled>
-    <TimerStyled>
+    <TimerStyled span={8}>
       <TimerTitle>Billable</TimerTitle>
       <TimerValue>
         <span>
@@ -33,14 +32,13 @@ const TimerWrapper = () => (
             formatValue={value => Numeral(value).format('00')}
           >
             <Timer.Minutes />
-            m:
+            :
             <Timer.Seconds />
-            s
           </Timer>
         </span>
       </TimerValue>
     </TimerStyled>
-    <TimerStyled>
+    <TimerStyled span={8}>
       <TimerTitle>Hold</TimerTitle>
       <TimerValue>
         <span>
@@ -49,9 +47,8 @@ const TimerWrapper = () => (
             formatValue={value => Numeral(value).format('00')}
           >
             <Timer.Minutes />
-            m:
+            :
             <Timer.Seconds />
-            s
           </Timer>
         </span>
       </TimerValue>

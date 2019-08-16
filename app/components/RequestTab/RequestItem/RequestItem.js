@@ -95,7 +95,7 @@ class RequestItem extends PureComponent {
     return (
       <TableContentItem key={index} ticket>
         <TableContent {...columnSizeContent[0]} />
-        <TableContent {...columnSizeContent[1]}>
+        <TableContent style={{ flex: 'auto' }}>
           {this.renderRequestContent()}
         </TableContent>
         <TableContent {...columnSizeContent[2]}>

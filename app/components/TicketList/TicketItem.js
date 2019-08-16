@@ -45,9 +45,9 @@ class TicketItem extends React.PureComponent {
       default:
         return (
           <ActionList>
-            <Button>Archive</Button>
+            {/* <Button>Archive</Button> */}
             <Button onClick={this.handleOnClose}>Close</Button>
-            <Button>Report</Button>
+            {/* <Button>Report</Button> */}
           </ActionList>
         );
     }
@@ -80,7 +80,7 @@ class TicketItem extends React.PureComponent {
               <Icon type="setting" onClick={this.handleStopPropagation} />
             </Popover>
           </TicketAction>
-          
+
         </TicketGroup>
         <TimeCreateTicket>{timeFormat}</TimeCreateTicket>
       </TicketItemStyled>

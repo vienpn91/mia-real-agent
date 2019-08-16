@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { handleError } from './utils';
 
 /**
    * login method
@@ -10,23 +11,23 @@ export const login = (usernameOrEmail, password) => axios
     password,
   })
   .then(response => ({ response }))
-  .catch(error => ({ error }));
+  .catch(handleError);
 
 export const register = data => axios
   .post('auth/register', {
     data,
   })
   .then(response => ({ response }))
-  .catch(error => ({ error }));
+  .catch(handleError);
 
 export const sendVericationEmail = email => axios
   .get(`auth/register/send-verication-email/${email}`)
   .then(response => ({ response }))
-  .catch(error => ({ error }));
+  .catch(handleError);
 
 export const createPassword = newPassword => axios
   .post('auth/createPassword', {
     newPassword,
   })
   .then(response => ({ response }))
-  .catch(error => ({ error }));
+  .catch(handleError);

@@ -19,7 +19,7 @@ export const FilterItem = styled.div`
   align-items: center;
   border-radius: 3px;
   height: 32px;
-  flex: ${({ isAgent }) => isAgent ? '0 0 100%' : '1'};
+  flex: ${({ isAgent }) => isAgent ? '0 0 100%' : '0 0 calc(100% - 120px)'};
   font-size: 13px;
   > * {
     height: 100%;

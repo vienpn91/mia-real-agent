@@ -21,7 +21,9 @@ class ApplicationController extends BaseController {
   async approveApplication(req, res) {
     try {
       const { model: application } = req;
-      const { email, _id, role } = application;
+      const {
+        email, _id, role, categories, firstName, lastName,
+      } = application;
       const passwordString = '123456789'; // should generate random password and send email to user
       const hashPassword = await hashFunc(passwordString);
       const newUserPayload = {
@@ -29,7 +31,11 @@ class ApplicationController extends BaseController {
         email,
         password: hashPassword,
         role,
+        categories,
         application: _id,
+        profile: {
+          firstName, lastName,
+        },
         verifiedAt: moment().utc().format(),
       };
 

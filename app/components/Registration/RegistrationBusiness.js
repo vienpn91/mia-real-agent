@@ -64,7 +64,10 @@ class Registration extends Component {
 
   register = (values) => {
     const { register } = this.props;
-    register({ ...values, role: ROLES.BUSINESS });
+    const { username, email, password } = values;
+    register({
+      username, email, password, role: ROLES.BUSINESS, profile: { ...values },
+    });
   }
 
   renderRegisterBtn = () => {
