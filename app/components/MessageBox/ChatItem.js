@@ -76,7 +76,7 @@ export const ticketStatus = (msgId, params, sentAt) => {
     <MessageBoxSystemNotification key={`status${msgId}`}>
       <LineDivider />
       <Tooltip placement="top" title={renderTime(sentAt)}>
-        {`Ticket change to ${status}`}
+        {`Ticket changed to ${status}`}
       </Tooltip>
       <LineDivider />
     </MessageBoxSystemNotification>
@@ -89,7 +89,7 @@ export const userAction = (msgId, params, sentAt) => {
     <MessageBoxSystemNotification key={`status${msgId}`}>
       <LineDivider />
       <Tooltip placement="top" title={renderTime(sentAt)}>
-        {`User has ${action}`}
+        {`User is ${action}`}
       </Tooltip>
       <LineDivider />
     </MessageBoxSystemNotification>

@@ -62,20 +62,6 @@ function* fetchConversation({ payload }) {
   }
 }
 
-// function* fetchAllConversationBasedOnTicket({ data }) {
-//   for (let i = 0; i < data.length; i += 1) {
-//     const ticket = data[i];
-//     const { conversationId } = ticket;
-//     if (!_isEmpty(conversationId)) {
-//       yield put(actions.fetchConversation(conversationId));
-//       yield take([
-//         CONVERSATION_FETCH_FAILED,
-//         CONVERSATION_FETCH_SUCCESS,
-//       ]);
-//     }
-//   }
-// }
-
 function* submitConversationRating({ payload }) {
   const { conversationId, rating } = payload;
   try {
@@ -94,7 +80,6 @@ function* submitConversationRating({ payload }) {
 function* conversationFlow() {
   yield takeLatest(CONVERSATION_FETCH, fetchConversation);
   yield takeLatest(CONVERSATION_SET_CURRENT, setCurrentConversation);
-  // yield takeLatest(TICKET_GET_ALL_SUCCESS, fetchAllConversationBasedOnTicket);
   yield takeLatest(REPLIES_FETCH, fetchConversationMessages);
   yield takeLatest(CONVERSATION_RATING_SUBMIT, submitConversationRating);
 }

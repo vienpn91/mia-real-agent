@@ -3,7 +3,6 @@ import socketioJwt from 'socketio-jwt';
 import Logger from '../logger';
 import AgentQueue from '../modules/queue/agentQueue';
 import TicketService from '../modules/ticket/ticket.service';
-import { register, unregister } from '../modules/chat/chat.socket';
 import DisconnectQueue from '../modules/queue/disconnectQueue';
 import { closeTicketTimeOut } from './timer';
 import ConversationRoomQueue from '../modules/queue/conversationRoomQueue';
@@ -52,7 +51,6 @@ class SocketIOServer {
 
         socket.on('disconnect', async () => {
           Logger.info(`[Socket.io]: The foul [${email}] has exit the fray`);
-          unregister(id.toString(), socket);
           if (isAgent(role)) {
             AgentQueue.removeBySocket(socketId);
           }
@@ -77,7 +75,6 @@ class SocketIOServer {
         } else {
           Logger.info(`[Socket.io]: The Foul [${email}] has join the fray`);
         }
-        register(id.toString(), socket);
         const tickets = await TicketService.handleTicketOnline(user);
         const conversations = tickets.map(({ conversationId }) => {
           ReplyService.logUserAction(conversationId, id, REPLY_USER_ACTION.ONLINE);

@@ -122,7 +122,7 @@ class TicketTab extends PureComponent {
     const { userRole } = this.props;
     return (
       <TicketFilterWrapper>
-        <FilterItem isAgent={isAgent(userRole)}>
+        <FilterItem>
           <Filter>
             {this.renderSelectStatus()}
             {this.renderSelectCategory()}

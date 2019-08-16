@@ -2,6 +2,7 @@ import ticketCollection from './ticket.model';
 import BaseService from '../base/base.service';
 import { TICKET_STATUS, REPLY_TYPE } from '../../../common/enums';
 import ReplyService from '../reply/reply.service';
+import ConversationRoomQueue from '../queue/conversationRoomQueue';
 
 class TicketService extends BaseService {
   constructor(collection) {
@@ -152,6 +153,8 @@ class TicketService extends BaseService {
             params: { status },
             sentAt: updatedAt,
           });
+          // Emit Update ticket for user in conversation room
+          ConversationRoomQueue.ticketUpdateNotification(conversationId, _id);
         }
       }
     });

@@ -116,12 +116,22 @@ class ConversationRoomQueue {
     }
   }
 
-  ticketClosedNotification = (conversationId, ticketId) => {
+  ticketUpdateNotification = (conversationId, ticketId) => {
     const room = this.getRoom(conversationId) || {};
     if (!_isEmpty(room)) {
       Object.keys(room).forEach((userId) => {
         const otherSocket = room[userId];
-        otherSocket.emit(SOCKET_EMIT.CLOSE_TICKET_NOTIFICATION, { ticketId });
+        otherSocket.emit(SOCKET_EMIT.TICKET_UPDATE, { ticketId });
+      });
+    }
+  }
+
+  conversationNewMessage = (conversationId, reply) => {
+    const room = this.getRoom(conversationId) || {};
+    if (!_isEmpty(room)) {
+      Object.keys(room).forEach((userId) => {
+        const otherSocket = room[userId];
+        otherSocket.emit(SOCKET_EMIT.NEW_MESSAGE, { conversationId, reply });
       });
     }
   }

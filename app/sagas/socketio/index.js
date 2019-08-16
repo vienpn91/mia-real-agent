@@ -15,7 +15,7 @@ import { actions as TICKET_ACTIONS } from '../../reducers/ticket';
 import { actions as REQUEST_ACTIONS } from '../../reducers/requests';
 import {
   actions as CONVERSATION_ACTIONS, fetchConversation,
-  USER_JOIN_CONVERSATION, USER_TYPING, getConverationById, getCurrentConveration, USER_LEFT_CONVERSATION,
+  USER_JOIN_CONVERSATION, USER_TYPING, getCurrentConveration, USER_LEFT_CONVERSATION,
 } from '../../reducers/conversations';
 import { SOCKET_EMIT } from '../../../common/enums';
 
@@ -60,10 +60,8 @@ function* handleNewMessage() {
 
   // watch message and relay the action
   while (true) {
-    const { metadata, reply } = yield take(socketChannel);
-    const { conversationId, ticketId } = metadata;
+    const { conversationId, reply } = yield take(socketChannel);
     yield put(addNewMessage(conversationId, reply));
-    yield put(TICKET_ACTIONS.getAction(ticketId));
   }
 }
 
@@ -93,85 +91,6 @@ function* requestConfirm() {
       yield put(CONVERSATION_ACTIONS.userJoinConversation(conversationId));
     } else {
       notification.error({ message: 'The Agent had declined the request' });
-    }
-  }
-}
-function* otherJoinConversation() {
-  const socketChannel = yield call(createSocketChannel, socketConnection, SOCKET_EMIT.OTHER_JOIN_ROOM);
-
-  // watch message and relay the action
-  while (true) {
-    const { conversationId, userId } = yield take(socketChannel);
-    const currentUser = yield select(getUserId);
-    if (currentUser !== userId) {
-      const conversation = yield select(getConverationById, conversationId);
-      // eslint-disable-next-line no-underscore-dangle
-      if (conversation && conversationId === conversation._id) {
-        const { owner, ticketId } = conversation;
-        const role = (owner === userId) ? 'User' : 'Agent';
-        yield put(CONVERSATION_ACTIONS.notifiSystemMessage(`${role} has join conversation`, conversationId));
-        yield put(TICKET_ACTIONS.getAction(ticketId));
-      }
-    }
-  }
-}
-
-function* otherLeftConversation() {
-  const socketChannel = yield call(createSocketChannel, socketConnection, SOCKET_EMIT.OTHER_LEFT_ROOM);
-
-  // watch message and relay the action
-  while (true) {
-    const { conversationId, userId } = yield take(socketChannel);
-    const conversation = yield select(getConverationById, conversationId);
-    const currentUser = yield select(getUserId);
-    if (currentUser !== userId) {
-      // eslint-disable-next-line no-underscore-dangle
-      if (conversation && conversationId === conversation._id) {
-        const { owner, ticketId } = conversation;
-        const role = (owner === userId) ? 'User' : 'Agent';
-        yield put(CONVERSATION_ACTIONS.notifiSystemMessage(`${role} has left conversation`, conversationId));
-        yield put(TICKET_ACTIONS.getAction(ticketId));
-      }
-    }
-  }
-}
-
-function* otherOnlineConversation() {
-  const socketChannel = yield call(createSocketChannel, socketConnection, SOCKET_EMIT.USER_ONLINE);
-
-  // watch message and relay the action
-  while (true) {
-    const { conversationId, userId } = yield take(socketChannel);
-    const conversation = yield select(getConverationById, conversationId);
-    const currentUser = yield select(getUserId);
-    if (currentUser !== userId) {
-      // eslint-disable-next-line no-underscore-dangle
-      if (conversation && conversationId === conversation._id) {
-        const { owner, ticketId } = conversation;
-        const role = (owner === userId) ? 'User' : 'Agent';
-        yield put(CONVERSATION_ACTIONS.notifiSystemMessage(`${role} has online`, conversationId));
-        yield put(TICKET_ACTIONS.getAction(ticketId));
-      }
-    }
-  }
-}
-
-function* otherDisconnectConversation() {
-  const socketChannel = yield call(createSocketChannel, socketConnection, SOCKET_EMIT.USER_OFFLINE);
-
-  // watch message and relay the action
-  while (true) {
-    const { conversationId, userId } = yield take(socketChannel);
-    const conversation = yield select(getConverationById, conversationId);
-    const currentUser = yield select(getUserId);
-    if (currentUser !== userId) {
-      // eslint-disable-next-line no-underscore-dangle
-      if (conversation && conversationId === conversation._id) {
-        const { owner, ticketId } = conversation;
-        const role = (owner === userId) ? 'User' : 'Agent';
-        yield put(CONVERSATION_ACTIONS.notifiSystemMessage(`${role} has disconnected`, conversationId));
-        yield put(TICKET_ACTIONS.getAction(ticketId));
-      }
     }
   }
 }
@@ -206,8 +125,9 @@ function* foundSolution() {
   }
 }
 
-function* closeTicketNotification() {
-  const socketChannel = yield call(createSocketChannel, socketConnection, SOCKET_EMIT.CLOSE_TICKET_NOTIFICATION);
+
+function* updateTicketNotification() {
+  const socketChannel = yield call(createSocketChannel, socketConnection, SOCKET_EMIT.TICKET_UPDATE);
 
   // watch message and relay the action
   while (true) {
@@ -226,14 +146,10 @@ function* connectFlow() {
     handleNewMessage(),
     requestAgent(),
     requestConfirm(),
-    otherJoinConversation(),
-    otherLeftConversation(),
-    otherOnlineConversation(),
-    otherDisconnectConversation(),
     observeUserTypingConversation(),
     foundSolution(),
     removeRequest(),
-    closeTicketNotification(),
+    updateTicketNotification(),
   ]);
 }
 
