@@ -184,7 +184,7 @@ class TicketController extends BaseController {
         ...condition,
       };
 
-      const result = await this.service.getAll(newQuery, option);
+      const result = await this.service.getAllWithUserData(newQuery, option);
 
       return res.status(httpStatus.OK).send(result);
     } catch (error) {

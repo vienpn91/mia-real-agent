@@ -83,6 +83,9 @@ export const ConversationTitle = styled.div`
     font-size: .85em;
     border-radius: .3em;
   }
+  span {
+    font-weight: 600;
+  }
 `;
 
 export const ConversationTitleInfo = styled.div`
@@ -232,6 +235,7 @@ export const MessageBoxSystemNotification = styled.span`
   font-size: 0.85em;
   color: #828282;
   opacity: .7;
+  font-style: italic;
 `;
 export const LineDivider = styled.span`
     display: flex;

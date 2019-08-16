@@ -208,11 +208,6 @@ function* setCurrentTicket({ payload }) {
   if (_isEmpty(ticket)) {
     yield put(actions.getAction(ticketId));
   }
-  // const { ownerProfile, assignee, assigneeProfile } = ticket;
-  // console.log(assignee, assigneeProfile);
-  yield put(actions.getTicketProfile(ticketId));
-  // if (_isEmpty(ownerProfile) || (assignee && _isEmpty(assigneeProfile))) {
-  // }
 }
 
 function* getTicketProfile({ payload }) {
