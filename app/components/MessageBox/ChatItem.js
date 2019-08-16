@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Tooltip } from 'antd';
+import _isEmpty from 'lodash/isEmpty';
 import {
   MessageBoxItem, MessageText,
   UserMessage, ProfileImageStyled,
@@ -88,6 +89,9 @@ export const userAction = (msgId, currentTicket, from, params, sentAt) => {
   const { action } = params;
   const { owner, assignee } = currentTicket;
   let messageOwner = '';
+  if (_isEmpty(currentTicket)) {
+    return null;
+  }
   // eslint-disable-next-line no-underscore-dangle
   if (owner._id === from) {
     const { role, profile = {} } = owner;
@@ -101,7 +105,8 @@ export const userAction = (msgId, currentTicket, from, params, sentAt) => {
         break;
     }
   } else {
-    const { profile: { firstName, lastName } } = assignee || {};
+    const { profile } = assignee || {};
+    const { firstName, lastName } = profile || {};
     messageOwner = `${firstName} ${lastName}`;
   }
   return (

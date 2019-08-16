@@ -67,6 +67,7 @@ function* createTicket({ payload }) {
   const { data } = response;
   yield put(actions.createCompleteAction(data));
   const { conversationId } = data;
+  yield put(CONVERSATION_ACTIONS.userJoinConversation(conversationId));
   yield put(CONVERSATION_ACTIONS.selectConversation(conversationId));
   history.push(`/conversation/${conversationId}`);
 }

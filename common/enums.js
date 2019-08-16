@@ -172,6 +172,8 @@ export const REPLY_TYPE = {
 export const REPLY_USER_ACTION = {
   ONLINE: 'Online',
   OFFLINE: 'Offline',
+  REQUEST_AGENT: 'Request Agent',
+  ACCEPT_REQUEST: 'Accept Request',
 };
 
 export const REPLY_STATUS = {

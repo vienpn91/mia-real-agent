@@ -1,5 +1,5 @@
 import httpStatus from 'http-status';
-import { TICKET_STATUS, SOCKET_EMIT } from '../../../common/enums';
+import { TICKET_STATUS, SOCKET_EMIT, REPLY_USER_ACTION } from '../../../common/enums';
 import TicketService from '../ticket/ticket.service';
 import ConversationService from '../conversation/conversation.service';
 import AgentQueue from '../queue/agentQueue';
@@ -8,6 +8,7 @@ import IdleQueue from '../queue/idleQueue';
 import Logger from '../../logger';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import RequestQueue from '../queue/requestQueue';
+import ReplyService from '../reply/reply.service';
 
 class AgentController {
   constructor() {
@@ -67,6 +68,7 @@ class AgentController {
         });
         RequestQueue.acceptRequest(ticketId);
         IdleQueue.addTimer(ticketId);
+        ReplyService.logUserAction(conversationId, agentId, REPLY_USER_ACTION.ACCEPT_REQUEST);
       }
       return res.status(httpStatus.OK).send();
     } catch (error) {

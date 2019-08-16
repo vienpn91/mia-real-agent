@@ -7,7 +7,7 @@ import UserService from '../user/user.service';
 import ConversationService from '../conversation/conversation.service';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import { isAgent } from '../../../app/utils/func-utils';
-import { TICKET_STATUS, REPLY_TYPE } from '../../../common/enums';
+import { TICKET_STATUS, REPLY_TYPE, REPLY_USER_ACTION } from '../../../common/enums';
 import RequestQueue from '../queue/requestQueue';
 import ConversationRoomQueue from '../queue/conversationRoomQueue';
 import ReplyService from '../reply/reply.service';
@@ -33,6 +33,8 @@ class TicketController extends BaseController {
       // const replyMessages = await ReplyService.getByConversation(id);
 
       const request = RequestQueue.addRequest(ticket);
+      const { conversationId, owner } = ticket;
+      ReplyService.logUserAction(conversationId, owner, REPLY_USER_ACTION.REQUEST_AGENT);
       if (!request) {
         return res.status(httpStatus.NOT_FOUND).send('Agent not found!');
       }
@@ -200,8 +202,8 @@ class TicketController extends BaseController {
         throw new APIError(CONTENT_NOT_FOUND, httpStatus.NOT_FOUND);
       }
       _.assign(ticket, { status: TICKET_STATUS.CLOSED });
-      const { conversationId, _id } = ticket;
-      ConversationRoomQueue.ticketClosedNotification(conversationId, _id);
+      // const { conversationId, _id } = ticket;
+      // ConversationRoomQueue.ticketClosedNotification(conversationId, _id);
       const result = await ticket.save({});
       return res.status(httpStatus.OK).send(result);
     } catch (error) {
