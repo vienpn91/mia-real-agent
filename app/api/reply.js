@@ -6,4 +6,4 @@ export const sendReplyMessage = (from, to, conversationId, messages) => axios
     from, to, conversationId, messages,
   })
   .then(response => ({ response }))
-  .catch(error => handleError(error));
+  .catch(handleError);
