@@ -148,7 +148,7 @@ export default class MessageBox extends Component {
 
   renderMessageContent = () => {
     const {
-      replyMessages, userId, userRole,
+      replyMessages, userId, userRole, currentTicket,
     } = this.props;
     const refinedMessages = combineChat(replyMessages);
     return [refinedMessages.map(({
@@ -158,7 +158,7 @@ export default class MessageBox extends Component {
         case REPLY_TYPE.TICKET_STATUS:
           return ticketStatus(msgId, params, sentAt);
         case REPLY_TYPE.USER_ACTION:
-          return userAction(msgId, params, sentAt);
+          return userAction(msgId, currentTicket, from, params, sentAt);
         case REPLY_TYPE.BOT_RESPONSE:
           return botChat(msgId, contents);
         default:

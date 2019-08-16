@@ -6,6 +6,7 @@ import {
   UserMessage, ProfileImageStyled,
   MessageBoxSystemNotification, LineDivider, MessageBoxItemIsTyping, IsTypingWrapper,
 } from './styles';
+import { ROLES } from '../../../common/enums';
 
 const renderTime = time => moment(time).format('hh:mm');
 
@@ -83,13 +84,31 @@ export const ticketStatus = (msgId, params, sentAt) => {
   );
 };
 
-export const userAction = (msgId, params, sentAt) => {
+export const userAction = (msgId, currentTicket, from, params, sentAt) => {
   const { action } = params;
+  const { owner, assignee } = currentTicket;
+  let messageOwner = '';
+  // eslint-disable-next-line no-underscore-dangle
+  if (owner._id === from) {
+    const { role, profile = {} } = owner;
+    const { firstName, lastName, company = 'N/A' } = profile;
+    switch (role) {
+      case ROLES.INDIVIDUAL:
+        messageOwner = `${firstName} ${lastName}`;
+        break;
+      default:
+        messageOwner = company;
+        break;
+    }
+  } else {
+    const { profile: { firstName, lastName } } = assignee || {};
+    messageOwner = `${firstName} ${lastName}`;
+  }
   return (
     <MessageBoxSystemNotification key={`status${msgId}`}>
       <LineDivider />
       <Tooltip placement="top" title={renderTime(sentAt)}>
-        {`User is ${action}`}
+        {`${messageOwner} is ${action}`}
       </Tooltip>
       <LineDivider />
     </MessageBoxSystemNotification>

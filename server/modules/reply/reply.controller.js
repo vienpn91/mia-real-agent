@@ -43,15 +43,7 @@ class ReplyController extends BaseController {
         messages: fulfillmentText, // miaReply.message
       };
 
-      // const newReplyMetadata = {
-
-      //   to: from,
-      //   message: 'Message from mia', // miaReply.message
-      //   conversation: conversationId,
-      // };
-
       await this.service.insert(reply);
-      // emitNewMessage({ ...newReplyMetadata, ticketId }, newReply);
     } catch (error) {
       Logger.error('Error while trying to fetch response from mia', error);
     }
@@ -61,14 +53,13 @@ class ReplyController extends BaseController {
     try {
       const reply = req.body;
       const { conversationId } = reply;
+      await this.service.insert(reply);
       const { ticketId } = await ConversationService.getOneByQuery({ _id: conversationId });
       IdleQueue.resetTimer(ticketId);
       if (reply.to) {
-        await this.service.insert(reply);
-        // emitNewMessage({ ...userReply, ticketId }, newReply);
         TicketService.update(ticketId, { status: TICKET_STATUS.PROCESSING });
       } else {
-        setTimeout(() => this.getResponseFromMia(reply, ticketId), 0);
+        setTimeout(() => this.getResponseFromMia(reply), 0);
       }
 
 
