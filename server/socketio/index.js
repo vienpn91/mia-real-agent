@@ -8,7 +8,8 @@ import DisconnectQueue from '../modules/queue/disconnectQueue';
 import { closeTicketTimeOut } from './timer';
 import ConversationRoomQueue from '../modules/queue/conversationRoomQueue';
 import { isAgent } from '../../app/utils/func-utils';
-import { SOCKET_EMIT } from '../../common/enums';
+import { SOCKET_EMIT, REPLY_USER_ACTION } from '../../common/enums';
+import ReplyService from '../modules/reply/reply.service';
 
 const ACTION_MESSAGE = 'ACTION_MESSAGE';
 let socketIO;
@@ -56,11 +57,17 @@ class SocketIOServer {
             AgentQueue.removeBySocket(socketId);
           }
           // if user/agent goes offline
-          TicketService.handleTicketOffline(user);
+          const tickets = await TicketService.handleTicketOffline(user);
+          tickets.forEach(({ conversationId }) => {
+            ReplyService.logUserAction(conversationId, id, REPLY_USER_ACTION.ONLINE);
+            return conversationId;
+          });
           const timer = closeTicketTimeOut(user);
           DisconnectQueue.addTimer(timer, id);
           ConversationRoomQueue.userDisconnect(id);
         });
+
+        // Handle user/agent online
         connected[socketId] = socket;
         DisconnectQueue.destroyTimer(id);
         if (isAgent(role)) {
@@ -72,7 +79,10 @@ class SocketIOServer {
         }
         register(id.toString(), socket);
         const tickets = await TicketService.handleTicketOnline(user);
-        const conversations = tickets.map(({ conversationId }) => conversationId);
+        const conversations = tickets.map(({ conversationId }) => {
+          ReplyService.logUserAction(conversationId, id, REPLY_USER_ACTION.ONLINE);
+          return conversationId;
+        });
         ConversationRoomQueue.userOnline(id, conversations);
       });
   }

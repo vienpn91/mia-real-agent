@@ -7,7 +7,7 @@ import Logger from '../../logger';
 import IdleQueue from '../queue/idleQueue';
 import ConversationService from '../conversation/conversation.service';
 import TicketService from '../ticket/ticket.service';
-import { TICKET_STATUS, SOCKET_EMIT } from '../../../common/enums';
+import { TICKET_STATUS, SOCKET_EMIT, REPLY_TYPE } from '../../../common/enums';
 import { checkContext } from './reply.utils';
 import { getSocketByUser } from '../../socketio';
 import userQueue from '../queue/userQueue';
@@ -39,13 +39,14 @@ class ReplyController extends BaseController {
       }
 
       const reply = {
+        type: REPLY_TYPE.BOT_RESPONSE,
         conversationId,
         from: null,
         messages: fulfillmentText, // miaReply.message
       };
 
       const newReplyMetadata = {
-        from: 'MIA',
+
         to: from,
         message: 'Message from mia', // miaReply.message
         conversation: conversationId,

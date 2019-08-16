@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Avatar,
-  Button, Form, Icon,
+  Form, Icon,
 } from 'antd';
 import _isEmpty from 'lodash/isEmpty';
 import { Formik } from 'formik';
@@ -12,33 +11,30 @@ import {
   MessageBoxContent,
   MessageBoxItem,
   ConversationHeaderTitle,
-  MessageText,
   MessageInputWrapper,
   MessageActionWrapper,
   MessageInput,
   MessageEmpty,
   InputAction,
-  UserMessage,
   ConversationTitle,
-  ConversationTitleInfo,
   RatingWrapper,
-  LineDivider,
   RatingContent,
   CommentInputWrapper,
   TicketStatus,
   MessageBoxSystemNotification,
-  IsTypingWrapper,
-  MessageBoxItemIsTyping,
   FindAgentButton,
   FindAgentWrapper,
 } from './styles';
 import LoadingSpin from '../Loading';
 import ConversationDetail from '../ConversationDetail/ConversationDetail';
-import { TICKET_STATUS } from '../../../common/enums';
+import { TICKET_STATUS, REPLY_TYPE } from '../../../common/enums';
 import FormInput from '../FormInput/FormInput';
-import { insertSystemMessageToRepliesChat, combineChat } from './utils';
+import { combineChat } from './utils';
 import { shouldShowSystemMessage, isAgent } from '../../utils/func-utils';
 import { ProfileImageStyled } from '../TopNavBar/TopNavBar.styled';
+import {
+  userChat, otherChat, otherTyping, botChat, ticketStatus, userAction,
+} from './ChatItem';
 
 const scrollStyle = {
   height: 'calc(100% - 60px)',
@@ -132,96 +128,55 @@ export default class MessageBox extends Component {
     </MessageBoxItem>
   )
 
-  renderOtherUserMessageContent = (msgId, contents, from) => {
+  renderOtherUserMessageContent = (msgId, contents) => {
     const { userRole } = this.props;
     const src = isAgent(userRole) ? '/assets/images/user-live.jpeg' : '/assets/images/user.svg';
-    return (
-      <MessageBoxItem left key={msgId}>
-        <ProfileImageStyled
-          src={!from ? '/assets/images/mia-avatar.jpg' : src}
-          onClick={this.onToggleUserInfo}
-        />
-        <MessageText>
-          {contents.map(({ _id, messages }) => (<p key={_id}>{messages}</p>))}
-        </MessageText>
-      </MessageBoxItem>
-    );
+    return otherChat(msgId, contents, src);
   }
 
-  renderOtherUserTypingContent = (isAgentChat = true) => {
+  renderOtherUserTypingContent = () => {
     const { otherUserTyping, conversationId } = this.props;
     const { conversationId: _id, messages = '' } = otherUserTyping || {};
     if (!_isEmpty(otherUserTyping)
       && _id === conversationId
       && !_isEmpty(messages.trim())
     ) {
-      return (
-        <MessageBoxItemIsTyping left key={_id}>
-          <ProfileImageStyled
-            src={isAgentChat ? '/assets/images/user-live.jpeg' : '/assets/images/user.svg'}
-            onClick={this.onToggleUserInfo}
-          />
-          <MessageText>
-            <p>{messages.trim()}</p>
-            <IsTypingWrapper />
-          </MessageText>
-        </MessageBoxItemIsTyping>
-      );
+      return otherTyping(messages);
     }
     return false;
   }
 
-  renderUserMessageContent = (msgId, contents, isPending = false, isAgentChat = true) => (
-    <MessageBoxItem right key={msgId}>
-      <MessageText>
-        {contents.map(({ _id, messages }) => (<UserMessage key={_id} pending={isPending}>{messages}</UserMessage>))}
-      </MessageText>
-      {/* <Avatar icon="user" size={35} />
-      <ProfileImageStyled
-        src={!isAgentChat ? '/assets/images/user-live.jpeg' : '/assets/images/user.svg'}
-        onClick={this.onToggleUserInfo}
-      /> */}
-    </MessageBoxItem>
-  )
-
-  renderSystemMessage = () => {
-    const { systemMessage, conversationId } = this.props;
-    return shouldShowSystemMessage(systemMessage, conversationId) && (
-      <MessageBoxSystemNotification>
-        <LineDivider />
-        {systemMessage.message}
-        <LineDivider />
-      </MessageBoxSystemNotification>
-    );
-  }
-
   renderMessageContent = () => {
     const {
-      replyMessages, userId, systemMessage, userRole,
+      replyMessages, userId, userRole,
     } = this.props;
-    const refinedMessages = combineChat(
-      insertSystemMessageToRepliesChat(replyMessages, systemMessage)
-    );
+    const refinedMessages = combineChat(replyMessages);
     return [refinedMessages.map(({
-      from, _id: msgId, contents, isSystemMessage,
+      from, _id: msgId, contents, type, params, sentAt,
     }) => {
-      if (isSystemMessage) {
-        return this.renderSystemMessage();
+      switch (type) {
+        case REPLY_TYPE.TICKET_STATUS:
+          return ticketStatus(msgId, params, sentAt);
+        case REPLY_TYPE.USER_ACTION:
+          return userAction(msgId, params, sentAt);
+        case REPLY_TYPE.BOT_RESPONSE:
+          return botChat(msgId, contents);
+        default:
+          if (from === userId) {
+            return userChat(msgId, contents, false, isAgent(userRole));
+          }
+          return this.renderOtherUserMessageContent(msgId, contents, from);
       }
-      if (from === userId) {
-        return this.renderUserMessageContent(msgId, contents, false, isAgent(userRole));
-      }
-      return this.renderOtherUserMessageContent(msgId, contents, from);
     }),
     this.renderOtherUserTypingContent(),
     ];
   }
 
   renderPendingMessageContent = () => {
-    const { sendingMessages, userRole } = this.props;
+    const { sendingMessages } = this.props;
     if (!sendingMessages || !sendingMessages.length) return null;
 
-    return combineChat(sendingMessages).map(({ id: msgId, contents }) => this.renderUserMessageContent(msgId, contents, true, isAgent(userRole)));
+    return combineChat(sendingMessages).map(({ id: msgId, contents }) => userChat(msgId, contents, true));
   }
 
   renderGroupAction = () => (
@@ -292,8 +247,8 @@ export default class MessageBox extends Component {
 
 
   renderMessageHeader = () => {
-    const { currentTicket, userRole, isFindingAgent } = this.props;
-    const { assignee = {}, title, status } = currentTicket || {};
+    const { currentTicket } = this.props;
+    const { title, status } = currentTicket || {};
     return (
       <ConversationHeaderTitle>
         <ConversationTitle>

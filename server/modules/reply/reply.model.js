@@ -26,6 +26,9 @@ const ReplySchema = new Schema(
       type: String,
       default: REPLY_STATUS.PENDING,
     },
+    params: {
+      type: Object,
+    },
   },
   {
     versionKey: false,
