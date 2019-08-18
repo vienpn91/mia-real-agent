@@ -35,6 +35,13 @@ export const TICKET_STATUS = {
   OFFLINE: 'Offline',
 };
 
+export const COLOR_BY_ACTION = {
+  'Accept Request': '#449bea',
+  Online: '#05ca05',
+  'Request Agent': '#f7d00f',
+  Offline: '#8e8e8e',
+};
+
 export const COLOR_BY_STATUS = {
   Open: '#449bea',
   Closed: '#d4101e',

@@ -2,7 +2,7 @@ import { Divider } from 'antd';
 import { DefaultButton } from 'components/Generals/General.styled';
 import styled, { css, keyframes } from 'styled-components';
 import FormInput from '../FormInput/FormInput';
-import { COLOR_BY_STATUS } from '../../../common/enums';
+import { COLOR_BY_STATUS, COLOR_BY_ACTION } from '../../../common/enums';
 
 export const MessageBoxWrapper = styled.div`
   display: flex;
@@ -224,6 +224,22 @@ export const TicketStatus = styled.div`
       margin-top: 2px;
   margin-right: 10px;
   background: ${({ status }) => [COLOR_BY_STATUS[status]]};
+`;
+
+export const TicketActionStatus = styled(TicketStatus)`
+  margin: 0 5px;
+`;
+
+export const TicketActionStatusTitle = styled.span`
+  font-weight: 600;
+  font-style: italic;
+  color: ${({ status }) => [COLOR_BY_STATUS[status]]};
+`;
+
+export const UserAction = styled.span`
+  font-weight: 600;
+  font-style: italic;
+  color: ${({ action }) => [COLOR_BY_ACTION[action]]};
 `;
 
 export const MessageBoxSystemNotification = styled.span`

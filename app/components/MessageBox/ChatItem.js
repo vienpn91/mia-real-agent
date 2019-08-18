@@ -5,7 +5,7 @@ import _isEmpty from 'lodash/isEmpty';
 import {
   MessageBoxItem, MessageText,
   UserMessage, ProfileImageStyled,
-  MessageBoxSystemNotification, LineDivider, MessageBoxItemIsTyping, IsTypingWrapper,
+  MessageBoxSystemNotification, LineDivider, MessageBoxItemIsTyping, IsTypingWrapper, TicketActionStatus, UserAction, TicketActionStatusTitle,
 } from './styles';
 import { ROLES } from '../../../common/enums';
 
@@ -78,7 +78,9 @@ export const ticketStatus = (msgId, params, sentAt) => {
     <MessageBoxSystemNotification key={`status${msgId}`}>
       <LineDivider />
       <Tooltip placement="top" title={renderTime(sentAt)}>
-        {`Ticket changed to ${status}`}
+        Ticket changed to
+        <TicketActionStatus status={status} />
+        <TicketActionStatusTitle status={status}>{status}</TicketActionStatusTitle>
       </Tooltip>
       <LineDivider />
     </MessageBoxSystemNotification>
@@ -113,7 +115,8 @@ export const userAction = (msgId, currentTicket, from, params, sentAt) => {
     <MessageBoxSystemNotification key={`status${msgId}`}>
       <LineDivider />
       <Tooltip placement="top" title={renderTime(sentAt)}>
-        {`${messageOwner} is ${action}`}
+        {`${messageOwner} is `}
+        <UserAction action={action}>{action}</UserAction>
       </Tooltip>
       <LineDivider />
     </MessageBoxSystemNotification>
