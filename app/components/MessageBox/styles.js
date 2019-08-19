@@ -257,10 +257,10 @@ export const LineDivider = styled.span`
     display: flex;
     align-items: center;
     flex: 0 0 20%;
-    background-color: #828282;
+    background-color: #b9b9b9;
     justify-content: center;
     font-size: 0.75em;
-    color: #828282;
+    color: #b9b9b9;
     margin: 0 2em;
     height: 1px;
     opacity: .7;
