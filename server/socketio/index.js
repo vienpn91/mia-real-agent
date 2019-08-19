@@ -3,13 +3,13 @@ import socketioJwt from 'socketio-jwt';
 import Logger from '../logger';
 import AgentQueue from '../modules/queue/agentQueue';
 import TicketService from '../modules/ticket/ticket.service';
-import { register, unregister } from '../modules/chat/chat.socket';
 import DisconnectQueue from '../modules/queue/disconnectQueue';
 import { closeTicketTimeOut } from './timer';
 import ConversationRoomQueue from '../modules/queue/conversationRoomQueue';
 import { isAgent } from '../../app/utils/func-utils';
 import { SOCKET_EMIT, REPLY_USER_ACTION } from '../../common/enums';
 import ReplyService from '../modules/reply/reply.service';
+import UserQueue from '../modules/queue/userQueue';
 
 const ACTION_MESSAGE = 'ACTION_MESSAGE';
 let socketIO;
@@ -52,14 +52,15 @@ class SocketIOServer {
 
         socket.on('disconnect', async () => {
           Logger.info(`[Socket.io]: The foul [${email}] has exit the fray`);
-          unregister(id.toString(), socket);
           if (isAgent(role)) {
             AgentQueue.removeBySocket(socketId);
+          } else {
+            UserQueue.removeUser(id);
           }
           // if user/agent goes offline
           const tickets = await TicketService.handleTicketOffline(user);
           tickets.forEach(({ conversationId }) => {
-            ReplyService.logUserAction(conversationId, id, REPLY_USER_ACTION.ONLINE);
+            ReplyService.logUserAction(conversationId, id, REPLY_USER_ACTION.OFFLINE);
             return conversationId;
           });
           const timer = closeTicketTimeOut(user);
@@ -75,9 +76,9 @@ class SocketIOServer {
           const { _doc } = user;
           AgentQueue.add({ ..._doc, socketId });
         } else {
+          UserQueue.addUser(id, socket);
           Logger.info(`[Socket.io]: The Foul [${email}] has join the fray`);
         }
-        register(id.toString(), socket);
         const tickets = await TicketService.handleTicketOnline(user);
         const conversations = tickets.map(({ conversationId }) => {
           ReplyService.logUserAction(conversationId, id, REPLY_USER_ACTION.ONLINE);

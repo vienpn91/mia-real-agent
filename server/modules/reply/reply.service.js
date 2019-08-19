@@ -2,10 +2,12 @@ import _ from 'lodash';
 import ReplyCollection from './reply.model';
 import BaseService from '../base/base.service';
 import { REPLY_TYPE } from '../../../common/enums';
+import ConversationRoomQueue from '../queue/conversationRoomQueue';
 
 class ReplyService extends BaseService {
   constructor() {
     super(ReplyCollection);
+    this.handleReplyInsert(ReplyCollection);
   }
 
   getByConversation(conversationId) {
@@ -26,6 +28,16 @@ class ReplyService extends BaseService {
       },
     };
     this.insert(reply);
+  }
+
+  handleReplyInsert(collection) {
+    collection.watch([
+      { $match: { operationType: 'insert' } },
+    ]).on('change', async (data) => {
+      const { fullDocument } = data;
+      const { conversationId } = fullDocument;
+      ConversationRoomQueue.conversationNewMessage(conversationId, fullDocument);
+    });
   }
 }
 

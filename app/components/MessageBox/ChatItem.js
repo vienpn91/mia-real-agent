@@ -1,11 +1,13 @@
 import React from 'react';
 import moment from 'moment';
 import { Tooltip } from 'antd';
+import _isEmpty from 'lodash/isEmpty';
 import {
   MessageBoxItem, MessageText,
   UserMessage, ProfileImageStyled,
-  MessageBoxSystemNotification, LineDivider, MessageBoxItemIsTyping, IsTypingWrapper,
+  MessageBoxSystemNotification, LineDivider, MessageBoxItemIsTyping, IsTypingWrapper, TicketActionStatus, UserAction, TicketActionStatusTitle,
 } from './styles';
+import { ROLES } from '../../../common/enums';
 
 const renderTime = time => moment(time).format('hh:mm');
 
@@ -76,20 +78,45 @@ export const ticketStatus = (msgId, params, sentAt) => {
     <MessageBoxSystemNotification key={`status${msgId}`}>
       <LineDivider />
       <Tooltip placement="top" title={renderTime(sentAt)}>
-        {`Ticket change to ${status}`}
+        Ticket changed to
+        <TicketActionStatus status={status} />
+        <TicketActionStatusTitle status={status}>{status}</TicketActionStatusTitle>
       </Tooltip>
       <LineDivider />
     </MessageBoxSystemNotification>
   );
 };
 
-export const userAction = (msgId, params, sentAt) => {
+export const userAction = (msgId, currentTicket, from, params, sentAt) => {
   const { action } = params;
+  const { owner, assignee } = currentTicket;
+  let messageOwner = '';
+  if (_isEmpty(currentTicket)) {
+    return null;
+  }
+  // eslint-disable-next-line no-underscore-dangle
+  if (owner._id === from) {
+    const { role, profile = {} } = owner;
+    const { firstName, lastName, company = 'N/A' } = profile;
+    switch (role) {
+      case ROLES.INDIVIDUAL:
+        messageOwner = `${firstName} ${lastName}`;
+        break;
+      default:
+        messageOwner = company;
+        break;
+    }
+  } else {
+    const { profile } = assignee || {};
+    const { firstName, lastName } = profile || {};
+    messageOwner = `${firstName} ${lastName}`;
+  }
   return (
     <MessageBoxSystemNotification key={`status${msgId}`}>
       <LineDivider />
       <Tooltip placement="top" title={renderTime(sentAt)}>
-        {`User has ${action}`}
+        {`${messageOwner} is `}
+        <UserAction action={action}>{action}</UserAction>
       </Tooltip>
       <LineDivider />
     </MessageBoxSystemNotification>

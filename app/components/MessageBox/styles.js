@@ -2,7 +2,7 @@ import { Divider } from 'antd';
 import { DefaultButton } from 'components/Generals/General.styled';
 import styled, { css, keyframes } from 'styled-components';
 import FormInput from '../FormInput/FormInput';
-import { COLOR_BY_STATUS } from '../../../common/enums';
+import { COLOR_BY_STATUS, COLOR_BY_ACTION } from '../../../common/enums';
 
 export const MessageBoxWrapper = styled.div`
   display: flex;
@@ -82,6 +82,9 @@ export const ConversationTitle = styled.div`
   button {
     font-size: .85em;
     border-radius: .3em;
+  }
+  span {
+    font-weight: 600;
   }
 `;
 
@@ -223,6 +226,22 @@ export const TicketStatus = styled.div`
   background: ${({ status }) => [COLOR_BY_STATUS[status]]};
 `;
 
+export const TicketActionStatus = styled(TicketStatus)`
+  margin: 0 5px;
+`;
+
+export const TicketActionStatusTitle = styled.span`
+  font-weight: 600;
+  font-style: italic;
+  color: ${({ status }) => [COLOR_BY_STATUS[status]]};
+`;
+
+export const UserAction = styled.span`
+  font-weight: 600;
+  font-style: italic;
+  color: ${({ action }) => [COLOR_BY_ACTION[action]]};
+`;
+
 export const MessageBoxSystemNotification = styled.span`
   display: flex;
   align-items: center;
@@ -232,15 +251,16 @@ export const MessageBoxSystemNotification = styled.span`
   font-size: 0.85em;
   color: #828282;
   opacity: .7;
+  font-style: italic;
 `;
 export const LineDivider = styled.span`
     display: flex;
     align-items: center;
     flex: 0 0 20%;
-    background-color: #828282;
+    background-color: #b9b9b9;
     justify-content: center;
     font-size: 0.75em;
-    color: #828282;
+    color: #b9b9b9;
     margin: 0 2em;
     height: 1px;
     opacity: .7;

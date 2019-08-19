@@ -35,6 +35,13 @@ export const TICKET_STATUS = {
   OFFLINE: 'Offline',
 };
 
+export const COLOR_BY_ACTION = {
+  'Accept Request': '#449bea',
+  Online: '#05ca05',
+  'Request Agent': '#f7d00f',
+  Offline: '#8e8e8e',
+};
+
 export const COLOR_BY_STATUS = {
   Open: '#449bea',
   Closed: '#d4101e',
@@ -172,6 +179,8 @@ export const REPLY_TYPE = {
 export const REPLY_USER_ACTION = {
   ONLINE: 'Online',
   OFFLINE: 'Offline',
+  REQUEST_AGENT: 'Request Agent',
+  ACCEPT_REQUEST: 'Accept Request',
 };
 
 export const REPLY_STATUS = {
@@ -196,7 +205,8 @@ export const SOCKET_EMIT = {
   OTHER_JOIN_ROOM: 'OTHER_JOIN_ROOM',
   OTHER_LEFT_ROOM: 'OTHER_LEFT_ROOM',
   RECEIVE_USER_TYPING: 'RECEIVE_USER_TYPING',
-  CLOSE_TICKET_NOTIFICATION: 'CLOSE_TICKET_NOTIFICATION',
+  TICKET_UPDATE: 'TICKET_UPDATE',
+  CONVERSATION_UPDATE: 'CONVERSATION_UPDATE',
   FOUND_SOLUTION: 'FOUND_SOLUTION',
 
   JOIN_CONVERSATION: 'JOIN_CONVERSATION',

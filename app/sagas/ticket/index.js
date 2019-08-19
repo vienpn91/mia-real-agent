@@ -67,6 +67,7 @@ function* createTicket({ payload }) {
   const { data } = response;
   yield put(actions.createCompleteAction(data));
   const { conversationId } = data;
+  yield put(CONVERSATION_ACTIONS.userJoinConversation(conversationId));
   yield put(CONVERSATION_ACTIONS.selectConversation(conversationId));
   history.push(`/conversation/${conversationId}`);
 }
@@ -208,11 +209,6 @@ function* setCurrentTicket({ payload }) {
   if (_isEmpty(ticket)) {
     yield put(actions.getAction(ticketId));
   }
-  // const { ownerProfile, assignee, assigneeProfile } = ticket;
-  // console.log(assignee, assigneeProfile);
-  yield put(actions.getTicketProfile(ticketId));
-  // if (_isEmpty(ownerProfile) || (assignee && _isEmpty(assigneeProfile))) {
-  // }
 }
 
 function* getTicketProfile({ payload }) {

@@ -213,23 +213,12 @@ function repliesReducer(state = initialState, action) {
     }
 
     case REPLIES_SEND_MESSAGE_SUCCESS: {
-      const { messages, localMessageId, conversationId } = action.payload;
-      const { _id: msgId } = messages;
+      const { localMessageId, conversationId } = action.payload;
       const allIds = state.get('allIds').add(conversationId);
       const sendingList = state.getIn(['sendingMessage', conversationId]).delete(localMessageId);
-      let currentReplies = state.getIn(['byId', conversationId]);
-      if (!currentReplies) {
-        currentReplies = new OrderedMap({
-          [msgId]: messages,
-        });
-      } else {
-        currentReplies = currentReplies.set(msgId, messages);
-      }
-
       return state
         .set('allIds', allIds)
-        .setIn(['sendingMessage', conversationId], sendingList)
-        .setIn(['byId', conversationId], currentReplies);
+        .setIn(['sendingMessage', conversationId], sendingList);
     }
 
     /**

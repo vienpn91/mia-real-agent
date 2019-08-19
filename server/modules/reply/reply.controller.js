@@ -2,14 +2,12 @@ import httpStatus from 'http-status';
 import axios from 'axios';
 import BaseController from '../base/base.controller';
 import ReplyService from './reply.service';
-import { emitNewMessage } from '../chat/chat.socket';
 import Logger from '../../logger';
 import IdleQueue from '../queue/idleQueue';
 import ConversationService from '../conversation/conversation.service';
 import TicketService from '../ticket/ticket.service';
 import { TICKET_STATUS, SOCKET_EMIT, REPLY_TYPE } from '../../../common/enums';
 import { checkContext } from './reply.utils';
-import { getSocketByUser } from '../../socketio';
 import userQueue from '../queue/userQueue';
 
 class ReplyController extends BaseController {
@@ -19,7 +17,7 @@ class ReplyController extends BaseController {
     this.getResponseFromMia = this.getResponseFromMia.bind(this);
   }
 
-  async getResponseFromMia(userReply, ticketId) {
+  async getResponseFromMia(userReply) {
     const { WEBHOOK_ENDPOINT } = process.env;
     if (!WEBHOOK_ENDPOINT) {
       Logger.error('WEBHOOK_ENDPOINT not found');
@@ -45,15 +43,7 @@ class ReplyController extends BaseController {
         messages: fulfillmentText, // miaReply.message
       };
 
-      const newReplyMetadata = {
-
-        to: from,
-        message: 'Message from mia', // miaReply.message
-        conversation: conversationId,
-      };
-
-      const newReply = await this.service.insert(reply);
-      emitNewMessage({ ...newReplyMetadata, ticketId }, newReply);
+      await this.service.insert(reply);
     } catch (error) {
       Logger.error('Error while trying to fetch response from mia', error);
     }
@@ -61,25 +51,19 @@ class ReplyController extends BaseController {
 
   async insertReply(req, res) {
     try {
-      const userReply = req.body;
-      const { conversationId, from, messages } = userReply;
-      const reply = {
-        conversationId,
-        from,
-        messages,
-      };
-      const newReply = await this.service.insert(reply);
+      const reply = req.body;
+      const { conversationId } = reply;
+      await this.service.insert(reply);
       const { ticketId } = await ConversationService.getOneByQuery({ _id: conversationId });
       IdleQueue.resetTimer(ticketId);
-      if (userReply.to) {
-        emitNewMessage({ ...userReply, ticketId }, newReply);
+      if (reply.to) {
         TicketService.update(ticketId, { status: TICKET_STATUS.PROCESSING });
       } else {
-        setTimeout(() => this.getResponseFromMia(userReply, ticketId), 0);
+        setTimeout(() => this.getResponseFromMia(reply), 0);
       }
 
 
-      return res.status(httpStatus.OK).send({ reply: newReply });
+      return res.status(httpStatus.OK).send({ reply });
     } catch (error) {
       return super.handleError(res, error);
     }

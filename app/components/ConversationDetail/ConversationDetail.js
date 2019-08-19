@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ShadowScrollbars from 'components/Scrollbar';
-import { Descriptions, Timeline, Icon } from 'antd';
+import _isEmpty from 'lodash/isEmpty';
+import { Descriptions } from 'antd';
 import { shape } from 'prop-types';
 import {
   ConversationDetailWrapper,
@@ -25,14 +26,11 @@ export default class ConversationDetail extends Component {
 
   renderOwnerInfo = () => {
     const { ticket } = this.props;
-    const { owner, ownerProfile } = ticket;
-    if (!owner) {
+    const { owner } = ticket;
+    if (_isEmpty(owner)) {
       return (<NoInformationText>No Owner</NoInformationText>);
     }
-    if (!ownerProfile) {
-      return (<NoInformationText>No Profile</NoInformationText>);
-    }
-    const { role, profile = {} } = ownerProfile;
+    const { role, profile = {} } = owner;
     const { firstName, lastName, company = 'N/A' } = profile;
     switch (role) {
       case ROLES.INDIVIDUAL:
@@ -45,14 +43,11 @@ export default class ConversationDetail extends Component {
 
   renderAssigneeInfo = () => {
     const { ticket } = this.props;
-    const { assignee, assigneeProfile } = ticket;
-    if (!assignee) {
+    const { assignee } = ticket;
+    if (_isEmpty(assignee)) {
       return (<NoInformationText>No Assignee</NoInformationText>);
     }
-    if (!assigneeProfile) {
-      return (<NoInformationText>No Profile</NoInformationText>);
-    }
-    const { firstName, lastName } = assigneeProfile;
+    const { firstName, lastName } = assignee.profile;
     return (
       <div className="assignee">
         <span>
@@ -79,7 +74,7 @@ export default class ConversationDetail extends Component {
     return (
       <ConversationInfoWrapper>
         <TimerWrapper />
-        <Descriptions column={assignee ? 5 : 4}>
+        <Descriptions column={_isEmpty(assignee) ? 4 : 5}>
           <Descriptions.Item label="Status">
             <TicketStatus status={status} />
             {status}
@@ -87,7 +82,7 @@ export default class ConversationDetail extends Component {
           <Descriptions.Item label="Ticket">{title}</Descriptions.Item>
           <Descriptions.Item label="Description">{description}</Descriptions.Item>
           <Descriptions.Item label="Owner">{this.renderOwnerInfo()}</Descriptions.Item>
-          {assignee ? (<Descriptions.Item label="Assignee">{this.renderAssigneeInfo()}</Descriptions.Item>) : <div />}
+          {!_isEmpty(assignee) ? (<Descriptions.Item label="Assignee">{this.renderAssigneeInfo()}</Descriptions.Item>) : <div />}
         </Descriptions>
       </ConversationInfoWrapper>
     );
