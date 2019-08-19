@@ -60,7 +60,7 @@ class SocketIOServer {
           // if user/agent goes offline
           const tickets = await TicketService.handleTicketOffline(user);
           tickets.forEach(({ conversationId }) => {
-            ReplyService.logUserAction(conversationId, id, REPLY_USER_ACTION.ONLINE);
+            ReplyService.logUserAction(conversationId, id, REPLY_USER_ACTION.OFFLINE);
             return conversationId;
           });
           const timer = closeTicketTimeOut(user);
