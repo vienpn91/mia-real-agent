@@ -24,6 +24,10 @@ class UserRouter extends BaseRouter {
       '/checkPassword',
       UserController.checkPassword,
     );
+    this.router.post(
+      '/mail',
+      UserController.sendTestMail,
+    );
   }
 }
 
