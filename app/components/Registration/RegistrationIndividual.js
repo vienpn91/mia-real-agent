@@ -17,6 +17,7 @@ import {
   RegistrationTitle, RegistrationWrapper, RegistrationItem,
   InputWrapper, RegistrationFooter, RegistrationFooterText, RegistrationFooterLink,
 } from './styles';
+import { toI18n } from '../../utils/func-utils';
 
 const scrollStyle = {
   height: 'calc(100vh - 300px)',
@@ -38,14 +39,14 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid Email').trim().required('Required'),
-  username: Yup.string().trim().required('Required'),
-  password: Yup.string().trim().required('Required'),
+  email: Yup.string().email(toI18n('FORM_INVALID_MAIL')).trim().required(toI18n('FORM_REQUIRED')),
+  username: Yup.string().trim().required(toI18n('FORM_REQUIRED')),
+  password: Yup.string().trim().required(toI18n('FORM_REQUIRED')),
   rePassword: Yup.string()
-    .oneOf([Yup.ref('password'), null], 'Passwords must match').trim().required('Required'),
-  firstName: Yup.string().trim().required('Required'),
-  lastName: Yup.string().trim().required('Required'),
-  dateOfBirth: Yup.date().required('Required'),
+    .oneOf([Yup.ref('password'), null], toI18n('FORM_PASSWORD_MUST_MATCH')).trim().required(toI18n('FORM_REQUIRED')),
+  firstName: Yup.string().trim().required(toI18n('FORM_REQUIRED')),
+  lastName: Yup.string().trim().required(toI18n('FORM_REQUIRED')),
+  dateOfBirth: Yup.date().required(toI18n('FORM_REQUIRED')),
   company: Yup.string().trim(),
   position: Yup.string().trim(),
   address: Yup.string().trim(),
@@ -79,7 +80,7 @@ class Registration extends Component {
       return (
         <LoginBtn>
           <LoginSpinner />
-          Registering
+          {toI18n('REGISTER_REGISTERING')}
         </LoginBtn>
       );
     }
@@ -87,7 +88,7 @@ class Registration extends Component {
       <LoginBtn
         type="submit"
       >
-        Register
+        {toI18n('REGISTER_REGISTER')}
       </LoginBtn>
     );
   }
@@ -115,7 +116,7 @@ class Registration extends Component {
                       <FormInput
                         name="username"
                         type="text"
-                        label="Username"
+                        label={toI18n('REGISTER_USERNAME')}
                         login={1}
                       />
                     </Col>
@@ -123,7 +124,7 @@ class Registration extends Component {
                       <FormInput
                         name="email"
                         type="text"
-                        label="Email"
+                        label={toI18n('REGISTER_EMAIL')}
                         login={1}
                       />
                     </Col>
@@ -133,7 +134,7 @@ class Registration extends Component {
                       <FormInput
                         name="firstName"
                         type="text"
-                        label="First name"
+                        label={toI18n('REGISTER_INDIVIDUAL_FIRST_NAME')}
                         login={1}
                       />
                     </Col>
@@ -141,7 +142,7 @@ class Registration extends Component {
                       <FormInput
                         name="lastName"
                         type="text"
-                        label="Last name"
+                        label={toI18n('REGISTER_INDIVIDUAL_LAST_NAME')}
                         login={1}
                       />
                     </Col>
@@ -151,7 +152,7 @@ class Registration extends Component {
                       <FormInput
                         name="password"
                         type="password"
-                        label="Password"
+                        label={toI18n('REGISTER_PASSWORD')}
                         login={1}
                       />
                     </Col>
@@ -159,7 +160,7 @@ class Registration extends Component {
                       <FormInput
                         name="rePassword"
                         type="password"
-                        label="Re-password"
+                        label={toI18n('REGISTER_RE_PASSWORD')}
                         login={1}
                       />
                     </Col>
@@ -169,7 +170,7 @@ class Registration extends Component {
                       <FormInput
                         name="dateOfBirth"
                         type="date"
-                        label="Date of birth"
+                        label={toI18n('REGISTER_INDIVIDUAL_DOB')}
                         login={1}
                       />
                     </Col>
@@ -177,7 +178,7 @@ class Registration extends Component {
                       <FormInput
                         name="phone"
                         type="text"
-                        label="Phone No."
+                        label={toI18n('REGISTER_INDIVIDUAL_PHONE')}
                         login={1}
                       />
                     </Col>
@@ -187,7 +188,7 @@ class Registration extends Component {
                       <FormInput
                         name="company"
                         type="text"
-                        label="Company"
+                        label={toI18n('REGISTER_INDIVIDUAL_COMPANY')}
                         login={1}
                       />
                     </Col>
@@ -196,7 +197,7 @@ class Registration extends Component {
                         name="position"
                         type="select"
                         options={POSITION_OPTIONS}
-                        label="Position"
+                        label={toI18n('REGISTER_INDIVIDUAL_POSITION')}
                         login={1}
                       />
                     </Col>
@@ -206,7 +207,7 @@ class Registration extends Component {
                       <FormInput
                         name="address"
                         type="text"
-                        label="Address"
+                        label={toI18n('REGISTER_INDIVIDUAL_ADDRESS')}
                         login={1}
                       />
                     </Col>
@@ -228,9 +229,11 @@ class Registration extends Component {
             )}
           </Formik>
           <RegistrationFooter>
-            <RegistrationFooterText>Already had an account?</RegistrationFooterText>
+            <RegistrationFooterText>
+              {toI18n('REGISTER_ALREADY_HAD_AN_ACCOUNT')}
+            </RegistrationFooterText>
             <RegistrationFooterLink href="/login">
-              Login now!
+              {toI18n('REGISTER_LOGIN_NOW')}
             </RegistrationFooterLink>
           </RegistrationFooter>
         </RegistrationItem>

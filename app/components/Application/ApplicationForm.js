@@ -17,6 +17,7 @@ import EducationForm from './EducationForm';
 import AdditionalForm from './AdditionalForm';
 import LoadingSpin from '../Loading';
 import { APPLICATION_TYPE } from '../../../common/enums';
+import { toI18n } from '../../utils/func-utils';
 
 const { Step } = Steps;
 const { TabPane } = Tabs;
@@ -121,7 +122,7 @@ export class ApplicationForm extends Component {
             >
               <div>
                 <Icon type="user" />
-                Freelancer
+                {toI18n('APPLICATION_FORM_FREELANCER')}
               </div>
             </button>
             <button
@@ -130,7 +131,7 @@ export class ApplicationForm extends Component {
             >
               <div>
                 <Icon type="usergroup-add" />
-                Dedicated
+                {toI18n('APPLICATION_FORM_DEDICATED')}
               </div>
             </button>
           </RoleWrapper>
@@ -150,9 +151,11 @@ export class ApplicationForm extends Component {
         <TabPane tab="" key="5">
           <SubmitSuccess>
             <i className="mia-check" />
-            Submit Application Success. Please wait for approval.
+            {toI18n('APPLICATION_FORM_SUBMIT_SUCCESS')}
             <br />
-            <Link to="/login">To Login</Link>
+            <Link to="/login">
+              {toI18n('APPLICATION_FORM_TO_LOGIN')}
+            </Link>
           </SubmitSuccess>
         </TabPane>
       </Tabs>
@@ -167,17 +170,19 @@ export class ApplicationForm extends Component {
         <ApplicationItem>
           <ApplicationTitle>
             <img className="img" src="/assets/images/logo-small-black.png" alt="logo mia" />
-            <span className="ApplicationText">AGENT REGISTRATION</span>
+            <span className="ApplicationText">
+              {toI18n('APPLICATION_FORM_TITLE')}
+            </span>
           </ApplicationTitle>
-          
+
           {step !== 5
             && (
               <Steps current={step}>
-                <Step title="Role" />
-                <Step title="Basic Info" />
-                <Step title="Experience" />
-                <Step title="Education" />
-                <Step title="Additional" />
+                <Step title={toI18n('APPLICATION_FORM_ROLE_TAB')} />
+                <Step title={toI18n('APPLICATION_FORM_BASIC_INFO_TAB')} />
+                <Step title={toI18n('APPLICATION_FORM_EXPERIENCE_TAB')} />
+                <Step title={toI18n('APPLICATION_FORM_EDUCATION_TAB')} />
+                <Step title={toI18n('APPLICATION_FORM_ADDITIONAL_TAB')} />
               </Steps>
             )}
           <LoadingSpin loading={isSubmitting}>

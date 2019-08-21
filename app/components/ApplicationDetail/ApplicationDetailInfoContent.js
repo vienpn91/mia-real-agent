@@ -18,6 +18,7 @@ import {
 } from './styles';
 import ApplicationDetailExperienceDetail from './ApplicationDetailExperienceDetail';
 import ApplicationDetailEducationDetail from './ApplicationDetailEducationDetail';
+import { toI18n } from '../../utils/func-utils';
 
 const { TabPane } = Tabs;
 
@@ -72,9 +73,9 @@ class ApplicationDetailInfoContent extends PureComponent {
     } = this.props;
     return (
       <Tabs activeKey={current} onChange={this.handleChangeTab}>
-        <TabPane tab="Experiences" key={MENU.EXPERIENCES}>
+        <TabPane tab={toI18n('ADMIN_APPLICATION_DETAIL_MENU_EXPERIENCES')} key={MENU.EXPERIENCES}>
           {_isEmpty(workExperiences)
-            ? 'No experience'
+            ? toI18n('ADMIN_APPLICATION_DETAIL_NO_EXPERIENCE')
             : workExperiences.map(({ title, company, ...rest }, index) => this.renderArrayItem(
               index, title, [{
                 description: company,
@@ -82,9 +83,9 @@ class ApplicationDetailInfoContent extends PureComponent {
               () => this.toggleExperienceDetail(true, { title, company, ...rest })
             ))}
         </TabPane>
-        <TabPane tab="Educations" key={MENU.EDUCATIONS}>
+        <TabPane tab={toI18n('ADMIN_APPLICATION_DETAIL_MENU_EDUCATIONS')} key={MENU.EDUCATIONS}>
           {_isEmpty(educations)
-            ? 'No education'
+            ? toI18n('ADMIN_APPLICATION_DETAIL_NO_EDUCATION')
             : educations.map(({
               school, degree, gpa, ...rest
             }, index) => this.renderArrayItem(
@@ -92,7 +93,7 @@ class ApplicationDetailInfoContent extends PureComponent {
                 description: degree,
               },
               {
-                description: 'GPA',
+                description: toI18n('ADMIN_APPLICATION_DETAIL_DESCRIPTION_GPA'),
                 value: gpa,
               }],
               () => this.toggleEducationDetail(true, {
@@ -100,28 +101,28 @@ class ApplicationDetailInfoContent extends PureComponent {
               })
             ))}
         </TabPane>
-        <TabPane tab="Languages" key={MENU.LANGUAGES}>
+        <TabPane tab={toI18n('ADMIN_APPLICATION_DETAIL_MENU_LANGUAGES')} key={MENU.LANGUAGES}>
           {_isEmpty(languages)
-            ? 'No language'
+            ? toI18n('ADMIN_APPLICATION_DETAIL_NO_LANGUAGE')
             : languages.map(({
               name, writing,
               reading, speaking, overall,
             }, index) => this.renderArrayItem(
               index, name, [
                 {
-                  description: 'Writing',
+                  description: toI18n('ADMIN_APPLICATION_DETAIL_DESCRIPTION_WRITING'),
                   value: writing,
                 },
                 {
-                  description: 'Reading',
+                  description: toI18n('ADMIN_APPLICATION_DETAIL_DESCRIPTION_READING'),
                   value: reading,
                 },
                 {
-                  description: 'Speaking',
+                  description: toI18n('ADMIN_APPLICATION_DETAIL_DESCRIPTION_SPEAKING'),
                   value: speaking,
                 },
                 {
-                  description: 'Overall',
+                  description: toI18n('ADMIN_APPLICATION_DETAIL_DESCRIPTION_OVERALL'),
                   value: overall,
                 },
               ]
@@ -172,15 +173,15 @@ class ApplicationDetailInfoContent extends PureComponent {
     } = this.props;
     return (
       <OverviewLeftSectionWrapper>
-        <OverviewTitle>Primary Details</OverviewTitle>
-        {this.renderOverviewInfo('First name', firstName)}
-        {this.renderOverviewInfo('Last name', lastName)}
-        {this.renderOverviewInfo('Email', email)}
-        {this.renderOverviewInfo('Role', role)}
-        {this.renderOverviewInfo('Categories', categories)}
-        {this.renderOverviewInfo('Skills', skills)}
-        {this.renderOverviewInfo('Created at', moment(createdAt).format(DATE_TIME_FORMAT.DATE))}
-        {this.renderOverviewInfo('CV', cv, true)}
+        <OverviewTitle>{toI18n('ADMIN_APPLICATION_DETAIL_PRIMARY_DETAILS')}</OverviewTitle>
+        {this.renderOverviewInfo(toI18n('ADMIN_APPLICATION_DETAIL_FIRST_NAME'), firstName)}
+        {this.renderOverviewInfo(toI18n('ADMIN_APPLICATION_DETAIL_LAST_NAME'), lastName)}
+        {this.renderOverviewInfo(toI18n('ADMIN_APPLICATION_DETAIL_EMAIL'), email)}
+        {this.renderOverviewInfo(toI18n('ADMIN_APPLICATION_DETAIL_ROLE'), role)}
+        {this.renderOverviewInfo(toI18n('ADMIN_APPLICATION_DETAIL_CATEGORIES'), categories)}
+        {this.renderOverviewInfo(toI18n('ADMIN_APPLICATION_DETAIL_SKILLS'), skills)}
+        {this.renderOverviewInfo(toI18n('ADMIN_APPLICATION_DETAIL_CREATED_AT'), moment(createdAt).format(DATE_TIME_FORMAT.DATE))}
+        {this.renderOverviewInfo(toI18n('ADMIN_APPLICATION_DETAIL_CV'), cv, true)}
         {this.renderTabMenu()}
         <ApplicationDetailExperienceDetail
           isOpen={isExperienceDetailOpen}

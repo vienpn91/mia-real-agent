@@ -11,7 +11,7 @@ import {
   DashboardContainer,
   DashboardItem,
 } from './Dashboard.styled';
-import { isAgent } from '../../utils/func-utils';
+import { isAgent, toI18n } from '../../utils/func-utils';
 
 const { TabPane } = Tabs;
 
@@ -80,7 +80,15 @@ export default class Dashboard extends Component {
   renderRequestItem = () => {
     const { totalRequest } = this.props;
     return (
-      <TabPane tab={`Requests (${totalRequest})`} key={TAB.Requests}>
+      <TabPane
+        tab={(
+          <span>
+            {toI18n('DB_REQUEST')}
+            {` (${totalRequest})`}
+          </span>
+        )}
+        key={TAB.Requests}
+      >
         <RequestTab />
       </TabPane>
     );

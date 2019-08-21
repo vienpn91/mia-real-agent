@@ -13,6 +13,7 @@ import {
 } from 'selectors/application';
 import { SORT } from 'utils/constants';
 import ApplicationDetailListItem from 'components/ApplicationDetail/ApplicationDetailListItem';
+import { toI18n } from '../../utils/func-utils';
 const { APPLICATION_SORT } = SORT;
 
 const structureSelectorFunc = createStructuredSelector({
@@ -31,7 +32,7 @@ const mapStateToProps = (state) => {
   return {
     ...structureSelector,
     sortItems: APPLICATION_SORT,
-    title: 'All Applications',
+    title: toI18n('ADMIN_APPLICATION_DETAIL_ALL_APPLICATIONS'),
   };
 };
 

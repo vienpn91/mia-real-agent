@@ -10,13 +10,14 @@ import {
   getSizePerPage,
 } from 'selectors/user';
 import { COLUMN_TYPE } from 'utils/constants';
+import { toI18n } from '../../utils/func-utils';
 
 const userColumns = [
   {
     type: COLUMN_TYPE.TEXT,
     dataKey: 'username',
     columnAttr: {
-      value: 'Username',
+      value: toI18n('ADMIN_USERS_TABLE_USERNAME'),
       percent: '20',
     },
   },
@@ -24,14 +25,14 @@ const userColumns = [
     type: COLUMN_TYPE.TEXT,
     dataKey: 'email',
     columnAttr: {
-      value: 'Email',
+      value: toI18n('ADMIN_USERS_TABLE_EMAIL'),
     },
   },
   {
     type: COLUMN_TYPE.TEXT,
     dataKey: 'profile.company',
     columnAttr: {
-      value: 'Company',
+      value: toI18n('ADMIN_USERS_TABLE_COMPANY'),
       percent: '15',
     },
   },
@@ -39,7 +40,7 @@ const userColumns = [
     type: COLUMN_TYPE.TEXT,
     dataKey: 'profile.phone',
     columnAttr: {
-      value: 'Phone',
+      value: toI18n('ADMIN_USERS_TABLE_PHONE'),
       percent: '15',
     },
   },
@@ -47,7 +48,7 @@ const userColumns = [
     type: COLUMN_TYPE.UPPERCASE,
     dataKey: 'role',
     columnAttr: {
-      value: 'Role',
+      value: toI18n('ADMIN_USERS_TABLE_ROLE'),
       percent: '15',
     },
   },

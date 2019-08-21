@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
 import React, { Component } from 'react';
-import moment from 'moment';
+import moment from 'moment/min/moment-with-locales';
 import { object, number } from 'prop-types';
 import { Icon } from 'antd';
 import {
@@ -17,6 +17,7 @@ import {
 import { TableContent } from '../../../TableComponent/TableComponent';
 import { columnSizeContent } from '../ColumnSize';
 import { TicketStatus } from './TicketItem.styled';
+import { toI18n } from '../../../../utils/func-utils';
 
 class TicketItem extends Component {
   static propTypes = {
@@ -31,10 +32,12 @@ class TicketItem extends Component {
       createdAt,
     } = ticket;
     const timeFromNow = moment(createdAt).fromNow();
-
     return (
       <DashboardSubActivity>
-        {`#${ticketId} opened ${timeFromNow}`}
+        {`#${ticketId} `}
+        {toI18n('DB_TICKET_OPENED')}
+        {' '}
+        {(timeFromNow)}
       </DashboardSubActivity>
     );
   }

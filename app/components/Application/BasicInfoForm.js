@@ -7,6 +7,7 @@ import { Formik } from 'formik';
 import { func } from 'prop-types';
 import FormInput from '../FormInput/FormInput';
 import { ApplicationBtn } from './styles';
+import { toI18n } from '../../utils/func-utils';
 
 const initialValues = {
   firstName: '',
@@ -42,7 +43,7 @@ export class BasicInfoForm extends Component {
           onClick={this.handleCancel}
         >
           <i className="mia-chevron-left" />
-          Back
+          {toI18n('FORM_BACK')}
         </ApplicationBtn>
       </Col>
       <Col sm={12} xs={24}>
@@ -50,7 +51,7 @@ export class BasicInfoForm extends Component {
           type="submit"
           submit
         >
-          Next
+          {toI18n('FORM_NEXT')}
           <i className="mia-chevron-right" />
         </ApplicationBtn>
       </Col>
@@ -81,7 +82,7 @@ export class BasicInfoForm extends Component {
                 <FormInput
                   name="firstName"
                   type="text"
-                  label="First name"
+                  label={toI18n('APPLICATION_BASIC_INFO_FORM_FIRST_NAME')}
                   login={1}
                 />
               </Col>
@@ -89,7 +90,7 @@ export class BasicInfoForm extends Component {
                 <FormInput
                   name="lastName"
                   type="text"
-                  label="Last name"
+                  label={toI18n('APPLICATION_BASIC_INFO_FORM_LASTNAME')}
                   login={1}
                 />
               </Col>
@@ -99,7 +100,7 @@ export class BasicInfoForm extends Component {
                 <FormInput
                   name="email"
                   type="text"
-                  label="Email"
+                  label={toI18n('APPLICATION_BASIC_INFO_FORM_EMAIL')}
                   login={1}
                 />
               </Col>
@@ -107,7 +108,7 @@ export class BasicInfoForm extends Component {
                 <FormInput
                   name="phoneNumber"
                   type="text"
-                  label="Phone No."
+                  label={toI18n('APPLICATION_BASIC_INFO_FORM_PHONE')}
                   login={1}
                 />
               </Col>
@@ -117,7 +118,7 @@ export class BasicInfoForm extends Component {
                 <FormInput
                   name="country"
                   type="text"
-                  label="Country"
+                  label={toI18n('APPLICATION_BASIC_INFO_FORM_COUNTRY')}
                   login={1}
                 />
               </Col>
@@ -125,7 +126,7 @@ export class BasicInfoForm extends Component {
                 <FormInput
                   name="postcode"
                   type="text"
-                  label="Postcode"
+                  label={toI18n('APPLICATION_BASIC_INFO_FORM_POSTCODE')}
                   login={1}
                 />
               </Col>
@@ -135,7 +136,7 @@ export class BasicInfoForm extends Component {
                 <FormInput
                   name="address"
                   type="text"
-                  label="Address"
+                  label={toI18n('APPLICATION_BASIC_INFO_FORM_ADDRESS')}
                   login={1}
                 />
               </Col>

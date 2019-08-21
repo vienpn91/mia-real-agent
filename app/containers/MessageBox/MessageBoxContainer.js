@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { getUserId, getUserRole } from 'reducers/auth';
+import { withTranslation } from 'react-i18next';
 import {
   isFetchingReplies,
   getErrorMessage,
@@ -59,4 +60,4 @@ const mapDispatchToProps = {
   userTyping: CONVERSATION_ACTIONS.userTyping,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MessageBox);
+export default withTranslation()(connect(mapStateToProps, mapDispatchToProps)(MessageBox));

@@ -30,7 +30,7 @@ import ConversationDetail from '../ConversationDetail/ConversationDetail';
 import { TICKET_STATUS, REPLY_TYPE } from '../../../common/enums';
 import FormInput from '../FormInput/FormInput';
 import { combineChat } from './utils';
-import { shouldShowSystemMessage, isAgent } from '../../utils/func-utils';
+import { shouldShowSystemMessage, isAgent, toI18n } from '../../utils/func-utils';
 import { ProfileImageStyled } from '../TopNavBar/TopNavBar.styled';
 import {
   userChat, otherChat, otherTyping, botChat, ticketStatus, userAction,
@@ -62,6 +62,7 @@ export default class MessageBox extends Component {
     sendingMessageErrors: PropTypes.objectOf(PropTypes.any),
     otherUserTyping: PropTypes.object,
 
+    t: PropTypes.func,
     findAgentRequest: PropTypes.func.isRequired,
     sendReplyMessage: PropTypes.func.isRequired,
     setCurrentTicket: PropTypes.func.isRequired,
@@ -106,7 +107,7 @@ export default class MessageBox extends Component {
     }
   }
 
-  renderFindAgentForSolution = () => (
+  renderFindAgentForSolution = t => (
     <MessageBoxItem left key="solution">
       <ProfileImageStyled
         src="/assets/images/mia-avatar.jpg"
@@ -114,7 +115,7 @@ export default class MessageBox extends Component {
       />
       <FindAgentWrapper>
         <p key="solution">
-          Not satisfy with MIA solution ?
+          {t('CONV_MESSAGE_BOX_NOT_SATISFY')}
         </p>
         <FindAgentButton
           key="button"
@@ -122,7 +123,7 @@ export default class MessageBox extends Component {
           onClick={this.handleFindAgent}
         >
           <Icon type="search" />
-          Find Agent
+          {t('CONV_MESSAGE_BOX_FIND_AGENT')}
         </FindAgentButton>
       </FindAgentWrapper>
     </MessageBoxItem>
@@ -218,32 +219,35 @@ export default class MessageBox extends Component {
     }
   }
 
-  renderMessageInput = () => (
-    <Formik
-      ref={(formik) => { this.formik = formik; }}
-      initialValues={initialValues}
-      onSubmit={this.handleChatSubmit}
-    >
-      {({ handleSubmit }) => (
-        <Form
-          onSubmit={handleSubmit}
-          onChange={this.handleChangeValues}
-        >
-          <MessageInputWrapper>
-            <MessageInput
-              onChange={this.handleTyping}
-              type="text"
-              name="content"
-              placeholder="Type message ..."
-              autoComplete="off"
-            />
-            {this.renderGroupAction()}
-            <InputAction onClick={handleSubmit} className="mia-enter" />
-          </MessageInputWrapper>
-        </Form>
-      )}
-    </Formik>
-  );
+  renderMessageInput = () => {
+    const { t } = this.props;
+    return (
+      <Formik
+        ref={(formik) => { this.formik = formik; }}
+        initialValues={initialValues}
+        onSubmit={this.handleChatSubmit}
+      >
+        {({ handleSubmit }) => (
+          <Form
+            onSubmit={handleSubmit}
+            onChange={this.handleChangeValues}
+          >
+            <MessageInputWrapper>
+              <MessageInput
+                onChange={this.handleTyping}
+                type="text"
+                name="content"
+                placeholder={t('CONV_MESSAGE_BOX_TYPE_MESSAGE')}
+                autoComplete="off"
+              />
+              {this.renderGroupAction()}
+              <InputAction onClick={handleSubmit} className="mia-enter" />
+            </MessageInputWrapper>
+          </Form>
+        )}
+      </Formik>
+    );
+  }
 
 
   renderMessageHeader = () => {
@@ -278,7 +282,9 @@ export default class MessageBox extends Component {
     return (
       <RatingWrapper>
         <RatingContent>
-          <h2>Rate your experience</h2>
+          <h2>
+            {toI18n('CONV_MESSAGE_BOX_RATE_YOUR_EXPERIENCE')}
+          </h2>
           <Formik
             ref={(formik) => { this.ratingFormik = formik; }}
             initialValues={rating}
@@ -326,7 +332,7 @@ export default class MessageBox extends Component {
                 style={scrollStyle}
               >
                 {!hasChatData
-                  ? <MessageEmpty>No Chat Data</MessageEmpty>
+                  ? <MessageEmpty>{toI18n('CONV_MESSAGE_BOX_NO_CHAT_DATA')}</MessageEmpty>
                   : this.renderMessageContent()
                 }
                 {solutionFound && !isAgent(userRole) && _isEmpty(assignee)
@@ -336,7 +342,7 @@ export default class MessageBox extends Component {
               </ShadowScrollbars>
               {status === TICKET_STATUS.CLOSED ? (
                 <MessageBoxSystemNotification>
-                  Ticket Closed
+                  {toI18n('CONV_MESSAGE_BOX_TICKET_CLOSED')}
                 </MessageBoxSystemNotification>
               ) : this.renderMessageInput()
               }

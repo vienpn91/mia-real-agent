@@ -13,6 +13,7 @@ import {
 } from 'selectors/ticket';
 import { SORT } from 'utils/constants';
 import TicketDetailListItem from 'components/TicketDetail/TicketDetailListItem';
+import { toI18n } from '../../utils/func-utils';
 const { USER_SORT } = SORT;
 
 const structureSelectorFunc = createStructuredSelector({
@@ -31,7 +32,7 @@ const mapStateToProps = (state) => {
   return {
     ...structureSelector,
     sortItems: USER_SORT,
-    title: 'All Tickets',
+    title: toI18n('ADMIN_TICKET_DETAIL_ALL_TICKETS'),
   };
 };
 

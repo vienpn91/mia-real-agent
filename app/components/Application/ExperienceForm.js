@@ -14,6 +14,7 @@ import {
 } from './styles';
 import { POSITION_OPTIONS, CATEGORY_OPTIONS } from '../../../common/enums';
 import { DATE_TIME_FORMAT } from '../../utils/constants';
+import { toI18n } from '../../utils/func-utils';
 
 const experienceInititalValues = {
   title: '',
@@ -123,7 +124,7 @@ export class ExperienceForm extends Component {
                   <FormInput
                     name="title"
                     type="text"
-                    label="Title"
+                    label={toI18n('APPLICATION_EXPERIENCE_FORM_TITLE')}
                     login={1}
                   />
                 </Col>
@@ -131,7 +132,7 @@ export class ExperienceForm extends Component {
                   <FormInput
                     name="company"
                     type="text"
-                    label="Company"
+                    label={toI18n('APPLICATION_EXPERIENCE_FORM_COMPANY')}
                     login={1}
                   />
                 </Col>
@@ -141,7 +142,7 @@ export class ExperienceForm extends Component {
                   <FormInput
                     name="location"
                     type="text"
-                    label="Location"
+                    label={toI18n('APPLICATION_EXPERIENCE_FORM_LOCATION')}
                     login={1}
                   />
                 </Col>
@@ -151,7 +152,7 @@ export class ExperienceForm extends Component {
                   <FormInput
                     name="isWorking"
                     type="checkbox"
-                    label="Current working"
+                    label={toI18n('APPLICATION_EXPERIENCE_FORM_CURRENT_WORKING')}
                     login={1}
                   />
                 </Col>
@@ -161,7 +162,7 @@ export class ExperienceForm extends Component {
                   <FormInput
                     name="from"
                     type="date"
-                    label="From"
+                    label={toI18n('APPLICATION_EXPERIENCE_FORM_FROM')}
                     login={1}
                   />
                 </Col>
@@ -170,7 +171,7 @@ export class ExperienceForm extends Component {
                     <FormInput
                       name="to"
                       type="date"
-                      label="To"
+                      label={toI18n('APPLICATION_EXPERIENCE_FORM_TO')}
                       login={1}
                     />
                   </Col>
@@ -181,7 +182,7 @@ export class ExperienceForm extends Component {
                   <FormInput
                     name="roleDescription"
                     type="textarea"
-                    label="Role description"
+                    label={toI18n('APPLICATION_EXPERIENCE_FORM_ROLE_DESCRIPTION')}
                     login={1}
                   />
                 </Col>
@@ -192,13 +193,13 @@ export class ExperienceForm extends Component {
                     type="button"
                     onClick={() => this.handleToggleExperienceModal(false)}
                   >
-                    Cancel
+                    {toI18n('FORM_CANCEL')}
                   </ApplicationBtn>
                   <ApplicationBtn
                     type="submit"
                     submit
                   >
-                    {editIndex >= 0 ? 'Save' : 'Add'}
+                    {editIndex >= 0 ? toI18n('FORM_SAVE') : toI18n('FORM_ADD')}
                   </ApplicationBtn>
                 </ApplicationBtnWrap>
               </Row>
@@ -211,7 +212,7 @@ export class ExperienceForm extends Component {
 
   renderWorkExperience = (experience, arrayHelpers, index) => {
     const {
-      title, company, from, to, isWorking, roleDescription, location
+      title, company, from, to, isWorking, roleDescription, location,
     } = experience;
     return (
       <ArrayTagWrapper key={index}>
@@ -219,7 +220,7 @@ export class ExperienceForm extends Component {
           <div className="WorkExperienceText">
             <h2>
               {title}
-              <span>at</span>
+              <span>{toI18n('APPLICATION_EXPERIENCE_RENDER_AT')}</span>
               {company}
             </h2>
             <div className="time">
@@ -227,16 +228,19 @@ export class ExperienceForm extends Component {
                 {location}
               </span>
               <span className="from">
-                <label htmlFor="vienpn">From</label>
+                <label htmlFor="vienpn">{toI18n('APPLICATION_EXPERIENCE_RENDER_FROM')}</label>
                 {moment(from).format('DD-MM-YYYY')}
               </span>
               <span className="to">
                 {
                   isWorking
-                    ? <label htmlFor="vienpn">to present</label>
+                    ? <label htmlFor="vienpn">{toI18n('APPLICATION_EXPERIENCE_RENDER_TO_PRESENT')}</label>
                     : (
                       <span>
-                        <label htmlFor="vienpn">to </label>
+                        <label htmlFor="vienpn">
+                          {toI18n('APPLICATION_EXPERIENCE_RENDER_TO')}
+                          {' '}
+                        </label>
                         {moment(to).format('DD-MM-YYYY')}
                       </span>
                     )
@@ -278,7 +282,7 @@ export class ExperienceForm extends Component {
           onClick={this.handleCancel}
         >
           <i className="mia-chevron-left" />
-          Back
+          {toI18n('FORM_BACK')}
         </ApplicationBtn>
       </Col>
       <Col sm={12} xs={24}>
@@ -286,7 +290,7 @@ export class ExperienceForm extends Component {
           type="submit"
           submit
         >
-          Next
+          {toI18n('FORM_NEXT')}
           <i className="mia-chevron-right" />
         </ApplicationBtn>
       </Col>
@@ -316,7 +320,7 @@ export class ExperienceForm extends Component {
                     type="select"
                     mode="multiple"
                     options={CATEGORY_OPTIONS}
-                    label="Category"
+                    label={toI18n('APPLICATION_EXPERIENCE_FORM_CATEGORY')}
                     login={1}
                   />
                 </Col>
@@ -325,10 +329,13 @@ export class ExperienceForm extends Component {
                 name="workExperiences"
                 render={arrayHelpers => (
                   <ArrayInputWrapper>
-                    <p>Experiences:</p>
+                    <p>
+                      {toI18n('APPLICATION_EXPERIENCE_FORM_EXPERIENCES')}
+                      :
+                    </p>
                     <ArrayAddButton type="button" onClick={() => this.handleToggleExperienceModal(true)}>
                       <i className="mia-add" />
-                      Add Experience
+                      {toI18n('APPLICATION_EXPERIENCE_FORM_ADD_EXPERIENCE')}
                     </ArrayAddButton>
                     <ArrayWrapper>
                       {

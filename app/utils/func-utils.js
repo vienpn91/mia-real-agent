@@ -1,5 +1,7 @@
 import moment from 'moment';
+import React from 'react';
 import _isEmpty from 'lodash/isEmpty';
+import { Trans } from 'react-i18next';
 import { ROLES } from '../../common/enums';
 
 export function getSkipLimit(pageIndex, sizePerPage) {
@@ -26,3 +28,7 @@ export function shouldShowSystemMessage(systemMessage, currentConversationId) {
   }
   return true;
 }
+
+export const toI18n = key => (
+  <Trans i18nKey={key} />
+);

@@ -11,13 +11,14 @@ import {
   getSizePerPage,
 } from 'selectors/ticket';
 import { COLUMN_TYPE } from 'utils/constants';
+import { toI18n } from '../../utils/func-utils';
 
 const ticketColumns = [
   {
     type: COLUMN_TYPE.TEXT,
     dataKey: 'ticketId',
     columnAttr: {
-      value: 'TicketId',
+      value: toI18n('ADMIN_TICKET_TABLE_TICKET_ID'),
       percent: 10,
     },
   },
@@ -25,14 +26,14 @@ const ticketColumns = [
     type: COLUMN_TYPE.TEXT,
     dataKey: 'title',
     columnAttr: {
-      value: 'Title',
+      value: toI18n('ADMIN_TICKET_TABLE_TITLE'),
     },
   },
   {
     type: COLUMN_TYPE.TEXT,
     dataKey: 'category',
     columnAttr: {
-      value: 'Category',
+      value: toI18n('ADMIN_TICKET_TABLE_CATEGORY'),
       percent: 10,
     },
   },
@@ -40,7 +41,7 @@ const ticketColumns = [
     type: COLUMN_TYPE.TEXT,
     dataKey: 'owner.username',
     columnAttr: {
-      value: 'Owner',
+      value: toI18n('ADMIN_TICKET_TABLE_OWNER'),
       percent: 15,
     },
   },
@@ -48,7 +49,7 @@ const ticketColumns = [
     type: COLUMN_TYPE.TEXT,
     dataKey: 'assignee.username',
     columnAttr: {
-      value: 'Assignee',
+      value: toI18n('ADMIN_TICKET_TABLE_ASSIGNEE'),
       percent: 15,
     },
   },
@@ -56,7 +57,7 @@ const ticketColumns = [
     type: COLUMN_TYPE.STATUS,
     dataKey: 'status',
     columnAttr: {
-      value: 'Status',
+      value: toI18n('ADMIN_TICKET_TABLE_STATUS'),
       textCenter: true,
       percent: 10,
     },

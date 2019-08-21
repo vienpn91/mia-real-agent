@@ -7,6 +7,7 @@ import {
 } from 'selectors/ticket';
 import { SORT } from 'utils/constants';
 import TicketTable from './TicketTable';
+import { toI18n } from '../../utils/func-utils';
 
 const { TICKET_SORT } = SORT;
 
@@ -14,7 +15,7 @@ const mapStateToProps = state => ({
   errorMsg: getFetchingError(state),
   currentSorting: reselectSorting(state),
   createEndpoint: 'admin/ticket/create',
-  title: 'All Tickets',
+  title: toI18n('ADMIN_TICKET_TABLE_ALL_TICKETS'),
   sortItems: TICKET_SORT,
 });
 

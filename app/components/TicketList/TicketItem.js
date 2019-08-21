@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import moment from 'moment/min/moment-with-locales';
 import PropTypes, { func } from 'prop-types';
 import { DATE_TIME_FORMAT } from 'utils/constants';
 import { Popover, Icon, Button } from 'antd';

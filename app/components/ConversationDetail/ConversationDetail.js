@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ShadowScrollbars from 'components/Scrollbar';
 import _isEmpty from 'lodash/isEmpty';
 import { Descriptions } from 'antd';
+
 import { shape } from 'prop-types';
 import {
   ConversationDetailWrapper,
@@ -13,6 +14,7 @@ import {
 } from './styles';
 import { ROLES } from '../../../common/enums';
 import TimerWrapper from './Timer';
+import { toI18n } from '../../utils/func-utils';
 
 const scrollStyle = {
   height: 'calc(100vh - 125px)',
@@ -28,7 +30,7 @@ export default class ConversationDetail extends Component {
     const { ticket } = this.props;
     const { owner } = ticket;
     if (_isEmpty(owner)) {
-      return (<NoInformationText>No Owner</NoInformationText>);
+      return (<NoInformationText>{toI18n('CONV_MESSAGE_BOX_DETAIL_NO_DATA')}</NoInformationText>);
     }
     const { role, profile = {} } = owner;
     const { firstName, lastName, company = 'N/A' } = profile;
@@ -37,7 +39,7 @@ export default class ConversationDetail extends Component {
         return `${firstName} ${lastName} - ${company}`;
       case ROLES.BUSINESS:
         return company;
-      default: return `Owner "${owner}" role not valid`;
+      default: return `${owner}" - ${role}`;
     }
   }
 
@@ -45,7 +47,7 @@ export default class ConversationDetail extends Component {
     const { ticket } = this.props;
     const { assignee } = ticket;
     if (_isEmpty(assignee)) {
-      return (<NoInformationText>No Assignee</NoInformationText>);
+      return (<NoInformationText>{toI18n('CONV_MESSAGE_BOX_DETAIL_NO_DATA')}</NoInformationText>);
     }
     const { firstName, lastName } = assignee.profile;
     return (
@@ -63,7 +65,7 @@ export default class ConversationDetail extends Component {
       return (
         <ConversationInfoWrapper>
           <Descriptions column={4}>
-            No ticket data
+            {toI18n('CONV_MESSAGE_BOX_DETAIL_NO_DATA')}
           </Descriptions>
         </ConversationInfoWrapper>
       );
@@ -75,14 +77,14 @@ export default class ConversationDetail extends Component {
       <ConversationInfoWrapper>
         <TimerWrapper />
         <Descriptions column={_isEmpty(assignee) ? 4 : 5}>
-          <Descriptions.Item label="Status">
+          <Descriptions.Item label={toI18n('CONV_MESSAGE_BOX_DETAIL_STATUS')}>
             <TicketStatus status={status} />
             {status}
           </Descriptions.Item>
-          <Descriptions.Item label="Ticket">{title}</Descriptions.Item>
-          <Descriptions.Item label="Description">{description}</Descriptions.Item>
-          <Descriptions.Item label="Owner">{this.renderOwnerInfo()}</Descriptions.Item>
-          {!_isEmpty(assignee) ? (<Descriptions.Item label="Assignee">{this.renderAssigneeInfo()}</Descriptions.Item>) : <div />}
+          <Descriptions.Item label={toI18n('CONV_MESSAGE_BOX_DETAIL_TICKET')}>{title}</Descriptions.Item>
+          <Descriptions.Item label={toI18n('CONV_MESSAGE_BOX_DETAIL_DESCRIPTION')}>{description}</Descriptions.Item>
+          <Descriptions.Item label={toI18n('CONV_MESSAGE_BOX_DETAIL_OWNER')}>{this.renderOwnerInfo()}</Descriptions.Item>
+          {!_isEmpty(assignee) ? (<Descriptions.Item label={toI18n('CONV_MESSAGE_BOX_DETAIL_ASSIGNEE')}>{this.renderAssigneeInfo()}</Descriptions.Item>) : <div />}
         </Descriptions>
       </ConversationInfoWrapper>
     );

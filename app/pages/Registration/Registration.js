@@ -6,23 +6,24 @@ import {
   RegistrationItem, RegistrationTitle,
   LinkWrapper,
 } from './styles';
+import { toI18n } from '../../utils/func-utils';
 
 
 const Registration = () => (
   <RegistrationWrapper>
     <RegistrationItem>
-      <RegistrationTitle>WHO ARE YOU?</RegistrationTitle>
+      <RegistrationTitle>{toI18n('REGISTER_WHO_ARE_YOU')}</RegistrationTitle>
       <LinkWrapper>
         <div>
           <Link to="/register/individual">
             <Icon type="user" />
-            Individual
+            {toI18n('REGISTER_INDIVIDUAL')}
           </Link>
         </div>
         <div>
           <Link to="/register/business">
             <Icon type="usergroup-add" />
-            Business
+            {toI18n('REGISTER_BUSINESS')}
           </Link>
         </div>
       </LinkWrapper>

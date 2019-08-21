@@ -18,6 +18,7 @@ import {
   LoginSpinner,
   LoginErrorMessage,
 } from './styles';
+import { toI18n } from '../../utils/func-utils';
 
 const initialValues = {
   email: '',
@@ -25,8 +26,8 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object().shape({
-  usernameOrEmail: Yup.string().trim().required('Required'),
-  password: Yup.string().trim().required('Required'),
+  usernameOrEmail: Yup.string().trim().required(toI18n('FORM_REQUIRED')),
+  password: Yup.string().trim().required(toI18n('FORM_REQUIRED')),
 });
 
 class Login extends Component {
@@ -59,7 +60,7 @@ class Login extends Component {
       return (
         <LoginBtn>
           <LoginSpinner />
-          Logging in
+          {toI18n('LOGIN_LOGGING_IN')}
         </LoginBtn>
       );
     }
@@ -67,7 +68,7 @@ class Login extends Component {
       <LoginBtn
         type="submit"
       >
-        Login
+        {toI18n('LOGIN_LOGIN')}
       </LoginBtn>
     );
   }
@@ -92,7 +93,7 @@ class Login extends Component {
                     <FormInput
                       type="text"
                       name="usernameOrEmail"
-                      label="Username or Email"
+                      label={toI18n('LOGIN_USERNAME_OR_EMAIL')}
                       login={1}
                     />
                   </Col>
@@ -102,7 +103,7 @@ class Login extends Component {
                     <FormInput
                       type="password"
                       name="password"
-                      label="Password"
+                      label={toI18n('LOGIN_PASSWORD')}
                       login={1}
                     />
                   </Col>
@@ -119,17 +120,21 @@ class Login extends Component {
           </Formik>
           <LoginFBBtn href="api/auth/login/facebook">
             <i className="mia-facebook" />
-            Login with Facebook
+            {toI18n('LOGIN_LOGIN_WITH_FB')}
           </LoginFBBtn>
           <LoginFooter>
-            <LoginFooterText>Don't have an account?</LoginFooterText>
+            <LoginFooterText>
+              {toI18n('LOGIN_DONT_HAVE_AN_ACCOUNT')}
+            </LoginFooterText>
             <LoginFooterLink href="/register">
-              Register now!
+              {toI18n('LOGIN_REGISTER_NOW')}
             </LoginFooterLink>
             <div />
-            <LoginFooterText>Want to be an agent?</LoginFooterText>
+            <LoginFooterText>
+              {toI18n('LOGIN_WANT_TO_BE_AN_AGENT')}
+            </LoginFooterText>
             <LoginFooterLink href="/application">
-              Click here!
+              {toI18n('LOGIN_CLICK_HERE')}
             </LoginFooterLink>
           </LoginFooter>
         </LoginItem>

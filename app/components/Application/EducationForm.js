@@ -13,6 +13,7 @@ import {
   ArrayInputWrapper, ArrayAddButton, TagAction, DescriptionWrapper, DescriptionNumber, ArrayWrapper,
 } from './styles';
 import { POSITION_OPTIONS, FIELD_OF_STUDY } from '../../../common/enums';
+import { toI18n } from '../../utils/func-utils';
 
 const educationInititalValues = {
   school: '',
@@ -101,7 +102,7 @@ export class EducationForm extends Component {
                   <FormInput
                     name="school"
                     type="text"
-                    label="School"
+                    label={toI18n('APPLICATION_EDUCATION_FORM_SCHOOL')}
                     login={1}
                   />
                 </Col>
@@ -111,7 +112,7 @@ export class EducationForm extends Component {
                   <FormInput
                     name="degree"
                     type="text"
-                    label="Degree"
+                    label={toI18n('APPLICATION_EDUCATION_FORM_DEGREE')}
                     login={1}
                   />
                 </Col>
@@ -123,7 +124,7 @@ export class EducationForm extends Component {
                     type="select"
                     mode="multiple"
                     options={FIELD_OF_STUDY}
-                    label="Field of studies"
+                    label={toI18n('APPLICATION_EDUCATION_FORM_FOS')}
                     login={1}
                   />
                 </Col>
@@ -133,7 +134,7 @@ export class EducationForm extends Component {
                   <FormInput
                     name="gpa"
                     type="text"
-                    label="GPA (5 based)"
+                    label={toI18n('APPLICATION_EDUCATION_FORM_GPA')}
                     login={1}
                   />
                 </Col>
@@ -143,7 +144,7 @@ export class EducationForm extends Component {
                   <FormInput
                     name="certificate"
                     type="text"
-                    label="Certificate"
+                    label={toI18n('APPLICATION_EDUCATION_FORM_CERTIFICATE')}
                     login={1}
                   />
                 </Col>
@@ -154,13 +155,13 @@ export class EducationForm extends Component {
                     type="button"
                     onClick={() => this.handleToggleEducationModal(false)}
                   >
-                    Cancel
+                    {toI18n('FORM_CANCEL')}
                   </ApplicationBtn>
                   <ApplicationBtn
                     type="submit"
                     submit
                   >
-                    {editIndex >= 0 ? 'Save' : 'Add'}
+                    {editIndex >= 0 ? toI18n('FORM_SAVE') : toI18n('FORM_ADD')}
                   </ApplicationBtn>
                 </ApplicationBtnWrap>
               </Row>
@@ -173,7 +174,7 @@ export class EducationForm extends Component {
 
   renderEducation = (education, arrayHelpers, index) => {
     const {
-      school, degree, gpa, certificate, fieldOfStudies
+      school, degree, gpa, certificate, fieldOfStudies,
     } = education;
     return (
       <ArrayTagWrapper key={index}>
@@ -186,8 +187,8 @@ export class EducationForm extends Component {
             <div className="GPA">
               {fieldOfStudies.join(', ')}
               <DescriptionNumber>
-                <span>GPA :</span>
-                {' '}
+                <span>{toI18n('APPLICATION_EDUCATION_RENDER_GPA')}</span>
+                {' : '}
                 {gpa}
               </DescriptionNumber>
             </div>
@@ -228,7 +229,7 @@ export class EducationForm extends Component {
           onClick={this.handleCancel}
         >
           <i className="mia-chevron-left" />
-          Back
+          {toI18n('FORM_BACK')}
         </ApplicationBtn>
       </Col>
       <Col sm={12} xs={24}>
@@ -236,7 +237,7 @@ export class EducationForm extends Component {
           type="submit"
           submit
         >
-          Next
+          {toI18n('FORM_NEXT')}
           <i className="mia-chevron-right" />
         </ApplicationBtn>
       </Col>
@@ -265,10 +266,13 @@ export class EducationForm extends Component {
                     name="educations"
                     render={arrayHelpers => (
                       <ArrayInputWrapper>
-                        <p>Educations:</p>
+                        <p>
+                          {toI18n('APPLICATION_EDUCATION_FORM_EDUCATIONS')}
+                          :
+                        </p>
                         <ArrayAddButton type="button" onClick={() => this.handleToggleEducationModal(true)}>
                           <i className="mia-add" />
-                          Add Education
+                          {toI18n('APPLICATION_EDUCATION_FORM_ADD_EDUCATION')}
                         </ArrayAddButton>
                         <ArrayWrapper>
                           {

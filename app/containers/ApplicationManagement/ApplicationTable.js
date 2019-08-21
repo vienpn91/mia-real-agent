@@ -11,13 +11,14 @@ import {
 } from 'selectors/application';
 import { COLUMN_TYPE } from 'utils/constants';
 import { APPLICATION_STATUS } from '../../../common/enums';
+import { toI18n } from '../../utils/func-utils';
 
 const applicationColumns = [
   {
     type: COLUMN_TYPE.TEXT,
     dataKey: ['firstName', 'lastName'],
     columnAttr: {
-      value: 'Full name',
+      value: toI18n('ADMIN_APPLICATION_TABLE_FULL_NAME'),
       percent: 15,
     },
   },
@@ -25,7 +26,7 @@ const applicationColumns = [
     type: COLUMN_TYPE.TEXT,
     dataKey: 'categories',
     columnAttr: {
-      value: 'Category',
+      value: toI18n('ADMIN_APPLICATION_TABLE_CATEGORY'),
       percent: 25,
     },
   },
@@ -33,7 +34,7 @@ const applicationColumns = [
     type: COLUMN_TYPE.TEXT,
     dataKey: 'yearsOfExp',
     columnAttr: {
-      value: 'Years of EXP',
+      value: toI18n('ADMIN_APPLICATION_TABLE_YEARS_OF_EXP'),
       percent: 10,
     },
   },
@@ -42,7 +43,7 @@ const applicationColumns = [
     dataKey: 'languages',
     key: 'name',
     columnAttr: {
-      value: 'Language',
+      value: toI18n('ADMIN_APPLICATION_TABLE_LANGUAGE'),
       percent: 25,
     },
   },
@@ -50,7 +51,7 @@ const applicationColumns = [
     type: COLUMN_TYPE.LINK,
     dataKey: 'cv',
     columnAttr: {
-      value: 'CV',
+      value: toI18n('ADMIN_APPLICATION_TABLE_CV'),
       percent: 5,
     },
   },
@@ -58,7 +59,7 @@ const applicationColumns = [
     type: COLUMN_TYPE.TEXT,
     dataKey: 'role',
     columnAttr: {
-      value: 'Role',
+      value: toI18n('ADMIN_APPLICATION_TABLE_ROLE'),
       percent: 5,
     },
   },
@@ -66,7 +67,7 @@ const applicationColumns = [
     type: COLUMN_TYPE.STATUS,
     dataKey: 'status',
     columnAttr: {
-      value: 'Status',
+      value: toI18n('ADMIN_APPLICATION_TABLE_STATUS'),
       percent: 5,
     },
   },
@@ -87,7 +88,7 @@ const applicationColumns = [
       },
     ],
     columnAttr: {
-      value: 'Actions',
+      value: toI18n('ADMIN_APPLICATION_TABLE_ACTIONS'),
       percent: 10,
     },
   },

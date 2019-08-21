@@ -10,6 +10,7 @@ import {
   TableContentWrapper,
   TableEmptyContent,
 } from '../../TableComponent/TableComponent.styled';
+import { toI18n } from '../../../utils/func-utils';
 
 const scrollStyle = {
   height: '100%',
@@ -19,13 +20,12 @@ const scrollStyle = {
 class Ticket extends Component {
   renderTicketItem = (ticket, index) => {
     const { _id } = ticket;
-
     return (
       <TicketItem
         key={_id}
         ticket={ticket}
         index={index}
-        // eslint-disable-next-line no-underscore-dangle
+      // eslint-disable-next-line no-underscore-dangle
       />
     );
   };
@@ -53,7 +53,7 @@ class Ticket extends Component {
           {isNoTicket
             ? (
               <TableEmptyContent>
-                No ticketList available, click here to create one
+                {toI18n('DB_TICKET_NO_TICKET')}
               </TableEmptyContent>
             )
             : ticketList.map(this.renderTicketItem)

@@ -11,6 +11,7 @@ import {
   ArrayTagWrapper, ArrayInputWrapper, ArrayAddButton, ArrayWrapper, TagAction, DescriptionWrapper, DescriptionNumber,
 } from './styles';
 import { AGENT_SKILL, APPLICATION_LANGUAGE } from '../../../common/enums';
+import { toI18n } from '../../utils/func-utils';
 
 const languageInititalValues = {
   name: '',
@@ -159,7 +160,7 @@ export class AdditionalForm extends Component {
                     type="select"
                     className="vienpn"
                     options={LANGUAGE_OPTIONS}
-                    label="Name"
+                    label={toI18n('APPLICATION_ADDTIONAL_FORM_NAME')}
                     login={1}
                   />
                 </Col>
@@ -172,7 +173,7 @@ export class AdditionalForm extends Component {
                     marks={marks}
                     min={1}
                     max={5}
-                    label="Writing"
+                    label={toI18n('APPLICATION_ADDTIONAL_FORM_WRITING')}
                     login={1}
                   />
                 </Col>
@@ -183,7 +184,7 @@ export class AdditionalForm extends Component {
                     marks={marks}
                     min={1}
                     max={5}
-                    label="Reading"
+                    label={toI18n('APPLICATION_ADDTIONAL_FORM_READING')}
                     login={1}
                   />
                 </Col>
@@ -196,7 +197,7 @@ export class AdditionalForm extends Component {
                     marks={marks}
                     min={1}
                     max={5}
-                    label="Speaking"
+                    label={toI18n('APPLICATION_ADDTIONAL_FORM_SPEAKING')}
                     login={1}
                   />
                 </Col>
@@ -207,7 +208,7 @@ export class AdditionalForm extends Component {
                     marks={marks}
                     min={1}
                     max={5}
-                    label="Overall"
+                    label={toI18n('APPLICATION_ADDTIONAL_FORM_OVERALL')}
                     login={1}
                   />
                 </Col>
@@ -218,7 +219,7 @@ export class AdditionalForm extends Component {
                     type="button"
                     onClick={() => this.handleToggleLanguageModal(false)}
                   >
-                    Cancel
+                    {toI18n('FORM_CANCEL')}
                   </ApplicationBtn>
                 </Col>
                 <Col sm={12} xs={24}>
@@ -226,7 +227,7 @@ export class AdditionalForm extends Component {
                     type="submit"
                     submit
                   >
-                    {editIndex >= 0 ? 'Save' : 'Add'}
+                    {editIndex >= 0 ? toI18n('FORM_SAVE') : toI18n('FORM_ADD')}
                   </ApplicationBtn>
                 </Col>
               </Row>
@@ -250,25 +251,37 @@ export class AdditionalForm extends Component {
               {name}
             </h2>
             <div className="language">
-              <span className="label">Writing:</span>
+              <span className="label">
+                {toI18n('APPLICATION_ADDTIONAL_RENDER_WRITING')}
+                :
+              </span>
               <strong>
                 {writing}
                 {' '}
                 /5
               </strong>
-              <span className="label">Reading:</span>
+              <span className="label">
+                {toI18n('APPLICATION_ADDTIONAL_RENDER_READING')}
+                :
+              </span>
               <strong>
                 {reading}
                 {' '}
                 /5
               </strong>
-              <span className="label">writing:</span>
+              <span className="label">
+                {toI18n('APPLICATION_ADDTIONAL_RENDER_SPEAKING')}
+                :
+              </span>
               <strong>
-                {writing}
+                {speaking}
                 {' '}
                 /5
               </strong>
-              <span className="label">Overall:</span>
+              <span className="label">
+                {toI18n('APPLICATION_ADDTIONAL_RENDER_OVERALL')}
+                :
+              </span>
               <strong>
                 {overall}
                 {' '}
@@ -307,7 +320,7 @@ export class AdditionalForm extends Component {
           type="button"
         >
           <i className="mia-chevron-left" />
-          Back
+          {toI18n('FORM_BACK')}
         </ApplicationBtn>
       </Col>
       <Col sm={12} xs={24}>
@@ -315,7 +328,7 @@ export class AdditionalForm extends Component {
           type="submit"
           submit
         >
-          Submit
+          {toI18n('FORM_SUBMIT')}
           <i className="mia-chevron-right" />
         </ApplicationBtn>
       </Col>
@@ -343,7 +356,7 @@ export class AdditionalForm extends Component {
                   <FormInput
                     name="cv"
                     type="text"
-                    label="CV"
+                    label={toI18n('APPLICATION_ADDTIONAL_FORM_CV')}
                     login={1}
                   />
                 </Col>
@@ -353,7 +366,7 @@ export class AdditionalForm extends Component {
                     type="select"
                     mode="multiple"
                     options={AGENT_SKILL}
-                    label="Skills"
+                    label={toI18n('APPLICATION_ADDTIONAL_FORM_SKILLS')}
                     login={1}
                   />
                 </Col>
@@ -363,7 +376,7 @@ export class AdditionalForm extends Component {
                   <FormInput
                     name="address"
                     type="text"
-                    label="Address"
+                    label={toI18n('APPLICATION_ADDTIONAL_ADDRESS')}
                     login={1}
                   />
                 </Col>
@@ -382,10 +395,13 @@ export class AdditionalForm extends Component {
                     name="languages"
                     render={arrayHelpers => (
                       <ArrayInputWrapper>
-                        <p>Languages:</p>
+                        <p>
+                          {toI18n('APPLICATION_ADDTIONAL_LANGUAGES')}
+                          :
+                        </p>
                         <ArrayAddButton type="button" onClick={() => this.handleToggleLanguageModal(true)}>
                           <i className="mia-add" />
-                          Add language
+                          {toI18n('APPLICATION_ADDTIONAL_ADD_LANGUAGE')}
                         </ArrayAddButton>
                         <ArrayWrapper>
                           {

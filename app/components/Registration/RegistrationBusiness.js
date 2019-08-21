@@ -18,6 +18,7 @@ import {
 } from './styles';
 import FormInput from '../FormInput/FormInput';
 import { FIELD_OPTIONS, SIZE_OPTIONS, ROLES } from '../../../common/enums';
+import { toI18n } from '../../utils/func-utils';
 
 const scrollStyle = {
   height: 'calc(100vh - 300px)',
@@ -37,14 +38,14 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid Email').trim().required('Required'),
-  username: Yup.string().trim().required('Required'),
-  password: Yup.string().trim().required('Required'),
+  email: Yup.string().email(toI18n('FORM_INVALID_MAIL')).trim().required(toI18n('FORM_REQUIRED')),
+  username: Yup.string().trim().required(toI18n('FORM_REQUIRED')),
+  password: Yup.string().trim().required(toI18n('FORM_REQUIRED')),
   rePassword: Yup.string()
-    .oneOf([Yup.ref('password'), null], 'Passwords must match').trim().required('Required'),
-  company: Yup.string().trim().required('Required'),
-  companySize: Yup.string().trim().required('Required'),
-  companyFields: Yup.array().of(Yup.string()).required('Required'),
+    .oneOf([Yup.ref('password'), null], toI18n('FORM_PASSWORD_MUST_MATCH')).trim().required(toI18n('FORM_REQUIRED')),
+  company: Yup.string().trim().required(toI18n('FORM_REQUIRED')),
+  companySize: Yup.string().trim().required(toI18n('FORM_REQUIRED')),
+  companyFields: Yup.array().of(Yup.string()).required(toI18n('FORM_REQUIRED')),
   address: Yup.string().trim(),
   phoneNumber: Yup.string().trim(),
 });
@@ -76,7 +77,7 @@ class Registration extends Component {
       return (
         <RegistrationBtn>
           <RegistrationSpinner />
-          Registering business
+          {toI18n('REGISTER_REGISTERING')}
         </RegistrationBtn>
       );
     }
@@ -84,7 +85,7 @@ class Registration extends Component {
       <RegistrationBtn
         type="submit"
       >
-        Register
+        {toI18n('REGISTER_REGISTER')}
       </RegistrationBtn>
     );
   }
@@ -113,7 +114,7 @@ class Registration extends Component {
                       <FormInput
                         name="username"
                         type="text"
-                        label="Username"
+                        label={toI18n('REGISTER_USERNAME')}
                         login={1}
                       />
                     </Col>
@@ -121,7 +122,7 @@ class Registration extends Component {
                       <FormInput
                         name="email"
                         type="text"
-                        label="Email"
+                        label={toI18n('REGISTER_EMAIL')}
                         login={1}
                       />
                     </Col>
@@ -131,7 +132,7 @@ class Registration extends Component {
                       <FormInput
                         name="password"
                         type="password"
-                        label="Password"
+                        label={toI18n('REGISTER_PASSWORD')}
                         login={1}
                       />
                     </Col>
@@ -139,7 +140,7 @@ class Registration extends Component {
                       <FormInput
                         name="rePassword"
                         type="password"
-                        label="Re-password"
+                        label={toI18n('REGISTER_RE_PASSWORD')}
                         login={1}
                       />
                     </Col>
@@ -149,7 +150,7 @@ class Registration extends Component {
                       <FormInput
                         name="company"
                         type="text"
-                        label="Company name"
+                        label={toI18n('REGISTER_BUSINESS_COMPANY_NAME')}
                         login={1}
                       />
                     </Col>
@@ -158,7 +159,7 @@ class Registration extends Component {
                         name="companySize"
                         type="select"
                         options={SIZE_OPTIONS}
-                        label="Company size"
+                        label={toI18n('REGISTER_BUSINESS_COMPANY_SIZE')}
                         login={1}
                       />
                     </Col>
@@ -170,7 +171,7 @@ class Registration extends Component {
                         type="select"
                         mode="multiple"
                         options={FIELD_OPTIONS}
-                        label="Working fields"
+                        label={toI18n('REGISTER_BUSINESS_WORKING_FIELDS')}
                         login={1}
                       />
                     </Col>
@@ -178,7 +179,7 @@ class Registration extends Component {
                       <FormInput
                         name="phoneNumber"
                         type="text"
-                        label="Phone No."
+                        label={toI18n('REGISTER_BUSINESS_PHONE')}
                         login={1}
                       />
                     </Col>
@@ -188,7 +189,7 @@ class Registration extends Component {
                       <FormInput
                         name="address"
                         type="text"
-                        label="Address"
+                        label={toI18n('REGISTER_BUSINESS_ADDRESS')}
                         login={1}
                       />
                     </Col>
@@ -209,9 +210,11 @@ class Registration extends Component {
             )}
           </Formik>
           <RegistrationFooter>
-            <RegistrationFooterText>Already had an account?</RegistrationFooterText>
+            <RegistrationFooterText>
+              {toI18n('REGISTER_ALREADY_HAD_AN_ACCOUNT')}
+            </RegistrationFooterText>
             <RegistrationFooterLink href="/login">
-              Login now!
+              {toI18n('REGISTER_LOGIN_NOW')}
             </RegistrationFooterLink>
           </RegistrationFooter>
         </RegistrationItem>

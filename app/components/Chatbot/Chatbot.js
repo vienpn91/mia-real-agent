@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Translation } from 'react-i18next';
 import {
   Layout, Icon, Input, Tooltip, Tabs,
 } from 'antd';
@@ -17,7 +18,7 @@ import {
 } from './Chatbot.styled';
 import CreateConversationFormContainer from '../../containers/Chatbot/CreateTicket';
 import EditConversationContainer from '../../containers/Chatbot/EditTicket';
-import { isAgent } from '../../utils/func-utils';
+import { isAgent, toI18n } from '../../utils/func-utils';
 
 const { Content } = Layout;
 const { Search } = Input;
@@ -93,12 +94,17 @@ export default class ChatbotComponent extends Component {
       <ConversationHeaderWrapper>
         <Return onClick={this.goToDashboard}>
           <Icon type="left" />
-          <span>MENU</span>
+          <span>
+            {toI18n('MENU')}
+          </span>
         </Return>
         {!isAgent(userRole) && (
           <Tooltip title="Create ticket" onClick={this.handleOpenCreateModal}>
             <Icon type="copy" />
-            <span className="create-ticket">Create Ticket</span>
+            <span className="create-ticket">
+              {toI18n('CREATE')}
+              Ticket
+            </span>
           </Tooltip>
         )}
       </ConversationHeaderWrapper>
@@ -107,10 +113,15 @@ export default class ChatbotComponent extends Component {
 
   renderSearchConversation = () => (
     <ConversationHeaderWrapper search>
-      <Search
-        placeholder="Search"
-      // onSearch={value => console.log(value)}
-      />
+      <Translation>
+        {
+          t => (
+            <Search
+              placeholder={t('SEARCH')}
+            />
+          )
+        }
+      </Translation>
     </ConversationHeaderWrapper>
   );
 

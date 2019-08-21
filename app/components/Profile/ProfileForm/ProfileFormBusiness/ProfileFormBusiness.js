@@ -9,6 +9,7 @@ import { shape, func } from 'prop-types';
 import FormInput from '../../../FormInput/FormInput';
 import { SIZE_OPTIONS, FIELD_OPTIONS } from '../../../../../common/enums';
 import { ActionBar } from '../../styles';
+import { toI18n } from '../../../../utils/func-utils';
 
 const validationSchema = Yup.object().shape({
   companySize: Yup.string().trim().required('Required'),
@@ -40,7 +41,7 @@ export default class ProfileFormBusiness extends PureComponent {
                   name="companySize"
                   type="select"
                   options={SIZE_OPTIONS}
-                  label="companySize"
+                  label={toI18n('PROFILE_BUSINESS_FORM_COMPANY_SIZE')}
                 />
               </Col>
               <Col sm={12} xs={24}>
@@ -49,7 +50,7 @@ export default class ProfileFormBusiness extends PureComponent {
                   type="select"
                   mode="multiple"
                   options={FIELD_OPTIONS}
-                  label="Working fields"
+                  label={toI18n('PROFILE_BUSINESS_FORM_WORKING_FIELDS')}
                 />
               </Col>
             </Row>
@@ -58,24 +59,24 @@ export default class ProfileFormBusiness extends PureComponent {
                 <FormInput
                   name="address"
                   type="text"
-                  label="Address"
+                  label={toI18n('PROFILE_BUSINESS_FORM_ADDRESS')}
                 />
               </Col>
               <Col sm={12} xs={24}>
                 <FormInput
                   name="phone"
                   type="text"
-                  label="Phone No."
+                  label={toI18n('PROFILE_BUSINESS_FORM_PHONE')}
                 />
               </Col>
             </Row>
             <Row gutter={32}>
               <ActionBar>
                 <Button key="submit" type="primary" onClick={handleSubmit}>
-                  Save
+                  {toI18n('FORM_SAVE')}
                 </Button>
                 <Button key="back" onClick={onCancel}>
-                  Return
+                  {toI18n('FORM_RETURN')}
                 </Button>
               </ActionBar>
             </Row>

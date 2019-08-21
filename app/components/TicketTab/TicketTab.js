@@ -6,9 +6,9 @@ import {
   Menu, Dropdown, Icon,
   Pagination,
 } from 'antd';
-import Ticket from '../../containers/TicketTab/Ticket';
 import _isNumber from 'lodash/isNumber';
 import { DefaultButton } from 'components/Generals/General.styled';
+import Ticket from '../../containers/TicketTab/Ticket';
 import {
   TicketTabWrapper,
   TicketFilterWrapper,
@@ -20,7 +20,8 @@ import {
 } from './TicketTab.styles';
 import CreateTicketFormContainer from '../../containers/Chatbot/CreateTicket';
 import { PAGE_SIZE, TICKET_STATUS } from '../../../common/enums';
-import { isAgent } from '../../utils/func-utils';
+import { isAgent, toI18n } from '../../utils/func-utils';
+import SearchInput from '../SearchInput';
 
 const categories = [
   'Finance',
@@ -102,7 +103,7 @@ class TicketTab extends PureComponent {
   renderSelectStatus = () => (
     <Dropdown overlay={this.filterStatus} trigger={['click']}>
       <a className="ant-dropdown-link" href="#">
-        Status
+        {toI18n('DB_TICKET_STATUS')}
         <Icon type="caret-down" />
       </a>
     </Dropdown>
@@ -112,7 +113,7 @@ class TicketTab extends PureComponent {
   renderSelectCategory = () => (
     <Dropdown overlay={this.filterCategory} trigger={['click']}>
       <a className="ant-dropdown-link" href="#">
-        Categories
+        {toI18n('DB_TICKET_CATEGORIES')}
         <Icon type="caret-down" />
       </a>
     </Dropdown>
@@ -127,11 +128,14 @@ class TicketTab extends PureComponent {
             {this.renderSelectStatus()}
             {this.renderSelectCategory()}
           </Filter>
-          <input type="text" placeholder="Search ticket ..." />
+          <SearchInput />
         </FilterItem>
         {!isAgent(userRole) && (
           <CreateItem>
-            <DefaultButton onClick={this.handleOpenCreateModal}>Create Ticket</DefaultButton>
+            <DefaultButton onClick={this.handleOpenCreateModal}>
+              {toI18n('CREATE')}
+              {' Ticket'}
+            </DefaultButton>
           </CreateItem>
         )}
       </TicketFilterWrapper>

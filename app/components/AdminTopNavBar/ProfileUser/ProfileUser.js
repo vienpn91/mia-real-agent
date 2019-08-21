@@ -9,6 +9,7 @@ import {
   ProfileUserAction,
   ProfileUserHead,
 } from './ProfileUser.styled';
+import { toI18n } from '../../../utils/func-utils';
 
 class ProfileUser extends React.PureComponent {
   render() {
@@ -19,9 +20,9 @@ class ProfileUser extends React.PureComponent {
       <ProfileUserInfoWrapper>
         <ProfileUserHead>
           <ProfileUserAction>
-            <Link to="/profile" className="my-account">My Account</Link>
+            <Link to="/profile" className="my-account">{toI18n('DB_PROFILE_MY_ACCOUNT')}</Link>
             <button className="sign-out" onClick={onLogout}>
-              Sign Out
+              {toI18n('DB_PROFILE_SIGN_OUT')}
             </button>
           </ProfileUserAction>
         </ProfileUserHead>

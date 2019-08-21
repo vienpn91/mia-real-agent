@@ -6,6 +6,7 @@ import {
 
 import { string } from 'prop-types';
 import { Link } from 'react-router-dom';
+import { Translation } from 'react-i18next';
 import {
   TopNavBarWrapper,
   Logo,
@@ -47,7 +48,7 @@ export default class TopNavBar extends Component {
           <Avatar src={isAgent(userRole) ? '/assets/images/logo-small-white.png' : '/assets/images/user-mia-logo.svg'} />
         </Link>
       </Logo>
-    )
+    );
   }
 
   render() {
@@ -60,7 +61,13 @@ export default class TopNavBar extends Component {
           {this.renderLogo()}
           <NavBar>
             <Nav>
-              <Link to="/dashboard/ticket">Dashboard</Link>
+              <Link to="/dashboard/ticket">
+                <Translation>
+                  {
+                    t => t('DB_DASHBOARD')
+                  }
+                </Translation>
+              </Link>
             </Nav>
             <Nav key="2">
               <Link to="/conversation">Ticket</Link>
@@ -82,7 +89,11 @@ export default class TopNavBar extends Component {
               )}
               <UserName onClick={this.onToggleUserInfo}>
                 <span>{email}</span>
-                <span>{!isAgent(userRole) ? 'User' : 'Agent'}</span>
+                <Translation>
+                  {
+                    t => <span>{!isAgent(userRole) ? t('USER') : t('AGENT')}</span>
+                  }
+                </Translation>
               </UserName>
               <MenuStyled
                 type="down"

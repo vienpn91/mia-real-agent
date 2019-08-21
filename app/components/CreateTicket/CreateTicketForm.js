@@ -13,6 +13,7 @@ import FormInput from '../FormInput/FormInput';
 import { ActionBar, DescriptionTextAreaStyled, ModalCustomize } from './styles';
 import { CATEGORY_OPTIONS } from '../../../common/enums';
 import LoadingSpin from '../Loading';
+import { toI18n } from '../../utils/func-utils';
 
 const initialValues = {
   title: '',
@@ -21,9 +22,9 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object().shape({
-  title: Yup.string().trim().required('Required'),
-  description: Yup.string().trim().required('Required'),
-  category: Yup.array().of(Yup.string()).required('Required'),
+  title: Yup.string().trim().required(toI18n('FORM_REQUIRED')),
+  description: Yup.string().trim().required(toI18n('FORM_REQUIRED')),
+  category: Yup.array().of(Yup.string()).required(toI18n('FORM_REQUIRED')),
 });
 
 export default class CreateTicketForm extends PureComponent {
@@ -44,7 +45,7 @@ export default class CreateTicketForm extends PureComponent {
     const { isCreating, createError } = this.props;
     if (prevProps.isCreating && !isCreating) {
       if (!createError) {
-        notification.success({ message: 'Ticket Created' });
+        notification.success({ message: toI18n('TICKET_CREATE_FORM_CREATE_SUCCESS') });
         this.handleCancelConfirm();
       } else {
         notification.error({ message: createError });
@@ -126,7 +127,7 @@ export default class CreateTicketForm extends PureComponent {
                         name="title"
                         type="text"
                         className="vienpn-input"
-                        label="Title"
+                        label={toI18n('TICKET_CREATE_FORM_TITLE')}
                       />
                     </Col>
                     <Col sm={24} xs={24}>
@@ -135,7 +136,7 @@ export default class CreateTicketForm extends PureComponent {
                         type="select"
                         mode="multiple"
                         options={CATEGORY_OPTIONS}
-                        label="Category"
+                        label={toI18n('TICKET_CREATE_FORM_CATEGORY')}
                       />
                     </Col>
                     <Col sm={24} xs={24}>
@@ -143,7 +144,7 @@ export default class CreateTicketForm extends PureComponent {
                         name="description"
                         type="textarea"
                         className="vienpn-input"
-                        label="Description"
+                        label={toI18n('TICKET_CREATE_FORM_DESCRIPTION')}
                         style={DescriptionTextAreaStyled}
                       />
                     </Col>
@@ -151,10 +152,10 @@ export default class CreateTicketForm extends PureComponent {
                   <Row gutter={32}>
                     <ActionBar>
                       <DefaultButton type="button" cancel onClick={this.handleCancel}>
-                        Cancel
+                        {toI18n('TICKET_CREATE_FORM_CANCEL')}
                       </DefaultButton>
                       <DefaultButton onClick={handleSubmit}>
-                        Submit
+                        {toI18n('TICKET_CREATE_FORM_SUBMIT')}
                       </DefaultButton>
                     </ActionBar>
                   </Row>
@@ -162,12 +163,12 @@ export default class CreateTicketForm extends PureComponent {
               )}
             </Formik>
             <Popconfirm
-              title="Are you sure want to cancel your current ticket?"
+              title={toI18n('TICKET_CREATE_FORM_WARNING')}
               visible={this.state.popconfirmVisible}
               onConfirm={this.handleCancelConfirm}
               onCancel={this.handlePopconfirmCancel}
-              okText="Yes"
-              cancelText="No"
+              okText={toI18n('TICKET_CREATE_FORM_WARNING_YES')}
+              cancelText={toI18n('TICKET_CREATE_FORM_WARNING_NO')}
             />
           </LoadingSpin>
         </Modal>

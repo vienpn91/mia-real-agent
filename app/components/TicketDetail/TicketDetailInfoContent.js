@@ -10,6 +10,7 @@ import {
   InfoContentBlock,
 } from 'components/Generals/ItemDetail.styled';
 import { DATE_TIME_FORMAT } from '../../utils/constants';
+import { toI18n } from '../../utils/func-utils';
 
 class TicketDetailInfoContent extends PureComponent {
   renderOverviewInfo = (label, value, isLink = false) => (
@@ -29,14 +30,14 @@ class TicketDetailInfoContent extends PureComponent {
     } = this.props;
     return (
       <OverviewLeftSectionWrapper>
-        <OverviewTitle>Primary Details</OverviewTitle>
-        {this.renderOverviewInfo('Title', title, true)}
-        {this.renderOverviewInfo('Status', status)}
-        {this.renderOverviewInfo('Category', category)}
-        {this.renderOverviewInfo('Description', description)}
-        {this.renderOverviewInfo('Created at', moment(createdAt).format(DATE_TIME_FORMAT.DATE))}
-        {this.renderOverviewInfo('Owner', owner.username)}
-        {assignee && this.renderOverviewInfo('Assignee', assignee.username)}
+        <OverviewTitle>{toI18n('ADMIN_TICKET_DETAIL_PRIMARY_DETAILS')}</OverviewTitle>
+        {this.renderOverviewInfo(toI18n('ADMIN_TICKET_DETAIL_TITLE'), title, true)}
+        {this.renderOverviewInfo(toI18n('ADMIN_TICKET_DETAIL_STATUS'), status)}
+        {this.renderOverviewInfo(toI18n('ADMIN_TICKET_DETAIL_CATEGORY'), category)}
+        {this.renderOverviewInfo(toI18n('ADMIN_TICKET_DETAIL_DESCRIPTION'), description)}
+        {this.renderOverviewInfo(toI18n('ADMIN_TICKET_DETAIL_CREATED_AT'), moment(createdAt).format(DATE_TIME_FORMAT.DATE))}
+        {this.renderOverviewInfo(toI18n('ADMIN_TICKET_DETAIL_OWNER'), owner.username)}
+        {assignee && this.renderOverviewInfo('ADMIN_TICKET_DETAIL_ASSIGNEE', assignee.username)}
       </OverviewLeftSectionWrapper>
     );
   };

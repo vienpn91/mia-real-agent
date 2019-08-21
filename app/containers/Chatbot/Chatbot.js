@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { withTranslation } from 'react-i18next';
 import Chatbot from '../../components/Chatbot';
 import {
   getConversationDetail,
@@ -26,4 +27,4 @@ const mapDispatchToProps = {
   selectConversation,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Chatbot);
+export default withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Chatbot));

@@ -6,6 +6,7 @@ import {
 
 export const REHYDRATE_COMPLETE = 'root/REHYDRATE_COMPLETE';
 export const CLEAR_TRANSACTION = 'root/CLEAR_TRANSACTION';
+export const CHANGE_LANGUAGE = 'root/CHANGE_LANGAUGE';
 
 // action creator
 
@@ -13,8 +14,11 @@ export const CLEAR_TRANSACTION = 'root/CLEAR_TRANSACTION';
 // selector
 export const isPageLoading = ({ system }) => system.get('isLoading');
 
+export const getSystemLanguage = ({ system }) => system.get('lng');
+
 const initialState = fromJS({
   isLoading: true,
+  lng: 'en',
 });
 
 function systemReducer(state = initialState, action) {
@@ -26,6 +30,11 @@ function systemReducer(state = initialState, action) {
 
     case CLEAR_TRANSACTION: {
       return state.set('isLoading', true);
+    }
+
+    case CHANGE_LANGUAGE: {
+      const { lng } = action.payload;
+      return state.set('lng', lng);
     }
 
     default: return state;

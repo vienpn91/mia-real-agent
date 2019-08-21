@@ -4,6 +4,7 @@ import { Col } from 'antd';
 import { shape, string } from 'prop-types';
 import { RowStyled, InputLabelStyled, InputStyled } from '../styles';
 import { ROLES, SIZE_OPTIONS } from '../../../../common/enums';
+import { toI18n } from '../../../utils/func-utils';
 
 export class ProfileDetail extends PureComponent {
   static propTypes = {
@@ -26,37 +27,58 @@ export class ProfileDetail extends PureComponent {
       <div>
         <RowStyled gutter={32}>
           <Col span={12}>
-            <InputLabelStyled>First name:</InputLabelStyled>
+            <InputLabelStyled>
+              {toI18n('PROFILE_DETAIL_FIRST_NAME')}
+              :
+            </InputLabelStyled>
             <InputStyled>{firstName}</InputStyled>
           </Col>
           <Col span={12}>
-            <InputLabelStyled>Last name:</InputLabelStyled>
+            <InputLabelStyled>
+              {toI18n('PROFILE_DETAIL_LAST_NAME')}
+              :
+            </InputLabelStyled>
             <InputStyled>{lastName}</InputStyled>
           </Col>
         </RowStyled>
         <RowStyled gutter={32}>
           <Col span={12}>
-            <InputLabelStyled>Phone No.:</InputLabelStyled>
+            <InputLabelStyled>
+              {toI18n('PROFILE_DETAIL_PHONE')}
+              :
+            </InputLabelStyled>
             <InputStyled>{phone}</InputStyled>
           </Col>
           <Col span={12}>
-            <InputLabelStyled>Address:</InputLabelStyled>
+            <InputLabelStyled>
+              {toI18n('PROFILE_DETAIL_ADDRESS')}
+              :
+            </InputLabelStyled>
             <InputStyled>{address}</InputStyled>
           </Col>
         </RowStyled>
         <RowStyled gutter={32}>
           <Col span={12}>
-            <InputLabelStyled>Date of birth:</InputLabelStyled>
+            <InputLabelStyled>
+              {toI18n('PROFILE_EDIT')}
+              :
+            </InputLabelStyled>
             <InputStyled>{dateOfBirth}</InputStyled>
           </Col>
           <Col span={12}>
-            <InputLabelStyled>Position:</InputLabelStyled>
+            <InputLabelStyled>
+              {toI18n('PROFILE_DETAIL_POSITION')}
+              :
+            </InputLabelStyled>
             <InputStyled>{position}</InputStyled>
           </Col>
         </RowStyled>
         <RowStyled gutter={32}>
           <Col span={12}>
-            <InputLabelStyled>Company:</InputLabelStyled>
+            <InputLabelStyled>
+              {toI18n('PROFILE_DETAIL_COMPANY')}
+              :
+            </InputLabelStyled>
             <InputStyled>{company}</InputStyled>
           </Col>
         </RowStyled>
@@ -76,27 +98,42 @@ export class ProfileDetail extends PureComponent {
       <div>
         <RowStyled gutter={32}>
           <Col span={12}>
-            <InputLabelStyled>Company:</InputLabelStyled>
+            <InputLabelStyled>
+              {toI18n('PROFILE_DETAIL_COMPANY')}
+              :
+            </InputLabelStyled>
             <InputStyled>{company}</InputStyled>
           </Col>
         </RowStyled>
         <RowStyled gutter={32}>
           <Col span={12}>
-            <InputLabelStyled>Company Size:</InputLabelStyled>
+            <InputLabelStyled>
+              {toI18n('PROFILE_DETAIL_COMPANY_SIZE')}
+              :
+            </InputLabelStyled>
             <InputStyled>{sizeLabel}</InputStyled>
           </Col>
           <Col span={12}>
-            <InputLabelStyled>Company fields:</InputLabelStyled>
+            <InputLabelStyled>
+              {toI18n('PROFILE_DETAIL_COMPANY_FIELDS')}
+              :
+            </InputLabelStyled>
             <InputStyled>{companyFields}</InputStyled>
           </Col>
         </RowStyled>
         <RowStyled gutter={32}>
           <Col span={12}>
-            <InputLabelStyled>Phone No.:</InputLabelStyled>
+            <InputLabelStyled>
+              {toI18n('PROFILE_DETAIL_PHONE')}
+              :
+            </InputLabelStyled>
             <InputStyled>{phone}</InputStyled>
           </Col>
           <Col span={12}>
-            <InputLabelStyled>Address:</InputLabelStyled>
+            <InputLabelStyled>
+              {toI18n('PROFILE_DETAIL_ADDRESS')}
+              :
+            </InputLabelStyled>
             <InputStyled>{address}</InputStyled>
           </Col>
         </RowStyled>

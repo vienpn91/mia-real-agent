@@ -13,6 +13,7 @@ import LoadingSpin from '../Loading';
 import ProfileDetail from './ProfileDetail/ProfileDetail';
 import ProfileFormContainer from '../../containers/Profile/ProfileForm';
 import ChangePasswordFormContainer from '../../containers/Profile/ChangePasswordForm/ChangePasswordFormContainer';
+import { toI18n } from '../../utils/func-utils';
 
 export default class Profile extends Component {
   state = {
@@ -69,11 +70,17 @@ export default class Profile extends Component {
       <div>
         <Row gutter={32}>
           <Col span={12}>
-            <InputLabelStyled>Username:</InputLabelStyled>
+            <InputLabelStyled>
+              {toI18n('PROFILE_USERNAME')}
+              :
+            </InputLabelStyled>
             <InputStyled>{username}</InputStyled>
           </Col>
           <Col span={12}>
-            <InputLabelStyled>Email:</InputLabelStyled>
+            <InputLabelStyled>
+              {toI18n('PROFILE_EMAIL')}
+              :
+            </InputLabelStyled>
             <InputStyled>{email}</InputStyled>
           </Col>
         </Row>
@@ -90,14 +97,14 @@ export default class Profile extends Component {
       <ProfileWrapper>
         <ProfileCard>
           <LoadingSpin loading={isFetching}>
-            <ProfileTitle>Profile</ProfileTitle>
+            <ProfileTitle>{toI18n('PROFILE_PROFILE')}</ProfileTitle>
             {this.renderProfile()}
             <ActionBar>
               <Button type="primary" onClick={this.handleOpenConfirmPasswordModal}>
-                Edit
+                {toI18n('PROFILE_EDIT')}
               </Button>
               <Button type="primary" onClick={this.handleOpenChangePasswordModal}>
-                Change password
+                {toI18n('PROFILE_CHANGE_PASSWORD')}
               </Button>
             </ActionBar>
           </LoadingSpin>

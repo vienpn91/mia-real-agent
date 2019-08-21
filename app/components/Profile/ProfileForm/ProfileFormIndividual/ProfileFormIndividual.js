@@ -9,6 +9,7 @@ import { shape, func } from 'prop-types';
 import FormInput from '../../../FormInput/FormInput';
 import { POSITION_OPTIONS } from '../../../../../common/enums';
 import { ActionBar } from '../../styles';
+import { toI18n } from '../../../../utils/func-utils';
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().trim().required('Required'),
@@ -41,14 +42,14 @@ export class ProfileFormIndividual extends PureComponent {
                 <FormInput
                   name="firstName"
                   type="text"
-                  label="First name"
+                  label={toI18n('PROFILE_INDIVIDIAL_FORM_FIRST_NAME')}
                 />
               </Col>
               <Col sm={12} xs={24}>
                 <FormInput
                   name="lastName"
                   type="text"
-                  label="Last name"
+                  label={toI18n('PROFILE_INDIVIDIAL_FORM_LAST_NAME')}
                 />
               </Col>
             </Row>
@@ -57,7 +58,7 @@ export class ProfileFormIndividual extends PureComponent {
                 <FormInput
                   name="dateOfBirth"
                   type="date"
-                  label="Date of birth"
+                  label={toI18n('PROFILE_INDIVIDIAL_FORM_DOB')}
                 />
               </Col>
               <Col sm={12} xs={24}>
@@ -65,7 +66,7 @@ export class ProfileFormIndividual extends PureComponent {
                   name="position"
                   type="select"
                   options={POSITION_OPTIONS}
-                  label="Position"
+                  label={toI18n('PROFILE_INDIVIDIAL_FORM_POSITION')}
                 />
               </Col>
             </Row>
@@ -74,24 +75,24 @@ export class ProfileFormIndividual extends PureComponent {
                 <FormInput
                   name="address"
                   type="text"
-                  label="Address"
+                  label={toI18n('PROFILE_INDIVIDIAL_FORM_ADDRESS')}
                 />
               </Col>
               <Col sm={12} xs={24}>
                 <FormInput
                   name="phone"
                   type="text"
-                  label="Phone No."
+                  label={toI18n('PROFILE_INDIVIDIAL_FORM_PHONE')}
                 />
               </Col>
             </Row>
             <Row gutter={32}>
               <ActionBar>
                 <Button key="submit" type="primary" onClick={handleSubmit}>
-                  Save
+                  {toI18n('FORM_SAVE')}
                 </Button>
                 <Button key="back" onClick={onCancel}>
-                  Return
+                  {toI18n('FORM_RETURN')}
                 </Button>
               </ActionBar>
             </Row>

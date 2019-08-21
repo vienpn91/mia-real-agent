@@ -12,6 +12,7 @@ import {
 } from 'components/Generals/ItemDetail.styled';
 import { IconStyled } from 'components/Generals/General.styled';
 import { Button, Popconfirm } from 'antd';
+import { toI18n } from '../../utils/func-utils';
 
 class UserDetailInfoHeader extends PureComponent {
   goToEditPage = () => {
@@ -35,13 +36,13 @@ class UserDetailInfoHeader extends PureComponent {
             <IconStyled className="icon-close" />
           </Link>
           <Popconfirm
-            title="Are you sure to remove this user?"
+            title={toI18n('ADMIN_USERS_DETAIL_CONFIRM')}
             onConfirm={this.handleRemove}
-            okText="Yes"
-            cancelText="No"
+            okText={toI18n('FORM_YES')}
+            cancelText={toI18n('FORM_NO')}
           >
             <Button>
-              Remove
+              {toI18n('ADMIN_USERS_DETAIL_REMOVE')}
             </Button>
           </Popconfirm>
         </ItemDetailInfoActionGroup>

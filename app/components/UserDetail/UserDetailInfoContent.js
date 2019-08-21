@@ -13,12 +13,12 @@ import {
 import { DATE_TIME_FORMAT, COLUMN_TYPE } from 'utils/constants';
 import TableDetail from 'components/Generals/TableDetail';
 import { ROLES } from '../../../common/enums';
-import { isAgent } from '../../utils/func-utils';
+import { isAgent, toI18n } from '../../utils/func-utils';
 
 const defaultColumns = [
   {
     headerPropertise: {
-      value: 'Ticket Id',
+      value: toI18n('ADMIN_USERS_DETAIL_TICKET_TABLE_TICKET_ID'),
       size: '100',
     },
     contentPropertise: {
@@ -29,7 +29,7 @@ const defaultColumns = [
   },
   {
     headerPropertise: {
-      value: 'Created At',
+      value: toI18n('ADMIN_USERS_DETAIL_TICKET_TABLE_CREATED_AT'),
       size: '200',
     },
     contentPropertise: {
@@ -41,7 +41,7 @@ const defaultColumns = [
   },
   {
     headerPropertise: {
-      value: 'Category',
+      value: toI18n('ADMIN_USERS_DETAIL_TICKET_TABLE_CATEGORY'),
       size: '200',
     },
     contentPropertise: {
@@ -52,7 +52,7 @@ const defaultColumns = [
   },
   {
     headerPropertise: {
-      value: 'Title',
+      value: toI18n('ADMIN_USERS_DETAIL_TICKET_TABLE_TITLE'),
     },
     contentPropertise: {},
     dataKey: 'title',
@@ -98,14 +98,14 @@ class UserDetailInfoContent extends PureComponent {
 
     return (
       <OverviewLeftSectionWrapper>
-        <OverviewTitle>Profile</OverviewTitle>
-        {this.renderOverviewInfo('First Name', firstName)}
-        {this.renderOverviewInfo('Last Name', lastName)}
-        {this.renderOverviewInfo('Phone', phone)}
-        {this.renderOverviewInfo('Birth', dateOfBirthFormat)}
-        {this.renderOverviewInfo('Address', address)}
-        {this.renderOverviewInfo('Company', company)}
-        {this.renderOverviewInfo('Position', position)}
+        <OverviewTitle>{toI18n('ADMIN_USERS_DETAIL_COMPANY')}</OverviewTitle>
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_FIRST_NAME'), firstName)}
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_LAST_NAME'), lastName)}
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_PHONE'), phone)}
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_BIRTH'), dateOfBirthFormat)}
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_ADDRESS'), address)}
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_COMPANY'), company)}
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_POSITION'), position)}
       </OverviewLeftSectionWrapper>
     );
   }
@@ -120,12 +120,12 @@ class UserDetailInfoContent extends PureComponent {
 
     return (
       <OverviewLeftSectionWrapper>
-        <OverviewTitle>Profile</OverviewTitle>
-        {this.renderOverviewInfo('Company', company)}
-        {this.renderOverviewInfo('Phone', phone)}
-        {this.renderOverviewInfo('Size', companySize)}
-        {this.renderOverviewInfo('Fields', companyFieldsFormat)}
-        {this.renderOverviewInfo('Address', address)}
+        <OverviewTitle>{toI18n('ADMIN_USERS_DETAIL_PROFILE')}</OverviewTitle>
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_COMPANY'), company)}
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_PHONE'), phone)}
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_SIZE'), companySize)}
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_FIELDS'), companyFieldsFormat)}
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_ADDRESS'), address)}
       </OverviewLeftSectionWrapper>
     );
   }
@@ -142,13 +142,13 @@ class UserDetailInfoContent extends PureComponent {
 
     return (
       <OverviewLeftSectionWrapper>
-        <OverviewTitle>Profile</OverviewTitle>
-        {this.renderOverviewInfo('First Name', firstName)}
-        {this.renderOverviewInfo('Last Name', lastName)}
-        {this.renderOverviewInfo('Skills', skillsFormat)}
-        {this.renderOverviewInfo('Phone', phone)}
-        {this.renderOverviewInfo('Address', address)}
-        {this.renderOverviewInfo('Country', country)}
+        <OverviewTitle>{toI18n('ADMIN_USERS_DETAIL_PROFILE')}</OverviewTitle>
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_FIRST_NAME'), firstName)}
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_LAST_NAME'), lastName)}
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_SKILLS'), skillsFormat)}
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_PHONE'), phone)}
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_ADDRESS'), address)}
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_COUNTRY'), country)}
       </OverviewLeftSectionWrapper>
     );
   }
@@ -159,9 +159,9 @@ class UserDetailInfoContent extends PureComponent {
     } = this.props;
     return (
       <OverviewLeftSectionWrapper>
-        <OverviewTitle>Primary Details</OverviewTitle>
-        {this.renderOverviewInfo('Username', username, true)}
-        {this.renderOverviewInfo('Email', email)}
+        <OverviewTitle>{toI18n('ADMIN_USERS_DETAIL_PRIMARY_DETAILS')}</OverviewTitle>
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_USERNAME'), username, true)}
+        {this.renderOverviewInfo(toI18n('ADMIN_USERS_DETAIL_EMAIL'), email)}
       </OverviewLeftSectionWrapper>
     );
   };
@@ -177,7 +177,7 @@ class UserDetailInfoContent extends PureComponent {
         ...defaultColumns,
         {
           headerPropertise: {
-            value: 'Assignee',
+            value: toI18n('ADMIN_USERS_DETAIL_TICKET_TABLE_ASSIGNEE'),
             size: '150',
           },
           contentPropertise: {
@@ -203,7 +203,7 @@ class UserDetailInfoContent extends PureComponent {
         ...defaultColumns,
         {
           headerPropertise: {
-            value: 'Owner',
+            value: toI18n('ADMIN_USERS_DETAIL_TICKET_TABLE_OWNER'),
             size: '150',
           },
           contentPropertise: {

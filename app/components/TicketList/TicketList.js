@@ -87,7 +87,8 @@ class TicketList extends React.PureComponent {
       page: current,
     });
   }
-  handleToggleFilter = () =>{
+
+  handleToggleFilter = () => {
     this.setState({
       isHide: !this.state.isHide,
     });

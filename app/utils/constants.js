@@ -1,14 +1,23 @@
+import ls from 'local-storage';
 export const RESTART_ON_REMOUNT = '@@saga-injector/restart-on-remount';
 export const DAEMON = '@@saga-injector/daemon';
 export const ONCE_TILL_UNMOUNT = '@@saga-injector/once-till-unmount';
 
 export const DEFAULT_ERROR_MESSAGE = 'Something has wrong';
-export const DATE_TIME_FORMAT = {
-  DATE: 'MMMM Do YYYY',
+
+const i18nextLng = ls.get('i18nextLng');
+export const DATE_TIME_FORMAT = (i18nextLng === 'vn') ? {
+  DATE: 'Do MMMM YYYY',
   TIME: 'H:mm',
-  DATE_TIME: 'MMM Do YYYY, H:mm',
-  DATE_RANGE: 'YYYY-MM-DD',
-};
+  DATE_TIME: 'Do MMM YYYY, H:mm',
+  DATE_RANGE: 'DD-MM-YYYY',
+}
+  : {
+    DATE: 'MMMM Do YYYY',
+    TIME: 'H:mm',
+    DATE_TIME: 'MMM Do YYYY, H:mm',
+    DATE_RANGE: 'YYYY-MM-DD',
+  };
 
 
 export const COLUMN_TYPE = {

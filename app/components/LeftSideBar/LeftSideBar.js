@@ -12,33 +12,34 @@ import {
   Logo,
   IconToggle,
 } from './LeftSidebar.styled';
+import { toI18n } from '../../utils/func-utils';
 
 const TABS_MENU = [
   {
     key: 'dashboard',
     type: 'container',
-    label: 'Dashboard',
+    label: toI18n('ADMIN_LEFT_NAV_DASHBOARD'),
     icon: 'mia-dashboard',
     link: '/admin/dashboard',
   },
   {
     key: 'tickets',
     type: 'container',
-    label: 'Tickets',
+    label: toI18n('ADMIN_LEFT_NAV_TICKETS'),
     icon: 'mia-ticket',
     link: '/admin/tickets',
   },
   {
     key: 'applications',
     type: 'container',
-    label: 'Applications',
+    label: toI18n('ADMIN_LEFT_NAV_APPLICATIONS'),
     icon: 'mia-ticket',
     link: '/admin/applications',
   },
   {
     key: 'users',
     type: 'container',
-    label: 'Users',
+    label: toI18n('ADMIN_LEFT_NAV_USERS'),
     icon: 'mia-user',
     link: '/admin/user',
   },

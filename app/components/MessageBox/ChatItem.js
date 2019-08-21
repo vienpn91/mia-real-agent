@@ -8,6 +8,7 @@ import {
   MessageBoxSystemNotification, LineDivider, MessageBoxItemIsTyping, IsTypingWrapper, TicketActionStatus, UserAction, TicketActionStatusTitle,
 } from './styles';
 import { ROLES } from '../../../common/enums';
+import { toI18n } from '../../utils/func-utils';
 
 const renderTime = time => moment(time).format('hh:mm');
 
@@ -78,7 +79,7 @@ export const ticketStatus = (msgId, params, sentAt) => {
     <MessageBoxSystemNotification key={`status${msgId}`}>
       <LineDivider />
       <Tooltip placement="top" title={renderTime(sentAt)}>
-        Ticket changed to
+        {toI18n('CONV_MESSAGE_BOX_TICKET_CHANGED_TO')}
         <TicketActionStatus status={status} />
         <TicketActionStatusTitle status={status}>{status}</TicketActionStatusTitle>
       </Tooltip>
@@ -115,7 +116,11 @@ export const userAction = (msgId, currentTicket, from, params, sentAt) => {
     <MessageBoxSystemNotification key={`status${msgId}`}>
       <LineDivider />
       <Tooltip placement="top" title={renderTime(sentAt)}>
-        {`${messageOwner} is `}
+        {
+          `${messageOwner} `
+        }
+        {toI18n('CONV_MESSAGE_BOX_USER_IS')}
+        {' '}
         <UserAction action={action}>{action}</UserAction>
       </Tooltip>
       <LineDivider />
