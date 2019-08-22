@@ -11,6 +11,7 @@ import { TICKET_STATUS, REPLY_TYPE, REPLY_USER_ACTION } from '../../../common/en
 import RequestQueue from '../queue/requestQueue';
 import ConversationRoomQueue from '../queue/conversationRoomQueue';
 import ReplyService from '../reply/reply.service';
+import { getHistoryTicketUpdate } from '../../utils/utils';
 
 const { CONTENT_NOT_FOUND } = ERROR_MESSAGE;
 const emptyObjString = '{}';
@@ -38,8 +39,11 @@ class TicketController extends BaseController {
       if (!request) {
         return res.status(httpStatus.NOT_FOUND).send('Agent not found!');
       }
+      const { history } = ticket;
+      const oldTicket = history.map(h => h.toJSON());
+      const newHistory = getHistoryTicketUpdate(oldTicket, TICKET_STATUS.PENDING);
+      _.assign(ticket, { status: TICKET_STATUS.PENDING, history: newHistory });
 
-      _.assign(ticket, { status: TICKET_STATUS.PENDING });
       ticket.save({});
       return res.status(httpStatus.OK).send();
     } catch (error) {
@@ -105,6 +109,7 @@ class TicketController extends BaseController {
     }
   }
 
+
   async insert(req, res) {
     try {
       const { user, body: data } = req;
@@ -120,6 +125,10 @@ class TicketController extends BaseController {
       const newData = {
         ...data,
         ticketId: totalCount + 1,
+        history: [{
+          currentStatus: TICKET_STATUS.OPEN,
+          startTime: new Date(),
+        }],
         owner,
       };
 
@@ -201,7 +210,10 @@ class TicketController extends BaseController {
       if (!ticket) {
         throw new APIError(CONTENT_NOT_FOUND, httpStatus.NOT_FOUND);
       }
-      _.assign(ticket, { status: TICKET_STATUS.CLOSED });
+      const { history } = ticket;
+      const oldHistory = history.map(h => h.toJSON());
+      const newHistory = getHistoryTicketUpdate(oldHistory, TICKET_STATUS.CLOSED);
+      _.assign(ticket, { status: TICKET_STATUS.CLOSED, history: newHistory });
       // const { conversationId, _id } = ticket;
       // ConversationRoomQueue.ticketClosedNotification(conversationId, _id);
       const result = await ticket.save({});

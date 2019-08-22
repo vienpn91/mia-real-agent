@@ -57,7 +57,7 @@ class ReplyController extends BaseController {
       const { ticketId } = await ConversationService.getOneByQuery({ _id: conversationId });
       IdleQueue.resetTimer(ticketId);
       if (reply.to) {
-        TicketService.update(ticketId, { status: TICKET_STATUS.PROCESSING });
+        TicketService.updateStatus(ticketId, TICKET_STATUS.PROCESSING);
       } else {
         setTimeout(() => this.getResponseFromMia(reply), 0);
       }

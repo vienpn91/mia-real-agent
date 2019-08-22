@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field, getIn } from 'formik';
 import { func, bool, shape } from 'prop-types';
+import { Translation } from 'react-i18next';
 import _ from 'lodash';
 import {
   Input, Checkbox, Select,
@@ -61,6 +62,7 @@ class FormInput extends React.Component {
       onChange,
       refInput,
       shouldRenderFeedback,
+      placeholderI18nKey,
       ...rest
     } = props;
 
@@ -91,13 +93,20 @@ class FormInput extends React.Component {
         help={errorMessage}
         {...formLayout}
       >
-        <InputStyled
-          ref={this.refFormInput}
-          {...field}
-          {...rest}
-          onChange={handleChange}
-          size={inputSize}
-        />
+        <Translation>
+          {
+            t => (
+              <InputStyled
+                ref={this.refFormInput}
+                placeholder={placeholderI18nKey ? t(placeholderI18nKey) : rest.placeholder}
+                {...field}
+                {...rest}
+                onChange={handleChange}
+                size={inputSize}
+              />
+            )
+          }
+        </Translation>
       </InputWrapperStyled>
     );
   };

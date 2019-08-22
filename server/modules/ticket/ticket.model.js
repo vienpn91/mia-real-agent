@@ -25,6 +25,42 @@ const ticketSchema = new Schema(
       ],
       default: TICKET_STATUS.OPEN,
     },
+    history: [{
+      startTime: {
+        type: Date,
+        required: false,
+      },
+      endTime: {
+        type: Date,
+        required: false,
+      },
+      currentStatus: {
+        type: String,
+        required: false,
+        enum: [
+          TICKET_STATUS.CLOSED,
+          TICKET_STATUS.OPEN,
+          TICKET_STATUS.IDLE,
+          TICKET_STATUS.PROCESSING,
+          TICKET_STATUS.RESOLVED,
+          TICKET_STATUS.OFFLINE,
+          TICKET_STATUS.PENDING,
+        ],
+      },
+      nextStatus: {
+        type: String,
+        required: false,
+        enum: [
+          TICKET_STATUS.CLOSED,
+          TICKET_STATUS.OPEN,
+          TICKET_STATUS.IDLE,
+          TICKET_STATUS.PROCESSING,
+          TICKET_STATUS.RESOLVED,
+          TICKET_STATUS.OFFLINE,
+          TICKET_STATUS.PENDING,
+        ],
+      },
+    }],
     category: [String],
     owner: { type: Schema.Types.ObjectId, ref: 'User' },
     assignee: { type: Schema.Types.ObjectId, ref: 'User' },

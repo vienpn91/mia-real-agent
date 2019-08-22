@@ -9,6 +9,7 @@ import Logger from '../../logger';
 import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import RequestQueue from '../queue/requestQueue';
 import ReplyService from '../reply/reply.service';
+import { getHistoryTicketUpdate } from '../../utils/utils';
 
 class AgentController {
   constructor() {
@@ -48,6 +49,10 @@ class AgentController {
         // update assign and members for tickets and conversations
         ticket.assignee = agentId;
         ticket.status = TICKET_STATUS.PROCESSING;
+        const { history } = ticket;
+        const oldHistory = history.map(h => h.toJSON());
+        const newHistory = getHistoryTicketUpdate(oldHistory, TICKET_STATUS.PROCESSING);
+        ticket.history = newHistory;
         if (conversation.members) {
           const agentIdStr = agentId.toString();
           const shouldAdd = !conversation.members.some(member => member.toString() === agentIdStr);

@@ -53,6 +53,7 @@ const en = {
     CONV_MESSAGE_BOX_TIMER_TOTAL: 'Total',
     CONV_MESSAGE_BOX_TIMER_BILLABLE: 'Billable',
     CONV_MESSAGE_BOX_TIMER_HOLD: 'Hold',
+    CONV_MESSAGE_BOX_TIMER_PENDING: 'Pending',
     // Create Ticket Form
     TICKET_CREATE_FORM_CANCEL: 'Cancel',
     TICKET_CREATE_FORM_SUBMIT: 'Submit',

@@ -1,8 +1,10 @@
+import _last from 'lodash/last';
 import ticketCollection from './ticket.model';
 import BaseService from '../base/base.service';
 import { TICKET_STATUS, REPLY_TYPE } from '../../../common/enums';
 import ReplyService from '../reply/reply.service';
 import ConversationRoomQueue from '../queue/conversationRoomQueue';
+import { getHistoryTicketUpdate } from '../../utils/utils';
 
 class TicketService extends BaseService {
   constructor(collection) {
@@ -24,6 +26,17 @@ class TicketService extends BaseService {
 
   countDocument(filter) {
     return this.collection.countDocuments(filter);
+  }
+
+  async updateStatus(ticketId, status) {
+    const ticket = await this.collection.findOne({ _id: ticketId });
+    const { history, status: prevStatus } = ticket;
+    if (status !== prevStatus) {
+      const oldHistory = history.map(h => h.toJSON());
+      const newHistory = getHistoryTicketUpdate(oldHistory, status);
+      return this.update(ticketId, { status, history: newHistory });
+    }
+    return true;
   }
 
   async getAllWithUserData(condition, options) {
@@ -98,6 +111,7 @@ class TicketService extends BaseService {
       ],
     };
     const tickets = await this.collection.find(query).exec();
+    await this.handleUpdateTicketStatusHistory(query, TICKET_STATUS.OFFLINE);
     await this.collection.updateMany(query, { status: TICKET_STATUS.OFFLINE }).exec();
     return tickets;
   }
@@ -112,11 +126,13 @@ class TicketService extends BaseService {
       ],
     };
     const tickets = await this.collection.find(query).exec();
+    await this.handleUpdateTicketStatusHistory(query, TICKET_STATUS.IDLE);
     await this.collection.updateMany(query, { status: TICKET_STATUS.IDLE }).exec();
     return tickets;
   }
 
   async handleCloseTicket(query) {
+    await this.handleUpdateTicketStatusHistory(query, TICKET_STATUS.CLOSED);
     const tickets = await this.collection.updateMany(query, { status: TICKET_STATUS.CLOSED }).exec();
     return tickets;
   }
@@ -126,6 +142,7 @@ class TicketService extends BaseService {
       status: TICKET_STATUS.PROCESSING,
       _id: ticketId,
     };
+    await this.handleUpdateTicketStatusHistory(query, TICKET_STATUS.IDLE);
     const tickets = await this.collection.update(query, { status: TICKET_STATUS.IDLE }).exec();
     return tickets;
   }
@@ -135,8 +152,23 @@ class TicketService extends BaseService {
       status: TICKET_STATUS.PENDING,
       _id: ticketId,
     };
+    await this.handleUpdateTicketStatusHistory(query, TICKET_STATUS.OPEN);
     const tickets = await this.collection.update(query, { status: TICKET_STATUS.OPEN }).exec();
     return tickets;
+  }
+
+  async handleUpdateTicketStatusHistory(query, status) {
+    const tickets = await this.collection.find(query).exec();
+    if (Array.isArray(tickets) && tickets.length > 0) {
+      await Promise.all(tickets.map((ticket) => {
+        const currTicket = ticket;
+        const { history } = ticket;
+        const oldHistory = history.map(h => h.toJSON());
+        const newHistory = getHistoryTicketUpdate(oldHistory, status);
+        currTicket.history = newHistory;
+        return currTicket.save();
+      }));
+    }
   }
 
   handleTicketUpdateStatus(collection) {

@@ -4,6 +4,7 @@ import {
   Form, Icon,
 } from 'antd';
 import _isEmpty from 'lodash/isEmpty';
+import { Translation } from 'react-i18next';
 import { Formik } from 'formik';
 import ShadowScrollbars from 'components/Scrollbar';
 import {
@@ -107,26 +108,32 @@ export default class MessageBox extends Component {
     }
   }
 
-  renderFindAgentForSolution = t => (
-    <MessageBoxItem left key="solution">
-      <ProfileImageStyled
-        src="/assets/images/mia-avatar.jpg"
-        onClick={this.onToggleUserInfo}
-      />
-      <FindAgentWrapper>
-        <p key="solution">
-          {t('CONV_MESSAGE_BOX_NOT_SATISFY')}
-        </p>
-        <FindAgentButton
-          key="button"
-          type="primary"
-          onClick={this.handleFindAgent}
-        >
-          <Icon type="search" />
-          {t('CONV_MESSAGE_BOX_FIND_AGENT')}
-        </FindAgentButton>
-      </FindAgentWrapper>
-    </MessageBoxItem>
+  renderFindAgentForSolution = () => (
+    <Translation>
+      {
+        t => (
+          <MessageBoxItem left key="solution">
+            <ProfileImageStyled
+              src="/assets/images/mia-avatar.jpg"
+              onClick={this.onToggleUserInfo}
+            />
+            <FindAgentWrapper>
+              <p key="solution">
+                {t('CONV_MESSAGE_BOX_NOT_SATISFY')}
+              </p>
+              <FindAgentButton
+                key="button"
+                type="primary"
+                onClick={this.handleFindAgent}
+              >
+                <Icon type="search" />
+                {t('CONV_MESSAGE_BOX_FIND_AGENT')}
+              </FindAgentButton>
+            </FindAgentWrapper>
+          </MessageBoxItem>
+        )
+      }
+    </Translation>
   )
 
   renderOtherUserMessageContent = (msgId, contents) => {
