@@ -8,8 +8,10 @@ import ticketSaga from './ticket';
 import userSaga from './user';
 import adminSaga from './admin';
 import applicationSaga from './application';
+import intentSaga from './intent';
 import conversationSaga from './conversations';
 import repliesSaga from './replies';
+import responseSaga from './response';
 import agentsSaga from './agents';
 
 export default function* rootSagas() {
@@ -32,5 +34,7 @@ export default function* rootSagas() {
     conversationSaga(),
     repliesSaga(),
     agentsSaga(),
+    intentSaga(),
+    responseSaga(),
   ]);
 }

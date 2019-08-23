@@ -167,6 +167,7 @@ const en = {
     ADMIN_LEFT_NAV_TICKETS: 'Tickets',
     ADMIN_LEFT_NAV_APPLICATIONS: 'Applications',
     ADMIN_LEFT_NAV_USERS: 'Users',
+    ADMIN_LEFT_NAV_INTENTS: 'Intents',
     // Admin users table
     ADMIN_USERS_TABLE_ALL_USERS: 'All Users',
     ADMIN_USERS_TABLE_USERNAME: 'Username',
@@ -250,6 +251,18 @@ const en = {
     ADMIN_TICKET_DETAIL_CREATED_AT: 'Created at',
     ADMIN_TICKET_DETAIL_OWNER: 'Owner',
     ADMIN_TICKET_DETAIL_ASSIGNEE: 'Assignee',
+    // Admin intent table
+    ADMIN_INTENT_TABLE_DISPLAY_NAME: 'Name',
+    ADMIN_INTENT_TABLE_ALL_INTENT: 'All Intent',
+    // Admin intent detail
+    ADMIN_INTENT_DETAIL_PLEASE_SELECT_AN_INTENT: 'Please select an intent',
+    ADMIN_INTENT_DETAIL_NO_RESPONSES: 'No responses',
+    // Admin add response
+    ADMIN_INTENT_ADD_RESPONSE_EN: 'Response in EN',
+    ADMIN_INTENT_ADD_RESPONSE_VN: 'Response in VN',
+    ADMIN_INTENT_ADD_PARAMETER_ID: 'Parameter type',
+    ADMIN_INTENT_ADD_PARAMETER_VALUE: 'Parameter value',
+    ADMIN_RESPONSE_ADD_SUCCESS: 'Response Added',
     // Profile
     PROFILE_USERNAME: 'Username',
     PROFILE_EMAIL: 'Email',
