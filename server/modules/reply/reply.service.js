@@ -17,6 +17,16 @@ class ReplyService extends BaseService {
     return replies;
   }
 
+
+  getByConversationForTranscript(conversationId) {
+    const replies = this.collection.find({
+      conversationId,
+    }).populate({
+      path: 'from', select: ['profile'],
+    }).sort({ createdAt: 1 }).exec();
+    return replies;
+  }
+
   async logUserAction(conversationId, userId, action) {
     const reply = {
       type: REPLY_TYPE.USER_ACTION,

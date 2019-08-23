@@ -7,11 +7,11 @@ import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
 import check from '../../utils/validate';
 import { VALIDATION_TYPE } from '../../../common/enums';
 import { hashFunc, compareFunc } from '../../utils/bcrypt';
-import {
-  sendCreatePasswordMail,
-  sendChangePasswordMail,
-  sendUpdateProfileMail,
-} from '../../mail';
+// import {
+//   sendCreatePasswordMail,
+//   sendChangePasswordMail,
+//   sendUpdateProfileMail,
+// } from '../../mail';
 import { send, buildContent } from '../../mail-sparkpost/sparkpost';
 
 class UserController extends BaseController {
@@ -94,7 +94,7 @@ class UserController extends BaseController {
         model,
         data,
       );
-      sendUpdateProfileMail(newUserProfile);
+      // sendUpdateProfileMail(newUserProfile);
       return res.status(httpStatus.OK).send(newUserProfile);
     } catch (error) {
       return super.handleError(res, error);
@@ -125,7 +125,7 @@ class UserController extends BaseController {
       user.set({ token });
 
       const result = await user.save();
-      sendChangePasswordMail(user);
+      // sendChangePasswordMail(user);
       return res.status(httpStatus.OK).send(result);
     } catch (error) {
       return super.handleError(res, error);
@@ -141,7 +141,7 @@ class UserController extends BaseController {
         user,
         newPassword,
       );
-      sendCreatePasswordMail(user);
+      // sendCreatePasswordMail(user);
       return res.status(httpStatus.OK).send(newUserProfile);
     } catch (error) {
       return super.handleError(res, error);

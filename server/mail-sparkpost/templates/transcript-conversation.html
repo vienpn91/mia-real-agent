@@ -1,0 +1,9 @@
+<div>
+  <div><b>Ticket Title: </b>: {{ticket.title}}</div>
+  <div><b>Description: </b>: {{ticket.description}}</div>
+  <div>Dear <b>{{ user.profile.firstName }} {{user.profile.lastName}}</b>, Here is your conversation history of this ticket</div>
+  <br/>
+  <div class="messages">
+    {{{messages}}}
+  </div>
+</div>

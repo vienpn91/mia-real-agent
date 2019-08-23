@@ -1,16 +1,19 @@
-import _last from 'lodash/last';
 import ticketCollection from './ticket.model';
 import BaseService from '../base/base.service';
 import { TICKET_STATUS, REPLY_TYPE } from '../../../common/enums';
 import ReplyService from '../reply/reply.service';
 import ConversationRoomQueue from '../queue/conversationRoomQueue';
 import { getHistoryTicketUpdate } from '../../utils/utils';
+import { sendEmailTrascript } from '../../mail-sparkpost/sparkpost';
+import UserService from '../user/user.service';
+import { conversationTranscript } from '../../mail-sparkpost/dynamicTemplate';
 
 class TicketService extends BaseService {
   constructor(collection) {
     super(collection);
     this.countDocument = this.countDocument.bind(this);
     this.getByCondition = this.getByCondition.bind(this);
+    this.sendTransciptConverstion = this.sendTransciptConverstion.bind(this);
     this.handleTicketUpdateStatus(collection);
   }
 
@@ -155,6 +158,15 @@ class TicketService extends BaseService {
     await this.handleUpdateTicketStatusHistory(query, TICKET_STATUS.OPEN);
     const tickets = await this.collection.update(query, { status: TICKET_STATUS.OPEN }).exec();
     return tickets;
+  }
+
+  async sendTransciptConverstion(ticket, conversationId) {
+    const repliesMessages = await ReplyService.getByConversationForTranscript(conversationId);
+
+    const messagesText = conversationTranscript(repliesMessages);
+
+    const user = await UserService.getById(ticket.owner);
+    return sendEmailTrascript(user, ticket, messagesText);
   }
 
   async handleUpdateTicketStatusHistory(query, status) {

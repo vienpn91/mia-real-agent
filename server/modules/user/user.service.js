@@ -7,10 +7,10 @@ import bcrypt from 'bcrypt';
 import { hashFunc } from '../../utils/bcrypt';
 import userCollection from './user.model';
 import BaseService from '../base/base.service';
-import {
-  sendUserVerifyMail,
-  sendUserRegisterSuccessMail,
-} from '../../mail';
+// import {
+//   sendUserVerifyMail,
+//   sendUserRegisterSuccessMail,
+// } from '../../mail';
 
 const { SECRET_KEY_JWT } = process.env;
 
@@ -25,6 +25,10 @@ class UserService extends BaseService {
 
   getByEmail(email) {
     return userCollection.findOne({ email }).exec();
+  }
+
+  getById(id) {
+    return userCollection.findOne({ _id: id }).exec();
   }
 
   async getUserProfile(user) {
@@ -67,7 +71,7 @@ class UserService extends BaseService {
       const { _id: userId } = user;
       const token = jwt.sign({ userId }, SECRET_KEY_JWT);
       const vericationLink = `${DOMAIN}/api/users/verify/${token}`;
-      sendUserVerifyMail(user, vericationLink);
+      // sendUserVerifyMail(user, vericationLink);
     }
   }
 
@@ -81,7 +85,7 @@ class UserService extends BaseService {
     }
     user.verifiedAt = moment().utc().format();
     await user.save();
-    sendUserRegisterSuccessMail(user);
+    // sendUserRegisterSuccessMail(user);
   }
 
   delete(id) {

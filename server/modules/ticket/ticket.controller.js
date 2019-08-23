@@ -25,6 +25,7 @@ class TicketController extends BaseController {
     this.getAll = this.getAll.bind(this);
     this.getAllConversations = this.getAllConversations.bind(this);
     this.getOwnerAndAssigneeProfile = this.getOwnerAndAssigneeProfile.bind(this);
+    this.closeTicket = this.closeTicket.bind(this);
   }
 
 
@@ -210,13 +211,19 @@ class TicketController extends BaseController {
       if (!ticket) {
         throw new APIError(CONTENT_NOT_FOUND, httpStatus.NOT_FOUND);
       }
-      const { history } = ticket;
+      const { history, conversationId } = ticket;
       const oldHistory = history.map(h => h.toJSON());
       const newHistory = getHistoryTicketUpdate(oldHistory, TICKET_STATUS.CLOSED);
       _.assign(ticket, { status: TICKET_STATUS.CLOSED, history: newHistory });
       // const { conversationId, _id } = ticket;
       // ConversationRoomQueue.ticketClosedNotification(conversationId, _id);
+
+
       const result = await ticket.save({});
+      // We should send transcript after 1 second for without missing any message
+      setTimeout(() => {
+        this.service.sendTransciptConverstion(ticket, conversationId);
+      }, 1000);
       return res.status(httpStatus.OK).send(result);
     } catch (error) {
       return this.handleError(res, error);

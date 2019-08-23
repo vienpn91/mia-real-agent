@@ -13,10 +13,16 @@ const userPasswordChanged = getTemplate('user-password-changed');
 const userPasswordCreated = getTemplate('user-password-created');
 const userProfileUpdated = getTemplate('user-profile-updated');
 const userRegisterSucceed = getTemplate('user-register-succeed');
+const transcriptConversation = getTemplate('transcript-conversation');
+
 
 const applyDefaultTemplate = content => defaultTemplate.replace('[MAIN_CONTENT]', content);
 
 export default {
+  transcriptConverstion: {
+    subject: 'Mia Consults - Conversation history',
+    html: applyDefaultTemplate(transcriptConversation),
+  },
   contactMessagePostedMail: {
     subject: 'MIA-Consult - Question box',
     html: applyDefaultTemplate(contactMessagePosted),

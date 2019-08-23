@@ -61,8 +61,6 @@ class ReplyController extends BaseController {
       } else {
         setTimeout(() => this.getResponseFromMia(reply), 0);
       }
-
-
       return res.status(httpStatus.OK).send({ reply });
     } catch (error) {
       return super.handleError(res, error);

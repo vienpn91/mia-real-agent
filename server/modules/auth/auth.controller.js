@@ -8,9 +8,9 @@ import UserService from '../user/user.service';
 import check from '../../utils/validate';
 import { VALIDATION_TYPE } from '../../../common/enums';
 import { hashFunc } from '../../utils/bcrypt';
-import {
-  sendUserRegisterSuccessMail,
-} from '../../mail';
+// import {
+//   sendUserRegisterSuccessMail,
+// } from '../../mail';
 import Logger from '../../logger';
 
 const loginErrorMsg = 'Something is wrong';
@@ -65,7 +65,7 @@ class AuthController {
         await userDoc.save();
 
         if (email) {
-          sendUserRegisterSuccessMail(user);
+          // sendUserRegisterSuccessMail(user);
         }
         return done(false, userDoc, { message: 'Logged In Successfully' });
       }
