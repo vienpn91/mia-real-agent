@@ -255,6 +255,7 @@ const en = {
     ADMIN_INTENT_TABLE_DISPLAY_NAME: 'Name',
     ADMIN_INTENT_TABLE_ALL_INTENT: 'All Intent',
     // Admin intent detail
+    ADMIN_INTENT_DETAIL_TITLE: 'Responses for',
     ADMIN_INTENT_DETAIL_PLEASE_SELECT_AN_INTENT: 'Please select an intent',
     ADMIN_INTENT_DETAIL_NO_RESPONSES: 'No responses',
     // Admin add response
@@ -263,6 +264,11 @@ const en = {
     ADMIN_INTENT_ADD_PARAMETER_ID: 'Parameter type',
     ADMIN_INTENT_ADD_PARAMETER_VALUE: 'Parameter value',
     ADMIN_RESPONSE_ADD_SUCCESS: 'Response Added',
+    ADMIN_RESPONSE_ADD_TITLE: 'Create Response for',
+    ADMIN_RESPONSE_EDIT_TITLE: 'Edit Response for',
+    ADMIN_RESPONSE_EDIT_SUCCESS: 'Response Editted',
+    ADMIN_RESPONSE_REMOVE_SUCCESS: 'Response Removed',
+
     // Profile
     PROFILE_USERNAME: 'Username',
     PROFILE_EMAIL: 'Email',

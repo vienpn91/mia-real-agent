@@ -15,3 +15,13 @@ export const createResponse = data => axios
   .post('responses', data)
   .then(response => ({ response }))
   .catch(handleError);
+
+export const updateResponse = ({ responseId, ...rest }) => axios
+  .put(`responses/${responseId}`, rest)
+  .then(response => ({ response }))
+  .catch(handleError);
+
+export const deleteResponse = responseId => axios
+  .delete(`responses/${responseId}`)
+  .then(response => ({ response }))
+  .catch(handleError);

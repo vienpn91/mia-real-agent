@@ -11,12 +11,14 @@ import { getSkipLimit } from 'utils/func-utils';
 
 import {
   actions, RESPONSE_CREATE, RESPONSE_GET_ALL,
-  RESPONSE_UPDATE, RESPONSE_SORTING, RESPONSE_CHANGE_PAGE,
+  RESPONSE_UPDATE, RESPONSE_SORTING, RESPONSE_CHANGE_PAGE, RESPONSE_REMOVE,
 } from '../../reducers/response';
 import {
   AUTH_LOGIN_SUCCESS,
 } from '../../reducers/auth';
 import * as ResponseApi from '../../api/response';
+import { notification } from 'antd';
+import { toI18n } from '../../utils/func-utils';
 
 function* queryResponses(action) {
   const responsePayload = {};
@@ -55,6 +57,7 @@ function* createResponse({ payload }) {
   }
 
   const { data } = response;
+  notification.success({ message: toI18n('ADMIN_RESPONSE_ADD_SUCCESS') });
   yield put(actions.createCompleteAction(data));
 }
 
@@ -86,7 +89,23 @@ function* updateResponse({ payload }) {
     return;
   }
   const { data } = result;
+  notification.success({ message: toI18n('ADMIN_RESPONSE_EDIT_SUCCESS') });
   yield put(actions.updateCompleteAction(data));
+}
+
+function* deleteResponse({ payload }) {
+  const { responseId } = payload;
+  const { response: result, error } = yield call(ResponseApi.deleteResponse, responseId);
+  if (error) {
+    const message = _get(
+      error, 'response.data.message', error.message
+    );
+    yield put(actions.removeFailAction(message));
+    return;
+  }
+  const { data } = result;
+  notification.success({ message: toI18n('ADMIN_RESPONSE_REMOVE_SUCCESS') });
+  yield put(actions.removeCompleteAction(data));
 }
 
 function* responseFlow() {
@@ -95,6 +114,7 @@ function* responseFlow() {
     takeLatest(RESPONSE_CREATE, createResponse),
     takeLatest(RESPONSE_GET_ALL, getAllResponse),
     takeLatest(RESPONSE_UPDATE, updateResponse),
+    takeLatest(RESPONSE_REMOVE, deleteResponse),
     takeLatest([RESPONSE_CHANGE_PAGE, RESPONSE_SORTING], queryResponses),
   ]);
 }

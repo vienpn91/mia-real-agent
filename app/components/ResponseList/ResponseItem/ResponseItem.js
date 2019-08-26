@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
-import { shape, arrayOf } from 'prop-types';
-import { Tabs } from 'antd';
-import { ResponseItemWrapper, ResponseParameterWrapper, ResponseValueWrapper } from './styles';
+import { shape, arrayOf, func } from 'prop-types';
+import { Tabs, Button, Icon } from 'antd';
+import {
+  ResponseItemWrapper, ResponseParameterWrapper,
+  ResponseValueWrapper, ResponseActionWrapper,
+} from './styles';
 
 const { TabPane } = Tabs;
 
 export class ResponseItem extends Component {
   static propTypes = {
     response: shape().isRequired,
+    onEdit: func.isRequired,
+    onRemove: func.isRequired,
     parameters: arrayOf(shape()),
   }
 
@@ -37,6 +42,7 @@ export class ResponseItem extends Component {
   }
 
   render() {
+    const { onEdit, onRemove } = this.props;
     return (
       <ResponseItemWrapper>
         <ResponseParameterWrapper>
@@ -45,6 +51,14 @@ export class ResponseItem extends Component {
         <ResponseValueWrapper>
           {this.renderResponse()}
         </ResponseValueWrapper>
+        <ResponseActionWrapper>
+          <Button onClick={onEdit}>
+            <Icon type="edit" />
+          </Button>
+          <Button onClick={onRemove}>
+            <Icon type="delete" />
+          </Button>
+        </ResponseActionWrapper>
       </ResponseItemWrapper>
     );
   }
