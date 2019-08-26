@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import { Input } from 'antd';
-import { LoginLogo } from '../Login/styles';
+import { LogoSite } from '../Login/styles';
 
 export const RegistrationWrapper = styled.div`
   height: 100vh;
@@ -28,7 +28,7 @@ export const RegistrationItem = styled.div`
   z-index: 1;
 `;
 
-export const RegistrationTitle = styled(LoginLogo)`
+export const RegistrationTitle = styled(LogoSite)`
   
 `;
 

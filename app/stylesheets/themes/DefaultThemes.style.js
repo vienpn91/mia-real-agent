@@ -1,6 +1,7 @@
 export const DefaultThemes = {
   widthSite: {
     XXXSmallMobileFontSize: '9px',
+    widthLoginPage: '32.250em',
   },
   heightSite: {
     heightTopNavBar: '4.5em',
@@ -8,7 +9,9 @@ export const DefaultThemes = {
   paddingSite: {
     XXXSmallMobileFontSize: '9px',
   },
-
+  boxShandow: {
+    loginPage: '0px 0px 17px -3px #2a3a516e',
+  },
   fontSize: {
     XXXSmallMobileFontSize: '9px',
     XXSmallMobileFontSize: '10px',
@@ -42,6 +45,7 @@ export const DefaultThemes = {
     ColorPrimary: '#ff5402',
     ColorSecond: '#586069',
     ColorGrey: '#dfdfdf',
+    ColorDarkGrey: '#6e6c83',
     ColorMidGrey: '#4a4a4a',
     ColoraBtnPrimary: '#2697ea',
     ColoraBtnCancel: '#898c8e',
@@ -49,6 +53,8 @@ export const DefaultThemes = {
     ColorWarming: '#b52d2d',
     ColorIcon: '#eb9388',
     ColorIconHover: '#d50000',
+    ColorBtnFb: '#3b5998',
+
 
     iconAddColor: '#2fa3e6',
     iconAddHoverColor: '#036299',
@@ -73,14 +79,11 @@ export const DefaultThemes = {
     ColorDefault: '#6f6f6f',
     ColorSuccess: '#1bd18a',
     ColorSuccessN: '#4cbe2d',
-    ColorDarkGrey: '#020b0d',
-    ColorMidGrey: '#e8e8e8',
     ColorTime: '#a3adba',
 
     ColorXBorder: '#e0dedb',
     ColorPoint: '#a5a5a5',
     ColorBorderClassNav: '#edeff1',
-  
     ColorXLightGrey: '#1e2328',
     ColorXXLightGrey: '#2a2f34',
     ColorXXXLightGrey: '#0c0d12',

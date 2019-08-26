@@ -135,6 +135,9 @@ export const InputStyled = styled(Input)`
 export const InputWrapperStyled = styled(Form.Item)`
   color: ${props => props.theme.textColor};
   margin-bottom: 10px!important;
+  .ant-form-explain{
+    margin-top: .5em;
+  }
   .ant-select-selection__choice__content{
     font-weight: 600;
   }
