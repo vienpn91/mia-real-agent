@@ -157,7 +157,7 @@ export const TicketPaginationWrapper = styled.div`
     line-height: normal !important;
     &:hover {
       a {
-        color: ${props => props.theme.primaryColor};
+        color: ${props => props.theme.colorStyled.ColorBgDefault};
       }
     }
   }
@@ -167,10 +167,10 @@ export const TicketPaginationWrapper = styled.div`
   .ant-pagination-item-active {
     border: none;
     a {
-      color: ${props => props.theme.primaryColor} !important;
+      color: ${props => props.theme.colorStyled.ColorBgDefault} !important;
     }
     &:hover {
-      color: ${props => props.theme.primaryColor};
+      color: ${props => props.theme.colorStyled.ColorBgDefault};
     }
   }
   @media (max-width: 840px) {

@@ -34,6 +34,7 @@ export const DefaultThemes = {
   borderRadius: {
     borderbtn: '0.6em',
     borderBlock: '0.6em',
+    borderBtnSmall: '0.3em',
   },
   colorStyled: {
     ColorWhite: '#ffffff',
@@ -58,6 +59,9 @@ export const DefaultThemes = {
     iconAddHoverColor: '#036299',
     iconMoreColor: '#227fb5',
     iconMoreHoverColor: '#0f496b',
+    ColorXLightGrey: '#2f2f2f',
+    ColorXXLightGrey: '#6e6c83fa',
+    ColorXXXLightGrey: '#eee',
 
 
     ColorBgSilver: '#f8f9fa',
@@ -82,9 +86,6 @@ export const DefaultThemes = {
     ColorXBorder: '#e0dedb',
     ColorPoint: '#a5a5a5',
     ColorBorderClassNav: '#edeff1',
-    ColorXLightGrey: '#1e2328',
-    ColorXXLightGrey: '#2a2f34',
-    ColorXXXLightGrey: '#0c0d12',
     ColorLink: '#433aef',
     ColorActiveCheckbox: '#18c798',
     ColorLevelKill: '#8c9093',

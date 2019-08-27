@@ -62,8 +62,8 @@ export const TableHeaderRightWrapper = styled.div`
 `;
 
 export const TableHeaderAddNewButton = styled.div`
-  background-color: ${props => props.theme.primaryColor};
-  border-color: ${props => props.theme.primaryColor};
+  background-color: ${props => props.theme.colorStyled.ColorBgDefault};
+  border-color: ${props => props.theme.colorStyled.ColorBgDefault};
   border-radius: 3px;
   color: ${props => props.theme.colorStyled.ColorWhite};
   padding: 5px 12px;

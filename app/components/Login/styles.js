@@ -22,9 +22,6 @@ export const TemplateLoginPage = styled.div`
   color: ${props => props.theme.colorStyled.ColorDarkGrey};
   position: relative;
   z-index: 1;
-  ${({ register }) => register && css`
-      width: 640px;
-  `};
 `;
 
 export const LogoSite = styled.div`

@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 export const DefaultButton = styled.button`
   color: ${props => props.theme.colorStyled.ColorWhite};
-  background-color: ${props => props.theme.primaryColor};
+  background-color: ${props => props.theme.colorStyled.ColorBgDefault};
   text-align: center;
   border: 1px solid transparent;
   border-radius: 3px;

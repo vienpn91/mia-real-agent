@@ -44,8 +44,8 @@ export const LinkWrapper = styled.div`
       }
     }
     
-    :hover {
-      color: ${props => props.theme.colorStyled.ColoraBtnPrimary};
+    &:hover {
+      color: ${props => props.theme.colorStyled.ColorBgDefault};
     }
   }
 `;

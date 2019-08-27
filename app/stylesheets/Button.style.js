@@ -10,7 +10,6 @@ const spin = keyframes`
 `;
 
 export const Button = styled.button`
-
   text-align: center;
   border-radius: ${props => props.theme.borderRadius.borderbtn};
   font-family: 'MontserratSemiBold';
@@ -24,8 +23,8 @@ export const Button = styled.button`
   display: flex;
   align-items: center;
   min-width: 10em;
-  margin: 0 auto;
   justify-content: center;
+  transition: .3s ease;
   ${props => props.full && css`
     width: 100%;  
     padding: 1em;
@@ -37,12 +36,87 @@ export const Button = styled.button`
   &:hover{
     opacity: 0.8;
   }
+`;
 
-
+export const ArrayAddButton = styled.button`
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+  border-radius: 5px;
+  padding: 5px 10px 5px 5px;
+  font-size: 13px;
+  border-radius: 3px;
+  color: #ff5402;
+  background: white;
+  border: 1px solid #ff5402;
+  i {
+    margin-right: 3px;
+  }
+  &:hover {
+    border-color: ${props => props.theme.colorStyled.ColorBgDefault};
+    color: ${props => props.theme.colorStyled.ColorBgDefault};
+  }
 `;
 
 export const ActionForm = styled.div`
 
+`;
+
+export const ButtonChoose = styled.button`
+  flex: 1;
+  background: transparent;
+  border: none;
+  height: 12.500em;
+  padding: 0;
+  font-size: ${props => props.theme.fontSize.HeadingH3FontSize};
+  color: ${props => props.theme.colorStyled.ColorXLightGrey};
+  span{
+    width: 100%;
+    display: inline-block;
+  }
+  i.anticon{
+      font-size: ${props => props.theme.fontSize.XLargeFontSize};
+  }
+  &:hover{
+    color: ${props => props.theme.colorStyled.ColorBgDefault};
+  }  
+`;
+
+export const ButtonCancel = styled(Button)`
+  min-width: 6.25em;
+  width: 7.250em;
+  height: 2.438em;
+  padding: 0;
+  border-radius: ${props => props.theme.borderRadius.borderBtnSmall};
+  border: 1px solid ${props => props.theme.colorStyled.ColorXXXLightGrey};
+  background: ${props => props.theme.colorStyled.ColorXXXLightGrey};
+  color:  ${props => props.theme.colorStyled.ColoraBtnCancel};
+  &:hover{
+    opacity: .7;
+  }
+  i {
+    font-size: 1em;
+    margin-right: .35em;
+  }
+`;
+export const ButtonSubmit = styled(Button).attrs({
+  type: 'submit',
+})`
+  width: 7.250em;
+  min-width: 6.25em;
+  height: 2.438em;
+  padding: 0;
+  border-radius: ${props => props.theme.borderRadius.borderBtnSmall};
+  border: 1px solid ${props => props.theme.colorStyled.ColorBgDefault};
+  background: ${props => props.theme.colorStyled.ColorBgDefault};
+  color:  ${props => props.theme.colorStyled.ColorWhite};
+  &:hover{
+    opacity: .7;
+  }
+  i {
+    font-size: 1em;
+    margin-left: .35em;
+  }
 `;
 
 export const LoginBtn = styled.button`
