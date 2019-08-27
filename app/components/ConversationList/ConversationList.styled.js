@@ -90,7 +90,7 @@ export const ConversationFilterWrapper = styled.div`
     border-radius: 4px;
   }
   .ant-select-selection--multiple {
-    color: ${props => props.theme.secondaryColor};
+    color: ${props => props.theme.colorStyled.ColorWhite};
     border: 1px solid #d9d9d9;
     &:hover {
       border-color: #b1b1b1;
@@ -123,7 +123,7 @@ export const ConversationPaginationWrapper = styled.div`
     }
   }
   .ant-pagination-item.ant-pagination-item-active a {
-    color: ${props => props.theme.textColor};
+    color: ${props => props.theme.colorStyled.ColorBlack};
   }
   .ant-pagination-item-active {
     border: none;

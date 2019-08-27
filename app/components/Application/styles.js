@@ -1,30 +1,45 @@
 import styled, { css, keyframes } from 'styled-components';
 import { Input } from 'antd';
+import { LoginWrapper } from '../Login/styles';
 
-export const ApplicationWrapper = styled.div`
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-image: url('../../assets/images/bg-login.jpg');
-  background-position: left center;
-  background-size: cover;
-  background-repeat: no-repeat;
-
+export const ApplicationWrapper = styled(LoginWrapper)`
   textarea.ant-input {
     resize: none;
   }
 `;
 
+export const ApplicationTitle = styled.div`
+  text-align: center;
+  font-size: 2em;
+  width: 14.125em;
+  height: 5.063em;
+  margin: 0 auto 1.5em;
+  color: ${props => props.theme.colorStyled.ColorBlack};
+  span {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 40px;
+    display: inline-block;
+    color: #6e6c83fa;
+    width: 100%;
+  }
+  img {
+    width: 100%;
+    object-position: bottom;
+    height: 100%;
+    max-height: 115px;
+    max-width: 175px;
+    object-fit: contain;
+  }
+`;
+
 export const ApplicationItem = styled.div`
-  
   padding: 2em;
   width: 850px;
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
-  box-shadow: 0px 0px 12px -2px #2a3a51;
+  background-color: ${props => props.theme.colorStyled.ColorWhite};
+  box-shadow: ${props => props.theme.boxShandow.loginPage};
   color: #6e6c83fa;
   position: relative;
   z-index: 1;
@@ -102,11 +117,11 @@ export const ApplicationItem = styled.div`
     }
     .ant-steps-item-icon {
       span {
-        color: ${props => props.theme.secondaryColor} !important;
+        color: ${props => props.theme.colorStyled.ColorWhite} !important;
       }
     }
     .ant-steps-item-title {
-      color: ${props => props.theme.secondaryColor} !important;
+      color: ${props => props.theme.colorStyled.ColorWhite} !important;
     }
   }
   .ant-tabs-bar {
@@ -114,30 +129,7 @@ export const ApplicationItem = styled.div`
   }
 `;
 
-export const ApplicationTitle = styled.div`
-  text-align: center;
-  font-size: 2em;
-  width: 14.125em;
-  height: 5.063em;
-  margin: 0 auto 1.5em;
-  color: ${props => props.theme.textColor};
-  span{
-    text-align: center;
-    font-size: 18px;
-    margin-bottom: 40px;
-    display: inline-block;
-    color: #6e6c83fa;
-    width: 100%;
-  }
-  img{
-    width: 100%;
-    object-position: bottom;
-    height: 100%;
-    max-height: 115px;
-    max-width: 175px;
-    object-fit: contain;
-  }
-`;
+
 
 export const ApplicationInputWrapper = styled.div`
   width: 100%;
@@ -163,7 +155,7 @@ export const ApplicationInput = styled(Input)`
 
 export const ApplicationLabel = styled.div`
   margin-bottom: 7.5px;
-  color: ${props => props.theme.textColor};
+  color: ${props => props.theme.colorStyled.ColorBlack};
 `;
 
 export const ApplicationBtnWrap = styled.div`
@@ -200,7 +192,7 @@ export const ApplicationBtn = styled.button`
     margin-left: auto;
     border: 1px solid ${props => props.theme.primaryColor};
     background: ${props => props.theme.primaryColor};
-    color: ${props => props.theme.secondaryColor};
+    color: ${props => props.theme.colorStyled.ColorWhite};
     i {
       margin-left: 5px;
       margin-right: 0px;
@@ -257,7 +249,7 @@ export const ArrayInputWrapper = styled.div`
   overflow: hidden;
   margin-bottom: 20px;
   margin-top: 20px;
-  color: ${props => props.theme.textColor};
+  color: ${props => props.theme.colorStyled.ColorBlack};
 
   p{
     margin-top: 3px;
@@ -280,7 +272,7 @@ export const ArrayTagWrapper = styled.div`
   padding: 15px 0px;    
   border-bottom: 1px solid #efeaea;
   position: relative;
-  color: ${props => props.theme.textColorTertiary};
+  color: ${props => props.theme.colorStyled.ColorBlackTertiary};
 
   .WorkEducation{
     align-items: center;
@@ -497,7 +489,7 @@ export const RoleWrapper = styled.div`
       display: flex;
       flex-direction: column;
       text-align: center;
-      color: ${props => props.theme.cancelColor};
+      color: ${props => props.theme.colorStyled.ColoraBtnCancel};
       color: #2f2f2f;
       font-size: 22px;
       

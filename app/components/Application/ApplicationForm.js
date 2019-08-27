@@ -4,7 +4,7 @@ import {
   Steps, Tabs, Icon,
   notification,
 } from 'antd';
-import ShadowScrollbars from 'components/Scrollbar';
+
 import { func, bool, string } from 'prop-types';
 import {
   ApplicationWrapper, ApplicationItem,
@@ -186,8 +186,6 @@ export class ApplicationForm extends Component {
               </Steps>
             )}
           <LoadingSpin loading={isSubmitting}>
-            {/* <ShadowScrollbars autoHide style={scrollStyle}>
-            </ShadowScrollbars> */}
             {this.handleRenderForm()}
           </LoadingSpin>
         </ApplicationItem>

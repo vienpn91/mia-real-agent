@@ -7,7 +7,7 @@ export const TopNavBarWrapper = styled(Header)`
   height: ${props => props.theme.heightSite.heightTopNavBar};
   padding: 0px 1.5em;
   background-color: ${props => props.theme.colorStyled.ColorBlack};
-  box-shadow: 0px 0px 6px -1px ${props => props.theme.textColorSecondary};
+  box-shadow: 0px 0px 6px -1px ${props => props.theme.colorStyled.ColorBlackSecondary};
   position: relative;
   z-index: 1;
   color: #fff;
@@ -157,7 +157,7 @@ export const UserName = styled.div.attrs({
   margin: 0 0.5em;
   font-weight: 400;
   font-size: 0.85em;
-  color: ${props => props.theme.textColorSecondary};
+  color: ${props => props.theme.colorStyled.ColorBlackSecondary};
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -177,7 +177,7 @@ export const MenuStyled = styled(Icon).attrs({
   className: 'select-icon',
 })`
   svg {
-    color: ${props => props.theme.textColorSecondary};
+    color: ${props => props.theme.colorStyled.ColorBlackSecondary};
     font-size: 0.75em;
   }
 `;

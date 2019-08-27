@@ -54,8 +54,6 @@ export const DefaultThemes = {
     ColorIcon: '#eb9388',
     ColorIconHover: '#d50000',
     ColorBtnFb: '#3b5998',
-
-
     iconAddColor: '#2fa3e6',
     iconAddHoverColor: '#036299',
     iconMoreColor: '#227fb5',
