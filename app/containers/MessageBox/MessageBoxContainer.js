@@ -54,7 +54,7 @@ const mapDispatchToProps = {
   setCurrentTicket: actions.selectTicket,
   sendReplyMessage,
   findAgentRequest,
-  submitRating: CONVERSATION_ACTIONS.submitConversationRating,
+  submitRating: actions.submitTicketRating,
   joinConversation: CONVERSATION_ACTIONS.userJoinConversation,
   leftConversation: CONVERSATION_ACTIONS.userLeftConversation,
   userTyping: CONVERSATION_ACTIONS.userTyping,

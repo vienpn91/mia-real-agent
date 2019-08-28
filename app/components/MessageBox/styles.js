@@ -16,6 +16,9 @@ export const MessageBoxContent = styled.div`
   height: 100%;
   color: #000;
   background-color: #fff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const MessageBoxItem = styled.div`
@@ -179,18 +182,24 @@ export const InputUpload = styled.input`
 
 export const RatingWrapper = styled.div`
   width: 100%;
-  height: 100%;
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  flex: 0 0 180px;
 `;
 
 export const RatingContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
   ul{
     padding-left: 4px; 
+  }
+  form {
+    width: 100%;
   }
 `;
 
@@ -200,7 +209,7 @@ export const CommentInputWrapper = styled.div`
   background-color: ${props => props.theme.colorStyled.ColorWhite};
   border-top: 1px solid #ddd;
   height: 100px;
-  width: 350px;
+  width: 100%;
   padding: 0px 10px;
   margin-top: 10px;
   .ant-form-item{
@@ -234,6 +243,14 @@ export const TicketActionStatusTitle = styled.span`
   font-weight: 600;
   font-style: italic;
   color: ${({ status }) => [COLOR_BY_STATUS[status]]};
+`;
+
+export const TicketRatingScore = styled.span`
+  font-weight: 600;
+  font-style: italic;
+  color: #ffd400;
+  font-size: 1.5em;
+  margin: 0 5px;
 `;
 
 export const UserAction = styled.span`
@@ -320,4 +337,10 @@ export const ProfileImageStyled = styled.img`
   height: 35px;
   cursor: pointer;
   border-radius: 100%;
+`;
+
+export const CommentWrapper = styled.div`
+  text-align: center;
+  color: #7a7a7a;
+  font-weight: 600;
 `;
