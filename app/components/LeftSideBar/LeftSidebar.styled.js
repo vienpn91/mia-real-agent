@@ -12,17 +12,19 @@ export const LeftSideBarAdmin = styled.div`
 
 export const SidebarBlockAdmin = styled.ul``;
 
-export const LogoWrapper = styled.div.atrrs({
+export const LogoWrapper = styled.div.attrs({
   className: 'logo-admin',
 })`
   height: 100%;
   width: 100%;
-  text-align: center;
+  display: flex;
   padding: .5em 1em;
+  align-items: center;
 `;
 
 export const Logo = styled.img`
-  width: 10.500em;
+  width: 6.500em;
+  object-position: left;
   height: 100%;
   margin: auto 0;
   object-fit: contain;
