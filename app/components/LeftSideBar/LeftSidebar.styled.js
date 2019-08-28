@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 export const LeftSideBarAdmin = styled.div`
   height: 100vh;
   width: 100%;  
-   background-color: ${props => props.theme.colorStyled.ColorBlack};
+  background-color: ${props => props.theme.colorStyled.ColorBlack};
   ${({ isToggle }) => isToggle && css`
       width: 3.125em;      
   `};
