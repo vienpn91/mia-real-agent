@@ -7,7 +7,7 @@ import { COLOR_BY_STATUS, COLOR_BY_ACTION } from '../../../common/enums';
 export const MessageBoxWrapper = styled.div`
   display: flex;
   height: calc(100vh - 123px);
-  background: ${props => props.theme.secondaryColor};
+  background: ${props => props.theme.colorStyled.ColorWhite};
   position: relative;
 `;
 
@@ -50,7 +50,7 @@ export const MessageBoxItem = styled.div`
     }
     p {
       float: right;
-      color: ${props => props.theme.secondaryColor};
+      color: ${props => props.theme.colorStyled.ColorWhite};
       background-color: #ff5504;
     }
     > div{
@@ -66,7 +66,7 @@ export const ConversationHeaderTitle = styled.div`
   display: flex;
   flex-direction: column;
   .ant-breadcrumb-link {
-    color: ${props => props.theme.textColor};
+    color: ${props => props.theme.colorStyled.ColorBlack};
   }
 
 `;
@@ -119,7 +119,7 @@ export const MessageInputWrapper = styled.div`
   bottom: 0px;
   display: flex;
   align-items: center;
-  background-color: ${props => props.theme.secondaryColor};
+  background-color: ${props => props.theme.colorStyled.ColorWhite};
   border-top: 1px solid #ddd;
   height: 60px;
   width: 100%;
@@ -169,7 +169,7 @@ export const InputAction = styled.label`
   color: #b5b5b5;
   cursor: pointer;
   &:hover {
-    color: ${props => props.theme.textColor};
+    color: ${props => props.theme.colorStyled.ColorBlack};
   }
 `;
 
@@ -197,7 +197,7 @@ export const RatingContent = styled.div`
 export const CommentInputWrapper = styled.div`
   display: flex;
   align-items: center;
-  background-color: ${props => props.theme.secondaryColor};
+  background-color: ${props => props.theme.colorStyled.ColorWhite};
   border-top: 1px solid #ddd;
   height: 100px;
   width: 350px;
