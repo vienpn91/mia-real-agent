@@ -25,13 +25,19 @@ const { TabPane } = Tabs;
 
 export class ApplicationForm extends Component {
   static propTypes = {
+    checkInfoAction: func.isRequired,
     onSubmit: func.isRequired,
     isSubmitting: bool.isRequired,
     submitError: string.isRequired,
+
+    isValidating: bool.isRequired,
+    validateError: string.isRequired,
   }
 
   state = {
     step: 0,
+    nextStep: 0,
+    waitValidate: false,
     role: '',
     basicData: null,
     experienceData: null,
@@ -39,7 +45,11 @@ export class ApplicationForm extends Component {
   }
 
   componentDidUpdate = (prevProps) => {
-    const { isSubmitting, submitError } = this.props;
+    const { step, nextStep, waitValidate } = this.state;
+    const {
+      isSubmitting, submitError,
+      isValidating, validateError,
+    } = this.props;
     if (prevProps.isSubmitting && !isSubmitting) {
       if (submitError) {
         notification.error({ message: submitError });
@@ -48,11 +58,27 @@ export class ApplicationForm extends Component {
           step: 5,
         });
       }
+      return;
+    }
+    if (step !== nextStep && step !== 5) {
+      if (!waitValidate) {
+        this.setState({
+          step: nextStep,
+        });
+        return;
+      }
+      if (prevProps.isValidating && !isValidating && !validateError) {
+        this.setState({
+          waitValidate: false,
+          step: nextStep,
+        });
+      }
     }
   }
 
   handleNextStep = (data) => {
     const { step } = this.state;
+    const { checkInfoAction } = this.props;
     switch (step) {
       case 0:
         this.setState({
@@ -60,8 +86,10 @@ export class ApplicationForm extends Component {
         });
         break;
       case 1:
+        checkInfoAction(data.nickname, data.email);
         this.setState({
           basicData: data,
+          waitValidate: true,
         });
         break;
       case 2:
@@ -77,7 +105,7 @@ export class ApplicationForm extends Component {
       default: break;
     }
     this.setState({
-      step: step + 1,
+      nextStep: step + 1,
     });
   }
 
@@ -86,6 +114,7 @@ export class ApplicationForm extends Component {
 
     this.setState({
       step: step - 1,
+      nextStep: step - 1,
     });
   }
 
@@ -153,7 +182,7 @@ export class ApplicationForm extends Component {
   }
 
   render() {
-    const { isSubmitting } = this.props;
+    const { isSubmitting, isValidating } = this.props;
     const { step } = this.state;
     return (
       <ApplicationWrapper>
@@ -175,7 +204,9 @@ export class ApplicationForm extends Component {
                 <Step title={toI18n('APPLICATION_FORM_ADDITIONAL_TAB')} />
               </Steps>
             )}
-          <LoadingSpin loading={isSubmitting}>
+          <LoadingSpin loading={isSubmitting || isValidating}>
+            {/* <ShadowScrollbars autoHide style={scrollStyle}>
+            </ShadowScrollbars> */}
             {this.handleRenderForm()}
           </LoadingSpin>
         </ApplicationBlock>

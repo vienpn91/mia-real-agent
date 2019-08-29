@@ -7,6 +7,7 @@ import ApplicationService from './application.service';
 import UserService from '../user/user.service';
 // import { randomPassword } from '../../utils/utils';
 import { hashFunc } from '../../utils/bcrypt';
+import { sendEmailApplicationApproved } from '../../mail-sparkpost/sparkpost';
 import { APPLICATION_STATUS } from '../../../common/enums';
 
 class ApplicationController extends BaseController {
@@ -16,6 +17,7 @@ class ApplicationController extends BaseController {
     this.rejectApplication = this.rejectApplication.bind(this);
     this.reviewApplication = this.reviewApplication.bind(this);
     this.updateStatus = this.updateStatus.bind(this);
+    this.checkBasicInfomationExisted = this.checkBasicInfomationExisted.bind(this);
   }
 
   async approveApplication(req, res) {
@@ -42,6 +44,10 @@ class ApplicationController extends BaseController {
       const user = await UserService.insert(newUserPayload);
       UserService.provideAccessToken(user);
       const result = await this.updateStatus(application, APPLICATION_STATUS.APPROVED);
+
+      // Send Email included password
+      sendEmailApplicationApproved(application, passwordString);
+
       return res.status(httpStatus.OK).send(result);
     } catch (error) {
       return this.handleError(res, error);
@@ -72,6 +78,18 @@ class ApplicationController extends BaseController {
     application.set({ status });
     const result = await application.save();
     return result;
+  }
+
+  async checkBasicInfomationExisted(req, res) {
+    try {
+      const { query } = req;
+      const { nickname, email } = query;
+      const nicknameResult = await this.service.countDocument({ nickname });
+      const emailResult = await UserService.countDocument({ email });
+      return res.status(httpStatus.OK).send({ nicknameResult, emailResult });
+    } catch (error) {
+      return this.handleError(res, error);
+    }
   }
 }
 

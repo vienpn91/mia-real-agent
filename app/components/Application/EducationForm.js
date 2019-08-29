@@ -8,12 +8,10 @@ import * as Yup from 'yup';
 import { func } from 'prop-types';
 import FormInput from '../FormInput/FormInput';
 import {
-  ApplicationBtnWrap,
   ArrayTagWrapper,
-  ActionFormRegister,
-  ArrayInputWrapper, TagAction, DescriptionNumber, ArrayWrapper,
+  ArrayInputWrapper, TagAction, ArrayWrapper, DescriptionNumber, ActionFormRegister,
 } from './styles';
-import { POSITION_OPTIONS, FIELD_OF_STUDY } from '../../../common/enums';
+import { FIELD_OF_STUDY } from '../../../common/enums';
 import { toI18n } from '../../utils/func-utils';
 import { ButtonCancel, ButtonSubmit, ArrayAddButton } from '../../stylesheets/Button.style';
 
@@ -31,7 +29,7 @@ const initialValues = {
 const educationValidationSchema = Yup.object().shape({
   school: Yup.string().trim().required('Required'),
   degree: Yup.string().trim().required('Required'),
-  certificate: Yup.string().trim().required('Required'),
+  certificate: Yup.array().of(Yup.object()).required('Required'),
   fieldOfStudies: Yup.array().of(Yup.string()),
   gpa: Yup.number().min(0).max(5),
 });
@@ -138,7 +136,7 @@ export class EducationForm extends Component {
                 <Col sm={24} xs={24}>
                   <FormInput
                     name="gpa"
-                    type="text"
+                    type="number"
                     label={toI18n('APPLICATION_EDUCATION_FORM_GPA')}
                     login={1}
                   />
@@ -148,7 +146,7 @@ export class EducationForm extends Component {
                 <Col sm={24} xs={24}>
                   <FormInput
                     name="certificate"
-                    type="text"
+                    type="upload"
                     label={toI18n('APPLICATION_EDUCATION_FORM_CERTIFICATE')}
                     login={1}
                   />
@@ -162,7 +160,7 @@ export class EducationForm extends Component {
                     >
                       {toI18n('FORM_CANCEL')}
                     </ButtonCancel>
-                    <ButtonSubmit>
+                    <ButtonSubmit type="submit">
                       {editIndex >= 0 ? toI18n('FORM_SAVE') : toI18n('FORM_ADD')}
                     </ButtonSubmit>
                   </ActionFormRegister>
@@ -195,11 +193,11 @@ export class EducationForm extends Component {
                 {gpa}
               </DescriptionNumber>
             </div>
-            <div>
+            {/* <div>
               {!_isEmpty(certificate) && (
                 <a href={certificate}>{certificate}</a>
               )}
-            </div>
+            </div> */}
           </div>
           <div>
             <TagAction>
@@ -227,12 +225,13 @@ export class EducationForm extends Component {
   renderRegisterBtn = () => (
     <ActionFormRegister>
       <ButtonCancel
+        type="button"
         onClick={this.handleCancel}
       >
         <i className="mia-chevron-left" />
         {toI18n('FORM_BACK')}
       </ButtonCancel>
-      <ButtonSubmit>
+      <ButtonSubmit type="submit">
         {toI18n('FORM_NEXT')}
         <i className="mia-chevron-right" />
       </ButtonSubmit>

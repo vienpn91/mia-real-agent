@@ -35,3 +35,8 @@ export const getApplicationSummary = () => axios
   .get('admin/applications/dashboard/summary')
   .then(response => ({ response }))
   .catch(handleError);
+
+export const checkBasicInfomationExisted = (nickname, email) => axios
+  .get(`applications/info/check?nickname=${nickname}&email=${email}`)
+  .then(response => ({ response }))
+  .catch(handleError);

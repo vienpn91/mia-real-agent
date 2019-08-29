@@ -1,5 +1,5 @@
 import {
-  takeEvery, call, put, select, takeLatest,
+  takeEvery, call, put, select, takeLatest, take,
 } from 'redux-saga/effects';
 import _get from 'lodash/get';
 import _assign from 'lodash/assign';
@@ -12,16 +12,60 @@ import {
   APPLICATION_ADMIN_GET_ALL, APPLICATION_SORTING,
   APPLICATION_APPROVE, APPLICATION_REJECT, APPLICATION_REVIEW,
   APPLICATION_FETCH_SINGLE,
+  APPLICATION_CHECK_INFO, APPLICATION_FORM_VALIDATE_STEP,
 } from 'reducers/application';
-import { getSkipLimit } from 'utils/func-utils';
+import { getSkipLimit, toI18n } from 'utils/func-utils';
 import { getSelectedPage, getSizePerPage, reselectSorting } from 'selectors/application';
-import { getToken } from 'reducers/auth';
 import * as ApplicationApi from '../../api/application';
-import { configToken } from '../../api/config';
+import * as UploadApi from '../../api/upload';
+
+function* uploadApplicationFile(file) {
+  const { error, response } = yield call(UploadApi.uploadFile, file);
+  if (error) {
+    const message = _get(
+      error, 'response.data.message', DEFAULT_ERROR_MESSAGE
+    );
+    yield put(actions.submitFailAction(message));
+    return null;
+  }
+  const { fileUrl } = response;
+  return {
+    url: fileUrl,
+  };
+}
+
+function* handleExperienceCertificate(educations) {
+  const mappedEducations = [];
+  // eslint-disable-next-line no-restricted-syntax
+  for (const education of educations) {
+    const { certificate, ...rest } = education;
+    const certificateUrls = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const certificateFile of certificate) {
+      const { url } = yield uploadApplicationFile(certificateFile);
+      certificateUrls.push(url);
+    }
+    mappedEducations.push({ ...rest, certificate: certificateUrls });
+  }
+  return mappedEducations;
+}
 
 function* submitApplication({ payload }) {
   const { application } = payload;
-  const { error, response } = yield call(ApplicationApi.createApplication, application);
+  const { cv, educations, ...rest } = application;
+  const cvUrls = [];
+  // eslint-disable-next-line no-restricted-syntax
+  for (const cvFile of cv) {
+    const { url } = yield uploadApplicationFile(cvFile);
+    cvUrls.push(url);
+  }
+
+  const mappedEducations = yield handleExperienceCertificate(educations);
+  const { error, response } = yield call(ApplicationApi.createApplication, {
+    ...rest,
+    cv: cvUrls,
+    educations: mappedEducations,
+  });
   if (error) {
     const message = _get(
       error, 'response.data.message', DEFAULT_ERROR_MESSAGE
@@ -61,7 +105,6 @@ function* queryTickets(action) {
 }
 
 function* adminGetAllApplication({ payload }) {
-  yield configAxiosForApplication();
   const selectedPage = yield select(getSelectedPage);
   const sizePerPage = yield select(getSizePerPage);
   const sorting = yield select(reselectSorting);
@@ -99,7 +142,6 @@ function* adminGetAllApplication({ payload }) {
 
 
 function* approveApplication(action) {
-  yield configAxiosForApplication();
   const { applicationId } = action;
   const { response, error } = yield call(ApplicationApi.approveApplication, applicationId);
   if (error) {
@@ -114,7 +156,6 @@ function* approveApplication(action) {
 }
 
 function* rejectApplication(action) {
-  yield configAxiosForApplication();
   const { applicationId } = action;
   const { response, error } = yield call(ApplicationApi.rejectApplication, applicationId);
   if (error) {
@@ -129,7 +170,6 @@ function* rejectApplication(action) {
 }
 
 function* reviewApplication(action) {
-  yield configAxiosForApplication();
   const { applicationId } = action;
   const { response, error } = yield call(ApplicationApi.reviewApplication, applicationId);
   if (error) {
@@ -144,7 +184,6 @@ function* reviewApplication(action) {
 }
 
 function* applicationFetchSingle({ id }) {
-  yield configAxiosForApplication();
   const { response } = yield call(ApplicationApi.get, id);
   const error = _get(response, 'error');
   const data = _get(response, 'data', {});
@@ -157,10 +196,43 @@ function* applicationFetchSingle({ id }) {
   }
 }
 
+function* checkBasicInfomation({ payload }) {
+  const { nickname, email } = payload;
+  try {
+    const { response } = yield call(ApplicationApi.checkBasicInfomationExisted, nickname, email);
+    const data = _get(response, 'data', {});
+    const { nicknameResult, emailResult } = data;
+    if (nicknameResult !== 0) {
+      throw new Error('APPLICATION_BASIC_INFO_FORM_NICKNAME_EXISTED');
+    } else if (emailResult !== 0) {
+      throw new Error('APPLICATION_BASIC_INFO_FORM_EMAIL_EXISTED');
+    } else {
+      yield put(actions.checkInfoCompleteAction(data));
+    }
+  } catch (error) {
+    const errMsg = _get(error, 'response.data.message', error.message);
+    yield put(actions.checkInfoFailAction(errMsg));
+    notification.error({ message: toI18n(errMsg) });
+  }
+}
 
-export function* configAxiosForApplication() {
-  const token = yield select(getToken);
-  configToken(token);
+function* validateFormStep({
+  payload: data,
+}) {
+  const {
+    validateFuncAction,
+    payload,
+    completeActionType,
+    failActionType,
+  } = data;
+  yield put(validateFuncAction(payload));
+  const { payload: response } = yield take([completeActionType, failActionType]);
+  const { errorMessage } = response;
+  if (errorMessage) {
+    yield put(actions.applicationFormValidateStepFailAction(errorMessage));
+  } else {
+    yield put(actions.applicationFormValidateStepCompleteAction());
+  }
 }
 
 function* ticketFlow() {
@@ -171,6 +243,8 @@ function* ticketFlow() {
   yield takeEvery(APPLICATION_REJECT, rejectApplication);
   yield takeEvery(APPLICATION_REVIEW, reviewApplication);
   yield takeEvery(APPLICATION_FETCH_SINGLE, applicationFetchSingle);
+  yield takeEvery(APPLICATION_CHECK_INFO, checkBasicInfomation);
+  yield takeEvery(APPLICATION_FORM_VALIDATE_STEP, validateFormStep);
 }
 
 export default ticketFlow;

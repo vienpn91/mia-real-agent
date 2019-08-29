@@ -22,6 +22,10 @@ const en = {
     FORM_REQUIRED: 'Required',
     FORM_INVALID_MAIL: 'Invalid Email',
     FORM_PASSWORD_MUST_MATCH: 'Passwords must match',
+    // Form input
+    FORM_INPUT_UPLOAD_PLACEHOLDER: 'Upload',
+    FORM_INPUT_UPLOAD_MAX_SIZE: 'Upload file cannot exceed 10MB',
+    FORM_INPUT_UPLOAD_FILE_TYPE: 'File type not supported',
     // Dashboard
     DB_REQUEST: 'Requests',
     DB_TICKET: 'Ticket',
@@ -118,6 +122,10 @@ const en = {
     APPLICATION_FORM_EDUCATION_TAB: 'Education',
     APPLICATION_FORM_ADDITIONAL_TAB: 'Additional',
     // Application Basic info Form
+    APPLICATION_BASIC_INFO_FORM_NICKNAME: 'Nickname',
+    APPLICATION_BASIC_INFO_FORM_NICKNAME_CANNOT_MATCH: 'Nickname cannot have First name or Last name',
+    APPLICATION_BASIC_INFO_FORM_NICKNAME_EXISTED: 'Nickname existed',
+    APPLICATION_BASIC_INFO_FORM_EMAIL_EXISTED: 'Email existed',
     APPLICATION_BASIC_INFO_FORM_FIRST_NAME: 'First name',
     APPLICATION_BASIC_INFO_FORM_LASTNAME: 'Last name',
     APPLICATION_BASIC_INFO_FORM_EMAIL: 'Email',

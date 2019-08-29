@@ -9,7 +9,7 @@ import FormInput from '../FormInput/FormInput';
 import {
   ActionFormRegister,
   ArrayTagWrapper,
-  ArrayInputWrapper, 
+  ArrayInputWrapper,
   ArrayWrapper,
   TagAction,
 
@@ -69,7 +69,7 @@ const languageValidationSchema = Yup.object().shape({
 });
 
 const validationSchema = Yup.object().shape({
-  cv: Yup.string().trim().required('Required'),
+  cv: Yup.array().of(Yup.object()).required('Required'),
   skills: Yup.array().of(Yup.string()),
   languages: Yup.array().of(Yup.object().shape({
     name: Yup.string().trim().required('Required'),
@@ -226,7 +226,7 @@ export class AdditionalForm extends Component {
                     >
                       {toI18n('FORM_CANCEL')}
                     </ButtonCancel>
-                    <ButtonSubmit>
+                    <ButtonSubmit type="submit">
                       {editIndex >= 0 ? toI18n('FORM_SAVE') : toI18n('FORM_ADD')}
                     </ButtonSubmit>
                   </ActionFormRegister>
@@ -316,12 +316,13 @@ export class AdditionalForm extends Component {
   renderRegisterBtn = () => (
     <ActionFormRegister>
       <ButtonCancel
+        type="button"
         onClick={this.handleCancel}
       >
         <i className="mia-chevron-left" />
         <span>{toI18n('FORM_BACK')}</span>
       </ButtonCancel>
-      <ButtonSubmit>
+      <ButtonSubmit type="submit">
         <span>{toI18n('FORM_NEXT')}</span>
         <i className="mia-chevron-right" />
       </ButtonSubmit>
@@ -346,34 +347,28 @@ export class AdditionalForm extends Component {
             <Form onSubmit={handleSubmit}>
               <Row gutter={32}>
                 <Col sm={12} xs={24}>
-                  <FormInput
-                    name="cv"
-                    type="text"
-                    label={toI18n('APPLICATION_ADDTIONAL_FORM_CV')}
-                    login={1}
-                  />
-                </Col>
-                <Col sm={12} xs={24}>
-                  <FormInput
-                    name="skills"
-                    type="select"
-                    mode="multiple"
-                    options={AGENT_SKILL}
-                    label={toI18n('APPLICATION_ADDTIONAL_FORM_SKILLS')}
-                    login={1}
-                  />
-                </Col>
-              </Row>
-              <Row gutter={32}>
-                <Col sm={12} xs={24}>
-                  <FormInput
-                    name="address"
-                    type="text"
-                    label={toI18n('APPLICATION_ADDTIONAL_ADDRESS')}
-                    login={1}
-                  />
-                </Col>
-                {/* <Col sm={12} xs={24}>
+                  <Row gutter={32}>
+                    <Col sm={24} xs={24}>
+                      <FormInput
+                        name="skills"
+                        type="select"
+                        mode="multiple"
+                        options={AGENT_SKILL}
+                        label={toI18n('APPLICATION_ADDTIONAL_FORM_SKILLS')}
+                        login={1}
+                      />
+                    </Col>
+                  </Row>
+                  <Row gutter={32}>
+                    <Col sm={24} xs={24}>
+                      <FormInput
+                        name="address"
+                        type="text"
+                        label={toI18n('APPLICATION_ADDTIONAL_ADDRESS')}
+                        login={1}
+                      />
+                    </Col>
+                    {/* <Col sm={12} xs={24}>
                   <FormInput
                     name="social"
                     type="text"
@@ -381,6 +376,17 @@ export class AdditionalForm extends Component {
                     login={1}
                   />
                 </Col> */}
+                  </Row>
+                </Col>
+                <Col sm={12} xs={24}>
+                  <FormInput
+                    name="cv"
+                    type="upload"
+                    className="upload-list-inline"
+                    label={toI18n('APPLICATION_ADDTIONAL_FORM_CV')}
+                    login={1}
+                  />
+                </Col>
               </Row>
               <Row gutter={32}>
                 <Col sm={24} xs={24}>
