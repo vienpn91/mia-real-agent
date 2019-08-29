@@ -63,6 +63,7 @@ const ItemDetailListHoc = (ItemsDetailListItem) => {
             shouldRenderFilter={shouldRenderFilter}
           />
           <TableBorder
+            pageName="detail-list-hoc"
             size={size}
             isLoading={isLoading}
             totalCount={totalCount}

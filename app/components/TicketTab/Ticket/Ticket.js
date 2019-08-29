@@ -36,7 +36,7 @@ class Ticket extends Component {
 
     if (isFetching) {
       return (
-        <TableContentWrapper bgTable>
+        <TableContentWrapper>
           <SpinnerLoading />
         </TableContentWrapper>
       );
@@ -48,7 +48,7 @@ class Ticket extends Component {
         autoHide
         style={scrollStyle}
       >
-        <TableContentWrapper bgTable>
+        <TableContentWrapper>
 
           {isNoTicket
             ? (

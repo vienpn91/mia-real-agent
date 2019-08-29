@@ -14,7 +14,7 @@ export const TopbarRightAdmin = styled.div`
   display: flex;
   flex: 1;
   justify-content: flex-end;
-  height: 3.750em;
+  height:  ${props => props.theme.heightSite.heightHeadAdmin};
 `;
 
 export const ProfileStyled = styled.div`

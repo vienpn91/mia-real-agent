@@ -99,6 +99,26 @@ export const ButtonCancel = styled(Button)`
     margin-right: .35em;
   }
 `;
+
+export const ButtonPrimary = styled(Button)`
+  min-width: 6.25em;
+  height: 2.25em;
+  padding: 0;
+  border-radius: ${props => props.theme.borderRadius.borderBtnSmall};
+  border: 1px solid ${props => props.theme.colorStyled.ColorBgDefault};
+  background: ${props => props.theme.colorStyled.ColorBgDefault};
+  color:  ${props => props.theme.colorStyled.ColorWhite};
+  font-size: ${props => props.theme.fontSize.SmallFontSize};
+  padding: .35em 1em;
+  &:hover{
+    opacity: .7;
+  }
+  i {
+    font-size: 1em;
+    margin-right: .35em;
+  }
+`;
+
 export const ButtonSubmit = styled(Button).attrs({
   type: 'submit',
 })`

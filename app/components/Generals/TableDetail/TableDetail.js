@@ -22,7 +22,7 @@ class TableDetail extends Component {
     const { columns } = this.props;
 
     return (
-      <TableHeadWrapper bgTable>
+      <TableHeadWrapper>
         {columns.map(this.renderColumnItem)}
       </TableHeadWrapper>
     );
@@ -43,7 +43,7 @@ class TableDetail extends Component {
     return (
       <TableDetailWrapper>
         {this.renderTableHeader()}
-        <TableContentWrapper bgTable>
+        <TableContentWrapper>
           {isEmpty && <TableEmptyContent>{emptyMsg}</TableEmptyContent>}
           {!isEmpty && items.map(this.renderItem)}
         </TableContentWrapper>

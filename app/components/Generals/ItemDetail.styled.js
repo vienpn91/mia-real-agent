@@ -30,10 +30,6 @@ export const ItemDetailListItem = styled.div`
     `};
 `;
 
-export const ItemDetailInput = styled.div`
-  padding: ${props => props.theme.fontSize.MediumFontSize};
-  text-align: center;
-`;
 
 export const ItemDetailName = styled.div`
   padding: ${props => props.theme.fontSize.MediumFontSize};

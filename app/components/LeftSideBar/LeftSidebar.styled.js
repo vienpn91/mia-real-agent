@@ -59,7 +59,7 @@ export const IconToggle = styled.i`
 `;
 
 export const SidebarToggleButton = styled.div`
-  height: 3.750em;
+  height:  ${props => props.theme.heightSite.heightHeadAdmin};
   background-color: ${props => props.theme.colorStyled.ColorOverLay};
   cursor: pointer;
   position: relative;

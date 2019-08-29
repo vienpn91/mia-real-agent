@@ -17,7 +17,6 @@ class TableHeaderComponent extends React.PureComponent {
 
     return (
       <TableHeadWrapper>
-        <TableHeader size="40" />
         <TableHeadItemGroup>
           {columns.map(this.renderColumn)}
         </TableHeadItemGroup>
