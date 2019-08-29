@@ -1,17 +1,14 @@
 /*Fonts icon */
 @font-face {
   font-family: 'icomoon';
-  src: url('./icomoon.eot?5qe2db');
-  src: local('icomoon'),
-    url('./icomoon.eot?5qe2db#iefix') format('embedded-opentype'),
-    url('./icomoon.ttf?5qe2db') format('truetype'),
-    url('./icomoon.woff?5qe2db') format('woff'),
-    url('./icomoon.svg?5qe2db#icomoon') format('svg');
+  src: url('./icomoon.eot?vw1295');
+  src: local('icomoon'), url('./icomoon.eot?vw1295#iefix') format('embedded-opentype'), url('./icomoon.ttf?vw1295') format('truetype'), url('./icomoon.woff?vw1295') format('woff'), url('./icomoon.svg?vw1295#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
-[class^="mia-"], [class*=" mia-"] {
+[class*=" mia-"],
+[class^="mia-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon' !important;
   speak: none;
@@ -26,121 +23,171 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.mia-dashboard:before {
+  content: "\e900";
+}
+
+.mia-idea:before {
+  content: "\e901";
+}
+
+.mia-tickets:before {
+  content: "\e902";
+}
+
+.mia-slack:before {
+  content: "\e913";
+}
+
+.mia-twitter:before {
+  content: "\e921";
+}
+
+.mia-facebook:before {
+  content: "\e912";
+}
+
+.mia-close1:before {
+  content: "\e918";
+}
+
+.mia-google:before {
+  content: "\e922";
+}
+
+.mia-user-circle-o:before {
+  content: "\e903";
+}
+
+.mia-filter:before {
+  content: "\e90d";
+}
+
 .mia-ticket:before {
   content: "\e924";
 }
-.mia-dashboard:before {
+
+.mia-dashboard1:before {
   content: "\e925";
 }
+
 .mia-user:before {
   content: "\e926";
 }
+
 .mia-enter:before {
   content: "\e923";
 }
+
 .mia-camera:before {
   content: "\e91d";
 }
+
 .mia-folder:before {
   content: "\e91e";
 }
+
 .mia-gallery:before {
   content: "\e91f";
 }
+
 .mia-happiness:before {
   content: "\e920";
 }
+
 .mia-promotion:before {
   content: "\e919";
 }
+
 .mia-twitter1:before {
   content: "\e911";
   color: #1da1f2;
 }
+
 .mia-cart:before {
-  content: "\e900";
+  content: "\e904";
 }
-.mia-slack:before {
-  content: "\e913";
-}
-.mia-twitter:before {
-  content: "\e921";
-}
-.mia-google:before {
-  content: "\e922";
-}
-.mia-facebook:before {
-  content: "\e912";
-}
-.mia-close1:before {
-  content: "\e918";
-}
-.mia-filter:before {
-  content: "\e90d";
-}
-.mia-user-circle-o:before {
-  content: "\e902";
-}
+
 .mia-edit:before {
   content: "\e91c";
 }
+
 .mia-more:before {
   content: "\e91a";
 }
+
 .mia-bag:before {
   content: "\e915";
 }
+
 .mia-check:before {
   content: "\e910";
 }
+
 .mia-trash:before {
   content: "\e90f";
 }
+
 .mia-arrow-right-thin:before {
   content: "\e90e";
 }
+
 .mia-notifications:before {
   content: "\e90a";
 }
+
 .mia-person:before {
   content: "\e90b";
 }
+
 .mia-arrow-right:before {
   content: "\e905";
 }
+
 .mia-log-in:before {
   content: "\e906";
 }
+
 .mia-add:before {
-  content: "\e903";
+  content: "\e907";
 }
+
 .mia-search:before {
-  content: "\e901";
+  content: "\e908";
 }
+
 .mia-shopping-bag:before {
   content: "\e91b";
 }
+
 .mia-chevron-left:before {
   content: "\e917";
 }
+
 .mia-chevron-right:before {
   content: "\e916";
 }
+
 .mia-cheveron-down:before {
   content: "\e909";
 }
+
 .mia-menu:before {
-  content: "\e908";
-}
-.mia-close:before {
-  content: "\e904";
-}
-.mia-payment:before {
-  content: "\e914";
-}
-.mia-exit:before {
   content: "\e90c";
 }
+
+.mia-close:before {
+  content: "\e914";
+}
+
+.mia-payment:before {
+  content: "\e927";
+}
+
+.mia-exit:before {
+  content: "\e928";
+}
+
 .mia-user-plus:before {
-  content: "\e907";
+  content: "\e929";
 }

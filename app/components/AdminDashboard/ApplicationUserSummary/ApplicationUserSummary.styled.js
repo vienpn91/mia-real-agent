@@ -4,7 +4,7 @@ export const TicketActivityWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   background-color: #f7f7f8;
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1px solid ${props => props.theme.colorStyled.ColorBorder};
   @media (max-width: 1024px) {
     flex-wrap: wrap;
   }
@@ -22,7 +22,7 @@ export const TicketActivityLeftItem = styled.div`
 export const TicketActivityRightItem = styled.div`
   flex: 0 0 50%;
   padding: 30px 35px 30px 40px;
-  border-left: 1px solid #d9d9d9;
+  border-left: 1px solid ${props => props.theme.colorStyled.ColorBorder};
   @media (max-width: 1024px) {
     flex: 0 0 100%;
     padding: 15px 20px;
@@ -101,7 +101,7 @@ export const TicketDetailPercent = styled.div`
   align-items: center;
   justify-content: center;
   text {
-    font-size: 14px;
+    font-size: ${props => props.theme.fontSize.MediumFontSize};
   }
 `;
 

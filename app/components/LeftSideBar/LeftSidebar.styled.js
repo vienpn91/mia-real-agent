@@ -1,88 +1,74 @@
 /* eslint-disable indent */
 import styled, { css } from 'styled-components';
 
-export const LeftSideBarWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
+export const LeftSideBarAdmin = styled.div`
   height: 100vh;
-  width: 260px;
-  transition: all 300ms ease;
-  background-image: url('/assets/images/bg-left-side-bar.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: top;
-  &:before {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    content: '';
-    background-color: #1d1d1d70;
-  }
-  &::-webkit-scrollbar {
-    width: 0 !important;
-  }
-  ${({ isToggle }) => isToggle
-    && css`
-        width: 50px;
-      `};
+  width: 100%;  
+   background-color: ${props => props.theme.colorStyled.ColorBlack};
+  ${({ isToggle }) => isToggle && css`
+      width: 3.125em;      
+  `};
 `;
 
-export const SidebarBlock = styled.ul`
-  font-size: 14px;
-  position: relative;
-  z-index: 1;
-  & > a {
-    text-decoration: none;
-    cursor: pointer;
-  }
-  @media (max-width: 1280px) {
-    margin-top: 0px;
-  }
-`;
+export const SidebarBlockAdmin = styled.ul``;
 
-export const LogoWrapper = styled.div`
+export const LogoWrapper = styled.div.attrs({
+  className: 'logo-admin',
+})`
   height: 100%;
   width: 100%;
-  padding: 8px 15px;
+  display: flex;
+  padding: .5em 1em;
+  align-items: center;
 `;
 
 export const Logo = styled.img`
-  width: 200px;
+  width: 6.500em;
+  object-position: left;
   height: 100%;
   margin: auto 0;
   object-fit: contain;
   cursor: pointer;
 `;
+export const DescLogo = styled.div`
+  color: ${props => props.theme.colorStyled.ColorWhite};
+  display: flex;
+  flex-direction: column;  
+  height: 100%;
+  justify-content: flex-end;
+  span{
+    font-size: ${props => props.theme.fontSize.SmallFontSize};
+  }
+`;
 
 export const IconToggle = styled.i`
-  position: absolute;
-  right: -32px;
-  top: 14px;
+  position: fixed;
+  opacity: 0;
+  left: 16.25em;
+  top: 1em;
   background-color: ${props => props.theme.colorStyled.ColorWhite};
   padding: 8px;
-  box-shadow: 10px 0px 8px -8px #d9d9d9;
-  border: 1px solid #d9d9d9;
+  box-shadow: ${props => props.theme.boxShandow.loginPage};
+  border: 1px solid ${props => props.theme.colorStyled.ColorBorder};
   border-left: none;
   border-radius: 0px 50% 50% 0px;
+  z-index: 2;
   &:hover {
     border-color: #bbb;
   }
 `;
 
 export const SidebarToggleButton = styled.div`
-  height: 60px;
-  background-color: #8f8e90;
-  border-right: 1px solid #ffffff33;
-  border-bottom: 1px solid#ffffff33;
+  height: 3.750em;
+  background-color: ${props => props.theme.colorStyled.ColorOverLay};
   cursor: pointer;
   position: relative;
+  margin-bottom: 1em;
   ${({ isToggle }) => isToggle && css`
     display: flex;
     align-items: center;
     justify-content: center;
-    > div {
+    .logo-admin {
       display: none;
     }
     i {
@@ -98,33 +84,34 @@ export const SidebarToggleButton = styled.div`
 
 export const SidebarItem = styled.li`
   color: ${props => props.theme.colorStyled.ColorWhite};
-  height: 40px;
-  width: 230px;
+  height: 2.500em;
+  width: calc(100% - 2em);
+  margin: 0.5em 1em;
   position: relative;
   cursor: pointer;
   display: flex;
   align-items: center;
-  margin: 8px 15px;
-  padding: 12px 10px 12px 15px;
+  padding: 0 1em;
   background: transparent;
-  border-radius: 4px;
+  border-radius: ${props => props.theme.borderRadius.borderBtnSmall};
   border: none;
   transition: all 300ms ease;
-  & > span {
-    line-height: 15px;
-    margin-left: 10px;
+  .menu-text{
+    line-height: 1em;
+    margin-left: .75em;
+    font-size: ${props => props.theme.fontSize.MediumFontSize}
   }
   &:hover {
-    background-color: #bfbfbf9c;
+    background-color: ${props => props.theme.colorStyled.ColorBgDefault};
   }
-  ${({ actived }) => actived
-    && css`
-      background-color: #bfbfbf9c;
-      color: #2fa3e6;
-    `};
+  ${({ isActive }) => isActive && css`
+      background-color: ${props => props.theme.colorStyled.ColorBgDefault};
+      color: ${props => props.theme.colorStyled.ColorWhite};
+  `};
   ${({ isToggle }) => isToggle && css`
     width: auto;
-    margin: 8px 0px;
+    margin: .5em 0;
+    border: 0;
     justify-content: center;
     span {
       display: none;

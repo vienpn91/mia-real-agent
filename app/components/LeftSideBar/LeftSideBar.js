@@ -5,11 +5,12 @@ import _reduce from 'lodash/reduce';
 import _startsWith from 'lodash/startsWith';
 import SidebarItem from './SideBarItem';
 import {
-  LeftSideBarWrapper,
+  LeftSideBarAdmin,
   SidebarToggleButton,
-  SidebarBlock,
+  SidebarBlockAdmin,
   LogoWrapper,
   Logo,
+  DescLogo,
   IconToggle,
 } from './LeftSidebar.styled';
 import { toI18n } from '../../utils/func-utils';
@@ -26,14 +27,14 @@ const TABS_MENU = [
     key: 'tickets',
     type: 'container',
     label: toI18n('ADMIN_LEFT_NAV_TICKETS'),
-    icon: 'mia-ticket',
+    icon: 'mia-tickets',
     link: '/admin/tickets',
   },
   {
     key: 'applications',
     type: 'container',
     label: toI18n('ADMIN_LEFT_NAV_APPLICATIONS'),
-    icon: 'mia-ticket',
+    icon: 'mia-dashboard1',
     link: '/admin/applications',
   },
   {
@@ -47,7 +48,7 @@ const TABS_MENU = [
     key: 'intents',
     type: 'container',
     label: toI18n('ADMIN_LEFT_NAV_INTENTS'),
-    icon: 'mia-filter',
+    icon: 'mia-idea',
     link: '/admin/intents',
   },
   {
@@ -122,6 +123,10 @@ class LeftSideBar extends PureComponent {
   renderLogo = () => (
     <LogoWrapper onClick={this.onLogoClick}>
       <Logo src="/assets/images/logo-small-white.png" />
+      <DescLogo>
+        <span>Admin</span>
+        <span>Control Panel</span>
+      </DescLogo>
     </LogoWrapper>
   );
 
@@ -147,17 +152,17 @@ class LeftSideBar extends PureComponent {
   render() {
     const { toggleLeftSideBar, handleToggle } = this.props;
     return (
-      <LeftSideBarWrapper
+      <LeftSideBarAdmin
         isToggle={toggleLeftSideBar}
       >
-        <SidebarBlock>
+        <SidebarBlockAdmin>
           <SidebarToggleButton isToggle={toggleLeftSideBar}>
             {this.renderLogo()}
             <IconToggle onClick={handleToggle} className="mia-chevron-right" />
           </SidebarToggleButton>
           {TABS_MENU.map(this.renderTabItem)}
-        </SidebarBlock>
-      </LeftSideBarWrapper>
+        </SidebarBlockAdmin>
+      </LeftSideBarAdmin>
     );
   }
 }

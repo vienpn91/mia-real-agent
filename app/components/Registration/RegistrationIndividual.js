@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import {
   Row, Col, Form,
 } from 'antd';
-import ShadowScrollbars from 'components/Scrollbar';
+
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import {
   LoginBtn,
   LoginSpinner,
   LoginErrorMessage,
-} from '../Login/styles';
+} from '../../stylesheets/Button.style';
 import FormInput from '../FormInput/FormInput';
 import { POSITION_OPTIONS } from '../../../common/enums';
 import {
@@ -19,10 +19,7 @@ import {
 } from './styles';
 import { toI18n } from '../../utils/func-utils';
 
-const scrollStyle = {
-  height: 'calc(100vh - 300px)',
-  margin: '0 -20px 0 -10px',
-};
+
 
 const initialValues = {
   email: '',
@@ -109,7 +106,7 @@ class Registration extends Component {
           >
             {({ handleSubmit }) => (
               <Form onSubmit={handleSubmit}>
-                {/* <ShadowScrollbars autoHide style={scrollStyle}> */}
+                {/* <ShadowScrollbars autoHide style={scrollStyle}> */} 
                 <InputWrapper>
                   <Row gutter={32}>
                     <Col sm={12} xs={24}>

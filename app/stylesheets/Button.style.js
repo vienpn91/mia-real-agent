@@ -12,7 +12,6 @@ const spin = keyframes`
 export const Button = styled.button`
   text-align: center;
   border-radius: ${props => props.theme.borderRadius.borderbtn};
-  font-family: 'MontserratSemiBold';
   user-select: none;
   font-size: ${props => props.theme.fontSize.BaseFontSize};
   cursor: pointer;

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export const DashboardInfoUser = styled.div`
   color: ${props => props.theme.colorStyled.ColorBlack};
-  font-size: 14px;
+  font-size: ${props => props.theme.fontSize.MediumFontSize};
 `;
 
 export const DashboardLink = styled.a`
@@ -22,7 +22,7 @@ export const DashboardDesc = styled.span`
 `;
 
 export const DashboardSubTitle = styled.h3`
-  font-size: 16px;
+  font-size: ${props => props.theme.fontSize.BaseFontSize};
   margin-bottom: 0px;
 `;
 

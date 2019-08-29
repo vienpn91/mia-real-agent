@@ -112,7 +112,7 @@ export const TicketFilterWrapper = styled.div.attrs({
   className: 'filter-vienpn',
 })`
   padding: 1em 1.5em;
-  border-top: 1px solid #d9d9d9;  
+  border-top: 1px solid ${props => props.theme.colorStyled.ColorBorder};  
   display: flex;
   align-items: center;
   width: 100%;
@@ -127,7 +127,7 @@ export const TicketFilterWrapper = styled.div.attrs({
   }
   .ant-select-selection--multiple {
     color: ${props => props.theme.colorStyled.ColorWhite};
-    border: 1px solid #d9d9d9;
+    border: 1px solid ${props => props.theme.colorStyled.ColorBorder};
     .ant-select-selection__rendered{
       margin-bottom: 2px!important;
     }

@@ -13,7 +13,7 @@ const ControlCss = css`
   transition: all 0.3s;
   cursor: pointer;
   margin: 0px 4px;
-  font-size: 14px;
+  font-size: ${props => props.theme.fontSize.MediumFontSize};
   &:hover {
     color: #ff5402;
   }

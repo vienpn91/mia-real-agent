@@ -13,7 +13,6 @@ export const MiaWrapper = styled.div`
 export const MiaTitle = styled.h1`
   font-size: 48px;
   font-weight: bold;
-  font-family: CountrySide, sans-serif;
 `;
 
 const slideFadeInUp = keyframes`

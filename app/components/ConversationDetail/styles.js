@@ -10,7 +10,7 @@ export const ChatbotConversationListWrapper = styled.div`
   flex: 0 0 400px;
   color: ${props => props.theme.colorStyled.ColorBlack};
   background-color: ${props => props.theme.colorStyled.ColorWhite};
-  border-right: 1px solid #d9d9d9;
+  border-right: 1px solid ${props => props.theme.colorStyled.ColorBorder};
   transition: all 200ms ease;
   .ant-input-search {
     .ant-input {
@@ -37,7 +37,7 @@ export const ChatbotConversationListWrapper = styled.div`
     &:hover {
       color: ${props => props.theme.colorStyled.ColorBlack};
       background-color: #f5f6f7 !important;
-      border-bottom: 1px solid #d9d9d9;
+      border-bottom: 1px solid ${props => props.theme.colorStyled.ColorBorder};
       .anticon-setting {
         visibility: visible;
       }
@@ -57,7 +57,7 @@ export const ChatbotConversationListWrapper = styled.div`
   .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
     color: ${props => props.theme.colorStyled.ColorBlack};
     background-color: #f5f6f7;
-    border-bottom: 1px solid #d9d9d9;
+    border-bottom: 1px solid ${props => props.theme.colorStyled.ColorBorder};
   }
   .ant-tabs-bar {
     margin: 0px 25px;
@@ -114,7 +114,7 @@ export const ChatbotConversationListWrapper = styled.div`
 `;
 
 export const ChatbotConversationDetailWrapper = styled(ChatbotConversationListWrapper)`
-  border-left: 1px solid #d9d9d9;
+  border-left: 1px solid ${props => props.theme.colorStyled.ColorBorder};
   @media (max-width: 1500px) {
     flex: 0 0 30%;
   }
@@ -142,7 +142,7 @@ export const ConversationHeaderWrapper = styled.div`
   justify-content: space-between;
   padding: 15px 24px;
   height: 60px;
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1px solid ${props => props.theme.colorStyled.ColorBorder};
   span {
     font-weight: 700;
   }
@@ -265,13 +265,13 @@ export const ConversationInfoWrapper = styled.div`
     display: flex;
     flex-direction: column;
     padding: 0px 20px 25px;
-    border-bottom: 1px solid #d9d9d9 !important;
+    border-bottom: 1px solid ${props => props.theme.colorStyled.ColorBorder} !important;
     > td {
       padding-bottom: 16px;
       padding-top: 16px;
       display: flex;
       flex-direction: column;
-      border-bottom: 1px solid #d9d9d9;
+      border-bottom: 1px solid ${props => props.theme.colorStyled.ColorBorder};
       &:last-child {
         border-bottom: none;
       }

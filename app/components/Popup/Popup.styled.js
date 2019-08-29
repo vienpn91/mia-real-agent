@@ -31,7 +31,7 @@ export const PopupHeader = styled.div`
   text-transform: uppercase;
   font-size: 18px;
   padding: 10px 20px;
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1px solid ${props => props.theme.colorStyled.ColorBorder};
   ${({ error }) => error && css`
     background-color: #b52d2d;
     border-bottom: 1px solid #b52d2d;

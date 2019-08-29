@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import { PopupOverlayStyled } from 'components/Generals/General.styled';
 
 import {
-  HeaderStyled,
-  TopbarRight,
+  HeaderAdminStyled,
+  TopbarRightAdmin,
   ProfileStyled,
   ProfileImageStyled,
   ActionsStyled,
@@ -27,8 +27,8 @@ class AdminTopNavBar extends PureComponent {
   render() {
     const { isUserInfoOpen } = this.state;
     return (
-      <HeaderStyled>
-        <TopbarRight>
+      <HeaderAdminStyled>
+        <TopbarRightAdmin>
           <ActionsStyled>
             {this.renderSettingIcon()}
           </ActionsStyled>
@@ -46,8 +46,8 @@ class AdminTopNavBar extends PureComponent {
               </React.Fragment>
             )}
           </ProfileStyled>
-        </TopbarRight>
-      </HeaderStyled>
+        </TopbarRightAdmin>
+      </HeaderAdminStyled>
     );
   }
 }

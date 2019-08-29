@@ -25,7 +25,6 @@ export const ProfileCard = styled.div`
 export const ProfileTitle = styled.div`
   text-align: center;
   font-size: 32px;
-  font-family: Countryside, sans-serif;
   margin-bottom: 55px;
 `;
 

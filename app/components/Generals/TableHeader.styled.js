@@ -17,7 +17,6 @@ export const TableHeaderWrapper = styled.div`
 export const TableHeaderLeftWrapper = styled.div`
   position: relative;
   font-size: 20px;
-  font-family: 'Proxima Nova Light';
   .select__option {
     border-color: #ddd;
     cursor: pointer;
@@ -32,11 +31,10 @@ export const TableHeaderLeftWrapper = styled.div`
   .select__placeholder {
     color: #222;
     font-size: 20px;
-    font-family: 'Proxima Nova Light';
   }
   .select__value-container {
     min-width: 190px;
-    font-size: 14px;
+    font-size: ${props => props.theme.fontSize.MediumFontSize};
     padding: 2px 0px;
   }
   .select__indicator svg {

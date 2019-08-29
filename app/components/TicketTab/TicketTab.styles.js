@@ -26,7 +26,7 @@ export const FilterItem = styled.div`
   }
   background-color: ${props => props.theme.colorStyled.ColorBlackSecondary};
   input {
-    border: 1px solid #d9d9d9;
+    border: 1px solid ${props => props.theme.colorStyled.ColorBorder};
     border-left: none;
     background-color: ${props => props.theme.colorStyled.ColorWhite};
     box-shadow: inset 0 1px 2px rgba(27,31,35,.075);
@@ -43,7 +43,7 @@ export const FilterItem = styled.div`
     top: 35px;
     background-color: ${props => props.theme.colorStyled.ColorWhite};
     border-radius: 3px;
-    border: 1px solid #d9d9d9;
+    border: 1px solid ${props => props.theme.colorStyled.ColorBorder};
     width: 220px;
     height: fit-content;
     box-shadow: 0 3px 12px #1b1f2326 !important;
@@ -51,7 +51,7 @@ export const FilterItem = styled.div`
     .ant-menu-item {
       cursor: pointer;
       margin: 0px !important;
-      border-bottom: 1px solid #d9d9d9;
+      border-bottom: 1px solid ${props => props.theme.colorStyled.ColorBorder};
       height: 32px;
       line-height: 32px;
       font-size: 13px;
@@ -77,7 +77,7 @@ export const Filter = styled.div`
   display: flex;
   align-items: center;
   a {
-    border: 1px solid #d9d9d9;
+    border: 1px solid ${props => props.theme.colorStyled.ColorBorder};
     background-color: ${props => props.theme.colorStyled.ColorWhite};
     background-image: linear-gradient(-180deg,#fff,#eff3f6 90%);
     background-position: -1px -1px;

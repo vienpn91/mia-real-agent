@@ -62,6 +62,7 @@ export const DefaultThemes = {
     ColorXLightGrey: '#2f2f2f',
     ColorXXLightGrey: '#6e6c83fa',
     ColorXXXLightGrey: '#eee',
+    ColorOverLay: '#1d1d1d70',
 
 
     ColorBgSilver: '#f8f9fa',

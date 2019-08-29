@@ -10,7 +10,7 @@ export const TimerContainer = styled(Row)`
 `;
 
 export const TimerStyled = styled(Col)`
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1px solid ${props => props.theme.colorStyled.ColorBorder};
   border-right: 0;
   border-left: 0;
   padding: 5px;

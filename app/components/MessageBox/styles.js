@@ -79,7 +79,7 @@ export const ConversationTitle = styled.div`
   max-height: 60px;
   display: flex;
   background-color: #fff;
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1px solid ${props => props.theme.colorStyled.ColorBorder};
   align-items: center;
   justify-content: center;
   button {

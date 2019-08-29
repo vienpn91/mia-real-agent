@@ -11,7 +11,6 @@ export const InputGroupPrepend = styled.div`
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   color: var(--zigvy-col-extra-light-grey);
-  font-family: 'Proxima Nova Rg';
 `;
 
 export const Break = styled.div`
@@ -110,7 +109,7 @@ export const InputStyled = styled(Input)`
   border-radius: 3px !important;
   background: transparent !important;
   border: none;
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1px solid ${props => props.theme.colorStyled.ColorBorder};
   color: #000 !important;
   font-size: 15px!important;
   font-weight: 600;

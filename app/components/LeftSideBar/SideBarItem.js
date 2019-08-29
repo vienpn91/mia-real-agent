@@ -14,7 +14,7 @@ export default class SideBarItem extends React.PureComponent {
       <Link to={link} key={text}>
         <SidebarItem isActive={isActive} isToggle={isToggle}>
           <i className={icon} />
-          <span>{text}</span>
+          <span className="menu-text">{text}</span>
         </SidebarItem>
       </Link>
     );

@@ -84,14 +84,14 @@ export const ConversationItemWrapper = styled.div`
 
 export const ConversationFilterWrapper = styled.div`
   padding: 15px 24px;
-  border-top: 1px solid #d9d9d9;
+  border-top: 1px solid ${props => props.theme.colorStyled.ColorBorder};
   .ant-select {
     margin-top: 5px;
     border-radius: 4px;
   }
   .ant-select-selection--multiple {
     color: ${props => props.theme.colorStyled.ColorWhite};
-    border: 1px solid #d9d9d9;
+    border: 1px solid ${props => props.theme.colorStyled.ColorBorder};
     &:hover {
       border-color: #b1b1b1;
     }

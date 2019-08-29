@@ -31,12 +31,12 @@ export const ItemDetailListItem = styled.div`
 `;
 
 export const ItemDetailInput = styled.div`
-  padding: 14px;
+  padding: ${props => props.theme.fontSize.MediumFontSize};
   text-align: center;
 `;
 
 export const ItemDetailName = styled.div`
-  padding: 14px;
+  padding: ${props => props.theme.fontSize.MediumFontSize};
   padding-left: 0px;
   width: 100%;
   display: flex;
@@ -68,8 +68,7 @@ export const ItemDetailInfoHeaderWrapper = styled.div`
   }
 `;
 
-export const ItemDetailInfoHeadTitle = styled.div`
-  font-family: 'Proxima Nova Bold';
+export const ItemDetailInfoHeadTitle = styled.div`  
   font-size: 22px;
 `;
 
@@ -223,7 +222,6 @@ export const OverviewProduct = styled.div`
   line-height: 21px;
   margin-bottom: 8px;
   label {
-    font-family: 'Proxima Nova Light';
     color: #666;
     flex: 0 0 25%;
   }

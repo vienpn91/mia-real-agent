@@ -5,7 +5,7 @@ import { COLOR_BY_STATUS } from '../../../common/enums';
 export const TableHeadWrapper = styled.div`
   display: flex;
   border-top: 1px solid ${props => props.theme.colorStyled.ColorBlackSecondary};
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1px solid ${props => props.theme.colorStyled.ColorBorder};
   color: #666;
   background-color: ${props => props.theme.colorStyled.ColorWhite};
   font-weight: 700;
@@ -47,7 +47,7 @@ export const TableContentItemGroup = styled(TableHeadItemGroup)`
 `;
 
 export const TableContentWrapper = styled.div`
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1px solid ${props => props.theme.colorStyled.ColorBorder};
   border-top: none;
   color: #263035;
   font-weight: 700;
@@ -55,7 +55,7 @@ export const TableContentWrapper = styled.div`
   ${({ bgTable }) => bgTable
     && css`
       border: none;
-      font-size: 14px;
+      font-size: ${props => props.theme.fontSize.MediumFontSize};
       & > div {
         & > div {
           border: none;
@@ -85,7 +85,7 @@ export const TableContentItem = styled.div`
       }
     `};
   ${({ ticket }) => ticket && css`
-    border: 1px solid #d9d9d9;
+    border: 1px solid ${props => props.theme.colorStyled.ColorBorder};
     margin-bottom: 15px;
   `}
 `;
@@ -99,7 +99,7 @@ export const TableDetailImages = styled.div`
   flex: 0 0 45px;
   max-height: 45px;
   height: 45px;
-  border: 1px solid #d9d9d9;
+  border: 1px solid ${props => props.theme.colorStyled.ColorBorder};
   padding: 5px;
   img {
     width: 100%;
@@ -145,7 +145,6 @@ export const TableDetailContent = styled.div`
 export const TableDetailSubContent = styled.div`
   color: #777;
   font-size: 13px;
-  font-family: 'Proxima Nova Light';
   text-transform: uppercase;
   ${({ lowercase }) => lowercase
     && css`
@@ -189,7 +188,7 @@ export const TableHead = styled.div`
   display: flex;
   align-items: center;
   font-weight: normal;
-  font-size: 14px;
+  font-size: ${props => props.theme.fontSize.MediumFontSize};
   color: #586069;
   ${({ size }) => size
     && css`

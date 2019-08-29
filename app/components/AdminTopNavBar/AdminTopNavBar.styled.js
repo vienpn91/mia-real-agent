@@ -1,20 +1,20 @@
 import styled from 'styled-components';
 
-export const TopbarRight = styled.div`
+export const HeaderAdminStyled = styled.div`
+  position: relative;
+  width: 100%;
+  
+  z-index: 1;
+  background-color: ${props => props.theme.colorStyled.ColorWhite};
+  border-bottom: 1px solid ${props => props.theme.colorStyled.ColorBorder};
+  display: flex;
+`;
+
+export const TopbarRightAdmin = styled.div`
   display: flex;
   flex: 1;
   justify-content: flex-end;
-  margin-right: 20px;
-`;
-
-export const HeaderStyled = styled.div`
-  position: relative;
-  width: 100%;
-  height: 60px;
-  z-index: 1;
-  background-color: ${props => props.theme.colorStyled.ColorWhite};
-  border-bottom: 1px solid #d9d9d9;
-  display: flex;
+  height: 3.750em;
 `;
 
 export const ProfileStyled = styled.div`
@@ -68,7 +68,7 @@ export const TopNavBarSerachWrapper = styled.div`
   i {
     padding: 3px 7px 3px 10px;
     margin: 4px 0px;
-    font-size: 16px;
+    font-size: ${props => props.theme.fontSize.BaseFontSize};
     cursor: pointer;
     border-right: 1px solid #ccc;
     &:hover {
@@ -78,7 +78,7 @@ export const TopNavBarSerachWrapper = styled.div`
   input {
     padding-left: 10px;
     width: 100%;
-    font-size: 14px;
+    font-size: ${props => props.theme.fontSize.MediumFontSize};
     color: #222;
   }
   &:focus,

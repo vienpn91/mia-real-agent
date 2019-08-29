@@ -101,7 +101,7 @@ export const ApplicationBlock = styled.div`
     margin-left: 8px;
     span {
       color: #aaa !important;
-      font-size: 14px;
+      font-size: ${props => props.theme.fontSize.MediumFontSize};
     }
   }
   .ant-steps-item-content {
@@ -110,7 +110,7 @@ export const ApplicationBlock = styled.div`
   }
   .ant-steps-item-title {
     color: #aaa !important;
-    font-size: 14px;
+    font-size: ${props => props.theme.fontSize.MediumFontSize};
     &:after {
       content: none;
     }

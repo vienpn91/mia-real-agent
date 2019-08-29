@@ -57,7 +57,7 @@ export const IconStyled = styled.i`
     && css`
       border-radius: 100%;
       border: 1px solid ${props => props.theme.colorStyled.ColorIcon};
-      font-size: 14px;
+      font-size: ${props => props.theme.fontSize.MediumFontSize};
       color: ${props => props.theme.colorStyled.ColorIcon};
       margin: 0px 2px;
       &:hover {
@@ -69,7 +69,7 @@ export const IconStyled = styled.i`
     && css`
       border-radius: 100%;
       border: 1px solid ${props => props.theme.colorStyled.iconAddColor};
-      font-size: 14px;
+      font-size: ${props => props.theme.fontSize.MediumFontSize};
       color: ${props => props.theme.colorStyled.iconAddColor};
       margin: 0px 2px;
       &:hover {
@@ -81,7 +81,7 @@ export const IconStyled = styled.i`
     && css`
       border-radius: 100%;
       border: 1px solid ${props => props.theme.colorStyled.iconMoreColor};
-      font-size: 14px;
+      font-size: ${props => props.theme.fontSize.MediumFontSize};
       color: ${props => props.theme.colorStyled.iconMoreColor};
       margin: 0px 2px;
       &:hover {
@@ -149,8 +149,7 @@ export const HeaderTitleWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 20px;
-  font-family: 'Proxima Nova Light';
+  font-size: 20px;  
 `;
 
 export const ActionModalWrapper = styled.div`
@@ -184,7 +183,7 @@ export const SubmitButtonStyled = styled.button`
   border: 1px solid transparent;
   border-radius: 3px;
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: ${props => props.theme.fontSize.MediumFontSize};
   &:hover {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   }
@@ -196,7 +195,7 @@ export const CancelButtonStyled = styled.button`
   border-radius: 3px;
   padding: 6px 12px;
   margin-left: 10px;
-  font-size: 14px;
+  font-size: ${props => props.theme.fontSize.MediumFontSize};
   &:hover {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   }
@@ -373,10 +372,7 @@ export const HistoryText = styled.div`
 export const HistoryAuthor = styled.div`
   margin-top: 1px;
   font-size: 11px;
-  color: #777;
-  span {
-    font-family: 'Proxima Nova Bold';
-  }
+  color: #777; 
 `;
 
 export const HistoryComment = styled.div`
