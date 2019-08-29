@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { EditorState } from 'draft-js';
 import {
   Form, Icon,
 } from 'antd';
@@ -36,6 +37,7 @@ import { ProfileImageStyled } from '../TopNavBar/TopNavBar.styled';
 import {
   userChat, otherChat, otherTyping, botChat, ticketStatus, userAction, ticketRating,
 } from './ChatItem';
+import RichEditor from '../FormInput/RichEditor/RichEditor';
 
 const scrollStyle = {
   flex: 'auto',
@@ -43,13 +45,14 @@ const scrollStyle = {
 };
 
 const initialValues = {
-  content: '',
+  content: EditorState.createEmpty(),
 };
 
 export default class MessageBox extends Component {
   messagesEndRef = React.createRef();
 
   static propTypes = {
+    cannedResponses: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     userId: PropTypes.string.isRequired,
     conversationId: PropTypes.string,
     systemMessage: PropTypes.object,
@@ -62,7 +65,7 @@ export default class MessageBox extends Component {
     sendingMessages: PropTypes.arrayOf(PropTypes.shape()),
     sendingMessageErrors: PropTypes.objectOf(PropTypes.any),
     otherUserTyping: PropTypes.object,
-
+    fetchCannedResponseForUser: PropTypes.func.isRequired,
     t: PropTypes.func,
     findAgentRequest: PropTypes.func.isRequired,
     sendReplyMessage: PropTypes.func.isRequired,
@@ -84,6 +87,15 @@ export default class MessageBox extends Component {
     conversationId: '',
     sendingMessages: [],
     // sendingMessageErrors: {},
+  }
+
+  state = {
+    content: EditorState.createEmpty(),
+  }
+
+  componentDidMount() {
+    const { fetchCannedResponseForUser } = this.props;
+    fetchCannedResponseForUser({});
   }
 
   componentDidUpdate = (prevProps) => {
@@ -199,18 +211,21 @@ export default class MessageBox extends Component {
     </MessageActionWrapper>
   );
 
-  handleChatSubmit = (values) => {
+  handleChatSubmit = () => {
     const {
       sendReplyMessage, conversationId, userTyping, userRole,
     } = this.props;
-    const { content } = values;
-    const trimmedContent = content.trim();
+    const { content } = this.state;
+    const trimmedContent = content.getCurrentContent().getPlainText().trim();
     if (trimmedContent) {
       sendReplyMessage(conversationId, trimmedContent);
       if (!isAgent(userRole)) {
         userTyping(conversationId, '');
       }
       this.formik.getFormikContext().resetForm();
+      this.setState({
+        content: EditorState.createEmpty(),
+      });
     }
   }
 
@@ -220,16 +235,24 @@ export default class MessageBox extends Component {
     findAgentRequest(conversationId);
   }
 
-  handleTyping = (e) => {
+  handleTyping = (content) => {
     const { userTyping, conversationId, userRole } = this.props;
     if (!isAgent(userRole)) {
-      const { value } = e.target;
-      userTyping(conversationId, value);
+      const textValue = content.getCurrentContent().getPlainText();
+      userTyping(conversationId, textValue);
     }
   }
 
+  handleChangeContent = (content) => {
+    this.setState({
+      content,
+    });
+    this.handleTyping(content);
+  }
+
   renderMessageInput = () => {
-    const { t } = this.props;
+    const { cannedResponses } = this.props;
+    const { content } = this.state;
     return (
       <Formik
         ref={(formik) => { this.formik = formik; }}
@@ -239,15 +262,15 @@ export default class MessageBox extends Component {
         {({ handleSubmit }) => (
           <Form
             onSubmit={handleSubmit}
-            onChange={this.handleChangeValues}
           >
             <MessageInputWrapper>
-              <MessageInput
-                onChange={this.handleTyping}
-                type="text"
-                name="content"
-                placeholder={t('CONV_MESSAGE_BOX_TYPE_MESSAGE')}
-                autoComplete="off"
+              <RichEditor
+                mentions={cannedResponses.map(({ shortcut: title, content: name }) => ({
+                  title,
+                  name,
+                }))}
+                onChange={this.handleChangeContent}
+                editorState={content}
               />
               {this.renderGroupAction()}
               <InputAction onClick={handleSubmit} className="mia-enter" />

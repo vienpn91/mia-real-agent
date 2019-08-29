@@ -602,3 +602,8 @@ export const AGENT_SKILL = [{
   label: 'Change Management',
   value: 'Change Management',
 }];
+
+export const NEW_BUTTONS_TYPE = {
+  LINK: 'LINK',
+  BUTTON: 'BUTTON',
+};
