@@ -25,6 +25,14 @@ class AuthRouter {
       '/login/facebook/callback',
       AuthController.loginWithFacebookCallback,
     );
+    this.router.post(
+      '/forgotPassword',
+      AuthController.forgotPassword,
+    );
+    this.router.post(
+      '/resetPassword',
+      AuthController.resetPassword,
+    );
   }
 }
 

@@ -20,6 +20,15 @@ export const AUTH_SET_VERIFYING_EMAIL = 'auth/SET_VERIFYING_EMAIL';
 export const AUTH_SEND_VERICATION_EMAIL = 'auth/SEND_VERICATION_EMAIL';
 export const AUTH_SEND_VERICATION_EMAIL_SUCCESS = 'auth/SEND_VERICATION_EMAIL_SUCCESS';
 export const AUTH_SEND_VERICATION_EMAIL_FAIL = 'auth/SEND_VERICATION_EMAIL_FAIL';
+
+export const AUTH_FORGOT_PASSWORD = 'auth/AUTH_FORGOT_PASSWORD';
+export const AUTH_FORGOT_PASSWORD_SUCCESS = 'auth/AUTH_FORGOT_PASSWORD_SUCCESS';
+export const AUTH_FORGOT_PASSWORD_FAIL = 'auth/AUTH_FORGOT_PASSWORD_FAIL';
+
+export const AUTH_RESET_PASSWORD = 'auth/AUTH_RESET_PASSWORD';
+export const AUTH_RESET_PASSWORD_SUCCESS = 'auth/AUTH_RESET_PASSWORD_SUCCESS';
+export const AUTH_RESET_PASSWORD_FAIL = 'auth/AUTH_RESET_PASSWORD_FAIL';
+
 const CLEAR_TRANSACTION = 'root/CLEAR_TRANSACTION';
 const UPDATE_TOKEN = 'auth/UPDATE_TOKEN';
 
@@ -37,9 +46,52 @@ const initialState = fromJS({
   isVerifing: false,
   verifyError: null,
   verifyingEmail: null,
+
+  isForgetting: false,
+  forgotError: null,
+
+  isResetting: false,
+  resetError: null,
 });
 
 // action creator
+// forgot password creator
+export const forgotPasswordAction = email => ({
+  type: AUTH_FORGOT_PASSWORD,
+  payload: {
+    email,
+  },
+});
+
+export const forgotPasswordSuccessAction = () => ({
+  type: AUTH_FORGOT_PASSWORD_SUCCESS,
+});
+
+export const forgotPasswordFailAction = errorMessage => ({
+  type: AUTH_FORGOT_PASSWORD_FAIL,
+  errorMessage,
+});
+
+
+// reset password creator
+export const resetPasswordAction = (newPassword, token) => ({
+  type: AUTH_RESET_PASSWORD,
+  payload: {
+    newPassword,
+    token,
+  },
+});
+
+export const resetPasswordSuccessAction = () => ({
+  type: AUTH_RESET_PASSWORD_SUCCESS,
+});
+
+export const resetPasswordFailAction = errorMessage => ({
+  type: AUTH_RESET_PASSWORD_FAIL,
+  errorMessage,
+});
+
+
 // update token creator
 export const updateToken = token => ({
   type: UPDATE_TOKEN,
@@ -201,6 +253,10 @@ export const actions = {
   sendVericationEmail,
   sendVericationEmailSuccess,
   sendVericationEmailFail,
+  forgotPasswordSuccessAction,
+  forgotPasswordFailAction,
+  resetPasswordSuccessAction,
+  resetPasswordFailAction,
 };
 
 // selector
@@ -238,6 +294,11 @@ export const getIsSendingEmail = ({ auth }) => auth.get('isVerifing', false);
 export const getVerifyEmailError = ({ auth }) => auth.get('verifyError');
 export const getVerifyingEmail = ({ auth }) => auth.get('verifyingEmail');
 
+export const getIsForgetting = ({ auth }) => auth.get('isForgetting');
+export const getForgotError = ({ auth }) => auth.get('forgotError');
+export const getIsResetting = ({ auth }) => auth.get('isResetting');
+export const getResetError = ({ auth }) => auth.get('resetError');
+
 // reducer
 function authReducer(state = initialState, action) {
   switch (action.type) {
@@ -264,6 +325,32 @@ function authReducer(state = initialState, action) {
 
     case AUTH_LOGOUT:
       return initialState;
+
+    // forgot actions
+    case AUTH_FORGOT_PASSWORD:
+      return state.set('isForgetting', true);
+
+    case AUTH_FORGOT_PASSWORD_SUCCESS:
+      return state
+        .set('isForgetting', false)
+        .set('forgotError', '');
+
+    case AUTH_FORGOT_PASSWORD_FAIL:
+      return state.set('isForgetting', false)
+        .set('forgotError', action.errorMessage);
+
+    // reset actions
+    case AUTH_RESET_PASSWORD:
+      return state.set('isResetting', true);
+
+    case AUTH_RESET_PASSWORD_SUCCESS:
+      return state
+        .set('isResetting', false)
+        .set('resetError', '');
+
+    case AUTH_RESET_PASSWORD_FAIL:
+      return state.set('isResetting', false)
+        .set('resetError', action.errorMessage);
 
     // register actions
     case AUTH_REGISTER:

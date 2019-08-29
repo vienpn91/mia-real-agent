@@ -7,6 +7,8 @@ import UserModel from '../user/user.model';
 import UserService from '../user/user.service';
 import check from '../../utils/validate';
 import { VALIDATION_TYPE } from '../../../common/enums';
+import APIError, { ERROR_MESSAGE } from '../../utils/APIError';
+import { sendEmailResetPassword } from '../../mail-sparkpost/sparkpost';
 import { hashFunc } from '../../utils/bcrypt';
 // import {
 //   sendUserRegisterSuccessMail,
@@ -16,6 +18,11 @@ import Logger from '../../logger';
 const loginErrorMsg = 'Something is wrong';
 
 class AuthController {
+  constructor() {
+    this.forgotPassword = this.forgotPassword.bind(this);
+    this.resetPassword = this.resetPassword.bind(this);
+  }
+
   handlePassportStrategy(accessToken, refreshToken, profile, done) {
     const condition = { $or: [], deletedAt: null };
     let email;
@@ -221,6 +228,60 @@ class AuthController {
       } = req;
       await UserService.verifyAccount(token);
       return res.status(httpStatus.OK).redirect('/login');
+    } catch (error) {
+      error.status = error.status || httpStatus.INTERNAL_SERVER_ERROR;
+      return res.status(error.status).send({
+        error,
+      });
+    }
+  }
+
+  async forgotPassword(req, res) {
+    try {
+      const { email } = req.body;
+      await check(email, VALIDATION_TYPE.STRING);
+      const user = await UserService.getOneByQuery({ email });
+      if (!user) {
+        const { EMAIL_NOT_EXIST } = ERROR_MESSAGE;
+        throw new APIError(EMAIL_NOT_EXIST, httpStatus.NOT_FOUND);
+      }
+      // Gen expire token
+      const { _id } = user;
+      const domain = process.env.DOMAIN;
+      const forgotToken = jwt.sign({ _id }, process.env.SECRET_KEY_JWT,
+        { expiresIn: 60 * 10 });
+      UserService.update(_id, { forgotToken });
+      sendEmailResetPassword(email, forgotToken, `${domain}/reset-password`);
+      return res.status(httpStatus.OK).send();
+    } catch (error) {
+      error.status = error.status || httpStatus.INTERNAL_SERVER_ERROR;
+      return res.status(error.status).send({
+        error,
+      });
+    }
+  }
+
+  async resetPassword(req, res) {
+    try {
+      const { newPassword, token } = req.body;
+      const { TOKEN_NOT_MATCH, TOKEN_EXPIRED } = ERROR_MESSAGE;
+      try {
+        const { _id } = jwt.verify(token, process.env.SECRET_KEY_JWT);
+        const user = await UserService.getOneByQuery({ _id, forgotToken: token });
+        if (!user) {
+          return res.status(httpStatus.NOT_FOUND).send({ error: TOKEN_NOT_MATCH });
+        }
+        const newToken = jwt.sign({ _id }, process.env.SECRET_KEY_JWT);
+        const hash = await hashFunc(newPassword);
+        UserService.update(_id, { password: hash, forgotToken: null, token: newToken });
+      } catch (err) {
+        const { name } = err;
+        if (name === 'TokenExpiredError') {
+          return res.status(httpStatus.NOT_FOUND).send({ error: TOKEN_EXPIRED });
+        }
+        return res.status(httpStatus.NOT_FOUND).send({ error: name });
+      }
+      return res.status(httpStatus.OK).send();
     } catch (error) {
       error.status = error.status || httpStatus.INTERNAL_SERVER_ERROR;
       return res.status(error.status).send({
