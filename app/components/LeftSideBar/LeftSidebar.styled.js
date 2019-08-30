@@ -15,6 +15,7 @@ export const SidebarBlockAdmin = styled.ul``;
 export const LogoWrapper = styled.div.attrs({
   className: 'logo-admin',
 })`
+  border-bottom: 1px solid ${props => props.theme.colorStyled.ColorXLightGrey};
   height: 100%;
   width: 100%;
   display: flex;
@@ -63,7 +64,6 @@ export const SidebarToggleButton = styled.div`
   background-color: ${props => props.theme.colorStyled.ColorOverLay};
   cursor: pointer;
   position: relative;
-  margin-bottom: 1em;
   ${({ isToggle }) => isToggle && css`
     display: flex;
     align-items: center;

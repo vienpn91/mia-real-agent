@@ -118,6 +118,15 @@ export const ButtonPrimary = styled(Button)`
     margin-right: .35em;
   }
 `;
+export const ButtonApprove = styled(ButtonPrimary)`
+  background: ${props => props.theme.colorStyled.ColorBgDefault};
+  color:  ${props => props.theme.colorStyled.ColorWhite}; 
+`;
+export const ButtonReject = styled(ButtonPrimary)`
+  background: ${props => props.theme.colorStyled.ColorXXXLightGrey};
+  color:  ${props => props.theme.colorStyled.ColoraBtnCancel};
+  border: 1px solid ${props => props.theme.colorStyled.ColorXXXLightGrey};
+`;
 
 export const ButtonSubmit = styled(Button).attrs({
   type: 'submit',

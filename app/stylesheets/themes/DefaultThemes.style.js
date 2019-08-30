@@ -14,6 +14,7 @@ export const DefaultThemes = {
   },
   boxShandow: {
     loginPage: '0px 0px 17px -3px #2a3a516e',
+    headerTable: '0px 2px 7px 1px #7170701a;',
   },
   fontSize: {
     XXXSmallMobileFontSize: '9px',
@@ -48,6 +49,7 @@ export const DefaultThemes = {
     ColorBgUser: '#ff5502',
     ColorPrimary: '#ff5402',
     ColorSecond: '#586069',
+    ColorLabel: '#586069',
     ColorGrey: '#dfdfdf',
     ColorDarkGrey: '#6e6c83',
     ColorMidGrey: '#4a4a4a',

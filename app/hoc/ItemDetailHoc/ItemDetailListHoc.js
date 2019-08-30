@@ -5,7 +5,7 @@ import ShadowScrollbars from 'components/Scrollbar';
 import HeaderContainer from 'components/HeaderContainer/HeaderContainer';
 import TableBorder from 'components/TableBorder';
 const scrollStyle = {
-  height: 'calc(100vh - 180px)',
+  height: 'calc(100vh - 108px)',
   width: '100%',
 };
 

@@ -7,7 +7,7 @@ import TableHeaderComponent from './TableHeaderComponent';
 import TableRow from './TableRow';
 
 const scrollStyle = {
-  height: 'calc(100vh - 165px)',
+  height: 'calc(100vh - 150px)',
   width: '100%',
 };
 

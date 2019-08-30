@@ -1,6 +1,8 @@
 import styled, { css } from 'styled-components';
 
-export const MainConentAdmin = styled.div`
+export const MainConentAdmin = styled.div.attrs({
+  className: 'main-content-admin',
+})`
   display: flex;
   flex-direction: column;
   padding: 1.5em;

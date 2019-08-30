@@ -4,10 +4,12 @@ export const HeaderAdminWrapper = styled.div`
   display: flex;
   align-items: center;
   padding: 1em;
-  height:  ${props => props.theme.heightSite.heightHeadAdmin}; 
+  height:  ${props => props.theme.heightSite.heightHeadAdmin};
 `;
 
-export const TitleAdminHead = styled.div`
+export const TitleAdminHead = styled.div.attrs({
+  className: 'title-header-admin',
+})`
   margin-right: 1.5em;
 `;
 
@@ -20,6 +22,9 @@ export const HeaderActionWrapper = styled.div`
   align-items: center;
   button{
     margin-right: 0.75em;
+    &:last-child{
+      margin: 0;
+    }
   }
 `;
 

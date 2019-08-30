@@ -4,6 +4,7 @@ import {
   ItemDetailListItem,
   ItemDetailName,
   ItemStatus,
+  ItemsListsName,
 } from 'components/Generals/ItemDetail.styled';
 import history from 'utils/history';
 
@@ -23,7 +24,9 @@ class UserListItem extends React.PureComponent {
     return (
       <ItemDetailListItem active={active} onClick={this.onClick}>
         <ItemDetailName>
-          {username}
+          <ItemsListsName>
+            {username}
+          </ItemsListsName>
           <ItemStatus>
             {role}
           </ItemStatus>

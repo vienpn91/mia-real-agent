@@ -6,7 +6,8 @@ export const TableHeadWrapper = styled.div`
 `;
 
 export const TableHeadItemGroup = styled.div`
-  display: flex;
+  display: flex;  
+  /* box-shadow: ${props => props.theme.boxShandow.headerTable}; */
 `;
 
 export const TableHead = styled.div`
@@ -83,9 +84,18 @@ export const TableContentItem = styled.div`
   ${({ ticket }) => ticket && css`
     border: 1px solid ${props => props.theme.colorStyled.ColorBorder};
     margin-bottom: 15px;
+    & > div{
+      &:first-child{
+        flex: 0 0 2em;
+        padding: 0;
+      }
+    }
   `}
 `;
-
+export const TicketItemGroup = styled.div.attrs({
+  className: 'vienpn-level-1-1',
+})`
+`;
 export const TableContentWrapper = styled.div.attrs({
   className: 'vienpn-level-1',
 })`
@@ -100,10 +110,7 @@ export const TableContentWrapper = styled.div.attrs({
   }
 `;
 
-export const TableDetailWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
+export const TableDetailWrapper = styled(TableHeadItemGroup)``;
 
 export const TableDetailImages = styled.div`
   flex: 0 0 45px;
