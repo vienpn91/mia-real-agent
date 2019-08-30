@@ -1,16 +1,29 @@
 import React from 'react';
 import moment from 'moment';
 import { Tooltip, Icon } from 'antd';
-import _isEmpty from 'lodash/isEmpty';
 import {
   MessageBoxItem, MessageText,
   UserMessage, ProfileImageStyled,
-  MessageBoxSystemNotification, LineDivider, MessageBoxItemIsTyping, IsTypingWrapper, TicketActionStatus, UserAction, TicketActionStatusTitle, TicketRatingScore, CommentWrapper,
+  MessageBoxSystemNotification, LineDivider,
+  MessageBoxItemIsTyping, IsTypingWrapper,
+  TicketActionStatus, UserAction, TicketActionStatusTitle,
+  TicketRatingScore, CommentWrapper,
 } from './styles';
 import { ROLES } from '../../../common/enums';
 import { toI18n } from '../../utils/func-utils';
 
-const renderTime = time => moment(time).format('hh:mm');
+const renderTime = (time) => {
+  if (moment().diff(time, 'days') === 0) {
+    return moment(time).format('hh:mm');
+  }
+  if (moment().diff(time, 'weeks') === 0) {
+    return moment(time).format('dddd hh:mm');
+  }
+  if (moment().diff(time, 'months') === 0) {
+    return moment(time).format('MMMM D hh:mm');
+  }
+  return moment(time).format('MMMM D hh:mm YYYY');
+};
 
 
 export const userChat = (msgId, contents, isPending = false) => (
@@ -88,29 +101,22 @@ export const ticketStatus = (msgId, params, sentAt) => {
   );
 };
 
-export const userAction = (msgId, currentTicket, from, params, sentAt) => {
+export const userAction = (msgId, from, params, sentAt) => {
   const { action } = params;
-  const { owner, assignee } = currentTicket;
   let messageOwner = '';
-  if (_isEmpty(currentTicket)) {
-    return null;
-  }
   // eslint-disable-next-line no-underscore-dangle
-  if (owner._id === from) {
-    const { role, profile = {} } = owner;
-    const { firstName, lastName, company = 'N/A' } = profile;
-    switch (role) {
-      case ROLES.INDIVIDUAL:
-        messageOwner = `${firstName} ${lastName}`;
-        break;
-      default:
-        messageOwner = company;
-        break;
-    }
-  } else {
-    const { profile } = assignee || {};
-    const { firstName, lastName } = profile || {};
-    messageOwner = `${firstName} ${lastName}`;
+  const { role, profile = {} } = from;
+  const { firstName, lastName, company = 'N/A' } = profile;
+  switch (role) {
+    case ROLES.INDIVIDUAL:
+      messageOwner = `${firstName} ${lastName}`;
+      break;
+    case ROLES.BUSINESS:
+      messageOwner = company;
+      break;
+    default:
+      messageOwner = `${firstName} ${lastName}`;
+      break;
   }
   return (
     <MessageBoxSystemNotification key={`status${msgId}`}>
@@ -128,13 +134,9 @@ export const userAction = (msgId, currentTicket, from, params, sentAt) => {
   );
 };
 
-export const ticketRating = (msgId, currentTicket, params, sentAt) => {
+export const ticketRating = (msgId, from, params, sentAt) => {
   const { score, comment } = params;
-  if (_isEmpty(currentTicket)) {
-    return null;
-  }
-  const { owner } = currentTicket;
-  const { role, profile = {} } = owner;
+  const { role, profile = {} } = from;
   const { firstName, lastName, company = 'N/A' } = profile;
   let messageOwner = '';
   switch (role) {
